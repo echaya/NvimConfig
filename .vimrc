@@ -3,7 +3,7 @@
 "To find the working directory is exactly, use the command :echo stdpath('config') inside Neovim.
 "
 "universal settings
-let g:WorkDir = 'D:\\Dropbox\\'
+let WorkDir = 'D:\\Dropbox\\'
 "change <leader> to SPACE
 nnoremap <SPACE> <Nop>
 let mapleader=" "
@@ -230,7 +230,7 @@ else
     set mouse=a
     set backspace=indent,eol,start
     if has('persistent_undo')
-        set undodir=WorkDir.'Neovim\\undo'
+        set undodir=WorkDir.'Neovim\undo'
         set undolevels=10000
         set undofile
     endif
