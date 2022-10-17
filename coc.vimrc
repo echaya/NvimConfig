@@ -72,8 +72,8 @@ autocmd Filetype python nnoremap <F11> <Esc>:REPLPDBS<Cr>
 let g:sendtorepl_invoke_key = "<F8>" 
 let g:repl_code_block_fences = {'python': '###', 'zsh': '# %%', 'markdown': '```'}
 "coc config
-let g:coc_config_home = 'D:\Dropbox\neovim\config'
-let g:coc_data_home = 'D:\Dropbox\neovim\config\coc'
+let g:coc_config_home = WorkDir.'neovim\\config'
+let g:coc_data_home = WorkDir.'neovim\\config\\coc'
 set updatetime=300
 set shortmess+=c
 " Always show the signcolumn, otherwise it would shift the text each time

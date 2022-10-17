@@ -3,6 +3,7 @@
 "To find the working directory is exactly, use the command :echo stdpath('config') inside Neovim.
 "
 "universal settings
+let g:WorkDir = 'D:\\Dropbox\\'
 "change <leader> to SPACE
 nnoremap <SPACE> <Nop>
 let mapleader=" "
@@ -45,11 +46,11 @@ nnoremap <silent> <leader>O :<C-u>call append(line(".")-1, repeat([""], v:count1
 nnoremap  v <C-V>
 nnoremap <C-V> v
 " ex command remap
-:command Wq wq
-:command W w
-:command Q q
-:command LV source $MYVIMRC
-:command EV e $MYVIMRC
+:command! Wq wq
+:command! W w
+:command! Q q
+:command! LV source $MYVIMRC
+:command! EV e $MYVIMRC
 
 
 "adding more character objectives
@@ -114,7 +115,7 @@ if exists('g:vscode')
 
     " call plug#begin('$VIM\vimfiles\plugged')
     " call plug#begin('~/AppData/Local/nvim/plugged')
-    call plug#begin('D:\Dropbox\Neovim\nvim-win64\share\nvim\vimfiles\plugged')
+    call plug#begin(WorkDir.'Neovim\\nvim-win64\\share\\nvim\\vimfiles\\plugged')
         Plug 'unblevable/quick-scope'
         Plug 'machakann/vim-sandwich'
         " Plug 'tpope/vim-surround'
@@ -163,7 +164,7 @@ if exists('g:vscode')
 else
 
     " call plug#begin('$VIM\vimfiles\plugged')
-    call plug#begin('D:\Dropbox\Neovim\nvim-win64\share\nvim\vimfiles\plugged')
+    call plug#begin(WorkDir.'Neovim\\nvim-win64\\share\\nvim\\vimfiles\\plugged')
         " Plug 'ggandor/lightspeed.nvim'
         " ui, display
         Plug '/joshdick/onedark.vim'
@@ -229,7 +230,7 @@ else
     set mouse=a
     set backspace=indent,eol,start
     if has('persistent_undo')
-        set undodir=d:\Dropbox\Neovim\undo
+        set undodir=WorkDir.'Neovim\\undo'
         set undolevels=10000
         set undofile
     endif
@@ -367,7 +368,7 @@ else
 
      " ctrlp config
      let g:ctrlp_working_path_mode = 'c'
-     let g:ctrlp_cache_dir = 'D:/Dropbox/Neovim/config/.cache/ctrlp'
+     let g:ctrlp_cache_dir = WorkDir.'Neovim\\config\\.cache\\ctrlp'
      set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe,*.pyc  " Windows
 
     let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
@@ -383,9 +384,9 @@ else
 
 
     "enable python config
-    source d:\Dropbox\neovim\config\coc.vimrc
-    source d:\Dropbox\neovim\config\md.vimrc
-    source d:\Dropbox\neovim\config\learnvim.vimrc
+    exe 'source '.WorkDir.'neovim\\config\\coc.vimrc'
+    exe 'source '.WorkDir.'neovim\\config\\md.vimrc'
+    exe 'source '.WorkDir.'neovim\\config\\learnvim.vimrc'
 endif
 
 runtime macros/sandwich/keymap/surround.vim

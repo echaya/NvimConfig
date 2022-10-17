@@ -68,7 +68,7 @@ augroup markdownSpell
 augroup END
 
 " vim wiki settings
-let g:vimwiki_list = [{'path': 'd:\Dropbox\markdown\', 'syntax': 'markdown','ext': '.md'}]
+let g:vimwiki_list = [{'path': WorkDir.'markdown\', 'syntax': 'markdown','ext': '.md'}]
 let g:vimwiki_ext2syntax = {'.md': 'markdown', '.markdown': 'markdown'}
 let g:vimwiki_key_mappings =
 \ {
