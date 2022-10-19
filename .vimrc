@@ -230,7 +230,7 @@ else
     set mouse=a
     set backspace=indent,eol,start
     if has('persistent_undo')
-        set undodir=WorkDir.'Neovim\undo'
+        exe 'set undodir='.WorkDir.'Neovim\undo'
         set undolevels=10000
         set undofile
     endif
