@@ -37,7 +37,7 @@ augroup mdgroup
     autocmd Filetype markdown inoremap ;i ** <++><Esc>F*i
     autocmd Filetype markdown inoremap ;h `` <++><Esc>F`i
     autocmd Filetype markdown inoremap ;c ```<Enter><++><Enter>```<Enter><Enter><++><Esc>4kA
-    autocmd Filetype markdown inoremap ;C ```python<Enter><Enter>```<Enter><Enter><++><Esc>3kA
+    autocmd Filetype markdown inoremap ;C ```Python<Enter><Enter>```<Enter><Enter><++><Esc>3kA
     "autocmd Filetype markdown inoremap ;h ====<Space><++><Esc>F=hi
     autocmd Filetype markdown inoremap ;p ![](./pic/<++>) <++><Esc>F[a
     autocmd Filetype markdown inoremap ;w [](<++>) <++><Esc>F[a
