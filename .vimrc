@@ -208,6 +208,7 @@ else
     set autoread "to autoload from Joplin / disk when the file opened is changed
     set nocompatible
     set mouse=a
+    set showmatch
     set backspace=indent,eol,start
     if has('persistent_undo')
         exe 'set undodir='.WorkDir.'Neovim\undo'
