@@ -79,35 +79,12 @@ function! TwiddleCase(str)
   return result
 endfunction
 vnoremap ~ y:call setreg('', TwiddleCase(@"), getregtype(''))<CR>gv""Pgv
-" vim-drag and duplication
-" vmap <up>    <Plug>SchleppUp
-" vmap <down>  <Plug>SchleppDown
-" vmap <left>  <Plug>SchleppLeft
-" vmap <right> <Plug>SchleppRight
-" vmap D <Plug>SchleppDup
 
 
 "table-mode
 noremap <leader>\ :TableModeToggle<CR>
 noremap <leader>= :TableModeRealign<CR>
 
-"vim-sanwich to the letter <leader>s
-" let g:sandwich_no_default_key_mappings = 1
-
-" " add
-" nmap <leader>sa <Plug>(sandwich-add)
-" xmap <leader>sa <Plug>(sandwich-add)
-" omap <leader>sa <Plug>(sandwich-add)
-
-" " delete
-" nmap <leader>sd <Plug>(sandwich-delete)
-" xmap <leader>sd <Plug>(sandwich-delete)
-" nmap <leader>sdb <Plug>(sandwich-delete-auto)
-
-" " replace
-" nmap <leader>sr <Plug>(sandwich-replace)
-" xmap <leader>sr <Plug>(sandwich-replace)
-" nmap <leader>srb <Plug>(sandwich-replace-auto)
 """env specific
 
 "Plug management
@@ -124,6 +101,7 @@ if exists('g:vscode')
         Plug 'svermeulen/vim-cutlass'
 	" Plug 'echaya/vscode-easymotion'
         Plug 'zirrostig/vim-schlepp' "alt+<arrow> for move and duplication of blocks
+        Plug 'tpope/vim-speeddating'
         " Plug 'mg979/vim-visual-multi'
         "text obj plugin
         Plug 'kana/vim-textobj-user' "dependent plugin
@@ -207,6 +185,7 @@ else
         " Plug 'tpope/vim-surround'
         Plug 'tpope/vim-repeat' "repeat for non-native vim actions
         Plug 'tpope/vim-commentary' "comment / uncomment code
+        Plug 'tpope/vim-speeddating'
         Plug 'machakann/vim-sandwich' "substitute for vim-surrond
         Plug 'unblevable/quick-scope' "highlight the 1st / 2nd occurance in line
         Plug 'ap/vim-buftabline' "butify the tab line
