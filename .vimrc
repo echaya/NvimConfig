@@ -101,7 +101,6 @@ if exists('g:vscode')
         Plug 'tpope/vim-commentary'
         Plug 'svermeulen/vim-cutlass'
 	" Plug 'echaya/vscode-easymotion'
-        Plug 'zirrostig/vim-schlepp' "alt+<arrow> for move and duplication of blocks
         Plug 'tpope/vim-speeddating'
         " Plug 'mg979/vim-visual-multi'
         "text obj plugin
@@ -155,7 +154,8 @@ else
         Plug 'plasticboy/vim-markdown'
         Plug 'vimwiki/vimwiki'
         " Plug 'mzlogin/vim-markdown-toc' "table of content, not so useful?
-        Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for':'markdown'}
+        " Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for':'markdown'}
+        Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
         " Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
         Plug 'dhruvasagar/vim-table-mode',{'on':'TableModeToggle'}
         Plug 'ferrine/md-img-paste.vim'
@@ -164,6 +164,8 @@ else
         Plug 'kana/vim-textobj-indent' "ai,ii, aI, iI
         Plug 'Julian/vim-textobj-variable-segment' "av,iv
         Plug 'bps/vim-textobj-python' "ac,ic,af,if
+        " log plugin
+        Plug 'MTDL9/vim-log-highlighting'
 
         ""nvim specific and vim alternative
         if has('nvim')
