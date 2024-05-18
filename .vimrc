@@ -194,7 +194,15 @@ else
         Plug 'ap/vim-buftabline' "butify the tab line
         Plug 'mhinz/vim-startify' "butify the vim start up page
         Plug '907th/vim-auto-save' "to auto-save files
-        Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+        "lsp
+        Plug 'neovim/nvim-lspconfig'
+        Plug 'hrsh7th/cmp-nvim-lsp'
+        Plug 'hrsh7th/cmp-buffer'
+        Plug 'hrsh7th/cmp-path'
+        Plug 'hrsh7th/cmp-cmdline'
+        Plug 'hrsh7th/nvim-cmp'
+        " Plug 'neoclide/coc.nvim', {'branch': 'release'}
         " Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
         " Plug 'junegunn/fzf.vim' "replicate ctrlp + ack plugin functionalities with preview
 
@@ -367,7 +375,8 @@ else
 
 
     "enable python config
-    exe 'source '.WorkDir.'neovim\\config\\coc.vimrc'
+    " exe 'source '.WorkDir.'neovim\\config\\coc.vimrc'
+    exe 'source '.WorkDir.'neovim\\config\\python.vimrc'
     exe 'source '.WorkDir.'neovim\\config\\md.vimrc'
     exe 'source '.WorkDir.'neovim\\config\\learnvim.vimrc'
 endif
