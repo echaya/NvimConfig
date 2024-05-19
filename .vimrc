@@ -112,7 +112,6 @@ if exists('g:vscode')
 
         if has('nvim')
             Plug 'ggandor/leap.nvim'
-            " Plug 'ggandor/lightspeed.nvim'
         endif
 
     call plug#end()
@@ -202,6 +201,9 @@ else
         Plug 'hrsh7th/cmp-path'
         Plug 'hrsh7th/cmp-cmdline'
         Plug 'hrsh7th/nvim-cmp'
+        Plug 'saadparwaiz1/cmp_luasnip'
+        Plug 'L3MON4D3/LuaSnip', {'tag': 'v2.*', 'do': 'make install_jsregexp'}
+        Plug 'rafamadriz/friendly-snippets'
         " Plug 'neoclide/coc.nvim', {'branch': 'release'}
         " Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
         " Plug 'junegunn/fzf.vim' "replicate ctrlp + ack plugin functionalities with preview
@@ -382,3 +384,6 @@ else
 endif
 
 runtime macros/sandwich/keymap/surround.vim
+
+
+exe 'luafile '.WorkDir.'neovim\\config\\lua_config.lua'
