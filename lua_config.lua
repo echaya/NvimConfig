@@ -113,5 +113,6 @@ matching = { disallow_symbol_nonprefix_matching = false }
 
 -- Setup luasnip
 require("luasnip.loaders.from_vscode").lazy_load()
+require("luasnip").filetype_extend("vimwiki", {"markdown"})
 -- require("luasnip.loaders.from_vscode").load({ include = {"markdown","md"} })
 -- vim.keymap.set({"i"}, "<CR>", function() ls.expand() end, {silent = true})
