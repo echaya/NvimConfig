@@ -387,3 +387,7 @@ runtime macros/sandwich/keymap/surround.vim
 
 
 exe 'luafile '.WorkDir.'neovim\\config\\lua_config.lua'
+
+if has('nvim')
+    exe 'luafile '.WorkDir.'neovim\\config\\lsp_config.lua'
+endif
