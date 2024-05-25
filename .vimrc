@@ -91,16 +91,12 @@ noremap <leader>= :TableModeRealign<CR>
 "Plug management
 if exists('g:vscode')
 
-    " call plug#begin('$VIM\vimfiles\plugged')
-    " call plug#begin('~/AppData/Local/nvim/plugged')
     call plug#begin(WorkDir.'Neovim\\nvim-win64\\share\\nvim\\vimfiles\\plugged')
         Plug 'unblevable/quick-scope'
         Plug 'machakann/vim-sandwich'
-        " Plug 'tpope/vim-surround'
         Plug 'tpope/vim-repeat'
         Plug 'tpope/vim-commentary'
         Plug 'svermeulen/vim-cutlass'
-	" Plug 'echaya/vscode-easymotion'
         Plug 'tpope/vim-speeddating'
         " Plug 'mg979/vim-visual-multi'
         "text obj plugin
@@ -140,7 +136,6 @@ if exists('g:vscode')
 
 else
 
-    " call plug#begin('$VIM\vimfiles\plugged')
     call plug#begin(WorkDir.'Neovim\\nvim-win64\\share\\nvim\\vimfiles\\plugged')
         " Plug 'ggandor/lightspeed.nvim'
         " ui, display
@@ -155,7 +150,6 @@ else
         " Plug 'mzlogin/vim-markdown-toc' "table of content, not so useful?
         " Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for':'markdown'}
         Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
-        " Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
         Plug 'dhruvasagar/vim-table-mode',{'on':'TableModeToggle'}
         Plug 'ferrine/md-img-paste.vim'
         "text obj plugin
@@ -168,10 +162,7 @@ else
 
         ""nvim specific and vim alternative
         if has('nvim')
-            Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}   "neovim only
             Plug 'ggandor/leap.nvim'
-        else
-            Plug 'vim-python/python-syntax'
         endif
 
         " Plug 'preservim/tagbar' "to show function and variable defined
@@ -204,7 +195,7 @@ else
         Plug 'saadparwaiz1/cmp_luasnip'
         Plug 'L3MON4D3/LuaSnip' ", {'tag': 'v2.*', 'do': 'make install_jsregexp'}
         Plug 'rafamadriz/friendly-snippets'
-        " Plug 'neoclide/coc.nvim', {'branch': 'release'}
+        Plug 'windwp/nvim-autopairs'
         " Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
         " Plug 'junegunn/fzf.vim' "replicate ctrlp + ack plugin functionalities with preview
 
@@ -249,19 +240,12 @@ else
     "coloring
 
 
-    function! CocCurrentFunction()
-        return get(b:, 'coc_current_function', '')
-    endfunction
 
     let g:lightline = {
           \ 'colorscheme': 'onedark',
           \ 'active': {
           \   'left': [ [ 'mode', 'paste' ],
-          \             [ 'cocstatus', 'currentfunction', 'readonly', 'filename', 'modified' ] ]
-          \ },
-          \ 'component_function': {
-          \   'cocstatus': 'coc#status',
-          \   'currentfunction': 'CocCurrentFunction'
+          \             ['readonly', 'filename', 'modified' ] ]
           \ },
           \ }
     try
@@ -377,7 +361,6 @@ else
 
 
     "enable python config
-    " exe 'source '.WorkDir.'neovim\\config\\coc.vimrc'
     exe 'source '.WorkDir.'neovim\\config\\python.vimrc'
     exe 'source '.WorkDir.'neovim\\config\\md.vimrc'
     exe 'source '.WorkDir.'neovim\\config\\learnvim.vimrc'
@@ -388,6 +371,6 @@ runtime macros/sandwich/keymap/surround.vim
 
 exe 'luafile '.WorkDir.'neovim\\config\\lua_config.lua'
 
-if has('nvim')
+if !exists('g:vscode')
     exe 'luafile '.WorkDir.'neovim\\config\\lsp_config.lua'
 endif
