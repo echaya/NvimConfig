@@ -2,7 +2,6 @@
 local cmp = require'cmp'
 local luasnip = require("luasnip")
 
-
 cmp.setup({
 snippet = {
   -- REQUIRED - you must specify a snippet engine
@@ -112,3 +111,20 @@ require("luasnip.loaders.from_vscode").lazy_load()
 require("luasnip").filetype_extend("vimwiki", {"markdown"})
 -- require("luasnip.loaders.from_vscode").load({ include = {"markdown","md"} })
 -- vim.keymap.set({"i"}, "<CR>", function() ls.expand() end, {silent = true})
+luasnip.config.set_config({
+  region_check_events = 'InsertEnter',
+  delete_check_events = 'InsertLeave'
+})
+
+-- Setup Autocomplete
+
+require("nvim-autopairs").setup {
+    map_cr = true,
+    map_complete = true,
+    auto_select = true
+}
+local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+cmp.event:on(
+  'confirm_done',
+  cmp_autopairs.on_confirm_done()
+)
