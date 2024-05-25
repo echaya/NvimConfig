@@ -28,27 +28,7 @@ augroup mdgroup
     autocmd!
     autocmd FileType markdown set conceallevel=0
     autocmd FileType markdown normal zR
-    "markdown shortcut
-    autocmd Filetype markdown inoremap ;f <Esc>/<++><CR>:nohlsearch<CR>c4l
-    "autocmd Filetype markdown inoremap ;n ---<Enter><Enter>
-    autocmd Filetype markdown inoremap ;b **** <++><Esc>F*hi
-    "autocmd Filetype markdown inoremap ;a ****** <++><Esc>F*hhi
-    autocmd Filetype markdown inoremap ;s ~~~~ <++><Esc>F~hi
-    autocmd Filetype markdown inoremap ;i ** <++><Esc>F*i
-    autocmd Filetype markdown inoremap ;h `` <++><Esc>F`i
-    autocmd Filetype markdown inoremap ;c ```<Enter><++><Enter>```<Enter><Enter><++><Esc>4kA
-    autocmd Filetype markdown inoremap ;C ```Python<Enter><Enter>```<Enter><Enter><++><Esc>3kA
-    "autocmd Filetype markdown inoremap ;h ====<Space><++><Esc>F=hi
-    autocmd Filetype markdown inoremap ;p ![](./pic/<++>) <++><Esc>F[a
-    autocmd Filetype markdown inoremap ;w [](<++>) <++><Esc>F[a
 
-    autocmd Filetype markdown inoremap ;l <Enter>--------<Enter>
-    autocmd Filetype markdown inoremap ;1 #<Space><Enter><++><Esc>kA
-    autocmd Filetype markdown inoremap ;2 ##<Space><Enter><++><Esc>kA
-    autocmd Filetype markdown inoremap ;3 ###<Space><Enter><++><Esc>kA
-    autocmd Filetype markdown inoremap ;4 ####<Space><Enter><++><Esc>kA
-    autocmd Filetype markdown inoremap ;5 #####<Space><Enter><++><Esc>kA
-    autocmd Filetype markdown inoremap ;6 ######<Space><Enter><++><Esc>kA
 
     " markdown paste from clipboard
     autocmd FileType markdown nmap <buffer><silent> <leader><leader>p :call mdip#MarkdownClipboardImage()<CR>
