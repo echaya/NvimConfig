@@ -25,14 +25,14 @@ inoremap <silent> <c-v> <Esc>:set paste<Cr>a<c-r>+<Esc>:set nopaste<Cr>a
 noremap Y y$
 
 " use 'move' as to cut text into register
-nnoremap m d
-xnoremap m d
-nnoremap mm dd
-nnoremap M D
+nnoremap x d
+xnoremap x d
+nnoremap xx dd
+nnoremap X D
 " use gj to join
 nnoremap gj J
 "use <leader>m to mark
-nnoremap <leader>m m
+" nnoremap <leader>m m
 
 " tab key
 " inoremap <S-Tab> <C-D>
