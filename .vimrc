@@ -175,7 +175,6 @@ else
 
         "utility plug-in
         Plug 'svermeulen/vim-cutlass' "prevent C, D, X to write to reg
-        Plug 'mileszs/ack.vim' "to use ripgrep for keyword search through files
         Plug 'ctrlpvim/ctrlp.vim' "fuzzy file search
         Plug 'preservim/nerdtree' "folder structure
         " Plug 'tpope/vim-surround'
@@ -310,26 +309,6 @@ else
     " set cd to current dir
     nnoremap <leader>cd :lcd %:h<CR>
 
-    ""fzf config
-    "let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9 } }
-    "let $FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --margin=1,4"
-    "let $PATH = "C:\\Program Files\\Git\\usr\\bin;" . $PATH
-    ""!! note: fd need to be installed separated before using in fd
-    ""ignored file search is configured @ c:\Users\echay\AppData\Roaming\fd\ignore
-    "let $FZF_DEFAULT_COMMAND = 'fd --type f --color always'
-    "command! -bang -nargs=* Rg
-    "  \ call fzf#vim#grep(
-    "  \   'rg --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
-    "  \   fzf#vim#with_preview(), <bang>0)
-    "nnoremap <Leader>? :Rg<Space>
-
-    " use ripgrep for ack
-    let g:ackprg = "rg --vimgrep --type-not sql --smart-case"
-    let g:ack_autoclose = 1
-    let g:ack_use_cword_for_empty_search = 1
-    nnoremap <Leader>/ :Ack!<Space>
-    cnoreabbrev Ack Ack!
-
     " quick-scope specs
     let g:qs_lazy_highlight = 0
     highlight QuickScopePrimary guifg='#afff5f' gui=underline ctermfg=155 cterm=underline
@@ -373,4 +352,5 @@ exe 'luafile '.WorkDir.'neovim\\config\\lua_config.lua'
 
 if !exists('g:vscode')
     exe 'luafile '.WorkDir.'neovim\\config\\lsp_config.lua'
+    exe 'cd '.WorkDir
 endif
