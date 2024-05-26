@@ -163,6 +163,7 @@ else
         ""nvim specific and vim alternative
         if has('nvim')
             Plug 'ggandor/leap.nvim'
+            Plug 'stevearc/oil.nvim'
             Plug 'nvim-lua/plenary.nvim'
             Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.6' }
             Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
