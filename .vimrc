@@ -163,6 +163,9 @@ else
         ""nvim specific and vim alternative
         if has('nvim')
             Plug 'ggandor/leap.nvim'
+            Plug 'nvim-lua/plenary.nvim'
+            Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.6' }
+            Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
         endif
 
         " Plug 'preservim/tagbar' "to show function and variable defined
@@ -196,10 +199,7 @@ else
         Plug 'L3MON4D3/LuaSnip' ", {'tag': 'v2.*', 'do': 'make install_jsregexp'}
         Plug 'rafamadriz/friendly-snippets'
         Plug 'windwp/nvim-autopairs'
-        " Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-        " Plug 'junegunn/fzf.vim' "replicate ctrlp + ack plugin functionalities with preview
 
-        " Plug 'zirrostig/vim-schlepp' "alt+<arrow> for move and duplication of blocks
     call plug#end()
 
     " system
