@@ -24,6 +24,10 @@ nmap <F5> <Plug>MarkdownPreviewToggle
 let g_mkdp_refresh_slow=0
 noremap <F6> <Plug>Markdown_EditUrlUnderCursor
 
+"table-mode
+noremap <leader>\ :TableModeToggle<CR>
+noremap <leader>= :TableModeRealign<CR>
+
 augroup mdgroup
     autocmd!
     autocmd FileType markdown set conceallevel=0
@@ -44,7 +48,7 @@ augroup markdownSpell
         autocmd!
         autocmd FileType markdown setlocal spell spelllang=en_us,cjk
         autocmd BufRead,BufNewFile *.md setlocal spell spelllang=en_us,cjk
-        autocmd FileType markdown inoremap ;g <c-g>u<Esc>[s1z=`]a<c-g>u
+        autocmd FileType markdown inoremap ;f <c-g>u<Esc>[s1z=`]a<c-g>u
 augroup END
 
 " vim wiki settings
@@ -53,6 +57,7 @@ let g:vimwiki_ext2syntax = {'.md': 'markdown', '.markdown': 'markdown'}
 let g:vimwiki_key_mappings =
 \ {
 \ 'table_mappings': 0,
+\ 'lists': 0, 
 \ }
 " nmap <F7> <Plug>VimwikiNextLink
 " nmap <F9> <Plug>VimwikiPrevLink
