@@ -2,13 +2,13 @@
 "source d:\vnim\init.vim
 "To find the working directory is exactly, use the command :echo stdpath('config') inside Neovim.
 "
+"set work directory for nvim
+let WorkDir = 'D:\Dropbox\'
 "universal settings
-let WorkDir = 'D:\\Dropbox\\'
-
 "change <leader> to SPACE
 nnoremap <SPACE> <Nop>
 let mapleader=" "
-"open the cursor at the last svaed position
+"open the cursor at the last saved position
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 "seaerch
@@ -31,8 +31,6 @@ nnoremap xx dd
 nnoremap X D
 " use gj to join
 nnoremap gj J
-"use <leader>m to mark
-" nnoremap <leader>m m
 
 " tab key
 " inoremap <S-Tab> <C-D>
@@ -82,29 +80,23 @@ endfunction
 vnoremap ~ y:call setreg('', TwiddleCase(@"), getregtype(''))<CR>gv""Pgv
 
 
-"table-mode
-noremap <leader>\ :TableModeToggle<CR>
-noremap <leader>= :TableModeRealign<CR>
-
-"""env specific
 
 "Plug management
 if exists('g:vscode')
 
-    call plug#begin(WorkDir.'Neovim\\nvim-win64\\share\\nvim\\vimfiles\\plugged')
+    " call plug#begin('$VIM\vimfiles\plugged')
+    " call plug#begin('~/AppData/Local/nvim/plugged')
+    call plug#begin(WorkDir..'Neovim\nvim-win64\share\nvim\vimfiles\plugged')
         Plug 'unblevable/quick-scope'
         Plug 'machakann/vim-sandwich'
         Plug 'tpope/vim-repeat'
-        Plug 'tpope/vim-commentary'
-        Plug 'svermeulen/vim-cutlass'
         Plug 'tpope/vim-speeddating'
-        " Plug 'mg979/vim-visual-multi'
+        Plug 'svermeulen/vim-cutlass'
         "text obj plugin
         Plug 'kana/vim-textobj-user' "dependent plugin
         Plug 'kana/vim-textobj-indent' "ai,ii, aI, iI
         Plug 'Julian/vim-textobj-variable-segment' "av,iv
         Plug 'bps/vim-textobj-python' "ac,ic,af,if
-        Plug 'dhruvasagar/vim-table-mode',{'on':'TableModeToggle'} "table model
 
         if has('nvim')
             Plug 'ggandor/leap.nvim'
@@ -125,18 +117,20 @@ if exists('g:vscode')
     nnoremap <silent> gD <Cmd>call VSCodeNotify('editor.action.revealDefinitionAside')<CR>
     nnoremap <silent> o <Cmd>call VSCodeNotify('editor.action.insertLineAfter')<CR>i
     nnoremap <silent> O <Cmd>call VSCodeNotify('editor.action.insertLineBefore')<CR>i
-    nnoremap <silent> <up> <Cmd>call VSCodeCall('workbench.action.increaseViewSize')<CR>
-    nnoremap <silent> <down> <Cmd>call VSCodeCall('workbench.action.decreaseViewSize')<CR>
-    " need to comment out multi-cursor from the below folder
-    " c:\Users\echay\.vscode\extensions\asvetliakov.vscode-neovim-0.0.82\vim\vscode-insert.vim
-    " xnoremap gc  <Plug>VSCodeCommentary
-    " nnoremap gc  <Plug>VSCodeCommentary
-    " onoremap gc  <Plug>VSCodeCommentary
-    " nnoremap gcc <Plug>VSCodeCommentaryLine
+    " nnoremap <silent> <up> <Cmd>call VSCodeCall('workbench.action.increaseViewSize')<CR>
+    " nnoremap <silent> <down> <Cmd>call VSCodeCall('workbench.action.decreaseViewSize')<CR>
+    xnoremap <silent> <down> <Cmd>call VSCodeCall('git.stageSelectedRanges')<CR><Esc>
+    nnoremap <silent> <down> <Cmd>call VSCodeNotify('git.commitStaged')<CR>
+    nnoremap <silent> <up> <Cmd>call VSCodeCall('git.sync')<CR><Esc>
+
+    xnoremap gc  <Plug>VSCodeCommentary
+    nnoremap gc  <Plug>VSCodeCommentary
+    onoremap gc  <Plug>VSCodeCommentary
+    nnoremap gcc <Plug>VSCodeCommentaryLine
 
 else
 
-    call plug#begin(WorkDir.'Neovim\\nvim-win64\\share\\nvim\\vimfiles\\plugged')
+    call plug#begin(WorkDir..'Neovim\nvim-win64\share\nvim\vimfiles\plugged')
         " Plug 'ggandor/lightspeed.nvim'
         " ui, display
         Plug '/joshdick/onedark.vim'
@@ -148,8 +142,8 @@ else
         Plug 'plasticboy/vim-markdown'
         Plug 'vimwiki/vimwiki'
         " Plug 'mzlogin/vim-markdown-toc' "table of content, not so useful?
-        " Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for':'markdown'}
-        Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+        Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for':'markdown'}
+        " Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
         Plug 'dhruvasagar/vim-table-mode',{'on':'TableModeToggle'}
         Plug 'ferrine/md-img-paste.vim'
         "text obj plugin
@@ -157,37 +151,31 @@ else
         Plug 'kana/vim-textobj-indent' "ai,ii, aI, iI
         Plug 'Julian/vim-textobj-variable-segment' "av,iv
         Plug 'bps/vim-textobj-python' "ac,ic,af,if
-        " log plugin
-        Plug 'MTDL9/vim-log-highlighting'
 
         ""nvim specific and vim alternative
         if has('nvim')
             Plug 'ggandor/leap.nvim'
-            Plug 'stevearc/oil.nvim'
             Plug 'nvim-tree/nvim-web-devicons'
+            Plug 'stevearc/oil.nvim'
             Plug 'nvim-lua/plenary.nvim'
             Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.6' }
             Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
         endif
 
-        " Plug 'preservim/tagbar' "to show function and variable defined
-        " Plug 'ludovicchabant/vim-gutentags'
-        " Plug 'sillybun/vim-repl'
-        " Plug 'tpope/vim-fugitive'
 
         "utility plug-in
         Plug 'svermeulen/vim-cutlass' "prevent C, D, X to write to reg
         Plug 'ctrlpvim/ctrlp.vim' "fuzzy file search
         Plug 'preservim/nerdtree' "folder structure
-        " Plug 'tpope/vim-surround'
         Plug 'tpope/vim-repeat' "repeat for non-native vim actions
-        Plug 'tpope/vim-commentary' "comment / uncomment code
         Plug 'tpope/vim-speeddating'
+        Plug 'tpope/vim-commentary' "comment / uncomment code
         Plug 'machakann/vim-sandwich' "substitute for vim-surrond
         Plug 'unblevable/quick-scope' "highlight the 1st / 2nd occurance in line
         Plug 'ap/vim-buftabline' "butify the tab line
         Plug 'mhinz/vim-startify' "butify the vim start up page
         Plug '907th/vim-auto-save' "to auto-save files
+        Plug 'MTDL9/vim-log-highlighting' "to auto-save files
 
         "lsp
         Plug 'neovim/nvim-lspconfig'
@@ -201,8 +189,9 @@ else
         Plug 'rafamadriz/friendly-snippets'
         Plug 'windwp/nvim-autopairs'
 
-    call plug#end()
 
+    call plug#end()
+    
     " system
     set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
     set noswapfile
@@ -212,10 +201,9 @@ else
     set autoread "to autoload from Joplin / disk when the file opened is changed
     set nocompatible
     set mouse=a
-    set showmatch
     set backspace=indent,eol,start
     if has('persistent_undo')
-        exe 'set undodir='.WorkDir.'Neovim\undo'
+        exe 'set undodir='.WorkDir.'neovim\\undo'
         set undolevels=10000
         set undofile
     endif
@@ -238,10 +226,8 @@ else
     set showcmd
     set noshowmode
     set ruler
+
     "coloring
-
-
-
     let g:lightline = {
           \ 'colorscheme': 'onedark',
           \ 'active': {
@@ -311,6 +297,7 @@ else
     " set cd to current dir
     nnoremap <leader>cd :lcd %:h<CR>
 
+
     " quick-scope specs
     let g:qs_lazy_highlight = 0
     highlight QuickScopePrimary guifg='#afff5f' gui=underline ctermfg=155 cterm=underline
@@ -342,13 +329,14 @@ else
 
 
     "enable python config
-    exe 'source '.WorkDir.'neovim\\config\\python.vimrc'
     exe 'source '.WorkDir.'neovim\\config\\md.vimrc'
-    exe 'source '.WorkDir.'neovim\\config\\learnvim.vimrc'
+    exe 'source '.WorkDir.'neovim\config\learnvim.vimrc'
+    exe 'source '.WorkDir.'neovim\config\mylog.vimrc'
+
+
 endif
 
 runtime macros/sandwich/keymap/surround.vim
-
 
 exe 'luafile '.WorkDir.'neovim\\config\\lua_univ_config.lua'
 
