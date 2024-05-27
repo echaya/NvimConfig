@@ -164,6 +164,7 @@ else
         if has('nvim')
             Plug 'ggandor/leap.nvim'
             Plug 'stevearc/oil.nvim'
+            Plug 'nvim-tree/nvim-web-devicons'
             Plug 'nvim-lua/plenary.nvim'
             Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.6' }
             Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
@@ -349,9 +350,9 @@ endif
 runtime macros/sandwich/keymap/surround.vim
 
 
-exe 'luafile '.WorkDir.'neovim\\config\\lua_config.lua'
+exe 'luafile '.WorkDir.'neovim\\config\\lua_univ_config.lua'
 
 if !exists('g:vscode')
     exe 'luafile '.WorkDir.'neovim\\config\\lsp_config.lua'
-    exe 'cd '.WorkDir
+    exe 'luafile '.WorkDir.'neovim\\config\\lua_nvim_config.lua'
 endif
