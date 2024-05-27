@@ -1,15 +1,3 @@
-local leap = require('leap')
-leap.opts.case_sensitive = true
-leap.set_default_keymaps()
--- vim.keymap.set('o', 's', '<Plug>(leap-forward)')
--- vim.keymap.set('o', 'S', '<Plug>(leap-backward)')
-if vim.g.vscode then
-    vim.keymap.del('x', 'ma')
-    vim.keymap.del('x', 'mi')
-    vim.keymap.del('x', 'mA')
-    vim.keymap.del('x', 'mI')
-end
-
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
@@ -96,7 +84,7 @@ require("oil").setup({
     concealcursor = "nvic",
   },
   -- Send deleted files to the trash instead of permanently deleting them (:help oil-trash)
-  delete_to_trash = false,
+  delete_to_trash = true,
   -- Skip the confirmation popup for simple operations (:help oil.skip_confirm_for_simple_edits)
   skip_confirm_for_simple_edits = false,
   -- Selecting a new/moved/renamed file or directory will prompt you to save changes first
@@ -244,3 +232,4 @@ require("oil").setup({
     border = "rounded",
   },
 })
+vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
