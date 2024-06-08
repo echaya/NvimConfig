@@ -121,7 +121,7 @@ if exists('g:vscode')
     nnoremap <silent> <down> <Cmd>call VSCodeCall('workbench.action.decreaseViewSize')<CR>
     xnoremap <silent> <left> <Cmd>call VSCodeCall('git.stageSelectedRanges')<CR><Esc>
     nnoremap <silent> <left> <Cmd>call VSCodeNotify('git.commitStaged')<CR>
-    nnoremap <silent> <up> <Cmd>call VSCodeNotify('git.sync')<CR><Esc>
+    nnoremap <silent> <right> <Cmd>call VSCodeNotify('git.sync')<CR><Esc>
 
     xnoremap gc  <Plug>VSCodeCommentary
     nnoremap gc  <Plug>VSCodeCommentary
