@@ -226,6 +226,7 @@ else
     set showcmd
     set noshowmode
     set ruler
+    set termguicolors
 
     "coloring
     let g:lightline = {
