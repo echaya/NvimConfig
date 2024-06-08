@@ -117,11 +117,11 @@ if exists('g:vscode')
     nnoremap <silent> gD <Cmd>call VSCodeNotify('editor.action.revealDefinitionAside')<CR>
     nnoremap <silent> o <Cmd>call VSCodeNotify('editor.action.insertLineAfter')<CR>i
     nnoremap <silent> O <Cmd>call VSCodeNotify('editor.action.insertLineBefore')<CR>i
-    " nnoremap <silent> <up> <Cmd>call VSCodeCall('workbench.action.increaseViewSize')<CR>
-    " nnoremap <silent> <down> <Cmd>call VSCodeCall('workbench.action.decreaseViewSize')<CR>
-    xnoremap <silent> <down> <Cmd>call VSCodeCall('git.stageSelectedRanges')<CR><Esc>
-    nnoremap <silent> <down> <Cmd>call VSCodeNotify('git.commitStaged')<CR>
-    nnoremap <silent> <up> <Cmd>call VSCodeCall('git.sync')<CR><Esc>
+    nnoremap <silent> <up> <Cmd>call VSCodeCall('workbench.action.increaseViewSize')<CR>
+    nnoremap <silent> <down> <Cmd>call VSCodeCall('workbench.action.decreaseViewSize')<CR>
+    xnoremap <silent> <left> <Cmd>call VSCodeCall('git.stageSelectedRanges')<CR><Esc>
+    nnoremap <silent> <left> <Cmd>call VSCodeNotify('git.commitStaged')<CR>
+    nnoremap <silent> <up> <Cmd>call VSCodeNotify('git.sync')<CR><Esc>
 
     xnoremap gc  <Plug>VSCodeCommentary
     nnoremap gc  <Plug>VSCodeCommentary
