@@ -30,7 +30,7 @@ xnoremap x d
 nnoremap xx dd
 nnoremap X D
 " use gj to join
-nnoremap gj J
+nnoremap <leader>j J
 
 " tab key
 " inoremap <S-Tab> <C-D>
