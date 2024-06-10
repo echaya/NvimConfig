@@ -47,7 +47,7 @@ noremap <silent><leader>+ :call ChooseBuffer(g:temp_cb_name)<cr>Go<esc>p
 
 function! EditMdLink() abort
     " let cmd ='normal 0:s/\V\\/:/g$F:;ld0mf: ojp$r/kI. :s/\V./|/g/|mdD0:s/ /_/g:s/|/_/gd2lY sa$[A|(")j0Mdd$?]|(lxp0yi[k:echo""' 
-    let cmd ='normal 0:s/\V\\/:/g$F:;ld0mf: ojp$r/kI. :s/\V./|/g/|mdD0:s/ /_/g:s/|/_/gd2lY ys$[A|(")j0Mdd$?]|(lxp0yi[k:echo""' 
+    let cmd ='normal 0:s/\V\\/:/g$F:;ld0xf: ojp$r/kI. :s/\V./|/g/|mdD0:s/ /_/g:s/|/_/gd2lY ys$[A|(")j0Xdd$?]|(ldlp0yi[k:echo""' 
     execute cmd
 endfunction
 
