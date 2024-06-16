@@ -98,7 +98,9 @@ if exists('g:vscode')
         Plug 'kana/vim-textobj-indent' "ai,ii, aI, iI
         Plug 'Julian/vim-textobj-variable-segment' "av,iv
         Plug 'bps/vim-textobj-python' "ac,ic,af,if
+        "newvim plugin
         Plug 'ggandor/leap.nvim'
+        Plug 'kylechui/nvim-surround'
 
     call plug#end()
 
