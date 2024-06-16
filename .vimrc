@@ -89,7 +89,7 @@ if exists('g:vscode')
     " call plug#begin('~/AppData/Local/nvim/plugged')
     call plug#begin(WorkDir..'Neovim\nvim-win64\share\nvim\vimfiles\plugged')
         Plug 'unblevable/quick-scope'
-        Plug 'machakann/vim-sandwich'
+        Plug 'kylechui/nvim-surround'
         Plug 'tpope/vim-repeat'
         Plug 'tpope/vim-speeddating'
         Plug 'svermeulen/vim-cutlass'
@@ -100,19 +100,57 @@ if exists('g:vscode')
         Plug 'bps/vim-textobj-python' "ac,ic,af,if
             Plug 'ggandor/leap.nvim'
             Plug 'ggandor/leap.nvim'
+            Plug 'ggandor/leap.nvim'
+            Plug 'ggandor/leap.nvim'
+            Plug 'ggandor/leap.nvim'
+        endif
+        Plug 'ggandor/leap.nvim'
+        endif
+        Plug 'ggandor/leap.nvim'
+            Plug 'ggandor/leap.nvim'
+        endif
+        Plug 'ggandor/leap.nvim'
+        endif
+        Plug 'ggandor/leap.nvim'
+            Plug 'ggandor/leap.nvim'
+            Plug 'ggandor/leap.nvim'
+        endif
+        Plug 'ggandor/leap.nvim'
+        endif
+        Plug 'ggandor/leap.nvim'
+            Plug 'ggandor/leap.nvim'
+        endif
+        Plug 'ggandor/leap.nvim'
+        endif
+        Plug 'ggandor/leap.nvim'
+            Plug 'ggandor/leap.nvim'
+            Plug 'ggandor/leap.nvim'
+            Plug 'ggandor/leap.nvim'
+        endif
+        Plug 'ggandor/leap.nvim'
+        endif
+        Plug 'ggandor/leap.nvim'
+            Plug 'ggandor/leap.nvim'
+        endif
+        Plug 'ggandor/leap.nvim'
+        endif
+        Plug 'ggandor/leap.nvim'
+            Plug 'ggandor/leap.nvim'
+            Plug 'ggandor/leap.nvim'
+        endif
+        Plug 'ggandor/leap.nvim'
+        endif
+        Plug 'ggandor/leap.nvim'
+            Plug 'ggandor/leap.nvim'
         endif
         Plug 'ggandor/leap.nvim'
         endif
 
     call plug#end()
     "display
-    "fix quick-scope and sandwich for vscode
+    "fix quick-scope color scheme
     highlight QuickScopePrimary guifg='#afff5f' gui=underline ctermfg=155 cterm=underline
     highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline
-    highlight OperatorSandwichBuns guifg='#aa91a0' gui=underline ctermfg=172 cterm=underline
-    highlight OperatorSandwichChange guifg='#edc41f' gui=underline ctermfg='yellow' cterm=underline
-    highlight OperatorSandwichAdd guibg='#b1fa87' gui=none ctermbg='green' cterm=none
-    highlight OperatorSandwichDelete guibg='#cf5963' gui=none ctermbg='red' cterm=none
 
     nnoremap <silent> <s-j> <Cmd>call VSCodeCall('workbench.action.previousEditor')<CR>
     nnoremap <silent> <s-k> <Cmd>call VSCodeCall('workbench.action.nextEditor')<CR>
@@ -170,7 +208,7 @@ else
         Plug 'tpope/vim-repeat' "repeat for non-native vim actions
         Plug 'tpope/vim-speeddating'
         Plug 'tpope/vim-commentary' "comment / uncomment code
-        Plug 'machakann/vim-sandwich' "substitute for vim-surrond
+        Plug 'kylechui/nvim-surround'
         Plug 'unblevable/quick-scope' "highlight the 1st / 2nd occurance in line
         Plug 'ap/vim-buftabline' "butify the tab line
         Plug 'mhinz/vim-startify' "butify the vim start up page
@@ -337,7 +375,6 @@ else
 
 endif
 
-runtime macros/sandwich/keymap/surround.vim
 
 exe 'luafile '.WorkDir.'neovim\\config\\lua_univ_config.lua'
 
