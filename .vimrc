@@ -157,8 +157,6 @@ else
 
         "utility plug-in
         Plug 'svermeulen/vim-cutlass' "prevent C, D, X to write to reg
-        Plug 'ctrlpvim/ctrlp.vim' "fuzzy file search
-        Plug 'preservim/nerdtree' "folder structure
         Plug 'tpope/vim-repeat' "repeat for non-native vim actions
         Plug 'tpope/vim-speeddating'
         Plug 'tpope/vim-commentary' "comment / uncomment code
@@ -301,24 +299,6 @@ else
     "     autocmd ColorScheme * highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline
     " augroup END
 
-    " NERDTree
-    noremap <A-b>  :NERDTreeToggle<CR>
-
-     " ctrlp config
-     let g:ctrlp_working_path_mode = 'c'
-     let g:ctrlp_cache_dir = WorkDir.'Neovim\\config\\.cache\\ctrlp'
-     set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe,*.pyc  " Windows
-
-    let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
-    let g:ctrlp_custom_ignore = {
-      \ 'dir':  '\v[\/]\.(git|hg|svn|ipynb_checkpoints)$',
-      \ 'file': '\v\.(exe|so|dll|json)$',
-      \ 'link': 'some_bad_symbolic_links',
-      \ }
-    " let g:ctrlp_map = '<F2>'
-    let g:ctrlp_by_filename = 1
-    let g:ctrlp_map = ''
-    nnoremap <a-p> :CtrlPMixed<cr>
 
 
     "enable python config
