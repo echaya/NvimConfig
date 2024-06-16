@@ -59,6 +59,7 @@ for s:char in [',','/', '*', '%', '_', '`', '!']
   execute 'xnoremap a' . s:char . ' :<C-u>normal! F' . s:char . 'vf' . s:char . '<CR>'
   execute 'onoremap a' . s:char . ' :normal va' . s:char . '<CR>'
 endfor
+
 " execute macro at visual range, does not stop when no match
 xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
 function! ExecuteMacroOverVisualRange()
@@ -97,9 +98,10 @@ if exists('g:vscode')
         Plug 'kana/vim-textobj-indent' "ai,ii, aI, iI
         Plug 'Julian/vim-textobj-variable-segment' "av,iv
         Plug 'bps/vim-textobj-python' "ac,ic,af,if
-
-        if has('nvim')
             Plug 'ggandor/leap.nvim'
+            Plug 'ggandor/leap.nvim'
+        endif
+        Plug 'ggandor/leap.nvim'
         endif
 
     call plug#end()
@@ -153,14 +155,12 @@ else
         Plug 'bps/vim-textobj-python' "ac,ic,af,if
 
         ""nvim specific and vim alternative
-        if has('nvim')
-            Plug 'ggandor/leap.nvim'
-            Plug 'nvim-tree/nvim-web-devicons'
-            Plug 'stevearc/oil.nvim'
-            Plug 'nvim-lua/plenary.nvim'
-            Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.6' }
-            Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-        endif
+        Plug 'ggandor/leap.nvim'
+        Plug 'nvim-tree/nvim-web-devicons'
+        Plug 'stevearc/oil.nvim'
+        Plug 'nvim-lua/plenary.nvim'
+        Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.6' }
+        Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
 
         "utility plug-in
