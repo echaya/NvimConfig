@@ -101,10 +101,6 @@ if exists('g:vscode')
         Plug 'ggandor/leap.nvim'
 
     call plug#end()
-    "display
-    "fix quick-scope color scheme
-    highlight QuickScopePrimary guifg='#afff5f' gui=underline ctermfg=155 cterm=underline
-    highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline
 
     nnoremap <silent> <s-j> <Cmd>call VSCodeCall('workbench.action.previousEditor')<CR>
     nnoremap <silent> <s-k> <Cmd>call VSCodeCall('workbench.action.nextEditor')<CR>
@@ -298,10 +294,6 @@ else
     nnoremap <leader>cd :lcd %:h<CR>
 
 
-    " quick-scope specs
-    let g:qs_lazy_highlight = 0
-    highlight QuickScopePrimary guifg='#afff5f' gui=underline ctermfg=155 cterm=underline
-    highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline
     " augroup qs_colors
     "     autocmd!
     "     autocmd ColorScheme * highlight QuickScopePrimary guifg='#afff5f' gui=underline ctermfg=155 cterm=underline
@@ -318,6 +310,10 @@ else
 
 endif
 
+" quick-scope specs
+let g:qs_lazy_highlight = 0
+highlight QuickScopePrimary guifg='#afff5f' gui=underline ctermfg=155 cterm=underline
+highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline
 
 exe 'luafile '.WorkDir.'neovim\\config\\lua_univ_config.lua'
 
