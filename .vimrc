@@ -108,14 +108,23 @@ if exists('g:vscode')
 
     nnoremap <silent> <s-j> <Cmd>call VSCodeCall('workbench.action.previousEditor')<CR>
     nnoremap <silent> <s-k> <Cmd>call VSCodeCall('workbench.action.nextEditor')<CR>
+    nnoremap <silent> - <Cmd>call VSCodeCall('workbench.view.explorer')<CR>
+
     nnoremap <silent> gD <Cmd>call VSCodeNotify('editor.action.revealDefinitionAside')<CR>
     nnoremap <silent> o <Cmd>call VSCodeNotify('editor.action.insertLineAfter')<CR>i
     nnoremap <silent> O <Cmd>call VSCodeNotify('editor.action.insertLineBefore')<CR>i
+
+    nnoremap <silent> gJ <Cmd>call VSCodeNotify('editor.action.dirtydiff.next')<CR>
+    nnoremap <silent> gK <Cmd>call VSCodeNotify('editor.action.dirtydiff.previous')<CR>
+    nnoremap <silent> gj <Cmd>call VSCodeNotify('workbench.action.editor.nextChange')<CR>
+    nnoremap <silent> gk <Cmd>call VSCodeNotify('workbench.action.editor.previousChange')<CR>
+
+    nnoremap <silent> == <Cmd>call VSCodeCall('editor.action.formatDocument')<CR>
     nnoremap <silent> <up> <Cmd>call VSCodeCall('workbench.action.increaseViewSize')<CR>
     nnoremap <silent> <down> <Cmd>call VSCodeCall('workbench.action.decreaseViewSize')<CR>
     xnoremap <silent> <left> <Cmd>call VSCodeCall('git.stageSelectedRanges')<CR><Esc>
     nnoremap <silent> <left> <Cmd>call VSCodeNotify('git.commitStaged')<CR>
-    nnoremap <silent> <right> <Cmd>call VSCodeNotify('git.sync')<CR><Esc>
+    nnoremap <silent> <right> <Cmd>call VSCodeNotify('git.sync')<CR>
 
     xnoremap gc  <Plug>VSCodeCommentary
     nnoremap gc  <Plug>VSCodeCommentary
