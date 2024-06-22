@@ -158,7 +158,7 @@ else
         Plug 'nvim-tree/nvim-web-devicons'
         Plug 'stevearc/oil.nvim'
         Plug 'nvim-lua/plenary.nvim'
-        Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.6' }
+        Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
         Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
 
