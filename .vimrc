@@ -143,7 +143,6 @@ else
         Plug '/joshdick/onedark.vim'
         Plug '/preservim/vim-colors-pencil'
         Plug 'itchyny/lightline.vim'
-        Plug 'MattesGroeger/vim-bookmarks'
 
         " markdown plugin
         Plug 'godlygeek/tabular' "prerequisite for vim-markdown
@@ -151,7 +150,6 @@ else
         Plug 'vimwiki/vimwiki'
         " Plug 'mzlogin/vim-markdown-toc' "table of content, not so useful?
         Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for':'markdown'}
-        " Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
         Plug 'dhruvasagar/vim-table-mode',{'on':'TableModeToggle'}
         Plug 'ferrine/md-img-paste.vim'
         "text obj plugin
@@ -168,6 +166,7 @@ else
         Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
         Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
         Plug 'kylechui/nvim-surround'
+        Plug 'chentoast/marks.nvim'
 
 
         "utility plug-in
@@ -304,17 +303,16 @@ else
     nnoremap <leader>cd :lcd %:h<CR>
 
     " setup marks that matches with vscode behavior
-    " nnoremap <silent> m: :marks<CR>
-    let g:bookmark_auto_save = 1
-    let g:bookmark_no_default_key_mappings = 1
-    let g:bookmark_auto_close = 1
+    " let g:bookmark_auto_save = 1
+    " let g:bookmark_no_default_key_mappings = 1
+    " let g:bookmark_auto_close = 1
+    " nmap mm <Plug>BookmarkToggle
+    " nmap mi <Plug>BookmarkAnnotate
+    " nmap m; <Plug>BookmarkShowAll
+    " nmap mj <Plug>BookmarkNext
+    " nmap mk <Plug>BookmarkPrev
+    " nmap dmm <Plug>BookmarkClearAll
 
-    nmap mm <Plug>BookmarkToggle
-    nmap mi <Plug>BookmarkAnnotate
-    nmap m; <Plug>BookmarkShowAll
-    nmap mj <Plug>BookmarkNext
-    nmap mk <Plug>BookmarkPrev
-    nmap dmm <Plug>BookmarkClearAll
     " nmap mkk <Plug>BookmarkMoveUp
     " nmap mjj <Plug>BookmarkMoveDown
     " nmap mg <Plug>BookmarkMoveToLine
