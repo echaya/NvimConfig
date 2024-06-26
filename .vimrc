@@ -89,7 +89,6 @@ if exists('g:vscode')
     " call plug#begin('~/AppData/Local/nvim/plugged')
     call plug#begin(WorkDir..'Neovim\nvim-win64\share\nvim\vimfiles\plugged')
         Plug 'unblevable/quick-scope'
-        Plug 'kylechui/nvim-surround'
         Plug 'tpope/vim-repeat'
         Plug 'tpope/vim-speeddating'
         Plug 'svermeulen/vim-cutlass'
@@ -98,7 +97,7 @@ if exists('g:vscode')
         Plug 'kana/vim-textobj-indent' "ai,ii, aI, iI
         Plug 'Julian/vim-textobj-variable-segment' "av,iv
         Plug 'bps/vim-textobj-python' "ac,ic,af,if
-        "newvim plugin
+        "neovim plugin
         Plug 'ggandor/leap.nvim'
         Plug 'kylechui/nvim-surround'
 
@@ -124,6 +123,13 @@ if exists('g:vscode')
     nnoremap <silent> <left> <Cmd>call VSCodeNotify('git.commitStaged')<CR>
     nnoremap <silent> <right> <Cmd>call VSCodeNotify('git.sync')<CR>
 
+    nnoremap <silent> mm <Cmd>call VSCodeCall('bookmarks.toggle')<CR>
+    nnoremap <silent> mj <Cmd>call VSCodeCall('bookmarks.jumpToNext')<CR>
+    nnoremap <silent> mk <Cmd>call VSCodeCall('bookmarks.jumpToPrevious')<CR>
+    nnoremap <silent> mi <Cmd>call VSCodeCall('bookmarks.toggleLabeled')<CR>
+    nnoremap <silent> m; <Cmd>call VSCodeCall('bookmarks.listFromAllFiles')<CR>
+    nnoremap <silent> dmm <Cmd>call VSCodeCall('bookmarks.clearFromAllFiles')<CR>
+
     xnoremap gc  <Plug>VSCodeCommentary
     nnoremap gc  <Plug>VSCodeCommentary
     onoremap gc  <Plug>VSCodeCommentary
@@ -137,6 +143,7 @@ else
         Plug '/joshdick/onedark.vim'
         Plug '/preservim/vim-colors-pencil'
         Plug 'itchyny/lightline.vim'
+        Plug 'MattesGroeger/vim-bookmarks'
 
         " markdown plugin
         Plug 'godlygeek/tabular' "prerequisite for vim-markdown
@@ -160,6 +167,7 @@ else
         Plug 'nvim-lua/plenary.nvim'
         Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
         Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+        Plug 'kylechui/nvim-surround'
 
 
         "utility plug-in
@@ -167,7 +175,6 @@ else
         Plug 'tpope/vim-repeat' "repeat for non-native vim actions
         Plug 'tpope/vim-speeddating'
         Plug 'tpope/vim-commentary' "comment / uncomment code
-        Plug 'kylechui/nvim-surround'
         Plug 'unblevable/quick-scope' "highlight the 1st / 2nd occurance in line
         Plug 'ap/vim-buftabline' "butify the tab line
         Plug 'mhinz/vim-startify' "butify the vim start up page
@@ -198,6 +205,7 @@ else
     set autoread "to autoload from Joplin / disk when the file opened is changed
     set nocompatible
     set mouse=a
+    set showmatch
     set backspace=indent,eol,start
     if has('persistent_undo')
         exe 'set undodir='.WorkDir.'neovim\\undo'
@@ -295,6 +303,22 @@ else
     " set cd to current dir
     nnoremap <leader>cd :lcd %:h<CR>
 
+    " setup marks that matches with vscode behavior
+    " nnoremap <silent> m: :marks<CR>
+    let g:bookmark_auto_save = 1
+    let g:bookmark_no_default_key_mappings = 1
+    let g:bookmark_auto_close = 1
+
+    nmap mm <Plug>BookmarkToggle
+    nmap mi <Plug>BookmarkAnnotate
+    nmap m; <Plug>BookmarkShowAll
+    nmap mj <Plug>BookmarkNext
+    nmap mk <Plug>BookmarkPrev
+    nmap dmm <Plug>BookmarkClearAll
+    " nmap mkk <Plug>BookmarkMoveUp
+    " nmap mjj <Plug>BookmarkMoveDown
+    " nmap mg <Plug>BookmarkMoveToLine
+    " nmap mc <Plug>BookmarkClear
 
     " augroup qs_colors
     "     autocmd!
