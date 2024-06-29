@@ -140,8 +140,7 @@ else
     call plug#begin(WorkDir..'Neovim\nvim-win64\share\nvim\vimfiles\plugged')
         " Plug 'ggandor/lightspeed.nvim'
         " ui, display
-        Plug '/joshdick/onedark.vim'
-        Plug '/preservim/vim-colors-pencil'
+        Plug 'olimorris/onedarkpro.nvim'
         Plug 'itchyny/lightline.vim'
 
         " markdown plugin
@@ -234,7 +233,7 @@ else
 
     "coloring
     let g:lightline = {
-          \ 'colorscheme': 'onedark',
+          \ 'colorscheme': 'one',
           \ 'active': {
           \   'left': [ [ 'mode', 'paste' ],
           \             ['readonly', 'filename', 'modified' ] ]
