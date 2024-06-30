@@ -138,7 +138,6 @@ if exists('g:vscode')
 else
 
     call plug#begin(WorkDir..'Neovim\nvim-win64\share\nvim\vimfiles\plugged')
-        " Plug 'ggandor/lightspeed.nvim'
         " ui, display
         Plug 'olimorris/onedarkpro.nvim'
         Plug 'itchyny/lightline.vim'
@@ -316,28 +315,6 @@ else
 
     " set cd to current dir
     nnoremap <leader>cd :lcd %:h<CR>
-
-    " setup marks that matches with vscode behavior
-    " let g:bookmark_auto_save = 1
-    " let g:bookmark_no_default_key_mappings = 1
-    " let g:bookmark_auto_close = 1
-    " nmap mm <Plug>BookmarkToggle
-    " nmap mi <Plug>BookmarkAnnotate
-    " nmap m; <Plug>BookmarkShowAll
-    " nmap mj <Plug>BookmarkNext
-    " nmap mk <Plug>BookmarkPrev
-    " nmap dmm <Plug>BookmarkClearAll
-
-    " nmap mkk <Plug>BookmarkMoveUp
-    " nmap mjj <Plug>BookmarkMoveDown
-    " nmap mg <Plug>BookmarkMoveToLine
-    " nmap mc <Plug>BookmarkClear
-
-    " augroup qs_colors
-    "     autocmd!
-    "     autocmd ColorScheme * highlight QuickScopePrimary guifg='#afff5f' gui=underline ctermfg=155 cterm=underline
-    "     autocmd ColorScheme * highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline
-    " augroup END
 
 
 
