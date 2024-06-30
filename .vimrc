@@ -29,8 +29,6 @@ nnoremap x d
 xnoremap x d
 nnoremap xx dd
 nnoremap X D
-" use gj to join
-nnoremap <leader>j J
 
 " tab key
 " inoremap <S-Tab> <C-D>
@@ -103,8 +101,10 @@ if exists('g:vscode')
 
     call plug#end()
 
-    nnoremap <silent> <s-j> <Cmd>call VSCodeCall('workbench.action.previousEditor')<CR>
-    nnoremap <silent> <s-k> <Cmd>call VSCodeCall('workbench.action.nextEditor')<CR>
+    nnoremap <silent> <A-,> <Cmd>call VSCodeCall('workbench.action.previousEditor')<CR>
+    nnoremap <silent> <A-.> <Cmd>call VSCodeCall('workbench.action.nextEditor')<CR>
+    nnoremap <silent> <A-x> <Cmd>call VSCodeCall('workbench.action.closeActiveEditor')<CR>
+    nnoremap <silent> <A-s-x> <Cmd>call VSCodeCall('workbench.action.reopenClosedEditor')<CR>
     nnoremap <silent> - <Cmd>call VSCodeCall('workbench.view.explorer')<CR>
 
     nnoremap <silent> gD <Cmd>call VSCodeNotify('editor.action.revealDefinitionAside')<CR>
@@ -174,7 +174,8 @@ else
         Plug 'tpope/vim-speeddating'
         Plug 'tpope/vim-commentary' "comment / uncomment code
         Plug 'unblevable/quick-scope' "highlight the 1st / 2nd occurance in line
-        Plug 'ap/vim-buftabline' "butify the tab line
+        " Plug 'ap/vim-buftabline' "butify the tab line
+        Plug 'romgrk/barbar.nvim'
         Plug 'mhinz/vim-startify' "butify the vim start up page
         Plug '907th/vim-auto-save' "to auto-save files
         Plug 'MTDL9/vim-log-highlighting' "to auto-save files
@@ -190,6 +191,7 @@ else
         Plug 'L3MON4D3/LuaSnip' ", {'tag': 'v2.*', 'do': 'make install_jsregexp'}
         Plug 'rafamadriz/friendly-snippets'
         Plug 'windwp/nvim-autopairs'
+        " Plug 'Vigemus/iron.nvim'
 
 
     call plug#end()
@@ -244,6 +246,20 @@ else
     catch
             colorscheme industry
     endtry
+
+    " Move to previous/next
+    nnoremap <silent>    <A-,> <Cmd>BufferPrevious<CR>
+    nnoremap <silent>    <A-.> <Cmd>BufferNext<CR>
+    " Re-order to previous/next
+    nnoremap <silent>    <A-<> <Cmd>BufferMovePrevious<CR>
+    nnoremap <silent>    <A->> <Cmd>BufferMoveNext<CR>
+    " Close buffer
+    nnoremap <silent>    <A-x> <Cmd>BufferClose<CR>
+    " Restore buffer
+    nnoremap <silent>    <A-s-x> <Cmd>BufferRestore<CR>
+    " Magic buffer-picking mode
+    nnoremap <silent> <A-p>    <Cmd>BufferPick<CR>
+
 
     " augroup ThemeSwitch
     "   autocmd!
