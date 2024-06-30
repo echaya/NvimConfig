@@ -29,6 +29,8 @@ nnoremap x d
 xnoremap x d
 nnoremap xx dd
 nnoremap X D
+" use <leader> to join
+" nnoremap <leader>j J
 
 " tab key
 " inoremap <S-Tab> <C-D>
@@ -83,8 +85,6 @@ vnoremap ~ y:call setreg('', TwiddleCase(@"), getregtype(''))<CR>gv""Pgv
 "Plug management
 if exists('g:vscode')
 
-    " call plug#begin('$VIM\vimfiles\plugged')
-    " call plug#begin('~/AppData/Local/nvim/plugged')
     call plug#begin(WorkDir..'Neovim\nvim-win64\share\nvim\vimfiles\plugged')
         Plug 'unblevable/quick-scope'
         Plug 'tpope/vim-repeat'
