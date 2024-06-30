@@ -345,6 +345,7 @@ else
     exe 'source '.WorkDir.'neovim\\config\\md.vimrc'
     exe 'source '.WorkDir.'neovim\config\learnvim.vimrc'
     exe 'source '.WorkDir.'neovim\config\mylog.vimrc'
+    exe 'source '.WorkDir.'neovim\config\python.vimrc'
 
 
 endif
