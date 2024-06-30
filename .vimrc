@@ -343,4 +343,5 @@ exe 'luafile '.WorkDir.'neovim\\config\\lua_univ_config.lua'
 if !exists('g:vscode')
     exe 'luafile '.WorkDir.'neovim\\config\\lsp_config.lua'
     exe 'luafile '.WorkDir.'neovim\\config\\lua_nvim_config.lua'
+    exe 'luafile '.WorkDir.'neovim\\config\\lua_lsp_config.lua'
 endif
