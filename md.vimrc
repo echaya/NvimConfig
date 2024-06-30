@@ -51,6 +51,12 @@ augroup markdownSpell
         autocmd FileType markdown inoremap ;f <c-g>u<Esc>[s1z=`]a<c-g>u
 augroup END
 
+highlight clear SpellCap 
+highlight clear SpellBad 
+highlight clear SpellRare
+highlight SpellBad gui=undercurl cterm=undercurl
+highlight SpellRare gui=underline cterm=underline
+
 " vim wiki settings
 let g:vimwiki_list = [{'path': WorkDir.'markdown\', 'syntax': 'markdown','ext': '.md'}]
 let g:vimwiki_ext2syntax = {'.md': 'markdown', '.markdown': 'markdown'}
