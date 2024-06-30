@@ -287,8 +287,8 @@ else
     :command DOS e ++ff=dos | set ff=unix | w
     " buffers management
     set hidden
-    noremap <silent> <s-j> :bp<CR>
-    noremap <silent> <s-k> :bn<CR>
+    " noremap <silent> <s-j> :bp<CR>
+    " noremap <silent> <s-k> :bn<CR>
     noremap <A-h> <C-w><C-h>
     noremap <A-j> <C-w><C-j>
     noremap <A-k> <C-w><C-k>
