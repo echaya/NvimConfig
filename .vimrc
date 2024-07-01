@@ -45,11 +45,11 @@ for s:char in [',','/', '*', '%', '_', '`', '!']
 endfor
 
 " execute macro at visual range, does not stop when no match
-xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
 function! ExecuteMacroOverVisualRange()
   echo "@".getcmdline()
   execute ":'<,'>normal @".nr2char(getchar())
 endfunction
+xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
 
 " toggle UPPER CASE, lower case and Title Case in visual mode
 function! TwiddleCase(str)
