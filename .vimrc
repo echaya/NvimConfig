@@ -64,9 +64,6 @@ function! TwiddleCase(str)
 endfunction
 vnoremap ~ y:call setreg('', TwiddleCase(@"), getregtype(''))<CR>gv""Pgv
 
-let g:plug_window = 'vertical topleft new'
-let g:plug_pwindow = 'above 12'
-"Plug management
 
 call plug#begin(WorkDir..'Neovim\nvim-win64\share\nvim\vimfiles\plugged')
       " universal plugins
@@ -294,6 +291,9 @@ else
     " set cd to current dir
     nnoremap <leader>cd :lcd %:h<CR>
 
+    "Plug management
+    let g:plug_window = 'vertical topleft new'
+    let g:plug_pwindow = 'above 12'
 
 endif
 
