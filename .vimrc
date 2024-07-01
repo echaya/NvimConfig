@@ -259,6 +259,7 @@ else
     " Restore buffer
     nnoremap <silent>    <A-s-x> <Cmd>BufferRestore<CR>
     " Magic buffer-picking mode
+    nnoremap <silent> <A-s-p>    <Cmd>BufferPick<CR>
     " Pin/unpin buffer
     nnoremap <silent>    <A-p> <Cmd>BufferPin<CR>
 
