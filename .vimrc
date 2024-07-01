@@ -295,14 +295,6 @@ else
     nnoremap <leader>cd :lcd %:h<CR>
 
 
-
-    "enable python config
-    exe 'source '.WorkDir.'neovim\\config\\md.vimrc'
-    exe 'source '.WorkDir.'neovim\config\learnvim.vimrc'
-    exe 'source '.WorkDir.'neovim\config\mylog.vimrc'
-    exe 'source '.WorkDir.'neovim\config\python.vimrc'
-
-
 endif
 
 " use 'x' as to cut text into register, cutlass prevents C/D go into register
@@ -318,7 +310,14 @@ highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=und
 
 exe 'luafile '.WorkDir.'neovim\\config\\lua_univ_config.lua'
 
-if !exists('g:vscode')
+if exists('g:vscode')
+    exe 'luafile '.WorkDir.'neovim\\config\\lua_vscode_config.lua'
+else
+    exe 'source '.WorkDir.'neovim\\config\\md.vimrc'
+    exe 'source '.WorkDir.'neovim\config\learnvim.vimrc'
+    exe 'source '.WorkDir.'neovim\config\mylog.vimrc'
+    exe 'source '.WorkDir.'neovim\config\python.vimrc'
+
     exe 'luafile '.WorkDir.'neovim\\config\\lsp_config.lua'
     exe 'luafile '.WorkDir.'neovim\\config\\lua_nvim_config.lua'
     exe 'luafile '.WorkDir.'neovim\\config\\lua_lsp_config.lua'
