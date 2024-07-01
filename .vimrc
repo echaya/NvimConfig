@@ -36,13 +36,13 @@ nnoremap <C-V> v
 :command! Q q
 
 
-"adding more character objectives
-for s:char in [',','/', '*', '%', '_', '`', '!']
-  execute 'xnoremap i' . s:char . ' :<C-u>normal! T' . s:char . 'vt' . s:char . '<CR>'
-  execute 'onoremap i' . s:char . ' :normal vi' . s:char . '<CR>'
-  execute 'xnoremap a' . s:char . ' :<C-u>normal! F' . s:char . 'vf' . s:char . '<CR>'
-  execute 'onoremap a' . s:char . ' :normal va' . s:char . '<CR>'
-endfor
+" adding more character objectives
+ for s:char in [',','/', '*', '%', '_', '`', '!','\','|']
+   execute 'xnoremap i' . s:char . ' :<C-u>normal! T' . s:char . 'vt' . s:char . '<CR>'
+   execute 'onoremap i' . s:char . ' :normal vi' . s:char . '<CR>'
+   execute 'xnoremap a' . s:char . ' :<C-u>normal! F' . s:char . 'vf' . s:char . '<CR>'
+   execute 'onoremap a' . s:char . ' :normal va' . s:char . '<CR>'
+ endfor
 
 " execute macro at visual range, does not stop when no match
 xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
@@ -64,25 +64,26 @@ function! TwiddleCase(str)
 endfunction
 vnoremap ~ y:call setreg('', TwiddleCase(@"), getregtype(''))<CR>gv""Pgv
 
-
-
+let g:plug_window = 'vertical topleft new'
+let g:plug_pwindow = 'above 12'
 "Plug management
+
+call plug#begin(WorkDir..'Neovim\nvim-win64\share\nvim\vimfiles\plugged')
+      " universal plugins
+      Plug 'unblevable/quick-scope'
+      Plug 'tpope/vim-repeat'
+      Plug 'tpope/vim-speeddating'
+      Plug 'svermeulen/vim-cutlass'
+      "text obj plugin
+      Plug 'kana/vim-textobj-user' "dependent plugin
+      Plug 'kana/vim-textobj-indent' "ai,ii, aI, iI
+      Plug 'Julian/vim-textobj-variable-segment' "av,iv
+      Plug 'bps/vim-textobj-python' "ac,ic,af,if
+      "neovim plugin
+      Plug 'ggandor/leap.nvim'
+      Plug 'kylechui/nvim-surround'
+
 if exists('g:vscode')
-
-    call plug#begin(WorkDir..'Neovim\nvim-win64\share\nvim\vimfiles\plugged')
-        Plug 'unblevable/quick-scope'
-        Plug 'tpope/vim-repeat'
-        Plug 'tpope/vim-speeddating'
-        Plug 'svermeulen/vim-cutlass'
-        "text obj plugin
-        Plug 'kana/vim-textobj-user' "dependent plugin
-        Plug 'kana/vim-textobj-indent' "ai,ii, aI, iI
-        Plug 'Julian/vim-textobj-variable-segment' "av,iv
-        Plug 'bps/vim-textobj-python' "ac,ic,af,if
-        "neovim plugin
-        Plug 'ggandor/leap.nvim'
-        Plug 'kylechui/nvim-surround'
-
     call plug#end()
 
     nnoremap <silent> <A-,> <Cmd>lua require('vscode').call('workbench.action.previousEditor')<CR>
@@ -122,11 +123,12 @@ if exists('g:vscode')
     nnoremap gcc <Plug>VSCodeCommentaryLine
 
 else
-
-    call plug#begin(WorkDir..'Neovim\nvim-win64\share\nvim\vimfiles\plugged')
+        "neovim specific plugins
         " ui, display
         Plug 'olimorris/onedarkpro.nvim'
         Plug 'itchyny/lightline.vim'
+        Plug 'romgrk/barbar.nvim'
+        Plug 'mhinz/vim-startify' "butify the vim start up page
 
         " markdown plugin
         Plug 'godlygeek/tabular' "prerequisite for vim-markdown
@@ -136,34 +138,17 @@ else
         Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for':'markdown'}
         Plug 'dhruvasagar/vim-table-mode',{'on':'TableModeToggle'}
         Plug 'ferrine/md-img-paste.vim'
-        "text obj plugin
-        Plug 'kana/vim-textobj-user' "dependent plugin
-        Plug 'kana/vim-textobj-indent' "ai,ii, aI, iI
-        Plug 'Julian/vim-textobj-variable-segment' "av,iv
-        Plug 'bps/vim-textobj-python' "ac,ic,af,if
 
-        ""nvim specific and vim alternative
-        Plug 'ggandor/leap.nvim'
+        "utility plug-in
+        Plug 'tpope/vim-commentary' "comment / uncomment code
+        Plug '907th/vim-auto-save' "to auto-save files
+        Plug 'MTDL9/vim-log-highlighting' "log highlight
         Plug 'nvim-tree/nvim-web-devicons'
         Plug 'stevearc/oil.nvim'
         Plug 'nvim-lua/plenary.nvim'
         Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
         Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-        Plug 'kylechui/nvim-surround'
         Plug 'chentoast/marks.nvim'
-
-
-        "utility plug-in
-        Plug 'svermeulen/vim-cutlass' "prevent C, D, X to write to reg
-        Plug 'tpope/vim-repeat' "repeat for non-native vim actions
-        Plug 'tpope/vim-speeddating'
-        Plug 'tpope/vim-commentary' "comment / uncomment code
-        Plug 'unblevable/quick-scope' "highlight the 1st / 2nd occurance in line
-        " Plug 'ap/vim-buftabline' "butify the tab line
-        Plug 'romgrk/barbar.nvim'
-        Plug 'mhinz/vim-startify' "butify the vim start up page
-        Plug '907th/vim-auto-save' "to auto-save files
-        Plug 'MTDL9/vim-log-highlighting' "to auto-save files
 
         "lsp
         Plug 'neovim/nvim-lspconfig'
@@ -177,7 +162,6 @@ else
         Plug 'rafamadriz/friendly-snippets'
         Plug 'windwp/nvim-autopairs'
         " Plug 'Vigemus/iron.nvim'
-
 
     call plug#end()
     
