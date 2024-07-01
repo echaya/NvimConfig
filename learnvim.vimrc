@@ -14,8 +14,8 @@ function! PowerClose(strong)
     if cnt <= 1
         let l:cmd = "q"
     else
-        " let l:cmd = "bd"
-        let l:cmd = "BufferClose"
+        let l:cmd = "bd"
+        " let l:cmd = "BufferClose"
     endif
 
     if a:strong != 0
