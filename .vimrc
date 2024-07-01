@@ -125,6 +125,13 @@ if exists('g:vscode')
     nnoremap <silent> <left> <Cmd>lua require('vscode').action('git.commitStaged')<CR>
     nnoremap <silent> <right> <Cmd>lua require('vscode').action('git.sync')<CR>
 
+    nnoremap <silent> mm <Cmd>lua require('vscode').call('bookmarks.toggle')<CR>
+    nnoremap <silent> mj <Cmd>lua require('vscode').call('bookmarks.jumpToNext')<CR>
+    nnoremap <silent> mk <Cmd>lua require('vscode').call('bookmarks.jumpToPrevious')<CR>
+    nnoremap <silent> mi <Cmd>lua require('vscode').call('bookmarks.toggleLabeled')<CR>
+    nnoremap <silent> m; <Cmd>lua require('vscode').call('bookmarks.listFromAllFiles')<CR>
+    nnoremap <silent> dmm <Cmd>lua require('vscode').call('bookmarks.clearFromAllFiles')<CR>
+
     xnoremap gc  <Plug>VSCodeCommentary
     nnoremap gc  <Plug>VSCodeCommentary
     onoremap gc  <Plug>VSCodeCommentary
