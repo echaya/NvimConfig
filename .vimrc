@@ -101,34 +101,29 @@ if exists('g:vscode')
 
     call plug#end()
 
-    nnoremap <silent> <A-,> <Cmd>call VSCodeCall('workbench.action.previousEditor')<CR>
-    nnoremap <silent> <A-.> <Cmd>call VSCodeCall('workbench.action.nextEditor')<CR>
-    nnoremap <silent> <A-x> <Cmd>call VSCodeCall('workbench.action.closeActiveEditor')<CR>
-    nnoremap <silent> <A-s-x> <Cmd>call VSCodeCall('workbench.action.reopenClosedEditor')<CR>
-    nnoremap <silent> - <Cmd>call VSCodeCall('workbench.view.explorer')<CR>
+    nnoremap <silent> <A-,> <Cmd>lua require('vscode').call('workbench.action.previousEditor')<CR>
+    nnoremap <silent> <A-.> <Cmd>lua require('vscode').call('workbench.action.nextEditor')<CR>
+    nnoremap <silent> <A-x> <Cmd>lua require('vscode').call('workbench.action.closeActiveEditor')<CR>
+    nnoremap <silent> <A-s-x> <Cmd>lua require('vscode').call('workbench.action.reopenClosedEditor')<CR>
+    " pin and unpin editor using a-p using vscode shortcut
+    nnoremap <silent> - <Cmd>lua require('vscode').call('workbench.view.explorer')<CR>
 
-    nnoremap <silent> gD <Cmd>call VSCodeNotify('editor.action.revealDefinitionAside')<CR>
-    nnoremap <silent> o <Cmd>call VSCodeNotify('editor.action.insertLineAfter')<CR>i
-    nnoremap <silent> O <Cmd>call VSCodeNotify('editor.action.insertLineBefore')<CR>i
+    nnoremap <silent> gD <Cmd>lua require('vscode').action('editor.action.revealDefinitionAside')<CR>
+    nnoremap <silent> o <Cmd>lua require('vscode').action('editor.action.insertLineAfter')<CR>i
+    nnoremap <silent> O <Cmd>lua require('vscode').action('editor.action.insertLineBefore')<CR>i
 
-    nnoremap <silent> gJ <Cmd>call VSCodeNotify('editor.action.dirtydiff.next')<CR>
-    nnoremap <silent> gK <Cmd>call VSCodeNotify('editor.action.dirtydiff.previous')<CR>
-    nnoremap <silent> gj <Cmd>call VSCodeNotify('workbench.action.editor.nextChange')<CR>
-    nnoremap <silent> gk <Cmd>call VSCodeNotify('workbench.action.editor.previousChange')<CR>
+    nnoremap <silent> gJ <Cmd>lua require('vscode').action('editor.action.dirtydiff.next')<CR>
+    nnoremap <silent> gK <Cmd>lua require('vscode').action('editor.action.dirtydiff.previous')<CR>
+    nnoremap <silent> gj <Cmd>lua require('vscode').action('workbench.action.editor.nextChange')<CR>
+    nnoremap <silent> gk <Cmd>lua require('vscode').action('workbench.action.editor.previousChange')<CR>
 
-    nnoremap <silent> == <Cmd>call VSCodeCall('editor.action.formatDocument')<CR>
-    nnoremap <silent> <up> <Cmd>call VSCodeCall('workbench.action.increaseViewSize')<CR>
-    nnoremap <silent> <down> <Cmd>call VSCodeCall('workbench.action.decreaseViewSize')<CR>
-    xnoremap <silent> <left> <Cmd>call VSCodeCall('git.stageSelectedRanges')<CR><Esc>
-    nnoremap <silent> <left> <Cmd>call VSCodeNotify('git.commitStaged')<CR>
-    nnoremap <silent> <right> <Cmd>call VSCodeNotify('git.sync')<CR>
+    nnoremap <silent> == <Cmd>lua require('vscode').action('editor.action.formatDocument')<CR>
+    nnoremap <silent> <up> <Cmd>lua require('vscode').action('workbench.action.increaseViewSize')<CR>
+    nnoremap <silent> <down> <Cmd>lua require('vscode').action('workbench.action.decreaseViewSize')<CR>
 
-    nnoremap <silent> mm <Cmd>call VSCodeCall('bookmarks.toggle')<CR>
-    nnoremap <silent> mj <Cmd>call VSCodeCall('bookmarks.jumpToNext')<CR>
-    nnoremap <silent> mk <Cmd>call VSCodeCall('bookmarks.jumpToPrevious')<CR>
-    nnoremap <silent> mi <Cmd>call VSCodeCall('bookmarks.toggleLabeled')<CR>
-    nnoremap <silent> m; <Cmd>call VSCodeCall('bookmarks.listFromAllFiles')<CR>
-    nnoremap <silent> dmm <Cmd>call VSCodeCall('bookmarks.clearFromAllFiles')<CR>
+    xnoremap <silent> <left> <Cmd>lua require('vscode').call('git.stageSelectedRanges')<CR><Esc>
+    nnoremap <silent> <left> <Cmd>lua require('vscode').action('git.commitStaged')<CR>
+    nnoremap <silent> <right> <Cmd>lua require('vscode').action('git.sync')<CR>
 
     xnoremap gc  <Plug>VSCodeCommentary
     nnoremap gc  <Plug>VSCodeCommentary
