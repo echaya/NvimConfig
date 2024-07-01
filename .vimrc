@@ -201,6 +201,7 @@ else
     set noshowmode
     set ruler
     set termguicolors
+    set shellslash
 
     "coloring
     let g:lightline = {
