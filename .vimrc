@@ -8,8 +8,6 @@ let WorkDir = 'D:\Dropbox\'
 "change <leader> to SPACE
 nnoremap <SPACE> <Nop>
 let mapleader=" "
-"open the cursor at the last saved position
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 "seaerch
 set incsearch
@@ -213,6 +211,9 @@ else
         set undolevels=10000
         set undofile
     endif
+    "open the cursor at the last saved position
+    au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
     set splitbelow
     set splitright
     filetype plugin indent on
