@@ -22,18 +22,6 @@ inoremap <silent> <c-v> <Esc>:set paste<Cr>a<c-r>+<Esc>:set nopaste<Cr>a
 " change default Y behavior to match with D, C, etc
 noremap Y y$
 
-" use 'move' as to cut text into register
-nnoremap x d
-xnoremap x d
-nnoremap xx dd
-nnoremap X D
-" use <leader> to join
-" nnoremap <leader>j J
-
-" tab key
-" inoremap <S-Tab> <C-D>
-" inoremap <Tab> <C-T>
-
 " insert lines without entering insert mode
 noremap <silent> <leader>o :<C-u>call append(line("."),   repeat([""], v:count1))<CR>
 nnoremap <silent> <leader>O :<C-u>call append(line(".")-1, repeat([""], v:count1))<CR>
