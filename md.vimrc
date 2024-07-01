@@ -54,8 +54,10 @@ augroup END
 highlight clear SpellCap 
 highlight clear SpellBad 
 highlight clear SpellRare
-highlight SpellBad gui=undercurl cterm=undercurl
-highlight SpellRare gui=underline cterm=underline
+highlight clear SpellLocal
+highlight SpellBad gui=undercurl cterm=undercurl guifg=pink ctermfg=210
+highlight SpellRare gui=underline guifg='#63D6FD' ctermfg=81 cterm=underline
+highlight SpellLocal gui=undercurl cterm=undercurl guifg='#FFFEE2' ctermfg=226
 
 " vim wiki settings
 let g:vimwiki_list = [{'path': WorkDir.'markdown\', 'syntax': 'markdown','ext': '.md'}]
