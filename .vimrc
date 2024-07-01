@@ -34,8 +34,6 @@ nnoremap <C-V> v
 :command! Wq wq
 :command! W w
 :command! Q q
-:command! LV source $MYVIMRC
-:command! EV e $MYVIMRC
 
 
 "adding more character objectives
@@ -306,6 +304,9 @@ else
     let g:auto_save = 1
     let g:auto_save_silent = 1
 
+    " load and reload vimrc
+    :command! LV source $MYVIMRC
+    :command! EV e $MYVIMRC
     " set cd to current dir
     nnoremap <leader>cd :lcd %:h<CR>
 
@@ -319,6 +320,12 @@ else
 
 
 endif
+
+" use 'x' as to cut text into register, cutlass prevents C/D go into register
+nnoremap x d
+xnoremap x d
+nnoremap xx dd
+nnoremap X D
 
 " quick-scope specs
 let g:qs_lazy_highlight = 0
