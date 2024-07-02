@@ -271,6 +271,7 @@ require'marks'.setup {
   -- whether to map keybinds or not. default true
   default_mappings = false,
   mappings = {
+    set = "m",
     toggle = "mm",
     next = "mj",
     prev = "mk",
