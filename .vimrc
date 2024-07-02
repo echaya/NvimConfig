@@ -8,6 +8,8 @@ let WorkDir = 'D:/Dropbox/'
 "change <leader> to SPACE
 nnoremap <SPACE> <Nop>
 let mapleader=" "
+nnoremap ZZ <Nop>
+nnoremap Z <Nop>
 
 "seaerch
 set incsearch
@@ -26,6 +28,9 @@ noremap Y y$
 noremap <silent> <leader>o :<C-u>call append(line("."),   repeat([""], v:count1))<CR>
 nnoremap <silent> <leader>O :<C-u>call append(line(".")-1, repeat([""], v:count1))<CR>
 
+" use backspace to trigger edit
+nnoremap <silent> <backspace> ciw
+
 
 " swap v and Ctrl-v
 nnoremap  v <C-V>
@@ -34,6 +39,7 @@ nnoremap <C-V> v
 :command! Wq wq
 :command! W w
 :command! Q q
+:command Bd bd
 
 
 " adding more character objectives
@@ -268,7 +274,6 @@ else
     noremap <A-l> <C-w><C-l>
     " noremap <silent> <C-F4> :bdelete<CR>:bn<CR>
     " noremap <silent> <C-n> :enew<CR>
-    :command Bd bd
 
     " adjust split window size
     nnoremap <down> :vertical resize-5<CR>
