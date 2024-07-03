@@ -32,22 +32,19 @@ noremap <C--> :call AdjustFontSize(-1)<CR>
         "args": "<a-,>",
         "when": "editorTextFocus && neovim.init"
     },
-    {
-        "key": "alt+x",
-        "command": "vscode-neovim.send",
-        "args": "<a-x>",
-        "when": "editorTextFocus && neovim.init"
-    },
-    {
-        "key": "alt+shift+x",
-        "command": "vscode-neovim.send",
-        "args": "<a-s-x>",
-        "when": "editorTextFocus && neovim.init"
-    },
 ```
 
-### TODO
+### Vimium
 ```vim
-nnoremap <silent> <backspace> ciw
-    set = "m",
+map <a-,> previousTab
+map <a-.> nextTab
+unmap J
+unmap K
+unmap <a-c>
+unmap <a-s-c>
+unmap x
+unmap X
+map ZQ removeTab
+map ZZ removeTab
+map ZX restoreTab
 ```
