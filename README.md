@@ -36,12 +36,10 @@ noremap <C--> :call AdjustFontSize(-1)<CR>
 
 ### Vimium
 ```vim
-map <a-,> previousTab
-map <a-.> nextTab
-unmap J
-unmap K
-unmap <a-c>
-unmap <a-s-c>
+map <a-,> moveTabLeft
+map <a-.> moveTabRight
+unmap <<
+unmap >>
 unmap x
 unmap X
 map ZQ removeTab
