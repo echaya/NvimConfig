@@ -89,10 +89,12 @@ call plug#begin(WorkDir..'Neovim/nvim-win64/share/nvim/vimfiles/plugged')
 if exists('g:vscode')
     call plug#end()
 
-    nnoremap <silent> <A-,> <Cmd>lua require('vscode').call('workbench.action.previousEditor')<CR>
-    nnoremap <silent> <A-.> <Cmd>lua require('vscode').call('workbench.action.nextEditor')<CR>
-    nnoremap <silent> <A-x> <Cmd>lua require('vscode').call('workbench.action.closeActiveEditor')<CR>
-    nnoremap <silent> <A-s-x> <Cmd>lua require('vscode').call('workbench.action.reopenClosedEditor')<CR>
+    nnoremap <silent> J <Cmd>lua require('vscode').call('workbench.action.previousEditor')<CR>
+    nnoremap <silent> K <Cmd>lua require('vscode').call('workbench.action.nextEditor')<CR>
+    nnoremap <silent> ZZ <Cmd>lua require('vscode').call('workbench.action.closeActiveEditor')<CR>
+    nnoremap <silent> ZX <Cmd>lua require('vscode').call('workbench.action.reopenClosedEditor')<CR>
+    nnoremap <silent> <a-,> <Cmd>lua require('vscode').call('workbench.action.moveEditorLeftInGroup')<CR>
+    nnoremap <silent> <a-.> <Cmd>lua require('vscode').call('workbench.action.moveEditorRightInGroup')<CR>
     " pin and unpin editor using a-p using vscode shortcut
     nnoremap <silent> - <Cmd>lua require('vscode').call('workbench.view.explorer')<CR>
 
@@ -224,20 +226,18 @@ else
     endtry
 
     " Move to previous/next
-    nnoremap <silent>    <A-,> <Cmd>BufferPrevious<CR>
-    nnoremap <silent>    <A-.> <Cmd>BufferNext<CR>
+    nnoremap <silent>    J <Cmd>BufferPrevious<CR>
+    nnoremap <silent>    K <Cmd>BufferNext<CR>
     " Re-order to previous/next
-    nnoremap <silent>    <A-<> <Cmd>BufferMovePrevious<CR>
-    nnoremap <silent>    <A->> <Cmd>BufferMoveNext<CR>
-    " Close buffer
-    nnoremap <silent>    <A-x> <Cmd>BufferClose<CR>
-    " Restore buffer
-    nnoremap <silent>    <A-s-x> <Cmd>BufferRestore<CR>
+    nnoremap <silent>    <A-,> <Cmd>BufferMovePrevious<CR>
+    nnoremap <silent>    <A-.> <Cmd>BufferMoveNext<CR>
+    " Close buffer using ZZ
+    " nnoremap <silent>    <A-x> <Cmd>BufferClose<CR>
+    nnoremap <silent>    ZX <Cmd>BufferRestore<CR>
     " Magic buffer-picking mode
-    nnoremap <silent> <A-s-p>    <Cmd>BufferPick<CR>
+    nnoremap <silent> <C-P>    <Cmd>BufferPick<CR>
     " Pin/unpin buffer
     nnoremap <silent>    <A-p> <Cmd>BufferPin<CR>
-
 
     " augroup ThemeSwitch
     "   autocmd!
