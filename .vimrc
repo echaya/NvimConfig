@@ -23,6 +23,8 @@ set clipboard=unnamed
 inoremap <silent> <c-v> <Esc>:set paste<Cr>a<c-r>+<Esc>:set nopaste<Cr>a
 " change default Y behavior to match with D, C, etc
 noremap Y y$
+" using <leader> j to join lines
+noremap <leader>j J
 
 " insert lines without entering insert mode
 noremap <silent> <leader>o :<C-u>call append(line("."),   repeat([""], v:count1))<CR>
