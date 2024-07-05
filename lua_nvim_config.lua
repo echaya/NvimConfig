@@ -281,7 +281,11 @@ require'marks'.setup {
   }
 }
 
-
+require("onedarkpro").setup({
+    options = {
+        cursorline = true
+    }
+})
 
 
 
