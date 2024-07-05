@@ -8,8 +8,6 @@ let WorkDir = 'D:/Dropbox/'
 "change <leader> to SPACE
 nnoremap <SPACE> <Nop>
 let mapleader=" "
-nnoremap ZZ <Nop>
-nnoremap Z <Nop>
 
 "seaerch
 set incsearch
@@ -23,26 +21,32 @@ set clipboard=unnamed
 inoremap <silent> <c-v> <Esc>:set paste<Cr>a<c-r>+<Esc>:set nopaste<Cr>a
 " change default Y behavior to match with D, C, etc
 noremap Y y$
-" using <leader> j to join lines
-noremap <leader>j J
+" join lines by leader j
+nnoremap <leader>j J
 
-" insert lines without entering insert mode
+" insert lines without entering insert mode (allow count)
 noremap <silent> <leader>o :<C-u>call append(line("."),   repeat([""], v:count1))<CR>
 nnoremap <silent> <leader>O :<C-u>call append(line(".")-1, repeat([""], v:count1))<CR>
 
-" use backspace to trigger edit
-nnoremap <silent> <backspace> ciw
+" use Ctrl+j/k to swap lines (allow count)
+nnoremap <C-j> :<c-u>execute 'move +'. v:count1<cr>
+nnoremap <C-k> :<c-u>execute 'move -1-'. v:count1<cr>
+xnoremap <silent> <C-j> :m '>+1<cr>gv=gv
+xnoremap <silent> <C-k> :m '<-2<cr>gv=gv
 
+" saner command-line histsory
+cnoremap <expr> <c-n> wildmenumode() ? "\<c-n>" : "\<down>"
+cnoremap <expr> <c-p> wildmenumode() ? "\<c-p>" : "\<up>"
 
 " swap v and Ctrl-v
 nnoremap  v <C-V>
 nnoremap <C-V> v
+
 " ex command remap
 :command! Wq wq
 :command! W w
 :command! Q q
 :command Bd bd
-
 
 " adding more character objectives
 for s:char in [',','/', '*', '%', '_', '`', '!','.']
@@ -168,7 +172,7 @@ else
         Plug 'L3MON4D3/LuaSnip' ", {'tag': 'v2.*', 'do': 'make install_jsregexp'}
         Plug 'rafamadriz/friendly-snippets'
         Plug 'windwp/nvim-autopairs'
-        " Plug 'Vigemus/iron.nvim'
+
 
     call plug#end()
     
@@ -200,7 +204,6 @@ else
     " color, display, theme
     syntax on
     set t_Co=256
-    set cursorline
     set number relativenumber
     set scrolloff=3
     set splitright
@@ -212,6 +215,8 @@ else
     set ruler
     set termguicolors
     set shellslash
+    autocmd InsertLeave,WinEnter * set cursorline
+    autocmd InsertEnter,WinLeave * set nocursorline
 
     "coloring
     let g:lightline = {
@@ -288,6 +293,9 @@ else
     " to overcome accidental c-u/w to delete the word/line
     inoremap <c-u> <c-g>u<c-u>
     inoremap <c-w> <c-g>u<c-w>
+    inoremap , ,<c-g>u
+    inoremap . .<c-g>u
+    inoremap ; ;<c-g>u
 
     " autosave on
     let g:auto_save = 1
