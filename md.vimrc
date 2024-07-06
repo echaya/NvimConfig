@@ -21,8 +21,8 @@ let g:mkdp_preview_options = {
     \ }
 
 nmap <F5> <Plug>MarkdownPreviewToggle
+
 let g_mkdp_refresh_slow=0
-noremap <F6> <Plug>Markdown_EditUrlUnderCursor
 
 "table-mode
 noremap <leader>\ :TableModeToggle<CR>
@@ -39,7 +39,11 @@ augroup mdgroup
     let g:mdip_imgdir = 'img'
     let g:mdip_imgname = 'image'
 
+    "edit link
     autocmd Filetype markdown nnoremap <silent><leader>md :call EditMdLink()<cr>
+    "table-mode
+    autocmd Filetype markdown nnoremap <leader>\ :TableModeToggle<CR>
+    autocmd Filetype markdown nnoremap <leader>= :TableModeRealign<CR>
 
 augroup END
 

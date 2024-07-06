@@ -104,7 +104,7 @@ if !exists('g:vscode')
     Plug 'plasticboy/vim-markdown'
     Plug 'vimwiki/vimwiki'
     " Plug 'mzlogin/vim-markdown-toc' "table of content, not so useful?
-    Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for':'markdown'}
+    Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for':['markdown','vim-plug','md']}
     Plug 'dhruvasagar/vim-table-mode',{'on':'TableModeToggle'}
     Plug 'ferrine/md-img-paste.vim'
 
