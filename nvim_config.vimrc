@@ -1,0 +1,190 @@
+" system
+set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
+set noswapfile
+set nobackup
+set nowritebackup
+set backupcopy=yes "to work with Joplin
+set autoread "to autoload from Joplin / disk when the file opened is changed
+set nocompatible
+set mouse=a
+set showmatch
+set backspace=indent,eol,start
+if has('persistent_undo')
+    exe 'set undodir='.WorkDir.'neovim\\undo'
+    set undolevels=10000
+    set undofile
+endif
+"open the cursor at the last saved position
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+set splitbelow
+set splitright
+filetype plugin indent on
+" encoding
+set fileencodings=ucs-bom,utf-8,utf-16,gbk,big5,gb18030,latin1
+set enc=utf-8
+" color, display, theme
+syntax on
+set t_Co=256
+set number relativenumber
+set scrolloff=3
+set splitright
+set splitbelow
+set wrap
+set linebreak
+set showcmd
+set noshowmode
+set ruler
+set termguicolors
+set shellslash
+
+"coloring
+let g:lightline = {
+      \ 'colorscheme': 'one',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             ['readonly', 'filename', 'modified' ] ]
+      \ },
+      \ }
+try
+        colorscheme onedark
+catch
+        colorscheme industry
+endtry
+
+" Move to previous/next
+nnoremap <silent>    J <Cmd>BufferPrevious<CR>
+nnoremap <silent>    K <Cmd>BufferNext<CR>
+" Re-order to previous/next
+nnoremap <silent>    <A-,> <Cmd>BufferMovePrevious<CR>
+nnoremap <silent>    <A-.> <Cmd>BufferMoveNext<CR>
+" Close buffer using ZZ
+" nnoremap <silent>    <A-x> <Cmd>BufferClose<CR>
+nnoremap <silent>    ZX <Cmd>BufferRestore<CR>
+" Magic buffer-picking mode
+nnoremap <silent> <C-P>    <Cmd>BufferPick<CR>
+" Pin/unpin buffer
+nnoremap <silent>    <A-p> <Cmd>BufferPin<CR>
+
+" augroup ThemeSwitch
+"   autocmd!
+"     autocmd BufEnter * colorscheme onedark
+"     autocmd BufEnter *.md colorscheme pencil
+" augroup END
+
+augroup CursorLine
+    au!
+    au VimEnter * setlocal cursorline
+    au WinEnter * setlocal cursorline
+    au BufWinEnter * setlocal cursorline
+    au WinLeave * setlocal nocursorline
+augroup END
+
+au InsertLeave,WinEnter * set cursorline
+au InsertEnter,WinLeave * set nocursorline
+
+augroup numbertoggle
+  autocmd!
+  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+augroup END
+
+
+" Escape shortcut
+inoremap jk <ESC>
+
+" buffers management
+set hidden
+" noremap <silent> <s-j> :bp<CR>
+" noremap <silent> <s-k> :bn<CR>
+noremap <A-h> <C-w><C-h>
+noremap <A-j> <C-w><C-j>
+noremap <A-k> <C-w><C-k>
+noremap <A-l> <C-w><C-l>
+" noremap <silent> <C-F4> :bdelete<CR>:bn<CR>
+" noremap <silent> <C-n> :enew<CR>
+
+" adjust split window size
+nnoremap <down> :vertical resize-5<CR>
+nnoremap <up> :vertical resize+5<CR>
+" map <up> :res +5<CR>
+" map <down> :res -5<CR>
+" map <left> :vertical resize-5<CR>
+" map <right> :vertical resize+5<CR>
+
+" to overcome accidental c-u/w to delete the word/line
+inoremap <c-u> <c-g>u<c-u>
+inoremap <c-w> <c-g>u<c-w>
+inoremap , ,<c-g>u
+inoremap . .<c-g>u
+inoremap ; ;<c-g>u
+
+" autosave on
+let g:auto_save = 1
+let g:auto_save_silent = 1
+
+" load and reload vimrc
+:command! LV source $MYVIMRC
+:command! EV e $MYVIMRC
+" set cd to current dir
+nnoremap <leader>cd :lcd %:h<CR>
+" edit as dos, to remove ^m
+:command DOS e ++ff=dos | set ff=unix | w
+
+"Plug management
+let g:plug_window = 'vertical topleft new'
+let g:plug_pwindow = 'above 12'
+
+let g:temp_cb_name = "temp_cb"
+
+function! PowerClose(strong)
+    
+    let cnt = 0
+
+    for i in range(0, bufnr("$"))
+        if buflisted(i) 
+            let cnt += 1 
+        endif
+    endfor
+
+    if cnt <= 1
+        let l:cmd = "q"
+    else
+        let l:cmd = "bd"
+        " let l:cmd = "BufferClose"
+    endif
+
+    if a:strong != 0
+        let l:cmd .= "!"
+    endif
+
+    if expand('%') == g:temp_cb_name
+        let l:cmd = "call delete('".g:temp_cb_name."') | bd!"
+    endif
+    " echo cmd
+    execute cmd
+
+endfunction
+
+nnoremap <silent> ZZ :call PowerClose(0)<cr>
+nnoremap <silent> ZQ :call PowerClose(1)<cr>
+
+function! ChooseBuffer(buffername)
+    let bnr = bufwinnr(a:buffername)
+    if bnr > 0
+       execute bnr . "wincmd w"
+    else
+       " echom a:buffername . ' is not existent'
+       silent execute 'vsplit ' . a:buffername 
+    endif
+endfunction
+
+noremap <silent><leader>+ :call ChooseBuffer(g:temp_cb_name)<cr>Go<esc>p
+
+function! EditMdLink() abort
+    let cmd ='normal 0:s/\V\\/:/g<cr>$F:;ld0xf: ojp$r/kI. :s/\V./|/g /|md D0:s/ /_/g :s/|/_/g d2lY ys$[A|(")j0Xdd$?]|( ldlp0yi[k:echo""' 
+    execute cmd
+endfunction
+
+nnoremap <leader>md :call EditMdLink()<cr>
+
