@@ -3,7 +3,7 @@
 "To find the working directory is exactly, use the command :echo stdpath('config') inside Neovim.
 "
 "set work directory for nvim
-let WorkDir = 'D:/Dropbox/'
+let g:WorkDir = 'D:/Dropbox/'
 "universal settings
 "change <leader> to SPACE
 nnoremap <SPACE> <Nop>
@@ -77,7 +77,7 @@ endfunction
 vnoremap ~ y:call setreg('', TwiddleCase(@"), getregtype(''))<CR>gv""Pgv
 
 
-call plug#begin(WorkDir..'Neovim/nvim-win64/share/nvim/vimfiles/plugged')
+call plug#begin(g:WorkDir..'Neovim/nvim-win64/share/nvim/vimfiles/plugged')
       " universal plugins
     Plug 'unblevable/quick-scope'
     Plug 'tpope/vim-repeat'
@@ -145,18 +145,18 @@ let g:qs_lazy_highlight = 0
 highlight QuickScopePrimary guifg='#afff5f' gui=underline ctermfg=155 cterm=underline
 highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline
 
-exe 'luafile '.WorkDir.'neovim/config/lua_univ_config.lua'
+exe 'luafile '.g:WorkDir.'neovim/config/lua_univ_config.lua'
 
 if exists('g:vscode')
-    exe 'source '.WorkDir.'neovim/config/vscode_config.vimrc'
-    exe 'luafile '.WorkDir.'neovim/config/lua_vscode_config.lua'
+    exe 'source '.g:WorkDir.'neovim/config/vscode_config.vimrc'
+    exe 'luafile '.g:WorkDir.'neovim/config/lua_vscode_config.lua'
 else
-    exe 'source '.WorkDir.'neovim/config/nvim_config.vimrc'
-    exe 'source '.WorkDir.'neovim/config/md.vimrc'
-    exe 'source '.WorkDir.'neovim/config/python.vimrc'
-    " exe 'source '.WorkDir.'neovim/config/mylog.vimrc'
+    exe 'source '.g:WorkDir.'neovim/config/nvim_config.vimrc'
+    exe 'source '.g:WorkDir.'neovim/config/md.vimrc'
+    exe 'source '.g:WorkDir.'neovim/config/python.vimrc'
+    " exe 'source '.g:WorkDir.'neovim/config/mylog.vimrc'
 
-    exe 'luafile '.WorkDir.'neovim/config/lsp_config.lua'
-    exe 'luafile '.WorkDir.'neovim/config/lua_nvim_config.lua'
-    exe 'luafile '.WorkDir.'neovim/config/lua_lsp_config.lua'
+    exe 'luafile '.g:WorkDir.'neovim/config/lsp_config.lua'
+    exe 'luafile '.g:WorkDir.'neovim/config/lua_nvim_config.lua'
+    exe 'luafile '.g:WorkDir.'neovim/config/lua_lsp_config.lua'
 endif

@@ -60,7 +60,7 @@ highlight SpellRare gui=underline guifg='#63D6FD' ctermfg=81 cterm=underline
 highlight SpellLocal gui=undercurl cterm=undercurl guifg='#FFFEE2' ctermfg=226
 
 " vim wiki settings
-let g:vimwiki_list = [{'path': WorkDir.'markdown\', 'syntax': 'markdown','ext': '.md'}]
+let g:vimwiki_list = [{'path': g:WorkDir.'markdown\', 'syntax': 'markdown','ext': '.md'}]
 let g:vimwiki_ext2syntax = {'.md': 'markdown', '.markdown': 'markdown'}
 let g:vimwiki_key_mappings =
 \ {

@@ -10,7 +10,7 @@ set mouse=a
 set showmatch
 set backspace=indent,eol,start
 if has('persistent_undo')
-    exe 'set undodir='.WorkDir.'neovim\\undo'
+    exe 'set undodir='.g:WorkDir.'neovim\\undo'
     set undolevels=10000
     set undofile
 endif
@@ -182,7 +182,14 @@ endfunction
 noremap <silent><leader>+ :call ChooseBuffer(g:temp_cb_name)<cr>Go<esc>p
 
 function! EditMdLink() abort
-    let cmd ='normal 0:s/\V\\/:/g<cr>$F:;ld0xf: ojp$r/kI. :s/\V./|/g /|md D0:s/ /_/g :s/|/_/g d2lY ys$[A|(")j0Xdd$?]|( ldlp0yi[k:echo""' 
+    " use Ctrl-r Ctrl-r `X` to call out macro recorded on `X`
+    " alternatively use "Xp in normal mode
+    let cmd = 'normal :s/\V\\/:/g
+$F:;ld0xf: ojp$r/kI. jk:s/\V./|/g
+/|md
+D:s/ /_/g
+:s/|/_/g
+d2lYys$]j$p0ys$)k jdl'
     execute cmd
 endfunction
 
