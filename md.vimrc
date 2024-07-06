@@ -24,9 +24,17 @@ nmap <F5> <Plug>MarkdownPreviewToggle
 
 let g_mkdp_refresh_slow=0
 
-"table-mode
-noremap <leader>\ :TableModeToggle<CR>
-noremap <leader>= :TableModeRealign<CR>
+function! EditMdLink() abort
+    " use Ctrl-r Ctrl-r `X` to call out macro recorded on `X`
+    " alternatively use "Xp in normal mode where X being register
+    let cmd = 'normal :s/\V\\/:/g
+$F:;ld0xf: ojp$r/kI. jk:s/\V./|/g
+/|md
+D:s/ /_/g
+:s/|/_/g
+d2lYys$]j$p0ys$)k jdl'
+    execute cmd
+endfunction
 
 augroup mdgroup
     autocmd!
