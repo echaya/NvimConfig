@@ -181,17 +181,4 @@ endfunction
 
 noremap <silent><leader>+ :call ChooseBuffer(g:temp_cb_name)<cr>Go<esc>p
 
-function! EditMdLink() abort
-    " use Ctrl-r Ctrl-r `X` to call out macro recorded on `X`
-    " alternatively use "Xp in normal mode
-    let cmd = 'normal :s/\V\\/:/g
-$F:;ld0xf: ojp$r/kI. jk:s/\V./|/g
-/|md
-D:s/ /_/g
-:s/|/_/g
-d2lYys$]j$p0ys$)k jdl'
-    execute cmd
-endfunction
-
-nnoremap <leader>md :call EditMdLink()<cr>
 
