@@ -23,6 +23,8 @@ inoremap <silent> <c-v> <Esc>:set paste<Cr>a<c-r>+<Esc>:set nopaste<Cr>a
 noremap Y y$
 " join lines by leader j
 nnoremap <leader>j J
+nnoremap <leader>l :redraw<CR>
+
 
 " insert lines without entering insert mode (allow count)
 noremap <silent> <leader>o :<C-u>call append(line("."),   repeat([""], v:count1))<CR>
