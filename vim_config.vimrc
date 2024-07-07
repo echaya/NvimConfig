@@ -70,6 +70,8 @@ if has('nvim')
 else
     noremap <silent> J :bp<CR>
     noremap <silent> K :bn<CR>
+    let &t_SI = "\e[6 q"
+    let &t_EI = "\e[2 q"
 endif
 
 " augroup ThemeSwitch
