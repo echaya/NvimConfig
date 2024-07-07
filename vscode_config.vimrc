@@ -3,6 +3,7 @@ nnoremap <silent> J <Cmd>lua require('vscode').call('workbench.action.previousEd
 nnoremap <silent> K <Cmd>lua require('vscode').call('workbench.action.nextEditor')<CR>
 nnoremap <silent> ZZ <Cmd>lua require('vscode').call('workbench.action.closeActiveEditor')<CR>
 nnoremap <silent> ZX <Cmd>lua require('vscode').call('workbench.action.reopenClosedEditor')<CR>
+
 " require register a-x into vscode shortcut
 nnoremap <silent> <a-,> <Cmd>lua require('vscode').call('workbench.action.moveEditorLeftInGroup')<CR>
 nnoremap <silent> <a-.> <Cmd>lua require('vscode').call('workbench.action.moveEditorRightInGroup')<CR>
