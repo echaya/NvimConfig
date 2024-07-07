@@ -132,7 +132,7 @@ if !exists('g:vscode')
         Plug 'windwp/nvim-autopairs'
     else
         " ui, display
-        Plug '/joshdick/onedark.vim'
+        Plug 'joshdick/onedark.vim'
         Plug 'ap/vim-buftabline' "butify the tab line
     endif
 
