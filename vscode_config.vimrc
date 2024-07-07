@@ -81,4 +81,4 @@ nnoremap gcc <Plug>VSCodeCommentaryLine
 " [test] set vim.notify as default notify
 vim.notify = vscode.notify
 
-au InsertEnter * <Cmd> redraw
+au InsertEnter * :redraw<CR>
