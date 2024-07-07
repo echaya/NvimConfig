@@ -19,6 +19,11 @@ noremap <C--> :call AdjustFontSize(-1)<CR>
 ```
 ### VSCode
 
+```bat
+call c:\\blp\\bqnt\\bootstrapper\\condabin\\activate.bat c:\\blp\\bqnt\\environments\\bqnt-3
+call code | taskkill /F /IM cmd.exe
+```
+
 ``` JSON
     {
         "key": "alt+.",
