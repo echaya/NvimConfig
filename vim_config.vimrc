@@ -35,7 +35,6 @@ set linebreak
 set showcmd
 set noshowmode
 set ruler
-set termguicolors
 set shellslash
 
 "coloring
@@ -46,11 +45,11 @@ let g:lightline = {
       \             ['readonly', 'filename', 'modified' ] ]
       \ },
       \ }
-" try
-    " colorscheme onedark
-" catch
-    " colorscheme industry
-" endtry
+try
+    colorscheme onedark
+catch
+    colorscheme industry
+endtry
 
 if has('nvim')
     " Move to previous/next
@@ -67,12 +66,10 @@ if has('nvim')
     " Pin/unpin buffer
     nnoremap <silent>    <A-p> <Cmd>BufferPin<CR>
 
-    colorscheme onedark
+    set termguicolors
 else
     noremap <silent> J :bp<CR>
     noremap <silent> K :bn<CR>
-
-    colorscheme industry
 endif
 
 " augroup ThemeSwitch
