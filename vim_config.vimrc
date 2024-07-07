@@ -103,10 +103,10 @@ inoremap jk <ESC>
 set hidden
 " noremap <silent> <s-j> :bp<CR>
 " noremap <silent> <s-k> :bn<CR>
-noremap <A-h> <C-w><C-h>
-noremap <A-j> <C-w><C-j>
-noremap <A-k> <C-w><C-k>
-noremap <A-l> <C-w><C-l>
+noremap <C-h> <C-w><C-h>
+noremap <C-j> <C-w><C-j>
+noremap <C-k> <C-w><C-k>
+noremap <C-l> <C-w><C-l>
 " noremap <silent> <C-F4> :bdelete<CR>:bn<CR>
 " noremap <silent> <C-n> :enew<CR>
 
