@@ -52,19 +52,24 @@ catch
         colorscheme industry
 endtry
 
-" Move to previous/next
-nnoremap <silent>    J <Cmd>BufferPrevious<CR>
-nnoremap <silent>    K <Cmd>BufferNext<CR>
-" Re-order to previous/next
-nnoremap <silent>    <A-,> <Cmd>BufferMovePrevious<CR>
-nnoremap <silent>    <A-.> <Cmd>BufferMoveNext<CR>
-" Close buffer using ZZ
-" nnoremap <silent>    <A-x> <Cmd>BufferClose<CR>
-nnoremap <silent>    ZX <Cmd>BufferRestore<CR>
-" Magic buffer-picking mode
-nnoremap <silent> <C-P>    <Cmd>BufferPick<CR>
-" Pin/unpin buffer
-nnoremap <silent>    <A-p> <Cmd>BufferPin<CR>
+if has('nvim')
+    " Move to previous/next
+    nnoremap <silent>    J <Cmd>BufferPrevious<CR>
+    nnoremap <silent>    K <Cmd>BufferNext<CR>
+    " Re-order to previous/next
+    nnoremap <silent>    <A-,> <Cmd>BufferMovePrevious<CR>
+    nnoremap <silent>    <A-.> <Cmd>BufferMoveNext<CR>
+    " Close buffer using ZZ
+    " nnoremap <silent>    <A-x> <Cmd>BufferClose<CR>
+    nnoremap <silent>    ZX <Cmd>BufferRestore<CR>
+    " Magic buffer-picking mode
+    nnoremap <silent> <C-P>    <Cmd>BufferPick<CR>
+    " Pin/unpin buffer
+    nnoremap <silent>    <A-p> <Cmd>BufferPin<CR>
+else
+    noremap <silent> J :bp<CR>
+    noremap <silent> K :bn<CR>
+endif
 
 " augroup ThemeSwitch
 "   autocmd!
