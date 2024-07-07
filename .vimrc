@@ -92,44 +92,50 @@ call plug#begin(g:WorkDir..'Neovim/nvim-win64/share/nvim/vimfiles/plugged')
     Plug 'kylechui/nvim-surround'
 
 if !exists('g:vscode')
-        "neovim specific plugins
-        " ui, display
-    Plug 'olimorris/onedarkpro.nvim'
-    Plug 'itchyny/lightline.vim'
-    Plug 'romgrk/barbar.nvim'
-    Plug 'mhinz/vim-startify' "butify the vim start up page
 
+    "vim and neovim specific plugins
+    Plug 'itchyny/lightline.vim'
+    Plug 'mhinz/vim-startify' "butify the vim start up page
+    Plug 'tpope/vim-commentary' "comment / uncomment code
+    Plug '907th/vim-auto-save' "to auto-save files
+    Plug 'MTDL9/vim-log-highlighting' "log highlight
     " markdown plugin
     Plug 'godlygeek/tabular' "prerequisite for vim-markdown
     Plug 'plasticboy/vim-markdown'
     Plug 'vimwiki/vimwiki'
-    " Plug 'mzlogin/vim-markdown-toc' "table of content, not so useful?
-    Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for':['markdown','vim-plug','md']}
     Plug 'dhruvasagar/vim-table-mode',{'on':'TableModeToggle'}
     Plug 'ferrine/md-img-paste.vim'
 
-    "utility plug-in
-    Plug 'tpope/vim-commentary' "comment / uncomment code
-    Plug '907th/vim-auto-save' "to auto-save files
-    Plug 'MTDL9/vim-log-highlighting' "log highlight
-    Plug 'nvim-tree/nvim-web-devicons'
-    Plug 'stevearc/oil.nvim'
-    Plug 'nvim-lua/plenary.nvim'
-    Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
-    Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-    Plug 'chentoast/marks.nvim'
+    if has('nvim')
+        " ui, display
+        Plug 'olimorris/onedarkpro.nvim'
+        Plug 'romgrk/barbar.nvim'
+        " markdown plugin
+        Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for':['markdown','vim-plug','md']}
+        "utility plug-in
+        Plug 'nvim-tree/nvim-web-devicons'
+        Plug 'stevearc/oil.nvim'
+        Plug 'nvim-lua/plenary.nvim'
+        Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
+        Plug 'chentoast/marks.nvim'
+        Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+        "lsp
+        Plug 'neovim/nvim-lspconfig'
+        Plug 'hrsh7th/cmp-nvim-lsp'
+        Plug 'hrsh7th/cmp-buffer'
+        Plug 'hrsh7th/cmp-path'
+        Plug 'hrsh7th/cmp-cmdline'
+        Plug 'hrsh7th/nvim-cmp'
+        Plug 'saadparwaiz1/cmp_luasnip'
+        Plug 'L3MON4D3/LuaSnip' ", {'tag': 'v2.*', 'do': 'make install_jsregexp'}
+        Plug 'rafamadriz/friendly-snippets'
+        Plug 'windwp/nvim-autopairs'
+    else
+        " ui, display
+        Plug '/joshdick/onedark.vim'
+        Plug 'ap/vim-buftabline' "butify the tab line
+    endif
 
-    "lsp
-    Plug 'neovim/nvim-lspconfig'
-    Plug 'hrsh7th/cmp-nvim-lsp'
-    Plug 'hrsh7th/cmp-buffer'
-    Plug 'hrsh7th/cmp-path'
-    Plug 'hrsh7th/cmp-cmdline'
-    Plug 'hrsh7th/nvim-cmp'
-    Plug 'saadparwaiz1/cmp_luasnip'
-    Plug 'L3MON4D3/LuaSnip' ", {'tag': 'v2.*', 'do': 'make install_jsregexp'}
-    Plug 'rafamadriz/friendly-snippets'
-    Plug 'windwp/nvim-autopairs'
 endif
 
 call plug#end()
@@ -145,18 +151,19 @@ let g:qs_lazy_highlight = 0
 highlight QuickScopePrimary guifg='#afff5f' gui=underline ctermfg=155 cterm=underline
 highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline
 
-exe 'luafile '.g:WorkDir.'neovim/config/lua_univ_config.lua'
 
 if exists('g:vscode')
     exe 'source '.g:WorkDir.'neovim/config/vscode_config.vimrc'
     exe 'luafile '.g:WorkDir.'neovim/config/lua_vscode_config.lua'
+    exe 'luafile '.g:WorkDir.'neovim/config/lua_univ_config.lua'
 else
-    exe 'source '.g:WorkDir.'neovim/config/nvim_config.vimrc'
+    exe 'source '.g:WorkDir.'neovim/config/vim_config.vimrc'
     exe 'source '.g:WorkDir.'neovim/config/md.vimrc'
     exe 'source '.g:WorkDir.'neovim/config/python.vimrc'
     " exe 'source '.g:WorkDir.'neovim/config/mylog.vimrc'
-
-    exe 'luafile '.g:WorkDir.'neovim/config/lsp_config.lua'
-    exe 'luafile '.g:WorkDir.'neovim/config/lua_nvim_config.lua'
-    exe 'luafile '.g:WorkDir.'neovim/config/lua_lsp_config.lua'
+    if has("nvim")
+        exe 'luafile '.g:WorkDir.'neovim/config/lsp_config.lua'
+        exe 'luafile '.g:WorkDir.'neovim/config/lua_nvim_config.lua'
+        exe 'luafile '.g:WorkDir.'neovim/config/lua_univ_config.lua'
+    endif
 endif
