@@ -70,11 +70,11 @@ nnoremap gcc <Plug>VSCodeCommentaryLine
 "    "when": "activeEditorIsPinned"
 "},
 " {
-"     "key": "alt+h",
+"     "key": "ctrl+h",
 "     "command": "workbench.action.focusFirstEditorGroup"
 " },
 " {
-"     "key": "alt+l",
+"     "key": "ctrl+l",
 "     "command": "workbench.action.focusSecondEditorGroup"
 " }
 
