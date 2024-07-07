@@ -7,8 +7,6 @@ nnoremap <silent> ZX <Cmd>lua require('vscode').call('workbench.action.reopenClo
 " require register a-x into vscode shortcut
 nnoremap <silent> <a-,> <Cmd>lua require('vscode').call('workbench.action.moveEditorLeftInGroup')<CR>
 nnoremap <silent> <a-.> <Cmd>lua require('vscode').call('workbench.action.moveEditorRightInGroup')<CR>
-nnoremap <silent> <a-h> <Cmd>lua require('vscode').call('workbench.action.focusFirstEditorGroup')<CR>
-nnoremap <silent> <a-l> <Cmd>lua require('vscode').call('workbench.action.focusSecondEditorGroup')<CR>
 nnoremap <silent> <a-b> <Cmd>lua require('vscode').call('workbench.action.toggleSidebarVisibility')<CR>
 nnoremap <silent> <a-del> <Cmd>lua require('vscode').call('jupyter.interactive.clearAllCells')<CR>
 
@@ -71,6 +69,14 @@ nnoremap gcc <Plug>VSCodeCommentaryLine
 "    "command": "workbench.action.unpinEditor",
 "    "when": "activeEditorIsPinned"
 "},
+" {
+"     "key": "alt+h",
+"     "command": "workbench.action.focusFirstEditorGroup"
+" },
+" {
+"     "key": "alt+l",
+"     "command": "workbench.action.focusSecondEditorGroup"
+" }
 
 " [test] set vim.notify as default notify
 vim.notify = vscode.notify
