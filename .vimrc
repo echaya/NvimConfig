@@ -25,7 +25,6 @@ noremap Y y$
 nnoremap <leader>j J
 nnoremap <leader>l :redraw<CR>
 
-
 " insert lines without entering insert mode (allow count)
 noremap <silent> <leader>o :<C-u>call append(line("."),   repeat([""], v:count1))<CR>
 nnoremap <silent> <leader>O :<C-u>call append(line(".")-1, repeat([""], v:count1))<CR>
@@ -121,6 +120,7 @@ if !exists('g:vscode')
         Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
         Plug 'chentoast/marks.nvim'
         Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+
         "lsp
         Plug 'neovim/nvim-lspconfig'
         Plug 'hrsh7th/cmp-nvim-lsp'
