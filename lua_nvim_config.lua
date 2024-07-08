@@ -234,7 +234,7 @@ require("oil").setup({
     border = "rounded",
   },
 })
-vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+-- vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 
 require'marks'.setup {
   -- which builtin marks to show. default {}
