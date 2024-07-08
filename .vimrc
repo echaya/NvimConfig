@@ -153,11 +153,13 @@ let g:qs_lazy_highlight = 0
 highlight QuickScopePrimary guifg='#afff5f' gui=underline ctermfg=155 cterm=underline
 highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline
 
+if exists('g:vscode') || has("nvim")
+    exe 'luafile '.g:WorkDir.'neovim/config/lua_univ_config.lua'
+endif
 
 if exists('g:vscode')
     exe 'source '.g:WorkDir.'neovim/config/vscode_config.vimrc'
     exe 'luafile '.g:WorkDir.'neovim/config/lua_vscode_config.lua'
-    exe 'luafile '.g:WorkDir.'neovim/config/lua_univ_config.lua'
 else
     exe 'source '.g:WorkDir.'neovim/config/vim_config.vimrc'
     exe 'source '.g:WorkDir.'neovim/config/md.vimrc'
@@ -166,6 +168,6 @@ else
     if has("nvim")
         exe 'luafile '.g:WorkDir.'neovim/config/lsp_config.lua'
         exe 'luafile '.g:WorkDir.'neovim/config/lua_nvim_config.lua'
-        exe 'luafile '.g:WorkDir.'neovim/config/lua_univ_config.lua'
+        exe 'luafile '.g:WorkDir.'neovim/config/repl_config.lua'
     endif
 endif
