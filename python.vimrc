@@ -16,3 +16,26 @@ let g:python3_host_prog='c:\blp\bqnt\environments\bqnt-3\python'
 " autocmd Filetype python nnoremap <F11> <Esc>:REPLPDBS<Cr>
 " let g:sendtorepl_invoke_key = "<F8>" 
 " let g:repl_code_block_fences = {'python': '###', 'zsh': '# %%', 'markdown': '```'}
+
+function! OpenCell() abort
+    let cmd = 'normal *kV``j'
+    execute cmd
+endfunction
+nnoremap <leader>oc :call OpenCell()<cr>
+
+
+function! CloseCell() abort
+    let cmd = 'normal #jV``k'
+    execute cmd
+endfunction
+nnoremap <leader>cc :call CloseCell()<cr>
+
+function! BetweenCell() abort
+    call search('^###', 'W')
+    normal -
+    call search('^###', 'Wbs')
+    normal +
+    normal V''
+endfunction
+
+nnoremap <leader>bf :call BetweenCell()<cr>
