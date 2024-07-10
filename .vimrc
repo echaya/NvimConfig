@@ -121,8 +121,9 @@ if !exists('g:vscode')
         Plug 'chentoast/marks.nvim'
         Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
         Plug 'ahmedkhalf/project.nvim'
+        Plug 'nvim-tree/nvim-tree.lua'
 
-        "lsp
+        "lsp and programming
         Plug 'neovim/nvim-lspconfig'
         Plug 'hrsh7th/cmp-nvim-lsp'
         Plug 'hrsh7th/cmp-buffer'
@@ -135,6 +136,8 @@ if !exists('g:vscode')
         Plug 'windwp/nvim-autopairs'
         Plug 'Vigemus/iron.nvim'
         Plug 'stevearc/conform.nvim'
+        Plug 'kdheepak/lazygit.nvim'
+
     else
         " ui, display
         Plug 'joshdick/onedark.vim'
