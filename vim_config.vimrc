@@ -127,6 +127,9 @@ inoremap , ,<c-g>u
 inoremap . .<c-g>u
 inoremap ; ;<c-g>u
 
+" use <Esc> to escape terminal mode
+tnoremap <Esc> <C-\><C-n>
+
 " autosave on
 let g:auto_save = 1
 let g:auto_save_silent = 1
