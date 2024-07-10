@@ -7,7 +7,6 @@ nnoremap <silent> ZX <Cmd>lua require('vscode').call('workbench.action.reopenClo
 " require register a-x into vscode shortcut
 nnoremap <silent> <a-,> <Cmd>lua require('vscode').call('workbench.action.moveEditorLeftInGroup')<CR>
 nnoremap <silent> <a-.> <Cmd>lua require('vscode').call('workbench.action.moveEditorRightInGroup')<CR>
-nnoremap <silent> <a-b> <Cmd>lua require('vscode').call('workbench.action.toggleSidebarVisibility')<CR>
 nnoremap <silent> <a-del> <Cmd>lua require('vscode').call('jupyter.interactive.clearAllCells')<CR>
 
 " code navigation and execution
@@ -23,6 +22,11 @@ xnoremap <silent> <S-CR> <Cmd>lua require('vscode').call('jupyter.execSelectionI
 "    "args": "<S-CR>",
 "    "when": "editorTextFocus && neovim.init && neovim.mode == 'visual'"
 "},
+" {
+"     "key": "shift+enter",
+"     "command": "-jupyter.execSelectionInteractive",
+"     "when": "editorTextFocus && isWorkspaceTrusted && jupyter.ownsSelection && !findInputFocussed && !notebookEditorFocused && !replaceInputFocussed && editorLangId == 'python' && activeEditor != 'workbench.editor.interactive' neovim.mode != 'visual'"
+" },
 
 " format
 nnoremap <silent> == <Cmd>lua require('vscode').action('editor.action.formatDocument')<CR>
@@ -76,9 +80,10 @@ nnoremap gcc <Plug>VSCodeCommentaryLine
 " {
 "     "key": "ctrl+l",
 "     "command": "workbench.action.focusSecondEditorGroup"
-" }
+" },
+" {
+"     "key": "alt+b",
+"     "command": "workbench.action.toggleSidebarVisibility"
+" },
 
-" [test] set vim.notify as default notify
-vim.notify = vscode.notify
 
-au InsertEnter * :redraw<CR>
