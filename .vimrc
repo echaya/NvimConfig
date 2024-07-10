@@ -134,6 +134,7 @@ if !exists('g:vscode')
         Plug 'rafamadriz/friendly-snippets'
         Plug 'windwp/nvim-autopairs'
         Plug 'Vigemus/iron.nvim'
+        Plug 'stevearc/conform.nvim'
     else
         " ui, display
         Plug 'joshdick/onedark.vim'
