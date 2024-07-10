@@ -17,25 +17,41 @@ let g:python3_host_prog='c:\blp\bqnt\environments\bqnt-3\python'
 " let g:sendtorepl_invoke_key = "<F8>" 
 " let g:repl_code_block_fences = {'python': '###', 'zsh': '# %%', 'markdown': '```'}
 
+
+let g:CodeFence = "###"
+
+function! IsFence()
+    return getline('.') == g:CodeFence
+endfunction!
+
 function! OpenCell() abort
     let cmd = 'normal *kV``j'
     execute cmd
 endfunction
-nnoremap <leader>oc :call OpenCell()<cr>
 
-
-function! CloseCell() abort
-    let cmd = 'normal #jV``k'
-    execute cmd
-endfunction
-nnoremap <leader>cc :call CloseCell()<cr>
+" function! CloseCell() abort
+"     let cmd = 'normal #jV``k'
+"     execute cmd
+" endfunction
+" nnoremap <leader>cc :call CloseCell()<cr>
 
 function! BetweenCell() abort
-    call search('^###', 'W')
+    call search('^'.g:CodeFence, 'W')
     normal -
-    call search('^###', 'Wbs')
+    call search('^'.g:CodeFence, 'Wbs')
     normal +
     normal V''
 endfunction
 
-nnoremap <leader>bf :call BetweenCell()<cr>
+function! SelectCell() abort
+    if IsFence()
+        call OpenCell()
+    else
+        call BetweenCell()
+    endif
+endfunction
+
+nnoremap <leader>oc :call OpenCell()<cr>
+nnoremap <leader>bc :call BetweenCell()<cr>
+nnoremap <S-CR> :call SelectCell()<cr>
+
