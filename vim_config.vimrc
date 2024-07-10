@@ -35,7 +35,7 @@ set linebreak
 set showcmd
 set noshowmode
 set ruler
-set shellslash
+" set shellslash
 
 "coloring
 let g:lightline = {
@@ -191,5 +191,4 @@ function! ChooseBuffer(buffername)
 endfunction
 
 noremap <silent><leader>+ :call ChooseBuffer(g:temp_cb_name)<cr>Go<esc>p
-
 
