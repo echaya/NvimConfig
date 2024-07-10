@@ -66,6 +66,8 @@ sources = cmp.config.sources({
   -- { name = 'snippy' }, -- For snippy users.
 }, {
   { name = 'buffer' },
+}, {
+      {name = 'path' }
 })
 })
 
@@ -163,3 +165,5 @@ lsp.pyright.setup{
         },
     }
 }
+
+
