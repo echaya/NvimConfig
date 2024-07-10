@@ -9,6 +9,7 @@ vim.keymap.set('n', 'm;', builtin.marks, {})
 vim.keymap.set("n", "<leader>fo", builtin.oldfiles, {})
 vim.keymap.set("n", "<leader>fw", builtin.grep_string, {})
 
+
 -- You dont need to set any of these options. These are the default ones. Only
 -- the loading is important
 local telescope = require("telescope")
@@ -56,6 +57,8 @@ telescope.setup {
 -- -- To get fzf loaded and working with telescope, you need to call
 -- -- load_extension, somewhere after setup function:
 require('telescope').load_extension('fzf')
+require('telescope').load_extension('projects')
+vim.keymap.set("n", "<leader>pj",require'telescope'.extensions.projects.projects, {})
 
 require("oil").setup({
   -- Oil will take over directory buffers (e.g. `vim .` or `:e src/`)
@@ -288,4 +291,8 @@ require("onedarkpro").setup({
 })
 
 
-
+require("project_nvim").setup {
+    -- your configuration comes here
+    -- or leave it empty to use the default settings
+    -- refer to the configuration section below
+  }

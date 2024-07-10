@@ -120,6 +120,7 @@ if !exists('g:vscode')
         Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
         Plug 'chentoast/marks.nvim'
         Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+        Plug 'ahmedkhalf/project.nvim'
 
         "lsp
         Plug 'neovim/nvim-lspconfig'
