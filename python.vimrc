@@ -36,7 +36,9 @@ endfunction
 " nnoremap <leader>cc :call CloseCell()<cr>
 
 function! BetweenCell() abort
-    call search('^'.g:CodeFence, 'W')
+    if search('^'.g:CodeFence, 'W') == 0
+        normal Go###
+    endif
     normal -
     call search('^'.g:CodeFence, 'Wbs')
     normal +
@@ -51,7 +53,21 @@ function! SelectCell() abort
     endif
 endfunction
 
+function! SendCell() abort
+    call feedkeys("\<CR>")
+    call search('^'.g:CodeFence, 'W') 
+endfunction
+
 nnoremap <leader>oc :call OpenCell()<cr>
 nnoremap <leader>bc :call BetweenCell()<cr>
 nnoremap <S-CR> :call SelectCell()<cr>
+vmap <S-CR> <CR>/###<CR>
 
+augroup snippets
+    autocmd!
+    "edit link
+    autocmd Filetype python inoremap ;f ###<cr>
+    autocmd Filetype python inoremap ;cb .to_clipboard()
+    autocmd Filetype python inoremap ;ct .copy(True)
+    exe 'luafile '.g:WorkDir.'neovim/config/repl_config.lua'
+augroup END
