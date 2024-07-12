@@ -3,6 +3,11 @@ local iron = require("iron.core")
 
 iron.setup {
   config = {
+
+    -- Scope of the repl
+    -- By default it is one for the same `pwd`
+    -- Other options are `tab_based` and `singleton`
+    scope = require("iron.scope").path_based,
     -- Whether a repl should be discarded or not
     scratch_repl = true,
     -- Your repl definitions come here
@@ -22,16 +27,16 @@ iron.setup {
   -- You can set them here or manually add keymaps to the functions in iron.core
   keymaps = {
     send_motion = "<Leader>sm",
-    visual_send = "<S-Cr>",
-    send_file = "<Leader>sf",
     send_line = "<Leader>sl",
+    visual_send = "<CR>",
     send_until_cursor = "<Leader>su",
-    send_mark = "<Leader>sm",
-    mark_motion = "<Leader>mc",
-    mark_visual = "<Leader>mc",
-    remove_mark = "<Leader>md",
-    cr = "<Leader>s<cr>",
-    interrupt = "<Leader>s<Leader>",
+    -- send_file = "<Leader>sf",
+    -- send_mark = "<Leader>sm",
+    -- mark_motion = "<Leader>mc",
+    -- mark_visual = "<Leader>mc",
+    -- remove_mark = "<Leader>md",
+    cr = "<C-CR>",
+    interrupt = "<Leader>cc",
     exit = "<Leader>sq",
     clear = "<Leader>cl",
   },
@@ -44,10 +49,10 @@ iron.setup {
 }
 
 -- iron also has a list of commands, see :h iron-commands for all available commands
-vim.keymap.set('n', '<Leader>rs', '<cmd>IronRepl<cr>')
-vim.keymap.set('n', '<Leader>rr', '<cmd>IronRestart<cr>')
-vim.keymap.set('n', '<Leader>rf', '<cmd>IronFocus<cr>')
-vim.keymap.set('n', '<Leader>rh', '<cmd>IronHide<cr>')
+vim.keymap.set('n', '<Leader>rr', '<cmd>IronRepl<cr>',{silence=True})
+vim.keymap.set('n', '<Leader>rd', '<cmd>IronRestart<cr>',{silence=True})
+-- vim.keymap.set('n', '<Leader>rh', '<cmd>IronHide<cr>')
+-- vim.keymap.set('n', '<Leader>rf', '<cmd>IronFocus<cr>')
 
 
 require("conform").setup({

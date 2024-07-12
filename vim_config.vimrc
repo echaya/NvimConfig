@@ -35,7 +35,7 @@ set linebreak
 set showcmd
 set noshowmode
 set ruler
-" set shellslash
+set shellslash
 
 "coloring
 let g:lightline = {
@@ -113,12 +113,12 @@ noremap <A-l> <C-w><C-l>
 " noremap <silent> <C-n> :enew<CR>
 
 " adjust split window size
-nnoremap <down> :vertical resize-5<CR>
-nnoremap <up> :vertical resize+5<CR>
-" map <up> :res +5<CR>
-" map <down> :res -5<CR>
-" map <left> :vertical resize-5<CR>
-" map <right> :vertical resize+5<CR>
+" nnoremap <down> :vertical resize-5<CR>
+" nnoremap <up> :vertical resize+5<CR>
+map <up> :res +5<CR>
+map <down> :res -5<CR>
+map <left> :vertical resize-5<CR>
+map <right> :vertical resize+5<CR>
 
 " to overcome accidental c-u/w to delete the word/line
 inoremap <c-u> <c-g>u<c-u>
@@ -127,7 +127,7 @@ inoremap , ,<c-g>u
 inoremap . .<c-g>u
 inoremap ; ;<c-g>u
 
-" use <Esc> to escape terminal mode
+" use <leader><Esc> to escape terminal mode
 tnoremap <leader><Esc> <C-\><C-n>
 
 " autosave on

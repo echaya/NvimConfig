@@ -149,21 +149,25 @@ local custom_attach = function(client)
     vim.keymap.set('n','<leader>ai','<cmd>lua vim.lsp.buf.incoming_calls()<CR>')
     vim.keymap.set('n','<leader>ao','<cmd>lua vim.lsp.buf.outgoing_calls(){CR}')
 end
-
+ 
 local lsp = require('lspconfig')
-lsp.pyright.setup{
+lsp.basedpyright.setup{
     on_attach = custom_attach,
+    capabilities = capabilities,
     settings = {
-        psthon = {
+        basedpyright = {
             analysis = {
                 useLibraryCodeForTypes = true,
+                diagnosticMode = "off",
+                typeCheckingMode = "off" ,
                 diagnosticSeverityOverrides = {
                     reportUnusedVariable = "warning", -- or anything
+                    reportMissingImports = "warning",
+                    reportDuplicateImport= "warning",
                 },
                 typeCheckingMode = "off",
             },
         },
     }
 }
-
 
