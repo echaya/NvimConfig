@@ -174,5 +174,6 @@ else
     if has("nvim")
         exe 'luafile '.g:WorkDir.'neovim/config/lsp_config.lua'
         exe 'luafile '.g:WorkDir.'neovim/config/lua_nvim_config.lua'
+        exe 'luafile '.g:WorkDir.'neovim/config/repl_config.lua'
     endif
 endif
