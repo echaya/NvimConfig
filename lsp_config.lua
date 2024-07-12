@@ -132,8 +132,9 @@ cmp.event:on(
 )
 
 local custom_attach = function(client)
-    vim.keymap.set('n','gD','<cmd>lua vim.lsp.buf.declaration()<CR>')
+    -- vim.keymap.set('n','gD','<cmd>lua vim.lsp.buf.declaration()<CR>')
     vim.keymap.set('n','gd','<cmd>lua vim.lsp.buf.definition()<CR>')
+    vim.keymap.set('n', 'gD', ':vsplit | lua vim.lsp.buf.definition()<CR>')
     vim.keymap.set('n','gh','<cmd>lua vim.lsp.buf.hover()<CR>')
     vim.keymap.set('n','gr','<cmd>lua vim.lsp.buf.references()<CR>')
     vim.keymap.set('n','gs','<cmd>lua vim.lsp.buf.signature_help()<CR>')
@@ -165,7 +166,6 @@ lsp.basedpyright.setup{
                     reportMissingImports = "warning",
                     reportDuplicateImport= "warning",
                 },
-                typeCheckingMode = "off",
             },
         },
     }
