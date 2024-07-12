@@ -69,5 +69,4 @@ augroup snippets
     autocmd Filetype python inoremap ;f ###<cr>
     autocmd Filetype python inoremap ;cb .to_clipboard()
     autocmd Filetype python inoremap ;ct .copy(True)
-    exe 'luafile '.g:WorkDir.'neovim/config/repl_config.lua'
 augroup END
