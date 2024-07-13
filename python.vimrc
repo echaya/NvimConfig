@@ -63,15 +63,16 @@ function! SendCell() abort
     call search('^'.g:CodeFence, 'W') 
 endfunction
 
-nnoremap <leader>oc :call OpenCell()<cr>
-nnoremap <leader>bc :call BetweenCell()<cr>
-nnoremap <S-CR> :call SelectCell()<cr>
-vmap <S-CR> <CR>/###<CR>
-
 augroup snippets
     autocmd!
     "edit link
     autocmd Filetype python inoremap ;f ###<cr>
     autocmd Filetype python inoremap ;cb .to_clipboard()
     autocmd Filetype python inoremap ;ct .copy(True)
+    " autocmd Filetype python nnoremap <leader>oc :call OpenCell()<cr>
+    " autocmd Filetype python nnoremap <leader>bc :call BetweenCell()<cr>
+    autocmd Filetype python nnoremap <S-CR> :call SelectCell()<cr>
+    autocmd Filetype python vmap <S-CR> <CR>/###<CR> 
+    autocmd Filetype python nnoremap <silent> <leader>rr <cmd>IronRepl<cr>
+    autocmd Filetype python nnoremap <silent> <leader>rd <cmd>IronRestart<cr>
 augroup END
