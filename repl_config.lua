@@ -49,8 +49,8 @@ iron.setup {
 }
 
 -- iron also has a list of commands, see :h iron-commands for all available commands
-vim.keymap.set('n', '<Leader>rr', '<cmd>IronRepl<cr>',{silence=True})
-vim.keymap.set('n', '<Leader>rd', '<cmd>IronRestart<cr>',{silence=True})
+-- vim.keymap.set('n', '<Leader>rr', '<cmd>IronRepl<cr>',{silence=True})
+-- vim.keymap.set('n', '<Leader>rd', '<cmd>IronRestart<cr>',{silence=True})
 -- vim.keymap.set('n', '<Leader>rh', '<cmd>IronHide<cr>')
 -- vim.keymap.set('n', '<Leader>rf', '<cmd>IronFocus<cr>')
 
