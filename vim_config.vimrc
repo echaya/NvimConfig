@@ -37,7 +37,11 @@ set noshowmode
 set ruler
 set shellslash
 
+if has('gui_running')
+    set guioptions-=e
+endif
 "coloring and status line
+set showtabline=2
 let g:lightline = {
       \ 'colorscheme': 'one',
       \ 'active': {
@@ -78,8 +82,8 @@ else
 endif
 
 " Move to previous/next tabpage
-noremap <silent> <PageUp> :tabn<CR>
-noremap <silent> <PageDown> :tabp<CR>
+noremap <silent> <PageUp> :tabp<CR>
+noremap <silent> <PageDown> :tabn<CR>
 noremap <silent> <Del> :tabc<CR>
 noremap <silent> <Insert> :tabnew<CR>
 
