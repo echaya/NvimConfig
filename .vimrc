@@ -3,7 +3,11 @@
 "To find the working directory is exactly, use the command :echo stdpath('config') inside Neovim.
 "
 "set work directory for nvim
-let g:WorkDir = 'D:/Dropbox/'
+if isdirectory("c:/Users/echay/")
+    let g:WorkDir = 'D:/Dropbox/'
+else
+    let g:WorkDir = 'C:/tools/'
+endif
 "universal settings
 "change <leader> to SPACE
 nnoremap <SPACE> <Nop>
@@ -47,7 +51,7 @@ nnoremap <C-V> v
 :command! Wq wq
 :command! W w
 :command! Q q
-:command Bd bd
+:command! Qa qa
 
 " adding more character objectives
 for s:char in [',','/', '*', '%', '_', '`', '!','.']
