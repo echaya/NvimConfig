@@ -205,11 +205,6 @@ endfunction
 
 noremap <silent><leader>+ :call ChooseBuffer(g:temp_cb_name)<cr>Go<esc>p
 
-set updatetime=100
-let g:gitgutter_log=1
-let g:gitgutter_async=1
-let s:grep_available=1
-
 if !has('nvim')
     " hunk navigation and viewing using signify
     nnoremap gK :SignifyDiff<cr>
