@@ -52,7 +52,7 @@ catch
 endtry
 
 if has('nvim')
-    " Move to previous/next
+    " Move to previous/next tab
     nnoremap <silent>    J <Cmd>BufferPrevious<CR>
     nnoremap <silent>    K <Cmd>BufferNext<CR>
     " Re-order to previous/next
@@ -73,6 +73,12 @@ else
     let &t_SI = "\e[6 q"
     let &t_EI = "\e[2 q"
 endif
+
+" Move to previous/next tabpage
+noremap <silent> <PageUp> :tabn<CR>
+noremap <silent> <PageDown> :tabp<CR>
+noremap <silent> <Del> :tabc<CR>
+noremap <silent> <Insert> :tabnew<CR>
 
 " augroup ThemeSwitch
 "   autocmd!
@@ -115,10 +121,10 @@ noremap <A-l> <C-w><C-l>
 " adjust split window size
 " nnoremap <down> :vertical resize-5<CR>
 " nnoremap <up> :vertical resize+5<CR>
-map <up> :res +5<CR>
-map <down> :res -5<CR>
-map <left> :vertical resize-5<CR>
-map <right> :vertical resize+5<CR>
+nnoremap <up> :res +5<CR>
+nnoremap <down> :res -5<CR>
+nnoremap <left> :vertical resize-5<CR>
+nnoremap <right> :vertical resize+5<CR>
 
 " to overcome accidental c-u/w to delete the word/line
 inoremap <c-u> <c-g>u<c-u>
