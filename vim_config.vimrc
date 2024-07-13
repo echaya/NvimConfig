@@ -171,7 +171,7 @@ function! PowerClose(strong)
         endif
     endfor
 
-    if cnt <= 1
+    if (cnt <= 1 && expand('%') == "")
         let l:cmd = "q"
     else
         if has('nvim')
@@ -187,12 +187,8 @@ function! PowerClose(strong)
 
     if expand('%') == g:temp_cb_name
         let l:cmd = "call delete('".g:temp_cb_name."') | bd!"
-    else
-        if stridx(expand('%'),"HEAD~")
-            let l:cmd = "q"
-        endif
     endif
-    " echo cmd
+    " echo cmd." ".cnt." ".a:strong
     execute cmd
 
 endfunction
@@ -210,7 +206,7 @@ function! ChooseBuffer(buffername)
     endif
 endfunction
 
-noremap <silent><leader>+ :call ChooseBuffer(g:temp_cb_name)<cr>Go<esc>p
+noremap <silent><leader>p :call ChooseBuffer(g:temp_cb_name)<cr>Go<esc>p
 
 if !has('nvim')
     " hunk navigation and viewing using signify
