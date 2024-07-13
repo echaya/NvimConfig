@@ -180,6 +180,10 @@ function! PowerClose(strong)
 
     if expand('%') == g:temp_cb_name
         let l:cmd = "call delete('".g:temp_cb_name."') | bd!"
+    else
+        if stridx(expand('%'),"HEAD~")
+            let l:cmd = "q"
+        endif
     endif
     " echo cmd
     execute cmd
