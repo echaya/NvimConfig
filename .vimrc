@@ -112,7 +112,7 @@ if !exists('g:vscode')
         Plug 'olimorris/onedarkpro.nvim'
         Plug 'romgrk/barbar.nvim'
         " markdown plugin
-        Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for':['markdown','vim-plug','md']}
+        " Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for':['markdown','vim-plug','md']}
         "utility plug-in
         Plug 'nvim-lua/plenary.nvim'
         Plug 'nvim-tree/nvim-web-devicons'
