@@ -7,7 +7,7 @@ iron.setup {
     -- Scope of the repl
     -- By default it is one for the same `pwd`
     -- Other options are `tab_based` and `singleton`
-    scope = require("iron.scope").path_based,
+    scope = require("iron.scope").tab_based,
     -- Whether a repl should be discarded or not
     scratch_repl = true,
     -- Your repl definitions come here
@@ -27,18 +27,18 @@ iron.setup {
   -- You can set them here or manually add keymaps to the functions in iron.core
   keymaps = {
     send_motion = "<Leader>sm",
-    send_line = "<Leader>sl",
+    -- send_line = "<Leader>sl",
     visual_send = "<CR>",
-    send_until_cursor = "<Leader>su",
+    -- send_until_cursor = "<Leader>su",
     -- send_file = "<Leader>sf",
     -- send_mark = "<Leader>sm",
     -- mark_motion = "<Leader>mc",
     -- mark_visual = "<Leader>mc",
     -- remove_mark = "<Leader>md",
-    cr = "<C-CR>",
-    interrupt = "<Leader>cc",
-    exit = "<Leader>sq",
-    clear = "<Leader>cl",
+    cr = "<a-CR>",
+    interrupt = "<a-c>",
+    exit = "<Leader>rq",
+    -- clear = "<Leader>cl",
   },
   -- If the highlight is on, you can change how it looks
   -- For the available options, check nvim_set_hl
