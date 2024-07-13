@@ -107,7 +107,7 @@ if !exists('g:vscode')
     Plug 'dhruvasagar/vim-table-mode',{'on':'TableModeToggle'}
     Plug 'ferrine/md-img-paste.vim'
     " Plug 'airblade/vim-gitgutter'
-    Plug 'mhinz/vim-signify'
+    " Plug 'mhinz/vim-signify'
 
     if has('nvim')
         " ui, display
@@ -139,6 +139,7 @@ if !exists('g:vscode')
         Plug 'Vigemus/iron.nvim'
         Plug 'stevearc/conform.nvim'
         Plug 'kdheepak/lazygit.nvim'
+        Plug 'lewis6991/gitsigns.nvim'
 
     else
         " ui, display
