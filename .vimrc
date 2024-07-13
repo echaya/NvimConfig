@@ -106,8 +106,6 @@ if !exists('g:vscode')
     Plug 'vimwiki/vimwiki'
     Plug 'dhruvasagar/vim-table-mode',{'on':'TableModeToggle'}
     Plug 'ferrine/md-img-paste.vim'
-    " Plug 'airblade/vim-gitgutter'
-    " Plug 'mhinz/vim-signify'
 
     if has('nvim')
         " ui, display
@@ -116,9 +114,9 @@ if !exists('g:vscode')
         " markdown plugin
         Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for':['markdown','vim-plug','md']}
         "utility plug-in
+        Plug 'nvim-lua/plenary.nvim'
         Plug 'nvim-tree/nvim-web-devicons'
         Plug 'stevearc/oil.nvim'
-        Plug 'nvim-lua/plenary.nvim'
         Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
         Plug 'chentoast/marks.nvim'
         Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
@@ -145,6 +143,8 @@ if !exists('g:vscode')
         " ui, display
         Plug 'joshdick/onedark.vim'
         Plug 'ap/vim-buftabline' "butify the tab line
+        " Plug 'airblade/vim-gitgutter'
+        Plug 'mhinz/vim-signify'
     endif
 
 endif
