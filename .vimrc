@@ -96,6 +96,7 @@ if !exists('g:vscode')
 
     "vim and neovim specific plugins
     Plug 'itchyny/lightline.vim'
+    Plug 'itchyny/vim-gitbranch'
     Plug 'mhinz/vim-startify' "butify the vim start up page
     Plug 'tpope/vim-commentary' "comment / uncomment code
     Plug '907th/vim-auto-save' "to auto-save files

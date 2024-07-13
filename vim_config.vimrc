@@ -37,12 +37,15 @@ set noshowmode
 set ruler
 set shellslash
 
-"coloring
+"coloring and status line
 let g:lightline = {
       \ 'colorscheme': 'one',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             ['readonly', 'filename', 'modified' ] ]
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'gitbranch#name'
       \ },
       \ }
 try
