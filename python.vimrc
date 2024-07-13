@@ -25,7 +25,7 @@ function! IsFence()
 endfunction!
 
 function! OpenCell() abort
-    let cmd = 'normal *kV``j'
+    let cmd = 'normal *kV``jo'
     execute cmd
 endfunction
 
@@ -40,9 +40,14 @@ function! BetweenCell() abort
         normal Go###
     endif
     normal -
-    call search('^'.g:CodeFence, 'Wbs')
+    let Start = line(".")
+    let End = search('^'.g:CodeFence, 'Wbs')
     normal +
-    normal V''
+    if Start - End == 1
+        normal V
+    else
+        normal V''
+    endif
 endfunction
 
 function! SelectCell() abort
