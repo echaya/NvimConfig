@@ -167,8 +167,11 @@ function! PowerClose(strong)
     if cnt <= 1
         let l:cmd = "q"
     else
-        let l:cmd = "bd"
-        " let l:cmd = "BufferClose"
+        if has('nvim')
+            let l:cmd = "BufferClose"
+        else
+            let l:cmd = "bd"
+        endif
     endif
 
     if a:strong != 0
