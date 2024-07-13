@@ -210,7 +210,7 @@ if !has('nvim')
     " hunk navigation and viewing using signify
     nnoremap gK :SignifyDiff<cr>
     nnoremap gJ :SignifyHunkDiff<cr>
-    " nnoremap gZ :SignifyHunkUndo<cr>
+    nnoremap gZ :SignifyHunkUndo<cr>
     nmap gj <plug>(signify-next-hunk)
     nmap gk <plug>(signify-prev-hunk)
 endif
