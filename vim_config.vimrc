@@ -192,19 +192,16 @@ endfunction
 
 noremap <silent><leader>+ :call ChooseBuffer(g:temp_cb_name)<cr>Go<esc>p
 
-" This path probably won't work
+set updatetime=100
 let g:gitgutter_log=1
-let g:gitgutter_git_executable = 'C:\Program Files\Git\bin\git.exe'
-let s:log_file    = g:WorkDir.'gitgutter.log'
 let g:gitgutter_async=1
 let s:grep_available=1
 
-
-set updatetime=100
-nnoremap gK :SignifyDiff<cr>
-nnoremap gJ :SignifyHunkDiff<cr>
-nnoremap gZ :SignifyHunkUndo<cr>
-
-" hunk jumping
-nmap gj <plug>(signify-next-hunk)
-nmap gk <plug>(signify-prev-hunk)
+if !has('nvim')
+    " hunk navigation and viewing using signify
+    nnoremap gK :SignifyDiff<cr>
+    nnoremap gJ :SignifyHunkDiff<cr>
+    " nnoremap gZ :SignifyHunkUndo<cr>
+    nmap gj <plug>(signify-next-hunk)
+    nmap gk <plug>(signify-prev-hunk)
+endif

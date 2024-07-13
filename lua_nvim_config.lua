@@ -4,7 +4,6 @@ vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>ss', builtin.spell_suggest, {})
 -- vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
--- vim.keymap.set('n', '<leader>fm', builtin.marks, {})
 vim.keymap.set('n', 'm;', builtin.marks, {})
 vim.keymap.set("n", "<leader>fo", builtin.oldfiles, {})
 vim.keymap.set("n", "<leader>fw", builtin.grep_string, {})
@@ -358,11 +357,12 @@ require('gitsigns').setup{
     map('n', 'gJ', gitsigns.preview_hunk)
     -- map('n', '<leader>hb', function() gitsigns.blame_line{full=true} end)
     -- map('n', '<leader>tb', gitsigns.toggle_current_line_blame)
-    map('n', '<leader>hd', gitsigns.diffthis)
-    map('n', '<leader>hD', function() gitsigns.diffthis('~') end)
+    -- map('n', '<leader>hd', gitsigns.diffthis)
+    -- map('n', '<leader>hD', function() gitsigns.diffthis('~') end)
+    map('n', 'gK', '<cmd>lua require"gitsigns".diffthis("~")<CR>')
     map('n', '<leader>td', gitsigns.toggle_deleted)
 
     -- Text object
-    map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+    -- map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
   end
 }
