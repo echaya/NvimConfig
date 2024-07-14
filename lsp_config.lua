@@ -159,11 +159,11 @@ lsp.basedpyright.setup{
         basedpyright = {
             analysis = {
                 useLibraryCodeForTypes = true,
-                diagnosticMode = "off",
-                typeCheckingMode = "off" ,
+                diagnosticMode = "openFilesOnly",
+                typeCheckingMode = "standard" ,
                 diagnosticSeverityOverrides = {
-                    reportUnusedVariable = "warning", -- or anything
-                    reportMissingImports = "warning",
+                    reportUnusedVariable = "information", -- or anything
+                    reportUnusedFunction = "error",
                     reportDuplicateImport= "warning",
                 },
             },
