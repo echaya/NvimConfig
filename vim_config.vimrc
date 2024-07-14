@@ -14,8 +14,6 @@ if has('persistent_undo')
     set undolevels=10000
     set undofile
 endif
-"open the cursor at the last saved position
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 set splitbelow
 set splitright
@@ -57,6 +55,9 @@ try
 catch
     colorscheme industry
 endtry
+
+" use startify to handle session. Need to SSave a session to become persistent
+let g:startify_session_persistence = 1
 
 if has('nvim')
     " Move to previous/next tab
