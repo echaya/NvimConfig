@@ -95,6 +95,7 @@ call plug#begin(g:WorkDir..'Neovim/nvim-win64/share/nvim/vimfiles/plugged')
     Plug 'bps/vim-textobj-python' "ac,ic,af,if
     Plug 'ggandor/leap.nvim'
     Plug 'kylechui/nvim-surround'
+    Plug 'dstein64/vim-startuptime'
 
 if !exists('g:vscode')
 
