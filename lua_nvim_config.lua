@@ -36,6 +36,7 @@ telescope.setup {
             ["<C-S-d>"] = actions.delete_buffer,
             ["<C-s>"] = actions.cycle_previewers_next,
             ["<C-a>"] = actions.cycle_previewers_prev,
+            ["<C-h>"] = "which_key"
           },
         },
       },
@@ -69,8 +70,8 @@ require("oil").setup({
   columns = {
     "icon",
     -- "permissions",
-    -- "size",
-    -- "mtime",
+    "size",
+    "mtime",
   },
   -- Buffer-local options to use for oil buffers
   buf_options = {
@@ -297,8 +298,6 @@ require("project_nvim").setup({})
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
--- optionally enable 24-bit colour
-vim.opt.termguicolors = true
 -- OR setup with some options
 require("nvim-tree").setup({
   sort = {
