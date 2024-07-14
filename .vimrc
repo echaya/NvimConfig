@@ -146,6 +146,7 @@ if !exists('g:vscode')
         Plug 'stevearc/conform.nvim'
         Plug 'kdheepak/lazygit.nvim'
         Plug 'lewis6991/gitsigns.nvim'
+        Plug 'echasnovski/mini.hipatterns', { 'branch': 'stable' }
 
     else
         " ui, display
