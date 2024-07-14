@@ -147,6 +147,7 @@ if !exists('g:vscode')
         Plug 'kdheepak/lazygit.nvim'
         Plug 'lewis6991/gitsigns.nvim'
         Plug 'echasnovski/mini.hipatterns', { 'branch': 'stable' }
+        Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
     else
         " ui, display
