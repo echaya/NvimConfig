@@ -83,7 +83,7 @@ vnoremap ~ y:call setreg('', TwiddleCase(@"), getregtype(''))<CR>gv""Pgv
 
 
 call plug#begin(g:WorkDir..'Neovim/nvim-win64/share/nvim/vimfiles/plugged')
-      " universal plugins
+    " universal plugins
     Plug 'unblevable/quick-scope'
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-speeddating'
@@ -105,13 +105,13 @@ if !exists('g:vscode')
     Plug 'mhinz/vim-startify' "butify the vim start up page
     Plug 'tpope/vim-commentary' "comment / uncomment code
     Plug '907th/vim-auto-save' "to auto-save files
-    Plug 'MTDL9/vim-log-highlighting' "log highlight
-    " markdown plugin
+    " markdown & log plugins
     Plug 'godlygeek/tabular' "prerequisite for vim-markdown
     Plug 'plasticboy/vim-markdown'
     Plug 'vimwiki/vimwiki'
     Plug 'dhruvasagar/vim-table-mode',{'on':'TableModeToggle'}
     Plug 'ferrine/md-img-paste.vim'
+    Plug 'MTDL9/vim-log-highlighting' "log highlight
 
     if has('nvim')
         " ui, display
@@ -119,7 +119,7 @@ if !exists('g:vscode')
         Plug 'romgrk/barbar.nvim'
         " markdown plugin
         " Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for':['markdown','vim-plug','md']}
-        "utility plug-in
+        "utility plugins
         Plug 'nvim-lua/plenary.nvim'
         Plug 'nvim-tree/nvim-web-devicons'
         Plug 'stevearc/oil.nvim'
@@ -140,6 +140,8 @@ if !exists('g:vscode')
         Plug 'L3MON4D3/LuaSnip' ", {'tag': 'v2.*', 'do': 'make install_jsregexp'}
         Plug 'rafamadriz/friendly-snippets'
         Plug 'windwp/nvim-autopairs'
+
+        "programming tools
         Plug 'Vigemus/iron.nvim'
         Plug 'stevearc/conform.nvim'
         Plug 'kdheepak/lazygit.nvim'
