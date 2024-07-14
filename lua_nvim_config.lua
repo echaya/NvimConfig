@@ -53,7 +53,7 @@ telescope.setup {
       override_file_sorter = true,     -- override the file sorter
       case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
                                        -- the default case_mode is "smart_case"
-    }
+    },
   }
 }
 -- -- To get fzf loaded and working with telescope, you need to call
@@ -288,9 +288,12 @@ require'marks'.setup {
 require("onedarkpro").setup({
     options = {
         cursorline = true
-    }
+    },
+     highlights = {
+         variable = {},
+         ["@variable"] = {},
+      }
 })
-vim.cmd("hi MatchParen cterm=none ctermbg=blue ctermfg=black guibg=#c678dd guifg=#282c34 ")
 
 require("project_nvim").setup({})
 
@@ -387,6 +390,7 @@ hipatterns.setup({
     hex_color = hipatterns.gen_highlighter.hex_color(),
   },
 })
+
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all" (the listed parsers MUST always be installed)
   ensure_installed = {"lua", "vim", "vimdoc", "query", "markdown", "markdown_inline" },
@@ -411,7 +415,7 @@ require'nvim-treesitter.configs'.setup {
     -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
     -- the name of the parser)
     -- list of language that will be disabled
-    disable = { "c", "rust", "python" },
+    -- disable = { "c", "rust", "python" },
     -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
     disable = function(lang, buf)
         local max_filesize = 100 * 1024 -- 100 KB
