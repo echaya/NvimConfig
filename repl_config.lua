@@ -7,7 +7,7 @@ iron.setup {
     -- Scope of the repl
     -- By default it is one for the same `pwd`
     -- Other options are `tab_based` and `singleton`
-    scope = require("iron.scope").tab_based,
+    scope = require("iron.scope").path_based,
     -- Whether a repl should be discarded or not
     scratch_repl = true,
     -- Your repl definitions come here
