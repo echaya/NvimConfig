@@ -151,7 +151,7 @@ let g:auto_save_silent = 1
 :command! LV source $MYVIMRC
 :command! EV e $MYVIMRC
 " set cd to current dir
-nnoremap <leader>cd :lcd %:h<CR>
+nnoremap <leader>cd :lcd %:h<CR>:cd<CR>
 " edit as dos, to remove ^m
 :command DOS e ++ff=dos | set ff=unix | w
 
