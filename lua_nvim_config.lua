@@ -289,7 +289,7 @@ require("onedarkpro").setup({
         cursorline = true
     }
 })
-vim.cmd("hi MatchParen cterm=none ctermbg=blue ctermfg=yellow guibg=#c678dd guifg=yellow")
+vim.cmd("hi MatchParen cterm=none ctermbg=blue ctermfg=black guibg=#c678dd guifg=#282c34 ")
 
 require("project_nvim").setup({})
 
