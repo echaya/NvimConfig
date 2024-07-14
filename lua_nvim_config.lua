@@ -3,10 +3,12 @@ vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>ss', builtin.spell_suggest, {})
--- vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
-vim.keymap.set('n', 'm;', builtin.marks, {})
+-- vim.keymap.set('n', '<leader>cc', builtin.commands, {})
+vim.keymap.set('n', '<leader>"', builtin.registers, {})
+vim.keymap.set('n', '<leader>`', builtin.marks, {})
 vim.keymap.set("n", "<leader>fo", builtin.oldfiles, {})
 vim.keymap.set("n", "<leader>fw", builtin.grep_string, {})
+vim.keymap.set("n", "<leader>fp",require'telescope'.extensions.projects.projects, {})
 
 
 -- You dont need to set any of these options. These are the default ones. Only
@@ -57,7 +59,6 @@ telescope.setup {
 -- -- load_extension, somewhere after setup function:
 require('telescope').load_extension('fzf')
 require('telescope').load_extension('projects')
-vim.keymap.set("n", "<leader>pj",require'telescope'.extensions.projects.projects, {})
 
 require("oil").setup({
   -- Oil will take over directory buffers (e.g. `vim .` or `:e src/`)
