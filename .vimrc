@@ -109,3 +109,25 @@ else
         exe 'luafile '.g:WorkDir.'neovim/config/repl_config.lua'
     endif
 endif
+
+" colorscheme and highlight
+try
+    colorscheme onedark
+catch
+    colorscheme industry
+endtry
+
+set termguicolors
+hi Cursor guifg=#282c34 guibg=#abb2bf
+hi TermCursor guifg=black guibg=white
+hi MatchParen cterm=none ctermbg=blue ctermfg=black guibg=#c678dd guifg=#282c34 
+highlight QuickScopePrimary guifg='#afff5f' gui=underline ctermfg=155 cterm=underline
+highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline
+
+highlight clear SpellCap 
+highlight clear SpellBad 
+highlight clear SpellRare
+highlight clear SpellLocal
+highlight SpellBad gui=undercurl cterm=undercurl guifg=pink ctermfg=210
+highlight SpellRare gui=underline guifg='#63D6FD' ctermfg=81 cterm=underline
+highlight SpellLocal gui=undercurl cterm=undercurl guifg='#FFFEE2' ctermfg=226
