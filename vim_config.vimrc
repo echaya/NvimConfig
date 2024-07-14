@@ -37,7 +37,11 @@ set shellslash
 
 if has('gui_running')
     set guioptions-=e
+else
+    let &t_SI = "\e[6 q"
+    let &t_EI = "\e[2 q"
 endif
+
 "coloring and status line
 set showtabline=2
 let g:lightline = {
@@ -55,6 +59,10 @@ try
 catch
     colorscheme industry
 endtry
+
+set termguicolors
+hi Cursor guifg=#282c34 guibg=#abb2bf
+hi TermCursor guifg=black guibg=white
 
 " use startify to handle session. Need to SSave a session to become persistent
 let g:startify_session_persistence = 1
@@ -75,13 +83,9 @@ if has('nvim')
     nnoremap <silent> <C-P>    <Cmd>BufferPick<CR>
     " Pin/unpin buffer
     nnoremap <silent>    <A-p> <Cmd>BufferPin<CR>
-
-    set termguicolors
 else
     noremap <silent> J :bp<CR>
     noremap <silent> K :bn<CR>
-    let &t_SI = "\e[6 q"
-    let &t_EI = "\e[2 q"
 endif
 
 " Move to previous/next tabpage
