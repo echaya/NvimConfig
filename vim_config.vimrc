@@ -54,15 +54,6 @@ let g:lightline = {
       \   'gitbranch': 'gitbranch#name'
       \ },
       \ }
-try
-    colorscheme onedark
-catch
-    colorscheme industry
-endtry
-
-set termguicolors
-hi Cursor guifg=#282c34 guibg=#abb2bf
-hi TermCursor guifg=black guibg=white
 
 " use startify to handle session. Need to SSave a session to become persistent
 let g:startify_session_persistence = 1
@@ -93,12 +84,6 @@ noremap <silent> <PageUp> :tabp<CR>
 noremap <silent> <PageDown> :tabn<CR>
 noremap <silent> <Del> :tabc<CR>
 noremap <silent> <Insert> :tabnew<CR>
-
-" augroup ThemeSwitch
-"   autocmd!
-"     autocmd BufEnter * colorscheme onedark
-"     autocmd BufEnter *.md colorscheme pencil
-" augroup END
 
 augroup CursorLine
     au!
