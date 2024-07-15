@@ -146,6 +146,9 @@ let g:auto_save_silent = 1
 nnoremap <leader>cd :lcd %:h<CR>:cd<CR>
 " edit as dos, to remove ^m
 :command DOS e ++ff=dos | set ff=unix | w
+" duplicate current window in Vertical
+:command V vsplit
+
 
 "Plug management
 let g:plug_window = 'vertical topleft new'
