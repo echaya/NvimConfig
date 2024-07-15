@@ -14,6 +14,7 @@ if has('persistent_undo')
     set undolevels=10000
     set undofile
 endif
+set updatetime=100
 
 set splitbelow
 set splitright
