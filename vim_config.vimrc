@@ -134,6 +134,7 @@ inoremap ; ;<c-g>u
 
 " use <leader><Esc> to escape terminal mode
 tnoremap <leader><Esc> <C-\><C-n>
+tnoremap jk <C-\><C-n>
 
 " autosave on
 let g:auto_save = 1
