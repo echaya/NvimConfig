@@ -31,6 +31,8 @@ call plug#begin(g:WorkDir..'Neovim/nvim-win64/share/nvim/vimfiles/plugged')
 if !exists('g:vscode')
 
     "vim and neovim specific plugins
+    Plug 'sainnhe/everforest'
+    Plug 'sainnhe/sonokai'
     Plug 'itchyny/lightline.vim'
     Plug 'itchyny/vim-gitbranch'
     Plug 'mhinz/vim-startify' "butify the vim start up page
@@ -70,13 +72,13 @@ if !exists('g:vscode')
         Plug 'saadparwaiz1/cmp_luasnip'
         Plug 'L3MON4D3/LuaSnip' ", {'tag': 'v2.*', 'do': 'make install_jsregexp'}
         Plug 'rafamadriz/friendly-snippets'
-        Plug 'windwp/nvim-autopairs'
 
         "programming tools
         Plug 'Vigemus/iron.nvim'
         Plug 'stevearc/conform.nvim'
         Plug 'kdheepak/lazygit.nvim'
         Plug 'lewis6991/gitsigns.nvim'
+        Plug 'windwp/nvim-autopairs'
         Plug 'echasnovski/mini.hipatterns', { 'branch': 'stable' }
         Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
@@ -126,8 +128,8 @@ highlight QuickScopePrimary guifg='#afff5f' gui=underline ctermfg=155 cterm=unde
 highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline
 
 " colorschme TODO, FIXME, HACK, NOTE
-highlight MiniHipatternsFixme guibg=#e06c75 guifg=#282c34
 highlight MiniHipatternsTodo guibg=#d19a66 guifg=#282c34
+highlight MiniHipatternsFixme guibg=#e06c75 guifg=#282c34
 highlight MiniHipatternsHack guibg=#c678dd guifg=#282c34
 highlight MiniHipatternsNote guibg=#98c379 guifg=#282c34
 
