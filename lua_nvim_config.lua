@@ -290,8 +290,9 @@ require("onedarkpro").setup({
         cursorline = true
     },
      highlights = {
-         variable = {},
+         -- variable = {},
          ["@variable"] = {},
+         ["@variable.member"] = {},
       }
 })
 
