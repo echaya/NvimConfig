@@ -1,4 +1,4 @@
-"NOTICE: one need to create a file under vnim working directory and source this file. e.g.,
+"NOTICE: one need to create a file under nvim working directory and source this file. e.g.,
 "source d:\vnim\init.vim
 "To find the working directory is exactly, use the command :echo stdpath('config') inside Neovim.
 "
@@ -9,7 +9,8 @@ else
     let g:WorkDir = 'C:/tools/'
 endif
 
-"source plug.vim manually from plugged folder
+"source plug.vim manually from plugged folder. It should normally sit in the
+" nvim working dir autoload folder
 exe 'source '.g:WorkDir.'Neovim/nvim-win64/share/nvim/vimfiles/plugged/plug.vim'
 
 call plug#begin(g:WorkDir..'Neovim/nvim-win64/share/nvim/vimfiles/plugged')
@@ -120,11 +121,16 @@ endtry
 set termguicolors
 hi Cursor guifg=#282c34 guibg=#abb2bf
 hi TermCursor guifg=black guibg=white
-hi MatchParen cterm=none ctermbg=blue ctermfg=black guibg=#c678dd guifg=#282c34 
+hi MatchParen guibg=#c678dd guifg=#282c34
 highlight QuickScopePrimary guifg='#afff5f' gui=underline ctermfg=155 cterm=underline
 highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline
 
-highlight clear SpellCap 
+" colorschme TODO, FIXME, HACK, NOTE
+highlight MiniHipatternsFixme guibg=#e06c75 guifg=#282c34
+highlight MiniHipatternsTodo guibg=#d19a66 guifg=#282c34
+highlight MiniHipatternsHack guibg=#c678dd guifg=#282c34
+highlight MiniHipatternsNote guibg=#98c379 guifg=#282c34
+
 highlight clear SpellBad 
 highlight clear SpellRare
 highlight clear SpellLocal
