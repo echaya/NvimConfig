@@ -59,7 +59,12 @@ augroup markdownSpell
 augroup END
 
 " vim wiki settings
-let g:vimwiki_list = [{'path': g:WorkDir.'markdown\', 'syntax': 'markdown','ext': '.md'}]
+if isdirectory("c:/Users/echay/")
+    let g:MDir = g:WorkDir.'markdown\\'
+else
+    let g:MDir = 'c:\\Users\\fzhang141\\OneDrive - Bloomberg LP\\Notes\\'
+endif
+let g:vimwiki_list = [{'path': g:MDir, 'syntax': 'markdown','ext': '.md'}]
 let g:vimwiki_ext2syntax = {'.md': 'markdown', '.markdown': 'markdown'}
 let g:vimwiki_key_mappings =
 \ {
