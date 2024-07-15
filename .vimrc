@@ -62,7 +62,7 @@ if !exists('g:vscode')
         Plug 'ahmedkhalf/project.nvim'
         Plug 'nvim-tree/nvim-tree.lua'
 
-        "lsp and programming
+        "lsp and snippets
         Plug 'neovim/nvim-lspconfig'
         Plug 'hrsh7th/cmp-nvim-lsp'
         Plug 'hrsh7th/cmp-buffer'
@@ -121,13 +121,11 @@ catch
 endtry
 
 set termguicolors
-hi Cursor guifg=#282c34 guibg=#abb2bf
-hi TermCursor guifg=black guibg=white
 hi MatchParen guibg=#c678dd guifg=#282c34
 highlight QuickScopePrimary guifg='#afff5f' gui=underline ctermfg=155 cterm=underline
 highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline
 
-" colorschme TODO, FIXME, HACK, NOTE
+" colorschme TODO, FIXME, HACK, NOTE 
 highlight MiniHipatternsTodo guibg=#d19a66 guifg=#282c34
 highlight MiniHipatternsFixme guibg=#e06c75 guifg=#282c34
 highlight MiniHipatternsHack guibg=#c678dd guifg=#282c34
