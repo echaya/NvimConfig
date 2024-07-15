@@ -30,8 +30,3 @@ map ZQ removeTab
 map ZZ removeTab
 map ZX restoreTab
 ```
-### conda activation
-* add the following into a bat file `path` can access. E.g., `zz.bat`
-```
-c:\\blp\\bqnt\\bootstrapper\\condabin\\activate.bat c:\\blp\\bqnt\\environments\\bqnt-3 && nvim-qt | taskkill /F /IM cmd.exe
-```
