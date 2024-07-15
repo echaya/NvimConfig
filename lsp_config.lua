@@ -131,20 +131,7 @@ cmp.event:on(
   cmp_autopairs.on_confirm_done()
 )
 
--- don't know how to use it
-function lsp_highlight_document(client)
-    if client.resolved_capabilities.document_highlight then
-        vim.api.nvim_exec([[
-            augroup lsp_document_highlight
-                autocmd! * <buffer>
-                autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-                autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-            augroup END
-            ]],
-        false)
-    end
-end
-
+vim.o.updatetime = 250
 local custom_attach = function(client)
     -- vim.keymap.set('n','gD','<cmd>lua vim.lsp.buf.declaration()<CR>')
     vim.keymap.set('n','gd','<cmd>lua vim.lsp.buf.definition()<CR>')
@@ -164,6 +151,16 @@ local custom_attach = function(client)
     -- vim.keymap.set('n','<leader>=', '<cmd>lua vim.lsp.buf.formatting()<CR>')
     -- vim.keymap.set('n','<leader>ai','<cmd>lua vim.lsp.buf.incoming_calls()<CR>')
     -- vim.keymap.set('n','<F4>',':call lua.lsp_highlight_document()<CR>') --??
+    if client.resolved_capabilities.document_highlight then
+        vim.api.nvim_exec([[
+            augroup lsp_document_highlight
+                autocmd! * <buffer>
+                autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+                autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+            augroup END
+            ]],
+        false)
+    end
 end
  
 local lsp = require('lspconfig')
