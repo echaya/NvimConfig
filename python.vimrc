@@ -69,6 +69,7 @@ augroup snippets
     autocmd Filetype python inoremap ;f ###<cr>
     autocmd Filetype python inoremap ;cb .to_clipboard()
     autocmd Filetype python inoremap ;ct .copy(True)
+    autocmd Filetype python inoremap ;it ,inplace=True
     " autocmd Filetype python nnoremap <leader>oc :call OpenCell()<cr>
     " autocmd Filetype python nnoremap <leader>bc :call BetweenCell()<cr>
     autocmd Filetype python nnoremap <S-CR> :call SelectCell()<cr>
