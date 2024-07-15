@@ -131,24 +131,39 @@ cmp.event:on(
   cmp_autopairs.on_confirm_done()
 )
 
+-- don't know how to use it
+function lsp_highlight_document(client)
+    if client.resolved_capabilities.document_highlight then
+        vim.api.nvim_exec([[
+            augroup lsp_document_highlight
+                autocmd! * <buffer>
+                autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+                autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+            augroup END
+            ]],
+        false)
+    end
+end
+
 local custom_attach = function(client)
     -- vim.keymap.set('n','gD','<cmd>lua vim.lsp.buf.declaration()<CR>')
     vim.keymap.set('n','gd','<cmd>lua vim.lsp.buf.definition()<CR>')
     vim.keymap.set('n', 'gD', ':vsplit | lua vim.lsp.buf.definition()<CR>')
     vim.keymap.set('n','gh','<cmd>lua vim.lsp.buf.hover()<CR>')
     vim.keymap.set('n','gr','<cmd>lua vim.lsp.buf.references()<CR>')
-    vim.keymap.set('n','gs','<cmd>lua vim.lsp.buf.signature_help()<CR>')
-    vim.keymap.set('n','gi','<cmd>lua vim.lsp.buf.implementation()<CR>')
-    vim.keymap.set('n','gt','<cmd>lua vim.lsp.buf.type_definition()<CR>')
-    vim.keymap.set('n','<leader>gw','<cmd>lua vim.lsp.buf.document_symbol()<CR>')
-    vim.keymap.set('n','<leader>gW','<cmd>lua vim.lsp.buf.workspace_symbol()<CR>')
-    vim.keymap.set('n','<leader>ah','<cmd>lua vim.lsp.buf.hover()<CR>')
-    vim.keymap.set('n','<leader>af','<cmd>lua vim.lsp.buf.code_action()<CR>')
-    vim.keymap.set('n','<leader>ee','<cmd>lua vim.lsp.util.show_line_diagnostics()<CR>')
-    vim.keymap.set('n','<leader>ar','<cmd>lua vim.lsp.buf.rename()<CR>')
-    vim.keymap.set('n','<leader>=', '<cmd>lua vim.lsp.buf.formatting()<CR>')
-    vim.keymap.set('n','<leader>ai','<cmd>lua vim.lsp.buf.incoming_calls()<CR>')
-    vim.keymap.set('n','<leader>ao','<cmd>lua vim.lsp.buf.outgoing_calls(){CR}')
+    -- vim.keymap.set('n','gs','<cmd>lua vim.lsp.buf.signature_help()<CR>')
+    -- vim.keymap.set('n','gi','<cmd>lua vim.lsp.buf.implementation()<CR>')
+    -- vim.keymap.set('n','gt','<cmd>lua vim.lsp.buf.type_definition()<CR>')
+    -- vim.keymap.set('n','<leader>gw','<cmd>lua vim.lsp.buf.document_symbol()<CR>')
+    -- vim.keymap.set('n','<leader>gW','<cmd>lua vim.lsp.buf.workspace_symbol()<CR>')
+    -- vim.keymap.set('n','<leader>ah','<cmd>lua vim.lsp.buf.hover()<CR>')
+    -- vim.keymap.set('n','<leader>af','<cmd>lua vim.lsp.buf.code_action()<CR>')
+    -- vim.keymap.set('n','<leader>ee','<cmd>lua vim.lsp.util.show_line_diagnostics()<CR>')
+    vim.keymap.set('n','<F2>','<cmd>lua vim.lsp.buf.rename()<CR>')
+    vim.keymap.set('n','<F3>','<cmd>lua vim.diagnostic.open_float()<CR>')
+    -- vim.keymap.set('n','<leader>=', '<cmd>lua vim.lsp.buf.formatting()<CR>')
+    -- vim.keymap.set('n','<leader>ai','<cmd>lua vim.lsp.buf.incoming_calls()<CR>')
+    -- vim.keymap.set('n','<F4>',':call lua.lsp_highlight_document()<CR>') --??
 end
  
 local lsp = require('lspconfig')
@@ -160,7 +175,7 @@ lsp.basedpyright.setup{
             analysis = {
                 useLibraryCodeForTypes = true,
                 diagnosticMode = "openFilesOnly",
-                typeCheckingMode = "standard" ,
+                typeCheckingMode = "strict" ,
                 diagnosticSeverityOverrides = {
                     reportUnusedVariable = "information", -- or anything
                     reportUnusedFunction = "information",
@@ -172,4 +187,20 @@ lsp.basedpyright.setup{
         },
     }
 }
+
+vim.diagnostic.config({
+	virtual_text = false,
+	signs = true,
+	float = {
+		border = "single",
+		format = function(diagnostic)
+			return string.format(
+				"%s (%s) [%s]",
+				diagnostic.message,
+				diagnostic.source,
+				diagnostic.code or diagnostic.user_data.lsp.code
+			)
+		end,
+	},
+})
 
