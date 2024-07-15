@@ -163,8 +163,10 @@ lsp.basedpyright.setup{
                 typeCheckingMode = "standard" ,
                 diagnosticSeverityOverrides = {
                     reportUnusedVariable = "information", -- or anything
-                    reportUnusedFunction = "error",
+                    reportUnusedFunction = "information",
                     reportDuplicateImport= "warning",
+                    reportAttributeAccessIssue = "none",
+                    reportOptionalSubscript="none"
                 },
             },
         },
