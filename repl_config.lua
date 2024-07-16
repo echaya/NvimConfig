@@ -29,15 +29,15 @@ iron.setup {
     send_motion = "<Leader>sm",
     -- send_line = "<Leader>sl",
     visual_send = "<CR>",
-    -- send_until_cursor = "<Leader>su",
+    send_until_cursor = "<Leader>su",
     -- send_file = "<Leader>sf",
     -- send_mark = "<Leader>sm",
     -- mark_motion = "<Leader>mc",
     -- mark_visual = "<Leader>mc",
     -- remove_mark = "<Leader>md",
-    cr = "<a-CR>",
-    interrupt = "<a-c>",
-    exit = "<Leader>rq",
+    cr = "<C-CR>",
+    interrupt = "<C-I>",
+    -- exit = "<Leader>rq",
     -- clear = "<Leader>cl",
   },
   -- If the highlight is on, you can change how it looks
@@ -48,7 +48,7 @@ iron.setup {
   ignore_blank_lines = true, -- ignore blank lines when sending visual select lines
 }
 
--- iron also has a list of commands, see :h iron-commands for all available commands
+-- iron also has a list of commands, see :h iron-commands for all commands, handled in python.vimrc
 -- vim.keymap.set('n', '<Leader>rr', '<cmd>IronRepl<cr>',{silence=True})
 -- vim.keymap.set('n', '<Leader>rd', '<cmd>IronRestart<cr>',{silence=True})
 -- vim.keymap.set('n', '<Leader>rh', '<cmd>IronHide<cr>')
