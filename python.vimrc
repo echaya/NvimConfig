@@ -73,7 +73,7 @@ augroup snippets
     " autocmd Filetype python nnoremap <leader>oc :call OpenCell()<cr>
     " autocmd Filetype python nnoremap <leader>bc :call BetweenCell()<cr>
     autocmd Filetype python nnoremap <S-CR> :call SelectCell()<cr>
-    autocmd Filetype python vmap <S-CR> <CR>/###<CR> 
+    autocmd Filetype python vmap <S-CR> <CR>/###<CR>
     autocmd Filetype python nnoremap <silent> <leader>rr <cmd>IronRepl<cr>
     autocmd Filetype python nnoremap <silent> <leader>rd <cmd>IronRestart<cr>
 augroup END

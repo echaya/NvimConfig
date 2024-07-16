@@ -31,7 +31,6 @@ call plug#begin(g:WorkDir..'Neovim/nvim-win64/share/nvim/vimfiles/plugged')
 if !exists('g:vscode')
 
     "vim and neovim specific plugins
-    Plug 'sainnhe/everforest'
     Plug 'sainnhe/sonokai'
     Plug 'itchyny/lightline.vim'
     Plug 'itchyny/vim-gitbranch'
@@ -79,8 +78,10 @@ if !exists('g:vscode')
         Plug 'kdheepak/lazygit.nvim'
         Plug 'lewis6991/gitsigns.nvim'
         Plug 'windwp/nvim-autopairs'
-        Plug 'echasnovski/mini.hipatterns', { 'branch': 'stable' }
+        Plug 'echasnovski/mini.hipatterns'
         Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+        Plug 'RRethy/vim-illuminate'
+
 
     else
         " ui, display
