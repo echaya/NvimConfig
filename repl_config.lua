@@ -12,7 +12,10 @@ iron.setup {
     scratch_repl = true,
     -- Your repl definitions come here
     repl_definition = {
-        python = require("iron.fts.python").ipython,
+        python = {
+            format = require("iron.fts.common").bracketed_paste,
+            command = { "ipython", "--no-autoindent" },
+},
       sh = {
         -- Can be a table or a function that
         -- returns a table (see below)
@@ -37,7 +40,7 @@ iron.setup {
     -- remove_mark = "<Leader>md",
     cr = "<C-CR>",
     interrupt = "<C-I>",
-    -- exit = "<Leader>rq",
+    exit = "<Leader>rq",
     -- clear = "<Leader>cl",
   },
   -- If the highlight is on, you can change how it looks
