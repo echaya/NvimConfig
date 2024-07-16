@@ -31,7 +31,6 @@ call plug#begin(g:WorkDir..'Neovim/nvim-win64/share/nvim/vimfiles/plugged')
 if !exists('g:vscode')
 
     "vim and neovim specific plugins
-    Plug 'sainnhe/sonokai'
     Plug 'itchyny/lightline.vim'
     Plug 'itchyny/vim-gitbranch'
     Plug 'mhinz/vim-startify' "butify the vim start up page
@@ -87,7 +86,6 @@ if !exists('g:vscode')
         " ui, display
         Plug 'joshdick/onedark.vim'
         Plug 'ap/vim-buftabline' "butify the tab line
-        " Plug 'airblade/vim-gitgutter'
         Plug 'mhinz/vim-signify'
     endif
 
@@ -118,10 +116,13 @@ endif
 try
     colorscheme onedark
 catch
-    colorscheme industry
+    colorscheme habamax
 endtry
 
-set termguicolors
+if has('termguicolors')
+    set termguicolors
+endif
+
 hi MatchParen guibg=#c678dd guifg=#282c34
 highlight QuickScopePrimary guifg='#afff5f' gui=underline ctermfg=155 cterm=underline
 highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline
