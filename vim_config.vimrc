@@ -72,9 +72,9 @@ if has('nvim')
     " nnoremap <silent>    <A-x> <Cmd>BufferClose<CR>
     nnoremap <silent>    ZX <Cmd>BufferRestore<CR>
     " Magic buffer-picking mode
-    nnoremap <silent> <C-P>    <Cmd>BufferPick<CR>
+    nnoremap <silent> <C-S-P>    <Cmd>BufferPick<CR>
     " Pin/unpin buffer
-    nnoremap <silent>    <A-p> <Cmd>BufferPin<CR>
+    nnoremap <silent>    <C-p> <Cmd>BufferPin<CR>
 else
     noremap <silent> J :bp<CR>
     noremap <silent> K :bn<CR>
@@ -135,7 +135,6 @@ inoremap ; ;<c-g>u
 
 " use <leader><Esc> to escape terminal mode
 tnoremap <leader><Esc> <C-\><C-n>
-tnoremap jk <C-\><C-n>
 
 " autosave on
 let g:auto_save = 1
@@ -160,15 +159,17 @@ let g:temp_cb_name = "temp_cb"
 
 function! PowerClose(strong)
     
-    let cnt = 0
-
+    let buffer_count = 0
     for i in range(0, bufnr("$"))
         if buflisted(i) 
-            let cnt += 1 
+            let buffer_count += 1
         endif
     endfor
 
-    if (cnt <= 1 && expand('%') == "")
+    let window_counter = 0
+    windo let window_counter = window_counter + 1
+
+    if ((buffer_count <= 1 && expand('%') == "")|| window_counter > 1)
         let l:cmd = "q"
     else
         if has('nvim')
@@ -185,7 +186,7 @@ function! PowerClose(strong)
     if expand('%') == g:temp_cb_name
         let l:cmd = "call delete('".g:temp_cb_name."') | bd!"
     endif
-    " echo cmd." ".cnt." ".a:strong
+    " echo cmd." ".buffer_count." ".a:strong.window_counter
     execute cmd
 
 endfunction

@@ -8,6 +8,7 @@ vim.keymap.set('n', '<leader>"', builtin.registers, {})
 vim.keymap.set('n', '<leader>`', builtin.marks, {})
 vim.keymap.set("n", "<leader>fo", builtin.oldfiles, {})
 vim.keymap.set("n", "<leader>fw", builtin.grep_string, {})
+vim.keymap.set("n", "<leader>fd", builtin.diagnostics, {})
 vim.keymap.set("n", "<leader>fp",require'telescope'.extensions.projects.projects, {})
 
 
@@ -433,3 +434,25 @@ require'nvim-treesitter.configs'.setup {
     additional_vim_regex_highlighting = false,
   },
 }
+
+-- default configuration
+require('illuminate').configure({
+    providers = {
+        'lsp',
+        'treesitter',
+    },
+    delay = 100,
+    filetype_overrides = {},
+    filetypes_denylist = {
+        'dirbuf',
+        'dirvish',
+        'fugitive',
+    },
+    filetypes_allowlist = {},
+    modes_denylist = {'i','ic','ix'},
+    under_cursor = true,
+    large_file_cutoff = nil,
+    large_file_overrides = nil,
+    min_count_to_highlight = 2,
+    should_enable = function(bufnr) return true end,
+})
