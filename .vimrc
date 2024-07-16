@@ -94,7 +94,7 @@ endif
 call plug#end()
     
 exe 'source '.g:WorkDir.'neovim/config/univ_config.vimrc'
-if exists('g:vscode') || has("nvim")
+if has("nvim")
     exe 'luafile '.g:WorkDir.'neovim/config/lua_univ_config.lua'
 endif
 
