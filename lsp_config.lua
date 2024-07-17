@@ -175,6 +175,7 @@ lsp.basedpyright.setup{
                     reportRedeclaration="information",
                     reportOperatorIssue="information",
                     reportOptionalOperand="information",
+                    reportGeneralTypeIssues="none",
                 },
             },
         },
