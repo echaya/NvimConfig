@@ -286,6 +286,21 @@ require'marks'.setup {
 }
 
 require("onedarkpro").setup({
+  styles = {
+    types = "italic",
+    methods = "NONE",
+    numbers = "NONE",
+    strings = "NONE",
+    comments = "italic",
+    keywords = "bold",
+    constants = "bold",
+    functions = "italic",
+    operators = "NONE",
+    variables = "NONE",
+    parameters = "NONE",
+    conditionals = "bold",
+    virtual_text = "NONE",
+  },
     options = {
         cursorline = true
     },
