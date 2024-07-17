@@ -24,7 +24,7 @@ iron.setup {
     },
     -- How the repl window will be displayed
     -- See below for more information
-    repl_open_cmd = require('iron.view').split.vertical.botright("40%")
+    repl_open_cmd = require('iron.view').split.vertical.botright("60%")
   },
   -- Iron doesn't set keymaps by default anymore.
   -- You can set them here or manually add keymaps to the functions in iron.core
@@ -38,7 +38,7 @@ iron.setup {
     -- mark_motion = "<Leader>mc",
     -- mark_visual = "<Leader>mc",
     -- remove_mark = "<Leader>md",
-    cr = "<C-CR>",
+    cr = "<CR>",
     interrupt = "<C-I>",
     exit = "<Leader>rq",
     -- clear = "<Leader>cl",
