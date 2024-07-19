@@ -31,8 +31,6 @@ call plug#begin(g:WorkDir..'Neovim/nvim-win64/share/nvim/vimfiles/plugged')
 if !exists('g:vscode')
 
     "vim and neovim specific plugins
-    Plug 'itchyny/lightline.vim'
-    Plug 'itchyny/vim-gitbranch'
     Plug 'mhinz/vim-startify' "butify the vim start up page
     Plug 'tpope/vim-commentary' "comment / uncomment code
     Plug '907th/vim-auto-save' "to auto-save files
@@ -48,6 +46,7 @@ if !exists('g:vscode')
         " ui, display
         Plug 'olimorris/onedarkpro.nvim'
         Plug 'romgrk/barbar.nvim'
+        Plug 'nvim-lualine/lualine.nvim'
         " markdown plugin
         " Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for':['markdown','vim-plug','md']}
         "utility plugins
@@ -87,6 +86,8 @@ if !exists('g:vscode')
         Plug 'joshdick/onedark.vim'
         Plug 'ap/vim-buftabline' "butify the tab line
         Plug 'mhinz/vim-signify'
+        Plug 'itchyny/lightline.vim'
+        Plug 'itchyny/vim-gitbranch'
     endif
 
 endif
