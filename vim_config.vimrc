@@ -169,7 +169,7 @@ function! PowerClose(strong)
     let window_counter = 0
     windo let window_counter = window_counter + 1
 
-    if ((buffer_count <= 1 && expand('%') == "")|| window_counter > 1)
+    if (window_counter > 1 || expand('%') == "ipython.EXE [-]")
         let l:cmd = "q"
     else
         if has('nvim')
@@ -186,7 +186,7 @@ function! PowerClose(strong)
     if expand('%') == g:temp_cb_name
         let l:cmd = "call delete('".g:temp_cb_name."') | bd!"
     endif
-    " echo cmd." ".buffer_count." ".a:strong.window_counter
+    echo "PowerCloser=".cmd."; bc=".buffer_count."; wc=".window_counter."; !=".a:strong
     execute cmd
 
 endfunction
