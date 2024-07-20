@@ -450,7 +450,7 @@ local config = {
 				buffers_color = {
 					-- -- Same values as the general color option can be used here.
 					active = { fg = colors.magenta, bg = "#2d313b" },
-					inactive = { fg = colors.fg, bg = "#2d313b" },
+					inactive = { fg = "#7f848e", bg = "#2d313b" },
 				},
 			},
 		},
