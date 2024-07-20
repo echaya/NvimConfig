@@ -383,7 +383,7 @@ local mode_color = {
 	rm = colors.cyan,
 	["r?"] = colors.cyan,
 	["!"] = colors.red,
-	t = colors.red,
+	t = colors.magenta,
 }
 
 local conditions = {
@@ -519,7 +519,7 @@ ins_left({
 ins_left({
 	"branch",
 	icon = "",
-	color = { fg = colors.green, gui = "bold" },
+	color = { fg = colors.yellow, gui = "bold" },
 })
 
 ins_left({
