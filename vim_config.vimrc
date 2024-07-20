@@ -156,7 +156,8 @@ nnoremap <leader>cd :lcd %:h<CR>:cd<CR>
 let g:plug_window = 'vertical topleft new'
 let g:plug_pwindow = 'above 12'
 
-" using vim formatter for vimscript
+" formatter command for vimscript, other formatter are configured
+" by confron
 autocmd FileType vim nnoremap == ggVG=<C-o>
 
 let g:temp_cb_name = "temp_cb"
