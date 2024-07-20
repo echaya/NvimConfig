@@ -78,6 +78,7 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 " else
 noremap <silent> J :bp<CR>
 noremap <silent> K :bn<CR>
+nnoremap <silent> ZX :e #<CR>
 " endif
 
 " Move to previous/next tabpage
@@ -187,7 +188,7 @@ function! PowerClose(strong)
         let l:cmd = "call delete('".g:temp_cb_name."') | bd!"
     endif
     echo "PowerCloser: ".cmd."; bc=".buffer_count."; wc=".window_counter
-    " execute cmd
+    execute cmd
 
 endfunction
 
