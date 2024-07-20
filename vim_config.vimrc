@@ -173,11 +173,11 @@ function! PowerClose(strong)
     if (window_counter > 1 || stridx(expand('%'), "ipython.EXE") > 0)
         let l:cmd = "q"
     else
-        " if has('nvim')
-        "     let l:cmd = "BufferClose"
-        " else
-        let l:cmd = "bd"
-        " endif
+        if buffer_count <= 1
+            let l:cmd = "q"
+        else
+            let l:cmd = "bd"
+        endif
     endif
 
     if a:strong != 0
