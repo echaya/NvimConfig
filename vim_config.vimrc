@@ -61,24 +61,24 @@ let g:startify_session_persistence = 1
 "open the cursor at the last saved position even without session
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
-if has('nvim')
-    " Move to previous/next tab
-    nnoremap <silent>    J <Cmd>BufferPrevious<CR>
-    nnoremap <silent>    K <Cmd>BufferNext<CR>
-    " Re-order to previous/next
-    nnoremap <silent>    <A-,> <Cmd>BufferMovePrevious<CR>
-    nnoremap <silent>    <A-.> <Cmd>BufferMoveNext<CR>
-    " Close buffer using ZZ
-    " nnoremap <silent>    <A-x> <Cmd>BufferClose<CR>
-    nnoremap <silent>    ZX <Cmd>BufferRestore<CR>
-    " Magic buffer-picking mode
-    nnoremap <silent> <C-S-P>    <Cmd>BufferPick<CR>
-    " Pin/unpin buffer
-    nnoremap <silent>    <C-p> <Cmd>BufferPin<CR>
-else
-    noremap <silent> J :bp<CR>
-    noremap <silent> K :bn<CR>
-endif
+" if has('nvim')
+"     " Move to previous/next tab
+"     nnoremap <silent>    J <Cmd>BufferPrevious<CR>
+"     nnoremap <silent>    K <Cmd>BufferNext<CR>
+"     " Re-order to previous/next
+"     nnoremap <silent>    <A-,> <Cmd>BufferMovePrevious<CR>
+"     nnoremap <silent>    <A-.> <Cmd>BufferMoveNext<CR>
+"     " Close buffer using ZZ
+"     " nnoremap <silent>    <A-x> <Cmd>BufferClose<CR>
+"     nnoremap <silent>    ZX <Cmd>BufferRestore<CR>
+"     " Magic buffer-picking mode
+"     nnoremap <silent> <C-S-P>    <Cmd>BufferPick<CR>
+"     " Pin/unpin buffer
+"     nnoremap <silent>    <C-p> <Cmd>BufferPin<CR>
+" else
+noremap <silent> J :bp<CR>
+noremap <silent> K :bn<CR>
+" endif
 
 " Move to previous/next tabpage
 noremap <silent> <PageUp> :tabp<CR>
@@ -172,11 +172,11 @@ function! PowerClose(strong)
     if (window_counter > 1 || expand('%') == "ipython.EXE [-]")
         let l:cmd = "q"
     else
-        if has('nvim')
-            let l:cmd = "BufferClose"
-        else
-            let l:cmd = "bd"
-        endif
+        " if has('nvim')
+        "     let l:cmd = "BufferClose"
+        " else
+        let l:cmd = "bd"
+        " endif
     endif
 
     if a:strong != 0

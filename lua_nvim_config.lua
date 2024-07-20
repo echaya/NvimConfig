@@ -438,6 +438,45 @@ local config = {
     lualine_z = { },
     lualine_x = {},
   },
+
+  tabline = {
+    lualine_a = {
+      {
+        'buffers',
+        mode = 0,
+      filetype_names = {
+        TelescopePrompt = 'Telescope',
+      }, -- Shows specific buffer name for that filetype ( { `filetype` = `buffer_name`, ... } )
+      use_mode_colors=false,
+        buffers_color = {
+        -- -- Same values as the general color option can be used here.
+        active = { fg = colors.magenta, bg = colors.bg },
+        inactive = { fg = colors.fg, bg = colors.bg }
+      },
+      },
+    },
+    lualine_c = {},
+    lualine_b = { 'lsp_progress', },
+    lualine_x = {},
+    lualine_y = {},
+    lualine_z = { 'tabs' }
+  },
+  winbar = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = {},
+    lualine_x = {},
+    lualine_y = {},
+    lualine_z = {}
+  },
+  inactive_winbar = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = {},
+    lualine_x = {},
+    lualine_y = {},
+    lualine_z = {}
+  },
 }
 
 -- Inserts a component in lualine_c at left section
@@ -528,12 +567,13 @@ ins_right {
     for _, client in ipairs(clients) do
       local filetypes = client.config.filetypes
       if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-        return client.name
+        -- return client.name
+        return "running"
       end
     end
     return msg
   end,
-  icon = ' LSP:',
+  icon = ' LSP',
   color = { fg = '#ffffff', gui = 'italic' },
 }
 

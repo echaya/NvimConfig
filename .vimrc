@@ -45,7 +45,7 @@ if !exists('g:vscode')
     if has('nvim')
         " ui, display
         Plug 'olimorris/onedarkpro.nvim'
-        Plug 'romgrk/barbar.nvim'
+        " Plug 'romgrk/barbar.nvim'
         Plug 'nvim-lualine/lualine.nvim'
         " markdown plugin
         " Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for':['markdown','vim-plug','md']}
