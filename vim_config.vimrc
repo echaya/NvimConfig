@@ -169,7 +169,7 @@ function! PowerClose(strong)
     let window_counter = 0
     windo let window_counter = window_counter + 1
 
-    if (window_counter > 1 || expand('%') == "ipython.EXE [-]")
+    if (window_counter > 1 || stridx(expand('%'), "ipython.EXE"))
         let l:cmd = "q"
     else
         " if has('nvim')
