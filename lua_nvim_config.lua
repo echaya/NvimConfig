@@ -519,7 +519,7 @@ ins_left({
 ins_left({
 	"branch",
 	icon = "",
-	color = { fg = colors.violet, gui = "bold" },
+	color = { fg = colors.green, gui = "bold" },
 })
 
 ins_left({
@@ -566,13 +566,13 @@ ins_right({
 		for _, client in ipairs(clients) do
 			local filetypes = client.config.filetypes
 			if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-				-- return client.name
-				return "running"
+				return client.name
+				-- return "running"
 			end
 		end
 		return msg
 	end,
-	icon = " LSP",
+	icon = " ",
 	color = { fg = "#ffffff", gui = "italic" },
 })
 
