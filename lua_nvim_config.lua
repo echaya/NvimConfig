@@ -450,13 +450,13 @@ local config = {
       use_mode_colors=false,
         buffers_color = {
         -- -- Same values as the general color option can be used here.
-        active = { fg = colors.magenta, bg = colors.bg },
-        inactive = { fg = colors.fg, bg = colors.bg }
+        active = { fg = colors.magenta, bg = "#2d313b"},
+        inactive = { fg = colors.fg, bg = "#2d313b" }
       },
       },
     },
     lualine_c = {},
-    lualine_b = { 'lsp_progress', },
+    lualine_b = {},
     lualine_x = {},
     lualine_y = {},
     lualine_z = { 'tabs' }
@@ -591,16 +591,16 @@ ins_right {
 
 -- Add components to right sections
 ins_right {
-  'o:encoding', -- option component same as &encoding in viml
-  fmt = string.upper, -- I'm not sure why it's upper case either ;)
-  cond = conditions.hide_in_width,
-  color = { fg = colors.green, gui = 'bold' },
+    'fileformat',
+    -- fmt = string.upper,
+    icons_enabled = true,
+    color = { fg = colors.green, gui = 'bold' },
 }
 
 ins_right {
-  'fileformat',
-  fmt = string.upper,
-  icons_enabled = false, -- I think icons are cool but Eviline doesn't have them. sigh
+  'o:encoding', -- option component same as &encoding in viml
+  fmt = string.upper, -- I'm not sure why it's upper case either ;)
+  cond = conditions.hide_in_width,
   color = { fg = colors.green, gui = 'bold' },
 }
 
