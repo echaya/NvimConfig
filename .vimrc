@@ -14,19 +14,19 @@ endif
 exe 'source '.g:WorkDir.'Neovim/nvim-win64/share/nvim/vimfiles/plugged/plug.vim'
 
 call plug#begin(g:WorkDir..'Neovim/nvim-win64/share/nvim/vimfiles/plugged')
-    " universal plugins
-    Plug 'unblevable/quick-scope'
-    Plug 'tpope/vim-repeat'
-    Plug 'tpope/vim-speeddating'
-    Plug 'svermeulen/vim-cutlass'
-    "text obj plugin
-    Plug 'kana/vim-textobj-user' "dependent plugin
-    Plug 'kana/vim-textobj-indent' "ai,ii, aI, iI
-    Plug 'Julian/vim-textobj-variable-segment' "av,iv
-    Plug 'bps/vim-textobj-python' "ac,ic,af,if
-    Plug 'ggandor/leap.nvim'
-    Plug 'kylechui/nvim-surround'
-    Plug 'dstein64/vim-startuptime'
+" universal plugins
+Plug 'unblevable/quick-scope'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-speeddating'
+Plug 'svermeulen/vim-cutlass'
+"text obj plugin
+Plug 'kana/vim-textobj-user' "dependent plugin
+Plug 'kana/vim-textobj-indent' "ai,ii, aI, iI
+Plug 'Julian/vim-textobj-variable-segment' "av,iv
+Plug 'bps/vim-textobj-python' "ac,ic,af,if
+Plug 'ggandor/leap.nvim'
+Plug 'kylechui/nvim-surround'
+Plug 'dstein64/vim-startuptime'
 
 if !exists('g:vscode')
 
@@ -69,6 +69,8 @@ if !exists('g:vscode')
         Plug 'saadparwaiz1/cmp_luasnip'
         Plug 'L3MON4D3/LuaSnip' ", {'tag': 'v2.*', 'do': 'make install_jsregexp'}
         Plug 'rafamadriz/friendly-snippets'
+        Plug 'williamboman/mason.nvim'
+        Plug 'williamboman/mason-lspconfig.nvim'
 
         "programming tools
         Plug 'Vigemus/iron.nvim'
@@ -93,7 +95,7 @@ if !exists('g:vscode')
 endif
 
 call plug#end()
-    
+
 exe 'source '.g:WorkDir.'neovim/config/univ_config.vimrc'
 if has("nvim")
     exe 'luafile '.g:WorkDir.'neovim/config/lua_univ_config.lua'
