@@ -46,15 +46,15 @@ endif
 "coloring and status line
 set showtabline=2
 let g:lightline = {
-      \ 'colorscheme': 'one',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'gitbranch#name'
-      \ },
-      \ }
+            \ 'colorscheme': 'one',
+            \ 'active': {
+            \   'left': [ [ 'mode', 'paste' ],
+            \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+            \ },
+            \ 'component_function': {
+            \   'gitbranch': 'gitbranch#name'
+            \ },
+            \ }
 
 " use startify to handle session. Need to SSave a session to become persistent
 let g:startify_session_persistence = 1
@@ -98,9 +98,9 @@ au InsertLeave,WinEnter * set cursorline
 au InsertEnter,WinLeave * set nocursorline
 
 augroup numbertoggle
-  autocmd!
-  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
-  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+    autocmd!
+    autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+    autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 augroup END
 
 
@@ -158,7 +158,7 @@ let g:plug_pwindow = 'above 12'
 let g:temp_cb_name = "temp_cb"
 
 function! PowerClose(strong)
-    
+
     let buffer_count = 0
     for i in range(0, bufnr("$"))
         if buflisted(i) 
@@ -169,7 +169,7 @@ function! PowerClose(strong)
     let window_counter = 0
     windo let window_counter = window_counter + 1
 
-    if (window_counter > 1 || stridx(expand('%'), "ipython.EXE"))
+    if (window_counter > 1 || stridx(expand('%'), "ipython.EXE") > 0)
         let l:cmd = "q"
     else
         " if has('nvim')
@@ -186,8 +186,8 @@ function! PowerClose(strong)
     if expand('%') == g:temp_cb_name
         let l:cmd = "call delete('".g:temp_cb_name."') | bd!"
     endif
-    echo "PowerCloser=".cmd."; bc=".buffer_count."; wc=".window_counter."; !=".a:strong
-    execute cmd
+    echo "PowerCloser: ".cmd."; bc=".buffer_count."; wc=".window_counter
+    " execute cmd
 
 endfunction
 
@@ -197,10 +197,10 @@ nnoremap <silent> ZQ :call PowerClose(1)<cr>
 function! ChooseBuffer(buffername)
     let bnr = bufwinnr(a:buffername)
     if bnr > 0
-       execute bnr . "wincmd w"
+        execute bnr . "wincmd w"
     else
-       " echom a:buffername . ' is not existent'
-       silent execute 'vsplit ' . a:buffername 
+        " echom a:buffername . ' is not existent'
+        silent execute 'vsplit ' . a:buffername 
     endif
 endfunction
 
