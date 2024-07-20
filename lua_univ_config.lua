@@ -1,4 +1,4 @@
-local leap = require('leap')
+local leap = require("leap")
 leap.opts.case_sensitive = true
 leap.set_default_keymaps()
 -- vim.keymap.set('o', 's', '<Plug>(leap-forward)')
