@@ -27,7 +27,6 @@ Plug 'bps/vim-textobj-python' "ac,ic,af,if
 Plug 'ggandor/leap.nvim'
 Plug 'kylechui/nvim-surround'
 Plug 'dstein64/vim-startuptime'
-Plug 'max397574/better-escape.nvim'
 
 if !exists('g:vscode')
 
