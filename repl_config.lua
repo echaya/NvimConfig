@@ -81,6 +81,14 @@ end, { range = true })
 vim.keymap.set("n", "==", "<cmd>Format<cr>")
 -- sync black call
 vim.keymap.set("n", "<leader>==", ":!black %<cr>")
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "vim",
+	callback = function(args)
+		vim.keymap.set("n", "==", "ggVG=<C-o>", {buffer = args.buf})
+	end,
+})
+
+-- autocmd FileType vim nnoremap == ggVG=<C-o>
 
 require("gitsigns").setup({
 	on_attach = function(bufnr)
