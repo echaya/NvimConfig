@@ -5,5 +5,4 @@ leap.set_default_keymaps()
 -- vim.keymap.set('o', 'S', '<Plug>(leap-backward)')
 
 require("nvim-surround").setup()
-vim.cmd("highlight NvimSurroundHighlight guifg='#edc41f' gui=underline ctermfg='yellow' cterm=underline")
 
