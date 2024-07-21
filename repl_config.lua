@@ -84,7 +84,7 @@ vim.keymap.set("n", "<leader>==", ":!black %<cr>")
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "vim",
 	callback = function(args)
-		vim.keymap.set("n", "==", "ggVG=<C-o>", {buffer = args.buf})
+		vim.keymap.set("n", "==", "ggVG=", {buffer = args.buf})
 	end,
 })
 
