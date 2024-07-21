@@ -2,7 +2,6 @@ local iron = require("iron.core")
 
 iron.setup({
 	config = {
-
 		-- Scope of the repl
 		-- By default it is one for the same `pwd`
 		-- Other options are `tab_based` and `singleton`
@@ -21,12 +20,8 @@ iron.setup({
 				command = { "zsh" },
 			},
 		},
-		-- How the repl window will be displayed
-		-- See below for more information
 		repl_open_cmd = require("iron.view").split.vertical.botright("55%"),
 	},
-	-- Iron doesn't set keymaps by default anymore.
-	-- You can set them here or manually add keymaps to the functions in iron.core
 	keymaps = {
 		send_motion = "<Leader>sm",
 		-- send_line = "<Leader>sl",
@@ -84,7 +79,7 @@ vim.keymap.set("n", "<leader>==", ":!black %<cr>")
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "vim",
 	callback = function(args)
-		vim.keymap.set("n", "==", "ggVG=", {buffer = args.buf})
+		vim.keymap.set("n", "==", "ggVG=", { buffer = args.buf })
 	end,
 })
 
@@ -154,29 +149,11 @@ hipatterns.setup({
 require("nvim-treesitter.configs").setup({
 	-- A list of parser names, or "all" (the listed parsers MUST always be installed)
 	ensure_installed = { "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline" },
-
-	-- Install parsers synchronously (only applied to `ensure_installed`)
 	sync_install = false,
-
-	-- Automatically install missing parsers when entering buffer
-	-- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
 	auto_install = false,
-
-	-- List of parsers to ignore installing (or "all")
 	ignore_install = { "javascript" },
-
-	---- If you need to change the installation directory of the parsers (see -> Advanced Setup)
-	-- parser_install_dir = "/some/path/to/store/parsers", -- Remember to run vim.opt.runtimepath:append("/some/path/to/store/parsers")!
-
 	highlight = {
 		enable = true,
-
-		-- NOTE: these are the names of the parsers and not the filetype. (for example if you want to
-		-- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
-		-- the name of the parser)
-		-- list of language that will be disabled
-		-- disable = { "c", "rust", "python" },
-		-- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
 		disable = function(lang, buf)
 			local max_filesize = 100 * 1024 -- 100 KB
 			local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
@@ -184,11 +161,6 @@ require("nvim-treesitter.configs").setup({
 				return true
 			end
 		end,
-
-		-- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-		-- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-		-- Using this option may slow down your editor, and you may see some duplicate highlights.
-		-- Instead of true it can also be a list of languages
 		additional_vim_regex_highlighting = false,
 	},
 })
