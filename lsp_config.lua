@@ -105,93 +105,91 @@ cmp.setup.cmdline(":", {
 -- Set up lspconfig.
 -- local capabilities = require('cmp_nvim_lsp').default_capabilities()
 -- -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
--- require('lspconfig')['<YOUR_LSP_SERVER>'].setup {
-    -- capabilities = capabilities
-    -- }
+-- require('lspconfig')['<YOUR_LSP_SERVER>'].setup {capabilities = capabilities}
 
-    -- Setup luasnip
-    require("luasnip.loaders.from_vscode").lazy_load()
-    require("luasnip").filetype_extend("vimwiki", { "markdown" })
-    -- require("luasnip.loaders.from_vscode").load({ include = {"markdown","md"} })
-    -- vim.keymap.set({"i"}, "<CR>", function() ls.expand() end, {silent = true})
-    luasnip.config.set_config({
-        region_check_events = "InsertEnter",
-        delete_check_events = "InsertLeave",
-    })
+-- Setup luasnip
+require("luasnip.loaders.from_vscode").lazy_load()
+require("luasnip").filetype_extend("vimwiki", { "markdown" })
+-- require("luasnip.loaders.from_vscode").load({ include = {"markdown","md"} })
+-- vim.keymap.set({"i"}, "<CR>", function() ls.expand() end, {silent = true})
+luasnip.config.set_config({
+    region_check_events = "InsertEnter",
+    delete_check_events = "InsertLeave",
+})
 
-    -- Setup Autocomplete
+-- Setup Autocomplete
 
-    require("nvim-autopairs").setup({
-        map_cr = true,
-        map_complete = true,
-        auto_select = true,
-    })
-    local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-    cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+require("nvim-autopairs").setup({
+    map_cr = true,
+    map_complete = true,
+    auto_select = true,
+})
+local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
-    local custom_attach = function(client)
-        -- vim.keymap.set('n','gD','<cmd>lua vim.lsp.buf.declaration()<CR>')
-        vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
-        vim.keymap.set("n", "gD", ":vsplit | lua vim.lsp.buf.definition()<CR>")
-        vim.keymap.set("n", "gh", "<cmd>lua vim.lsp.buf.hover()<CR>")
-        -- vim.keymap.set('n','gr','<cmd>lua vim.lsp.buf.references()<CR>')
-        vim.keymap.set("n", "gr", require("telescope.builtin").lsp_references, {})
-        -- vim.keymap.set('n','gs','<cmd>lua vim.lsp.buf.signature_help()<CR>')
-        -- vim.keymap.set('n','gi','<cmd>lua vim.lsp.buf.implementation()<CR>')
-        -- vim.keymap.set('n','gt','<cmd>lua vim.lsp.buf.type_definition()<CR>')
-        -- vim.keymap.set('n','<leader>gw','<cmd>lua vim.lsp.buf.document_symbol()<CR>')
-        -- vim.keymap.set('n','<leader>gW','<cmd>lua vim.lsp.buf.workspace_symbol()<CR>')
-        -- vim.keymap.set('n','<leader>af','<cmd>lua vim.lsp.buf.code_action()<CR>')
-        vim.keymap.set("n", "<F2>", "<cmd>lua vim.lsp.buf.rename()<CR>")
-        vim.keymap.set("n", "<F3>", "<cmd>lua vim.diagnostic.open_float()<CR>")
-        -- vim.keymap.set('n','<leader>=', '<cmd>lua vim.lsp.buf.formatting()<CR>')
-        -- vim.keymap.set('n','<leader>ai','<cmd>lua vim.lsp.buf.incoming_calls()<CR>')
-    end
+local custom_attach = function(client)
+    -- vim.keymap.set('n','gD','<cmd>lua vim.lsp.buf.declaration()<CR>')
+    vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
+    vim.keymap.set("n", "gD", ":vsplit | lua vim.lsp.buf.definition()<CR>")
+    vim.keymap.set("n", "gh", "<cmd>lua vim.lsp.buf.hover()<CR>")
+    -- vim.keymap.set('n','gr','<cmd>lua vim.lsp.buf.references()<CR>')
+    vim.keymap.set("n", "gr", require("telescope.builtin").lsp_references, {})
+    -- vim.keymap.set('n','gs','<cmd>lua vim.lsp.buf.signature_help()<CR>')
+    -- vim.keymap.set('n','gi','<cmd>lua vim.lsp.buf.implementation()<CR>')
+    -- vim.keymap.set('n','gt','<cmd>lua vim.lsp.buf.type_definition()<CR>')
+    -- vim.keymap.set('n','<leader>gw','<cmd>lua vim.lsp.buf.document_symbol()<CR>')
+    -- vim.keymap.set('n','<leader>gW','<cmd>lua vim.lsp.buf.workspace_symbol()<CR>')
+    -- vim.keymap.set('n','<leader>af','<cmd>lua vim.lsp.buf.code_action()<CR>')
+    vim.keymap.set("n", "<F2>", "<cmd>lua vim.lsp.buf.rename()<CR>")
+    vim.keymap.set("n", "<F3>", "<cmd>lua vim.diagnostic.open_float()<CR>")
+    -- vim.keymap.set('n','<leader>=', '<cmd>lua vim.lsp.buf.formatting()<CR>')
+    -- vim.keymap.set('n','<leader>ai','<cmd>lua vim.lsp.buf.incoming_calls()<CR>')
+end
 
-    local lsp = require("lspconfig")
-    lsp.basedpyright.setup({
-        on_attach = custom_attach,
-        capabilities = capabilities,
-        settings = {
-            basedpyright = {
-                analysis = {
-                    useLibraryCodeForTypes = true,
-                    diagnosticMode = "openFilesOnly",
-                    typeCheckingMode = "basic",
-                    diagnosticSeverityOverrides = {
-                        reportUnusedVariable = "information", -- or anything
-                        reportUnusedFunction = "information",
-                        reportDuplicateImport = "warning",
-                        reportAttributeAccessIssue = "none",
-                        reportOptionalSubscript = "none",
-                        reportOptionalMemberAccess = "none",
-                        reportArgumentType = "none",
-                        reportAssignmentType = "information",
-                        reportPossiblyUnboundVariable = "information",
-                        reportIndexIssue = "none",
-                        reportCallIssue = "information",
-                        reportRedeclaration = "information",
-                        reportOperatorIssue = "information",
-                        reportOptionalOperand = "information",
-                        reportGeneralTypeIssues = "none",
-                    },
+local lsp = require("lspconfig")
+lsp.basedpyright.setup({
+    on_attach = custom_attach,
+    capabilities = capabilities,
+    settings = {
+        basedpyright = {
+            analysis = {
+                useLibraryCodeForTypes = true,
+                diagnosticMode = "openFilesOnly",
+                typeCheckingMode = "basic",
+                diagnosticSeverityOverrides = {
+                    reportUnusedVariable = "information", -- or anything
+                    reportUnusedFunction = "information",
+                    reportDuplicateImport = "warning",
+                    reportAttributeAccessIssue = "none",
+                    reportOptionalSubscript = "none",
+                    reportOptionalMemberAccess = "none",
+                    reportArgumentType = "none",
+                    reportAssignmentType = "information",
+                    reportPossiblyUnboundVariable = "information",
+                    reportIndexIssue = "none",
+                    reportCallIssue = "information",
+                    reportRedeclaration = "information",
+                    reportOperatorIssue = "information",
+                    reportOptionalOperand = "information",
+                    reportGeneralTypeIssues = "none",
                 },
             },
         },
-    })
+    },
+})
 
-    vim.diagnostic.config({
-        virtual_text = false,
-        signs = true,
-        float = {
-            border = "single",
-            format = function(diagnostic)
-                return string.format(
-                "%s (%s) [%s]",
-                diagnostic.message,
-                diagnostic.source,
-                diagnostic.code or diagnostic.user_data.lsp.code
-                )
-            end,
-        },
-    })
+vim.diagnostic.config({
+    virtual_text = false,
+    signs = true,
+    float = {
+        border = "single",
+        format = function(diagnostic)
+            return string.format(
+            "%s (%s) [%s]",
+            diagnostic.message,
+            diagnostic.source,
+            diagnostic.code or diagnostic.user_data.lsp.code
+            )
+        end,
+    },
+})
