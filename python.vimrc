@@ -38,6 +38,7 @@ endfunction
 function! BetweenCell() abort
     if search('^'.g:CodeFence, 'W') == 0
         normal Go###
+        normal 0dt#
     endif
     normal -
     let Start = line(".")
