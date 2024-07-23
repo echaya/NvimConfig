@@ -22,6 +22,12 @@ nnoremap <leader>j J
 " highlight yanked text
 autocmd TextYankPost * silent! lua vim.highlight.on_yank {higroup='Visual', timeout=500}
 
+" " better j/k using gj and gk
+nnoremap <expr> j v:count == 0 ? 'gj' : 'j'
+xnoremap <expr> j v:count == 0 ? 'gj' : 'j'
+nnoremap <expr> k v:count == 0 ? 'gk' : 'k'
+xnoremap <expr> k v:count == 0 ? 'gk' : 'k'
+
 " insert lines without entering insert mode (allow count)
 noremap <silent> <leader>o :<C-u>call append(line("."),   repeat([""], v:count1))<CR>
 nnoremap <silent> <leader>O :<C-u>call append(line(".")-1, repeat([""], v:count1))<CR>
