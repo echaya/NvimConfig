@@ -15,6 +15,8 @@ set clipboard=unnamed
 inoremap <silent> <c-v> <Esc>:set paste<Cr>a<c-r>+<Esc>:set nopaste<Cr>a
 " change default Y behavior to match with D, C, etc
 noremap Y y$
+" reselect just pasted block
+nnoremap gp `[v`]
 " join lines by leader j
 nnoremap <leader>j J
 
