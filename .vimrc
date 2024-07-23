@@ -59,6 +59,7 @@ if !exists('g:vscode')
         Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
         Plug 'ahmedkhalf/project.nvim'
         Plug 'nvim-tree/nvim-tree.lua'
+        Plug 'folke/which-key.nvim'
 
         "lsp and snippets
         Plug 'neovim/nvim-lspconfig'
