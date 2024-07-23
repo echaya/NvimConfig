@@ -1,15 +1,15 @@
 local builtin = require("telescope.builtin")
-vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
-vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
-vim.keymap.set("n", "<leader>fb", builtin.buffers, {})
-vim.keymap.set("n", "<leader>ss", builtin.spell_suggest, {})
+vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "find_file" })
+vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "live_grep" })
+vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "find_buffers" })
+vim.keymap.set("n", "<leader>ss", builtin.spell_suggest, { desc = "spell_suggest" })
 -- vim.keymap.set('n', '<leader>cc', builtin.commands, {})
-vim.keymap.set("n", '<leader>"', builtin.registers, {})
-vim.keymap.set("n", "<leader>`", builtin.marks, {})
-vim.keymap.set("n", "<leader>fo", builtin.oldfiles, {})
-vim.keymap.set("n", "<leader>fw", builtin.grep_string, {})
-vim.keymap.set("n", "<leader>fd", builtin.diagnostics, {})
-vim.keymap.set("n", "<leader>fp", require("telescope").extensions.projects.projects, {})
+-- vim.keymap.set("n", '<leader>"', builtin.registers, {})
+-- vim.keymap.set("n", "<leader>`", builtin.marks, {})
+vim.keymap.set("n", "<leader>fo", builtin.oldfiles, { desc = "old_files" })
+vim.keymap.set("n", "<leader>fw", builtin.grep_string, { desc = "grep_string" })
+vim.keymap.set("n", "<leader>fd", builtin.diagnostics, { desc = "lsp_diagnostics" })
+vim.keymap.set("n", "<leader>fp", require("telescope").extensions.projects.projects, { desc = "projects" })
 
 -- You dont need to set any of these options. These are the default ones. Only
 -- the loading is important
@@ -619,3 +619,9 @@ ins_right({
 })
 -- Now don't forget to initialize lualine
 lualine.setup(config)
+
+local wk = require("which-key")
+wk.setup({ present = "modern", triggers = {
+	{ "<auto>", mode = "nixsoc" },
+	-- { "<leader>", mode = {"n","v","t"}},
+} })

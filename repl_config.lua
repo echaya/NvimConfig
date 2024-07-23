@@ -102,7 +102,7 @@ require("gitsigns").setup({
 			else
 				gitsigns.nav_hunk("next")
 			end
-		end)
+		end, { desc = "next_hunk" })
 
 		map("n", "gk", function()
 			if vim.wo.diff then
@@ -110,25 +110,25 @@ require("gitsigns").setup({
 			else
 				gitsigns.nav_hunk("prev")
 			end
-		end)
+		end, { desc = "prev_hunk" })
 
 		-- Actions
 		map("v", "hs", function()
-			gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
+			gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") }, { desc = "stage_hunk" })
 		end)
 		map("v", "hu", function()
 			gitsigns.undo_stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
-		end)
+		end, { desc = "undo_stage_hunk" })
 		map("v", "gZ", function()
-			gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
+			gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v"), { desc = "reset_hunk" } })
 		end)
-		map("n", "gZ", gitsigns.reset_hunk)
-		map("n", "gJ", gitsigns.preview_hunk)
+		map("n", "gZ", gitsigns.reset_hunk, { desc = "reset_hunk" })
+		map("n", "gJ", gitsigns.preview_hunk, { desc = "preview_hunk" })
 		map("n", "gK", '<cmd>lua require"gitsigns".diffthis("~")<CR>')
 		map("n", "<leader>td", gitsigns.toggle_deleted)
 
 		-- Text object
-		-- map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+		map({ "o", "x" }, "gh", ":<C-U>Gitsigns select_hunk<CR>")
 	end,
 })
 
