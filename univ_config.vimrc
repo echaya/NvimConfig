@@ -19,6 +19,8 @@ noremap Y y$
 nnoremap gp `[v`]
 " join lines by leader j
 nnoremap <leader>j J
+" highlight yanked text
+autocmd TextYankPost * silent! lua vim.highlight.on_yank {higroup='Visual', timeout=500}
 
 " insert lines without entering insert mode (allow count)
 noremap <silent> <leader>o :<C-u>call append(line("."),   repeat([""], v:count1))<CR>
