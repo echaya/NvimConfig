@@ -34,6 +34,7 @@ if !exists('g:vscode')
     Plug 'mhinz/vim-startify' "butify the vim start up page
     Plug 'tpope/vim-commentary' "comment / uncomment code
     Plug '907th/vim-auto-save' "to auto-save files
+    Plug 'airblade/vim-rooter'
     " markdown & log plugins
     Plug 'godlygeek/tabular' "prerequisite for vim-markdown
     Plug 'plasticboy/vim-markdown'
