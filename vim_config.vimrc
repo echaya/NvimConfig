@@ -144,8 +144,12 @@ let g:auto_save_silent = 1
 " load and reload vimrc
 :command! LV source $MYVIMRC
 :command! EV e $MYVIMRC
-" set cd to current dir
-nnoremap <leader>cd :lcd %:h<CR>:cd<CR>
+
+" auto root change by vim-roooter
+let g:rooter_targets = '/,*'
+let g:rooter_buftypes = ['']
+let g:rooter_patterns = ['.git']
+
 " edit as dos, to remove ^m
 :command DOS e ++ff=dos | set ff=unix | w
 " duplicate current window in Vertical
