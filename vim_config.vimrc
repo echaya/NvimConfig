@@ -154,6 +154,7 @@ let g:rooter_patterns = ['.git']
 :command DOS e ++ff=dos | set ff=unix | w
 " duplicate current window in Vertical
 :command V vsplit
+:command RemSpace %s/\s\+$//e
 
 
 "Plug management
@@ -166,7 +167,7 @@ function! PowerClose(strong)
 
     let buffer_count = 0
     for i in range(0, bufnr("$"))
-        if buflisted(i) 
+        if buflisted(i)
             let buffer_count += 1
         endif
     endfor
@@ -205,7 +206,7 @@ function! ChooseBuffer(buffername)
         execute bnr . "wincmd w"
     else
         " echom a:buffername . ' is not existent'
-        silent execute 'vsplit ' . a:buffername 
+        silent execute 'vsplit ' . a:buffername
     endif
 endfunction
 
