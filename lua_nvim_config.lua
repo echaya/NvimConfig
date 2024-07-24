@@ -442,7 +442,7 @@ local config = {
 		lualine_a = {
 			{
 				"buffers",
-				mode = 0,
+				mode = 4,
 				filetype_names = {
 					TelescopePrompt = "Telescope",
 				}, -- Shows specific buffer name for that filetype ( { `filetype` = `buffer_name`, ... } )
@@ -627,6 +627,9 @@ wk.setup({
 		{ "<auto>", mode = "nixsoc" },
 		-- { "<leader>", mode = {"n","v","t"}},
 	},
+      delay = function(ctx)
+        return ctx.plugin and 0 or 100
+      end,
 	defer = function(ctx)
 		return ctx.mode == "V" or ctx.mode == "<C-V>" or ctx.mode == "v"
 	end,
