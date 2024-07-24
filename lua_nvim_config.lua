@@ -621,7 +621,13 @@ ins_right({
 lualine.setup(config)
 
 local wk = require("which-key")
-wk.setup({ present = "modern", triggers = {
-	{ "<auto>", mode = "nixsoc" },
-	-- { "<leader>", mode = {"n","v","t"}},
-} })
+wk.setup({
+	present = "modern",
+	triggers = {
+		{ "<auto>", mode = "nixsoc" },
+		-- { "<leader>", mode = {"n","v","t"}},
+	},
+	defer = function(ctx)
+		return ctx.mode == "V" or ctx.mode == "<C-V>" or ctx.mode == "v"
+	end,
+})
