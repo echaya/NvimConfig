@@ -627,10 +627,11 @@ wk.setup({
 		{ "<auto>", mode = "nixsoc" },
 		-- { "<leader>", mode = {"n","v","t"}},
 	},
-      delay = function(ctx)
-        return ctx.plugin and 0 or 100
-      end,
+	delay = function(ctx)
+		return ctx.plugin and 0 or 100
+	end,
 	defer = function(ctx)
 		return ctx.mode == "V" or ctx.mode == "<C-V>" or ctx.mode == "v"
 	end,
+	debug = false,
 })

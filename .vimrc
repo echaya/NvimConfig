@@ -83,7 +83,7 @@ if !exists('g:vscode')
 
 
     else
-        " ui, display
+        " vim specific alternative
         Plug 'joshdick/onedark.vim'
         Plug 'ap/vim-buftabline' "butify the tab line
         Plug 'mhinz/vim-signify'
