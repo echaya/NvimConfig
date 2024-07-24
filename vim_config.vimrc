@@ -156,6 +156,12 @@ let g:rooter_patterns = ['.git']
 :command V vsplit
 :command RemSpace %s/\s\+$//e
 
+" add comment string for bat, autohotkey files
+ "use `:lua print(vim.bo.filetype)` to check file type of current window
+augroup MyGroup | au!
+    autocmd FileType dosbatch setlocal commentstring=::\ %s
+    autocmd FileType autohotkey setlocal commentstring=;\ %s
+augroup END
 
 "Plug management
 let g:plug_window = 'vertical topleft new'
