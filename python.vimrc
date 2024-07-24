@@ -75,4 +75,5 @@ augroup snippets
     autocmd Filetype python vmap <BS> <CR>/###<CR>
     autocmd Filetype python nnoremap <silent> <leader>rr <cmd>IronRepl<cr>
     autocmd Filetype python nnoremap <silent> <leader>rd <cmd>IronRestart<cr>
+    autocmd Filetype python nnoremap <leader>p yiwoprint(<esc>pa)<esc>
 augroup END
