@@ -154,7 +154,7 @@ let g:rooter_patterns = ['.git']
 :command DOS e ++ff=dos | set ff=unix | w
 " duplicate current window in Vertical
 :command V vsplit
-:command RemSpace %s/\s\+$//e
+:command RemoveTrailingSpace %s/\s\+$//e
 
 " add comment string for bat, autohotkey files
  "use `:lua print(vim.bo.filetype)` to check file type of current window
