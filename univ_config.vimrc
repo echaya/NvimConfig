@@ -18,7 +18,7 @@ inoremap <silent> <c-v> <Esc>:set paste<Cr>a<c-r>+<Esc>:set nopaste<Cr>a
 noremap Y y$
 " reselect just pasted block
 nnoremap gp `[v`]
-" join lines by leader j
+" join lines by <leader>j
 nnoremap <leader>j J
 " highlight yanked text
 autocmd TextYankPost * silent! lua vim.highlight.on_yank {higroup='Visual', timeout=500}
