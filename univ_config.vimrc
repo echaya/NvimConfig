@@ -1,6 +1,7 @@
 "universal settings
 "change <leader> to SPACE
 nnoremap <SPACE> <Nop>
+nnoremap <TAB> <Nop>
 let mapleader=" "
 
 "seaerch

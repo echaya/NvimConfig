@@ -34,7 +34,7 @@ iron.setup({
 		-- remove_mark = "<Leader>md",
 		cr = "<CR>",
 		interrupt = "<C-I>",
-		exit = "<Leader>rq",
+		exit = "<Leader><Esc>",
 		clear = "<Leader><Del>",
 	},
 	-- If the highlight is on, you can change how it looks
