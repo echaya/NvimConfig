@@ -2,9 +2,6 @@
 let pythonthreedll='c:\blp\bqnt\environments\bqnt-3\python\python39.dll'
 let pythonthreehome='c:\blp\bqnt\environments\bqnt-3\python\python39'
 let g:python3_host_prog='c:\blp\bqnt\environments\bqnt-3\python'
-" let pythonthreedll='c:\Program Files\Python39\python39.dll'
-" let pythonthreehome='c:\Users\echay\AppData\Local\Programs\Python\Python39'
-" let g:python3_host_prog='c:\Users\echay\AppData\Local\Programs\Python\Python39\python'
 " let g:repl_python_pre_launch_command = 'c:\\blp\\bqnt\\bootstrapper\\condabin\\activate.bat c:\\blp\\bqnt\\environments\\bqnt-2'
 " let g:repl_position = 3
 " let g:repl_cursor_down = 1
@@ -19,6 +16,15 @@ let g:python3_host_prog='c:\blp\bqnt\environments\bqnt-3\python'
 
 
 let g:CodeFence = "###"
+
+function! IsLineIndented()
+  let lineContent = getline('.')
+  if match(lineContent, ' ') == 0
+    return 1
+  else
+    return 0
+  endif
+endfunction
 
 function! IsFence()
     return getline('.') == g:CodeFence
@@ -38,7 +44,9 @@ endfunction
 function! BetweenCell() abort
     if search('^'.g:CodeFence, 'W') == 0
         normal Go###
-        normal 0dt#
+        if IsLineIndented()
+            normal 0dt#
+        endif
     endif
     normal -
     let Start = line(".")
