@@ -628,7 +628,7 @@ wk.setup({
 		-- { "<leader>", mode = {"n","v","t"}},
 	},
 	delay = function(ctx)
-		return ctx.plugin and 0 or 100
+		return ctx.plugin and 0 or 200
 	end,
 	defer = function(ctx)
 		return ctx.mode == "V" or ctx.mode == "<C-V>" or ctx.mode == "v"
