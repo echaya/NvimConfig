@@ -66,7 +66,7 @@ noremap <silent> J :bp<CR>
 noremap <silent> K :bn<CR>
 nnoremap <silent> ZX :e #<CR>
 
-" Move to previous/next tabpage
+"Move to previous/next tabpage
 noremap <silent> <PageUp> :tabp<CR>
 noremap <silent> <PageDown> :tabn<CR>
 noremap <silent> <Del> :tabc<CR>
@@ -142,7 +142,7 @@ let g:rooter_patterns = ['.git']
 :command RemoveTrailingSpace %s/\s\+$//e
 
 " add comment string for bat, autohotkey files
- "use `:lua print(vim.bo.filetype)` to check file type of current window
+"use `:lua print(vim.bo.filetype)` to check file type of current window
 augroup MyGroup | au!
     autocmd FileType dosbatch setlocal commentstring=::\ %s
     autocmd FileType autohotkey setlocal commentstring=;\ %s
@@ -153,6 +153,11 @@ let g:plug_window = 'vertical topleft new'
 let g:plug_pwindow = 'above 12'
 
 let g:temp_cb_name = "temp_cb"
+
+function! ExitTerm() abort
+    normal i
+    terminal exit
+endfunction
 
 function! PowerClose(strong)
 
@@ -183,6 +188,11 @@ function! PowerClose(strong)
     if expand('%') == g:temp_cb_name
         let l:cmd = "call delete('".g:temp_cb_name."') | bd!"
     endif
+
+    if (&buftype == 'terminal' && a:strong !=0)
+        let l:cmd = "call ExitTerm()"
+    endif
+
     echo "PowerCloser: ".cmd."; bc=".buffer_count."; wc=".window_counter
     execute cmd
 
@@ -201,7 +211,7 @@ function! ChooseBuffer(buffername)
     endif
 endfunction
 
-noremap <silent><leader>p :call ChooseBuffer(g:temp_cb_name)<cr>Go<esc>p
+"noremap <silent><leader>p :call ChooseBuffer(g:temp_cb_name)<cr>Go<esc>p
 
 if !has('nvim')
     " hunk navigation and viewing using signify
