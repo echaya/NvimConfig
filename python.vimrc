@@ -72,16 +72,17 @@ function! SendCell() abort
     call search('^'.g:CodeFence, 'W') 
 endfunction
 
-augroup snippets
+augroup PythonRepl
     autocmd!
-    "edit link
+    " code snippet
     autocmd Filetype python inoremap ;f ###<cr>
     autocmd Filetype python inoremap ;cb .to_clipboard()
     autocmd Filetype python inoremap ;ct .copy(True)
     autocmd Filetype python inoremap ;it ,inplace=True
+    autocmd Filetype python nnoremap <leader>p yiwoprint(<esc>pa)<esc>
+    " REPL actions
     autocmd Filetype python nnoremap <BS> :call SelectCell()<cr>
     autocmd Filetype python vmap <BS> <CR>/###<CR>
     autocmd Filetype python nnoremap <silent> <leader>rr <cmd>IronRepl<cr>
     autocmd Filetype python nnoremap <silent> <leader>rd <cmd>IronRestart<cr>
-    autocmd Filetype python nnoremap <leader>p yiwoprint(<esc>pa)<esc>
 augroup END
