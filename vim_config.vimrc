@@ -217,6 +217,6 @@ if !has('nvim')
     " hunk navigation and viewing using signify
     nnoremap gK :SignifyDiff<cr>
     nnoremap gJ :SignifyHunkDiff<cr>
-    nnoremap hz :SignifyHunkUndo<cr>
-    vnoremap hz :SignifyHunkUndo<cr>
+    nnoremap gz :SignifyHunkUndo<cr>
+    vnoremap gz :SignifyHunkUndo<cr>
 endif

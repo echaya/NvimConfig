@@ -130,14 +130,14 @@ hi MatchParen guibg=#c678dd guifg=#282c34
 highlight QuickScopePrimary guifg='#afff5f' gui=underline ctermfg=155 cterm=underline
 highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline
 
-" colorschme TODO, SKIP, IMP, NOTE 
+" colorschme TODO, SKIP, IMP, NOTE
 highlight MiniHipatternsTodo guibg=#d19a66 guifg=#282c34
 highlight MiniHipatternsFixme guibg=#e06c75 guifg=#282c34
 highlight MiniHipatternsHack guibg=#c678dd guifg=#282c34
 highlight MiniHipatternsNote guibg=#98c379 guifg=#282c34
 highlight NvimSurroundHighlight guifg='#edc41f' gui=underline ctermfg='yellow' cterm=underline
 
-highlight clear SpellBad 
+highlight clear SpellBad
 highlight clear SpellRare
 highlight clear SpellLocal
 highlight SpellBad gui=undercurl cterm=undercurl guifg=pink ctermfg=210
