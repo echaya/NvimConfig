@@ -32,7 +32,7 @@ iron.setup({
 		-- mark_motion = "<Leader>mc",
 		-- mark_visual = "<Leader>mc",
 		-- remove_mark = "<Leader>md",
-		cr = "<CR>",
+		cr = [[\]],
 		interrupt = "<C-I>",
 		exit = "<Leader><Esc>",
 		clear = "<Leader><Del>",
