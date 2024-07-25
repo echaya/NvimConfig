@@ -119,13 +119,13 @@ require("gitsigns").setup({
 		map("v", "hu", function()
 			gitsigns.undo_stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
 		end, { desc = "undo_stage_hunk" })
-		map("v", "hz", function()
+		map("v", "gz", function()
 			gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
 		end, { desc = "reset_hunk" })
-		map("n", "hz", gitsigns.reset_hunk, { desc = "reset_hunk" })
+		map("n", "gz", gitsigns.reset_hunk, { desc = "reset_hunk" })
 		map("n", "gJ", gitsigns.preview_hunk, { desc = "preview_hunk" })
-		map("n", "gK", '<cmd>lua require"gitsigns".diffthis("~")<CR>')
-		map("n", "<leader>td", gitsigns.toggle_deleted)
+		map("n", "gK", '<cmd>lua require"gitsigns".diffthis("~")<CR>', { desc = "gitsign: diffthis" })
+		map("n", "<leader>td", gitsigns.toggle_deleted, { desc = "gitsign: toggle_deleted" })
 
 		-- Text object
 		map({ "o", "x" }, "gh", ":<C-U>Gitsigns select_hunk<CR>")
