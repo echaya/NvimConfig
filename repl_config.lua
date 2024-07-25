@@ -23,19 +23,19 @@ iron.setup({
 		repl_open_cmd = require("iron.view").split.vertical.botright("55%"),
 	},
 	keymaps = {
-		send_motion = "<Leader>sm",
+		send_motion = [[\s]],
 		-- send_line = "<Leader>sl",
-		visual_send = "<CR>",
-		send_until_cursor = "<Leader>su",
+		visual_send = [[\]],
+		send_until_cursor = [[\u]],
 		-- send_file = "<Leader>sf",
 		-- send_mark = "<Leader>sm",
 		-- mark_motion = "<Leader>mc",
 		-- mark_visual = "<Leader>mc",
 		-- remove_mark = "<Leader>md",
-		cr = [[\]],
-		interrupt = "<C-I>",
-		exit = "<Leader><Esc>",
-		clear = "<Leader><Del>",
+		cr = [[\\]],
+		interrupt = [[\c]],
+		exit = [[\q]],
+		clear = [[\l]],
 	},
 	-- If the highlight is on, you can change how it looks
 	-- For the available options, check nvim_set_hl
@@ -119,10 +119,10 @@ require("gitsigns").setup({
 		map("v", "hu", function()
 			gitsigns.undo_stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
 		end, { desc = "undo_stage_hunk" })
-		map("v", "gZ", function()
+		map("v", "hz", function()
 			gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
 		end, { desc = "reset_hunk" })
-		map("n", "gZ", gitsigns.reset_hunk, { desc = "reset_hunk" })
+		map("n", "hz", gitsigns.reset_hunk, { desc = "reset_hunk" })
 		map("n", "gJ", gitsigns.preview_hunk, { desc = "preview_hunk" })
 		map("n", "gK", '<cmd>lua require"gitsigns".diffthis("~")<CR>')
 		map("n", "<leader>td", gitsigns.toggle_deleted)
