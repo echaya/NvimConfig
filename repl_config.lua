@@ -96,7 +96,7 @@ require("gitsigns").setup({
 		end
 
 		-- navigation
-		map("n", "gj", function()
+		map("n", "]c", function()
 			if vim.wo.diff then
 				vim.cmd.normal({ "]c", bang = true })
 			else
@@ -104,7 +104,7 @@ require("gitsigns").setup({
 			end
 		end, { desc = "next_hunk" })
 
-		map("n", "gk", function()
+		map("n", "[c]", function()
 			if vim.wo.diff then
 				vim.cmd.normal({ "[c", bang = true })
 			else
