@@ -43,10 +43,10 @@ augroup mdgroup
     let g:mdip_imgname = 'image'
 
     "edit link
-    autocmd Filetype markdown nnoremap <silent><leader>md :call EditMdLink()<cr>
+    autocmd Filetype markdown nnoremap <buffer> <leader>md :call EditMdLink()<cr>
     "table-mode
-    autocmd Filetype markdown nnoremap <leader>\ :TableModeToggle<CR>
-    autocmd Filetype markdown nnoremap <leader>= :TableModeRealign<CR>
+    autocmd Filetype markdown nnoremap <buffer> <leader>\ :TableModeToggle<CR>
+    autocmd Filetype markdown nnoremap <buffer> <leader>= :TableModeRealign<CR>
 
 augroup END
 
