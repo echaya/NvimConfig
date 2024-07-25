@@ -81,8 +81,6 @@ augroup PythonRepl
     autocmd Filetype python inoremap ;it ,inplace=True
     autocmd Filetype python nnoremap <leader>p yiwoprint(<esc>pa)<esc>
     " REPL actions
-    autocmd Filetype python nnoremap <BS> :call SelectCell()<cr>
-    autocmd Filetype python vmap <BS> \/###<CR>
-    autocmd Filetype python nnoremap <silent> <leader>rr <cmd>IronRepl<cr>
-    autocmd Filetype python nnoremap <silent> <leader>rd <cmd>IronRestart<cr>
+    autocmd Filetype python nnoremap \ :call SelectCell()<cr>
+    autocmd Filetype python vmap \ <CR>/###<CR>
 augroup END

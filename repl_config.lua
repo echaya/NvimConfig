@@ -22,21 +22,7 @@ iron.setup({
 		},
 		repl_open_cmd = require("iron.view").split.vertical.botright("55%"),
 	},
-	keymaps = {
-		send_motion = [[\s]],
-		-- send_line = "<Leader>sl",
-		visual_send = [[\]],
-		send_until_cursor = [[\u]],
-		-- send_file = "<Leader>sf",
-		-- send_mark = "<Leader>sm",
-		-- mark_motion = "<Leader>mc",
-		-- mark_visual = "<Leader>mc",
-		-- remove_mark = "<Leader>md",
-		cr = [[\\]],
-		interrupt = [[\c]],
-		exit = [[\q]],
-		clear = [[\l]],
-	},
+	keymaps = {},
 	-- If the highlight is on, you can change how it looks
 	-- For the available options, check nvim_set_hl
 	highlight = {
@@ -47,22 +33,25 @@ iron.setup({
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "python",
 	callback = function(args)
+		vim.keymap.set("v", "<CR>", iron.visual_send, { buffer = args.buf, desc = "iron_visual_send" })
+		vim.keymap.set("n", [[\r]], "<cmd>IronRepl<cr>", { buffer = args.buf, desc = "iron_repl" })
+		vim.keymap.set("n", [[\d]], "<cmd>IronRestart<cr>", { buffer = args.buf, desc = "iron_repl_restart" })
+		vim.keymap.set("n", [[\u]], iron.send_until_cursor, { buffer = args.buf, desc = "iron_send_until" })
+		vim.keymap.set("n", [[\q]], iron.close_repl, { buffer = args.buf, desc = "iron_exit" })
 		vim.keymap.set("n", "<CR>", function()
 			iron.send(nil, string.char(13))
 		end, { buffer = args.buf, desc = "iron_cr" })
-		vim.keymap.set("n", [[\m]], function()
+		vim.keymap.set("n", [[\s]], function()
 			iron.run_motion("send_motion")
 		end, { buffer = args.buf, desc = "iron_send_motion" })
-		vim.keymap.set("v", "<CR>", iron.visual_send, { buffer = args.buf, desc = "iron_visual_send" })
-		vim.keymap.set("v", [[\u]], iron.send_until_cursor, { buffer = args.buf, desc = "iron_visual_send" })
+		vim.keymap.set("n", [[\c]], function()
+			iron.send(nil, string.char(03))
+		end, { buffer = args.buf, desc = "iron_interrupt" })
+		vim.keymap.set("n", [[\l]], function()
+			iron.send(nil, string.char(12))
+		end, { buffer = args.buf, desc = "iron_clear" })
 	end,
 })
-
--- iron also has a list of commands, see :h iron-commands for all commands, handled in python.vimrc
--- vim.keymap.set('n', '<Leader>rr', '<cmd>IronRepl<cr>',{silence=True})
--- vim.keymap.set('n', '<Leader>rd', '<cmd>IronRestart<cr>',{silence=True})
--- vim.keymap.set('n', '<Leader>rh', '<cmd>IronHide<cr>')
--- vim.keymap.set('n', '<Leader>rf', '<cmd>IronFocus<cr>')
 
 require("conform").setup({
 	formatters_by_ft = {
