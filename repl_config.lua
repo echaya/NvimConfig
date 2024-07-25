@@ -44,6 +44,19 @@ iron.setup({
 	},
 	ignore_blank_lines = true, -- ignore blank lines when sending visual select lines
 })
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "python",
+	callback = function(args)
+		vim.keymap.set("n", "<CR>", function()
+			iron.send(nil, string.char(13))
+		end, { buffer = args.buf, desc = "iron_cr" })
+		vim.keymap.set("n", [[\m]], function()
+			iron.run_motion("send_motion")
+		end, { buffer = args.buf, desc = "iron_send_motion" })
+		vim.keymap.set("v", "<CR>", iron.visual_send, { buffer = args.buf, desc = "iron_visual_send" })
+		vim.keymap.set("v", [[\u]], iron.send_until_cursor, { buffer = args.buf, desc = "iron_visual_send" })
+	end,
+})
 
 -- iron also has a list of commands, see :h iron-commands for all commands, handled in python.vimrc
 -- vim.keymap.set('n', '<Leader>rr', '<cmd>IronRepl<cr>',{silence=True})
