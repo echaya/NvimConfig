@@ -35,7 +35,7 @@ iron.setup({
 		cr = "<CR>",
 		interrupt = "<C-I>",
 		exit = "<Leader>rq",
-		-- clear = "<Leader>cl",
+		clear = "<Leader><Del>",
 	},
 	-- If the highlight is on, you can change how it looks
 	-- For the available options, check nvim_set_hl

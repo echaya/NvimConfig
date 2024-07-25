@@ -18,12 +18,12 @@ let g:python3_host_prog='c:\blp\bqnt\environments\bqnt-3\python'
 let g:CodeFence = "###"
 
 function! IsLineIndented()
-  let lineContent = getline('.')
-  if match(lineContent, ' ') == 0
-    return 1
-  else
-    return 0
-  endif
+    let lineContent = getline('.')
+    if match(lineContent, ' ') == 0
+        return 1
+    else
+        return 0
+    endif
 endfunction
 
 function! IsFence()
