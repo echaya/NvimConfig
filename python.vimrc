@@ -75,12 +75,13 @@ endfunction
 augroup PythonRepl
     autocmd!
     " code snippet
+    autocmd Filetype python inoremap <buffer> ;f ###<cr>
+    autocmd Filetype python inoremap <buffer> ;cb .to_clipboard()
+    autocmd Filetype python inoremap <buffer> ;ct .copy(True)
+    autocmd Filetype python inoremap <buffer> ;it ,inplace=True
+    autocmd Filetype python nnoremap <buffer> ;pr yiwoprint(<esc>pa)<esc>
     autocmd Filetype python inoremap ;f ###<cr>
-    autocmd Filetype python inoremap ;cb .to_clipboard()
-    autocmd Filetype python inoremap ;ct .copy(True)
-    autocmd Filetype python inoremap ;it ,inplace=True
-    autocmd Filetype python nnoremap <leader>p yiwoprint(<esc>pa)<esc>
     " REPL actions
-    autocmd Filetype python nnoremap \ :call SelectCell()<cr>
-    autocmd Filetype python vmap \ <CR>/###<CR>
+    autocmd Filetype python nnoremap <buffer> <BS> :call SelectCell()<cr>
+    autocmd Filetype python vnoremap <buffer> <BS> <CR>/###<CR>
 augroup END
