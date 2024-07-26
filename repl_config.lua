@@ -75,13 +75,13 @@ vim.api.nvim_create_user_command("Format", function(args)
 	require("conform").format({ async = true, lsp_format = "fallback", range = range })
 end, { range = true })
 -- async black call
-vim.keymap.set("n", "==", "<cmd>Format<cr>")
+vim.keymap.set("n", "==", "<cmd>Format<cr>", { desc = "conform_format" })
 -- sync black call
 vim.keymap.set("n", "<leader>==", ":!black %<cr>")
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "vim",
 	callback = function(args)
-		vim.keymap.set("n", "==", "ggVG=", { buffer = args.buf })
+		vim.keymap.set("n", "==", "ggVG=", { buffer = args.buf, desc = "vim_format" })
 	end,
 })
 
