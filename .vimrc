@@ -68,8 +68,9 @@ if !exists('g:vscode')
         Plug 'hrsh7th/cmp-cmdline'
         Plug 'hrsh7th/nvim-cmp'
         Plug 'saadparwaiz1/cmp_luasnip'
+        "Plug 'rafamadriz/friendly-snippets'
+        Plug 'echaya/friendly-snippets'
         Plug 'L3MON4D3/LuaSnip' ", {'tag': 'v2.*', 'do': 'make install_jsregexp'}
-        Plug 'rafamadriz/friendly-snippets'
 
         "programming tools
         Plug 'Vigemus/iron.nvim'
@@ -80,6 +81,7 @@ if !exists('g:vscode')
         Plug 'echasnovski/mini.hipatterns'
         Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
         Plug 'RRethy/vim-illuminate'
+        Plug 'sindrets/diffview.nvim'
 
 
     else
