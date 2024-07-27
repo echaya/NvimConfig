@@ -82,5 +82,5 @@ augroup PythonRepl
     autocmd Filetype python nnoremap <buffer> ;p yiwoprint(<esc>pa)<esc>
     " REPL actions
     autocmd Filetype python nnoremap <buffer> <BS> :call SelectCell()<cr>
-    autocmd Filetype python vnoremap <buffer> <BS> <CR>/###<CR>
+    autocmd Filetype python vmap <buffer> <BS> <CR>/###<CR>
 augroup END
