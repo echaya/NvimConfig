@@ -206,6 +206,7 @@ endfunction
 
 nnoremap <silent> ZZ :call PowerClose(0)<cr>
 nnoremap <silent> ZQ :call PowerClose(1)<cr>
+tnoremap \\ <cmd>q<cr>
 
 function! ChooseBuffer(buffername)
     let bnr = bufwinnr(a:buffername)
