@@ -202,7 +202,6 @@ require("toggleterm").setup({
 			return 30
 		end
 	end,
-	open_mapping = "<a-`>",
 })
 
 local Terminal = require("toggleterm.terminal").Terminal
@@ -210,7 +209,6 @@ local lazygit = Terminal:new({
 	cmd = "lazygit",
 	dir = "git_dir",
 	direction = "tab",
-	float_opts = { border = "double" },
 	name = "Lazygit",
 })
 
@@ -218,4 +216,47 @@ function _lazygit_toggle()
 	lazygit:toggle()
 end
 
-vim.api.nvim_set_keymap("n", "<leader>lg", "<cmd>lua _lazygit_toggle()<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>lg",
+	"<cmd>lua _lazygit_toggle()<CR>",
+	{ noremap = true, silent = true, desc = "lazygit" }
+)
+
+local ipython = Terminal:new({
+	cmd = "ipython --no-autoindent",
+	dir = "git_dir",
+	direction = "vertical",
+	name = "ipython",
+	hidden = true,
+})
+
+function _ipython_toggle()
+	ipython:toggle()
+end
+
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>py",
+	"<cmd>lua _ipython_toggle()<CR>",
+	{ noremap = true, silent = true, desc = "ipython" }
+)
+
+local pwsh = Terminal:new({
+	-- cmd = "ipython --no-autoindent",
+	-- dir = "git_dir",
+	direction = "horizontal",
+	name = "powershell",
+	hidden = true,
+})
+
+function _pwsh_toggle()
+	pwsh:toggle()
+end
+
+vim.api.nvim_set_keymap(
+	"n",
+	"<a-`>",
+	"<cmd>lua _pwsh_toggle()<CR>",
+	{ noremap = true, silent = true, desc = "powershell" }
+)
