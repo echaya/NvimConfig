@@ -28,7 +28,7 @@ iron.setup({
 	highlight = {
 		italic = true,
 	},
-	ignore_blank_lines = true, -- ignore blank lines when sending visual select lines
+	ignore_blank_lines = false, -- ignore blank lines when sending visual select lines
 })
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "python",
