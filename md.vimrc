@@ -20,7 +20,7 @@ let g:mkdp_preview_options = {
     \ 'hide_yaml_meta': 1
     \ }
 
-nmap <F5> <Plug>MarkdownPreviewToggle
+"nmap <F5> <Plug>MarkdownPreviewToggle
 
 let g_mkdp_refresh_slow=0
 

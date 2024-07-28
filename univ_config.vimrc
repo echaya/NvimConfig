@@ -34,10 +34,10 @@ noremap <silent> <leader>o :<C-u>call append(line("."),   repeat([""], v:count1)
 nnoremap <silent> <leader>O :<C-u>call append(line(".")-1, repeat([""], v:count1))<CR>
 
 " use Ctrl+j/k to swap lines (allow count)
-nnoremap <C-j> :<c-u>execute 'move +'. v:count1<cr>
-nnoremap <C-k> :<c-u>execute 'move -1-'. v:count1<cr>
-xnoremap <silent> <C-j> :m '>+1<cr>gv=gv
-xnoremap <silent> <C-k> :m '<-2<cr>gv=gv
+nnoremap <A-j> :<c-u>execute 'move +'. v:count1<cr>
+nnoremap <A-k> :<c-u>execute 'move -1-'. v:count1<cr>
+xnoremap <silent> <A-j> :m '>+1<cr>gv=gv
+xnoremap <silent> <A-k> :m '<-2<cr>gv=gv
 
 " saner command-line histsory
 cnoremap <expr> <c-n> wildmenumode() ? "\<c-n>" : "\<down>"

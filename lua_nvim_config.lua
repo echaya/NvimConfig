@@ -340,7 +340,6 @@ require("nvim-tree").setup({
 })
 
 vim.keymap.set("n", "<a-b>", "<CMD>NvimTreeToggle<CR>", { noremap = true, silent = true })
-vim.keymap.set("c", "lg", "LazyGit", { noremap = true })
 
 -- Eviline config for lualine
 -- Author: shadmansaleh
