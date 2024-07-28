@@ -144,6 +144,7 @@ let g:rooter_patterns = ['.git']
 :command DOS e ++ff=dos | set ff=unix | w
 " duplicate current window in Vertical
 :command V vsplit
+:command S split
 :command RemoveTrailingSpace %s/\s\+$//e
 
 " add comment string for bat, autohotkey files
@@ -152,10 +153,6 @@ augroup MyGroup | au!
     autocmd FileType dosbatch setlocal commentstring=::\ %s
     autocmd FileType autohotkey setlocal commentstring=;\ %s
 augroup END
-
-"Plug management
-let g:plug_window = 'vertical topleft new'
-let g:plug_pwindow = 'above 12'
 
 let g:temp_cb_name = "temp_cb"
 
