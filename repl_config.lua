@@ -1,3 +1,58 @@
+-- local iron = require("iron.core")
+--
+-- iron.setup({
+-- 	config = {
+-- 		-- Scope of the repl
+-- 		-- By default it is one for the same `pwd`
+-- 		-- Other options are `tab_based` and `singleton`
+-- 		scope = require("iron.scope").path_based,
+-- 		-- Whether a repl should be discarded or not
+-- 		scratch_repl = true,
+-- 		-- Your repl definitions come here
+-- 		repl_definition = {
+-- 			python = {
+-- 				format = require("iron.fts.common").bracketed_paste,
+-- 				command = { "ipython", "--no-autoindent" },
+-- 			},
+-- 			sh = {
+-- 				-- Can be a table or a function that
+-- 				-- returns a table (see below)
+-- 				command = { "zsh" },
+-- 			},
+-- 		},
+-- 		repl_open_cmd = require("iron.view").split.vertical.botright("55%"),
+-- 	},
+-- 	keymaps = {},
+-- 	-- If the highlight is on, you can change how it looks
+-- 	-- For the available options, check nvim_set_hl
+-- 	highlight = {
+-- 		italic = true,
+-- 	},
+-- 	ignore_blank_lines = true, -- ignore blank lines when sending visual select lines
+-- })
+-- vim.api.nvim_create_autocmd("FileType", {
+-- 	pattern = "python",
+-- 	callback = function(args)
+-- 		vim.keymap.set("v", "<CR>", iron.visual_send, { buffer = args.buf, desc = "iron_visual_send" })
+-- 		vim.keymap.set("n", [[\r]], "<cmd>IronRepl<cr>", { buffer = args.buf, desc = "iron_repl" })
+-- 		vim.keymap.set("n", [[\d]], "<cmd>IronRestart<cr>", { buffer = args.buf, desc = "iron_repl_restart" })
+-- 		vim.keymap.set("n", [[\u]], iron.send_until_cursor, { buffer = args.buf, desc = "iron_send_until" })
+-- 		vim.keymap.set("n", [[\q]], iron.close_repl, { buffer = args.buf, desc = "iron_exit" })
+-- 		vim.keymap.set("n", "<CR>", function()
+-- 			iron.send(nil, string.char(13))
+-- 		end, { buffer = args.buf, desc = "iron_cr" })
+-- 		vim.keymap.set("n", [[\s]], function()
+-- 			iron.run_motion("send_motion")
+-- 		end, { buffer = args.buf, desc = "iron_send_motion" })
+-- 		vim.keymap.set("n", [[\c]], function()
+-- 			iron.send(nil, string.char(03))
+-- 		end, { buffer = args.buf, desc = "iron_interrupt" })
+-- 		vim.keymap.set("n", [[\l]], function()
+-- 			iron.send(nil, string.char(12))
+-- 		end, { buffer = args.buf, desc = "iron_clear" })
+-- 	end,
+-- })
+
 require("conform").setup({
   formatters_by_ft = {
     lua = { "stylua" },
@@ -200,96 +255,59 @@ vim.keymap.set(
   { noremap = true, silent = true, desc = "ToggleTerm" }
 )
 
-local ipython = Terminal:new({
-  cmd = "ipython --no-autoindent",
-  dir = "git_dir",
-  direction = "vertical",
-  name = "ipython",
-})
-
-function _ipython_toggle()
-  ipython:toggle()
-end
-
-vim.keymap.set(
-  { "n", "t" },
-  [[<a-\>]],
-  "<cmd>lua _ipython_toggle()<CR>",
-  { noremap = true, silent = true, desc = "ipython" }
-)
-
 local function is_whitespace(str)
-  return str:match("^%s*$") ~= nil
+	return str:match("^%s*$") ~= nil
 end
 
 -- Function to remove leading and ending whitespace strings
 local function trim_whitespace_strings(lines)
-  local start_idx, end_idx = 1, #lines
+	local start_idx, end_idx = 1, #lines
 
-  -- Find the index of the first non-whitespace string
-  while start_idx <= #lines and is_whitespace(lines[start_idx]) do
-    start_idx = start_idx + 1
-  end
+	-- Find the index of the first non-whitespace string
+	while start_idx <= #lines and is_whitespace(lines[start_idx]) do
+		start_idx = start_idx + 1
+	end
 
-  -- Find the index of the last non-whitespace string
-  while end_idx >= 1 and is_whitespace(lines[end_idx]) do
-    end_idx = end_idx - 1
-  end
+	-- Find the index of the last non-whitespace string
+	while end_idx >= 1 and is_whitespace(lines[end_idx]) do
+		end_idx = end_idx - 1
+	end
 
-  -- Create a new table containing only the non-whitespace strings
-  local trimmed_lines = {}
-  for i = start_idx, end_idx do
-    table.insert(trimmed_lines, lines[i])
-  end
+	-- Create a new table containing only the non-whitespace strings
+	local trimmed_lines = {}
+	for i = start_idx, end_idx do
+		table.insert(trimmed_lines, lines[i])
+	end
 
-  return trimmed_lines
+	return trimmed_lines
 end
 
 function send_lines_to_ipython()
-  local id = 1
-  local current_window = vim.api.nvim_get_current_win() -- save current window
-  local vstart = vim.fn.getpos("'<")
-  local vend = vim.fn.getpos("'>")
-  local line_start = vstart[2]
-  local line_end = vend[2]
-  local lines = vim.fn.getline(line_start, line_end)
-  local toggleterm = require("toggleterm")
-  --
-  local cmd = string.char(15)
+	local id = 1
 
-  for _, line in ipairs(trim_whitespace_strings(lines)) do
-    local l = line
-    if l == "" then
-      cmd = cmd .. string.char(15) .. string.char(14)
-    else
-      cmd = cmd .. l .. string.char(10)
-    end
-  end
-  cmd = cmd .. string.char(4)
-  toggleterm.exec(cmd, id)
-  vim.api.nvim_set_current_win(current_window)
+	local current_window = vim.api.nvim_get_current_win() -- save current window
+
+	local vstart = vim.fn.getpos("'<")
+	local vend = vim.fn.getpos("'>")
+	local line_start = vstart[2]
+	local line_end = vend[2]
+	local lines = vim.fn.getline(line_start, line_end)
+        local toggleterm = require("toggleterm")
+	--
+	local cmd = string.char(15)
+
+	for _, line in ipairs(trim_whitespace_strings(lines)) do
+		local l = line
+		if l == "" then
+			cmd = cmd .. string.char(15) .. string.char(14)
+		else
+			cmd = cmd .. l .. string.char(10)
+		end
+	end
+	cmd = cmd
+	toggleterm.exec(cmd, id)
+        toggleterm.exec(string.char(13),id)
+	vim.api.nvim_set_current_win(current_window)
 end
 
-function send_sth_to_ipython(char)
-  local id = 1
-  local current_window = vim.api.nvim_get_current_win() -- save current window
-  local toggleterm = require("toggleterm")
-  local enter_in_string = string.char(char)
-  vim.defer_fn(function()
-    toggleterm.exec(enter_in_string, id)
-  vim.api.nvim_set_current_win(current_window)
-end
-
-function send_code_to_ipython()
-  vim.cmd("call SelectVisual()")
-  vim.defer_fn(function()
-    vim.cmd(":'<,'>lua send_lines_to_ipython()")
-  end, 100)
-  send_sth_to_ipython(13)
-end
-
-vim.keymap.set("n", [[\\]], ":lua send_code_to_ipython()<cr>:norm! j<cr>")
-vim.keymap.set("n", [[\c]], ":lua send_sth_to_ipython(03)<cr>")
-vim.keymap.set("n", "<a-del>", ":'<,'>lua send_sth_to_ipython(12)<cr>")
-vim.keymap.set("v", "<cr>", ":'<,'>lua send_sth_to_ipython(13)<cr>")
-vim.keymap.set("n", [[\<cr>]], ":lua send_sth_to_ipython(13)<cr>")
+vim.keymap.set("v", "<cr>", ":'<,'>lua send_lines_to_ipython()<cr>")
