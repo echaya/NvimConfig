@@ -75,14 +75,13 @@ if !exists('g:vscode')
         "programming tools
         Plug 'Vigemus/iron.nvim'
         Plug 'stevearc/conform.nvim'
-        Plug 'kdheepak/lazygit.nvim'
         Plug 'lewis6991/gitsigns.nvim'
         Plug 'windwp/nvim-autopairs'
         Plug 'echasnovski/mini.hipatterns'
         Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
         Plug 'RRethy/vim-illuminate'
         Plug 'sindrets/diffview.nvim'
-
+        Plug 'akinsho/toggleterm.nvim', {'tag' : '2.12'}
 
     else
         " vim specific alternative

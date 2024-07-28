@@ -127,7 +127,7 @@ require("gitsigns").setup({
 		map("n", "gz", gitsigns.reset_hunk, { desc = "reset_hunk" })
 		map("n", "gJ", gitsigns.preview_hunk, { desc = "preview_hunk" })
 		-- map("n", "gK", '<cmd>lua require"gitsigns".diffthis("~")<CR>', { desc = "gitsign: diffthis" })
-		map("n", "gK", '<cmd>DiffviewFileHistory %<CR>', { desc = "diffview: file_history" })
+		map("n", "gK", "<cmd>DiffviewFileHistory %<CR>", { desc = "diffview: file_history" })
 		map("n", "<leader>td", gitsigns.toggle_deleted, { desc = "gitsign: toggle_deleted" })
 
 		-- Text object
@@ -191,3 +191,31 @@ require("illuminate").configure({
 		return true
 	end,
 })
+
+require("toggleterm").setup({
+	size = function(term)
+		if term.direction == "horizontal" then
+			return 15
+		elseif term.direction == "vertical" then
+			return vim.o.columns * 0.4
+		else
+			return 30
+		end
+	end,
+	open_mapping = "<a-`>",
+})
+
+local Terminal = require("toggleterm.terminal").Terminal
+local lazygit = Terminal:new({
+	cmd = "lazygit",
+	dir = "git_dir",
+	direction = "tab",
+	float_opts = { border = "double" },
+	name = "Lazygit",
+})
+
+function _lazygit_toggle()
+	lazygit:toggle()
+end
+
+vim.api.nvim_set_keymap("n", "<leader>lg", "<cmd>lua _lazygit_toggle()<CR>", { noremap = true, silent = true })
