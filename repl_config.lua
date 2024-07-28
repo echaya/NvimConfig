@@ -1,107 +1,57 @@
-local iron = require("iron.core")
-
-iron.setup({
-  config = {
-    -- Scope of the repl
-    -- By default it is one for the same `pwd`
-    -- Other options are `tab_based` and `singleton`
-    scope = require("iron.scope").path_based,
-    -- Whether a repl should be discarded or not
-    scratch_repl = true,
-    -- Your repl definitions come here
-    repl_definition = {
-      python = {
-        format = require("iron.fts.common").bracketed_paste_python,
-        command = { "ipython", "--no-autoindent" },
-      },
-    },
-    repl_open_cmd = require("iron.view").split.vertical.botright("45%"),
-  },
-  keymaps = {},
-  -- If the highlight is on, you can change how it looks
-  -- For the available options, check nvim_set_hl
-  highlight = {
-    italic = true,
-  },
-  ignore_blank_lines = false, -- ignore blank lines when sending visual select lines
-})
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "python",
-  callback = function(args)
-    -- TODO norm! gv after Iron start/restart
-    vim.keymap.set(
-      { "n", "v" },
-      [[<a-\>]],
-      "<cmd>IronRepl<cr>",
-      { buffer = args.buf, desc = "repl_toggle" }
-    )
-    vim.keymap.set({ "n", "v" }, "<localleader>r", function()
-      vim.cmd("IronRestart")
-      vim.cmd("IronRepl")
-    end, { buffer = args.buf, desc = "repl_restart" })
-    vim.keymap.set("n", "<localleader><cr>", function()
-      iron.send(nil, string.char(13))
-    end, { buffer = args.buf, desc = "repl_cr" })
-    vim.keymap.set("n", "<localleader><localleader>", function()
-      vim.cmd("call SelectVisual()")
-      vim.cmd("norm! y`>")
-      vim.defer_fn(function()
-        iron.send(nil, "%paste")
-      end, 100)
-      vim.cmd("norm! j")
-    end, { buffer = args.buf, desc = "repl_%paste" })
-    vim.keymap.set("n", "<localleader>]", function()
-      vim.cmd("call SelectVisual()")
-      iron.visual_send()
-      vim.cmd("norm! j")
-    end, { buffer = args.buf, desc = "repl_send_cell" })
-    vim.keymap.set("n", "<localleader>y", function()
-      vim.cmd("norm! yiwo")
-      vim.cmd("norm! pA.to_clipboard()")
-      vim.cmd("norm! V")
-      iron.visual_send()
-      vim.cmd("norm! dd")
-    end, { buffer = args.buf, desc = "repl_df_to_clipboard" })
-    vim.keymap.set("n", "<localleader>p", function()
-      vim.cmd("norm! yiwoprint(")
-      vim.cmd("norm! pA)")
-      vim.cmd("norm! V")
-      iron.visual_send()
-      vim.cmd("norm! dd")
-    end, { buffer = args.buf, desc = "repl_print" })
-    vim.keymap.set("v", "<CR>", function()
-      iron.visual_send()
-      vim.cmd("norm! j")
-    end, { buffer = args.buf, desc = "repl_v_send" })
-    vim.keymap.set({ "n", "v" }, "<localleader>u", function()
-      iron.send_until_cursor()
-      vim.api.nvim_input("<ESC>") -- to escape from visual mode
-    end, { buffer = args.buf, desc = "repl_send_until" })
-    vim.keymap.set({ "n", "v" }, "<localleader>q", function()
-      iron.close_repl()
-      iron.send(nil, string.char(13))
-    end, { buffer = args.buf, desc = "repl_exit" })
-    vim.keymap.set({ "n", "v" }, "<localleader>c", function()
-      iron.send(nil, string.char(03))
-    end, { buffer = args.buf, desc = "repl_interrupt" })
-    vim.keymap.set({ "n", "v" }, "<a-del>", function()
-      iron.send(nil, string.char(12))
-    end, { buffer = args.buf, desc = "repl_clear" })
-    vim.keymap.set(
-      "n",
-      "<localleader>f",
-      "<cmd>IronFocus<cr>i",
-      { buffer = args.buf, desc = "repl_focus" }
-    )
-    vim.keymap.set({ "n" }, "<localleader>t", function()
-      vim.cmd("normal V")
-      require("leap.treesitter").select()
-      iron.visual_send()
-      vim.cmd("norm! j")
-    end, { buffer = args.buf, desc = "repl_send_tree" })
-  end,
-})
-vim.keymap.set("t", [[<a-\>]], "<cmd>q<cr>", { desc = "repl_toggle" })
+-- local iron = require("iron.core")
+--
+-- iron.setup({
+-- 	config = {
+-- 		-- Scope of the repl
+-- 		-- By default it is one for the same `pwd`
+-- 		-- Other options are `tab_based` and `singleton`
+-- 		scope = require("iron.scope").path_based,
+-- 		-- Whether a repl should be discarded or not
+-- 		scratch_repl = true,
+-- 		-- Your repl definitions come here
+-- 		repl_definition = {
+-- 			python = {
+-- 				format = require("iron.fts.common").bracketed_paste,
+-- 				command = { "ipython", "--no-autoindent" },
+-- 			},
+-- 			sh = {
+-- 				-- Can be a table or a function that
+-- 				-- returns a table (see below)
+-- 				command = { "zsh" },
+-- 			},
+-- 		},
+-- 		repl_open_cmd = require("iron.view").split.vertical.botright("55%"),
+-- 	},
+-- 	keymaps = {},
+-- 	-- If the highlight is on, you can change how it looks
+-- 	-- For the available options, check nvim_set_hl
+-- 	highlight = {
+-- 		italic = true,
+-- 	},
+-- 	ignore_blank_lines = true, -- ignore blank lines when sending visual select lines
+-- })
+-- vim.api.nvim_create_autocmd("FileType", {
+-- 	pattern = "python",
+-- 	callback = function(args)
+-- 		vim.keymap.set("v", "<CR>", iron.visual_send, { buffer = args.buf, desc = "iron_visual_send" })
+-- 		vim.keymap.set("n", [[\r]], "<cmd>IronRepl<cr>", { buffer = args.buf, desc = "iron_repl" })
+-- 		vim.keymap.set("n", [[\d]], "<cmd>IronRestart<cr>", { buffer = args.buf, desc = "iron_repl_restart" })
+-- 		vim.keymap.set("n", [[\u]], iron.send_until_cursor, { buffer = args.buf, desc = "iron_send_until" })
+-- 		vim.keymap.set("n", [[\q]], iron.close_repl, { buffer = args.buf, desc = "iron_exit" })
+-- 		vim.keymap.set("n", "<CR>", function()
+-- 			iron.send(nil, string.char(13))
+-- 		end, { buffer = args.buf, desc = "iron_cr" })
+-- 		vim.keymap.set("n", [[\s]], function()
+-- 			iron.run_motion("send_motion")
+-- 		end, { buffer = args.buf, desc = "iron_send_motion" })
+-- 		vim.keymap.set("n", [[\c]], function()
+-- 			iron.send(nil, string.char(03))
+-- 		end, { buffer = args.buf, desc = "iron_interrupt" })
+-- 		vim.keymap.set("n", [[\l]], function()
+-- 			iron.send(nil, string.char(12))
+-- 		end, { buffer = args.buf, desc = "iron_clear" })
+-- 	end,
+-- })
 
 require("conform").setup({
   formatters_by_ft = {
@@ -305,26 +255,59 @@ vim.keymap.set(
   { noremap = true, silent = true, desc = "ToggleTerm" }
 )
 
-vim.keymap.set("n", "<a-`>", function()
-  return "<cmd>" .. vim.v.count .. "ToggleTerm<cr>"
-end, { expr = true, desc = "X ToggleTerm" })
+local function is_whitespace(str)
+	return str:match("^%s*$") ~= nil
+end
 
-vim.keymap.set({ "n", "t" }, "<a-d>", function()
-  for _, win in ipairs(vim.api.nvim_list_wins()) do
-    local bufnr = vim.api.nvim_win_get_buf(win)
-    if vim.bo[bufnr].buftype == "terminal" then
-      local _, term = require("toggleterm.terminal").identify(vim.api.nvim_buf_get_name(bufnr))
-      if term and term:is_split() then
-        cur_dir = term.direction
-        if cur_dir == "horizontal" then
-          return "<Cmd>ToggleTerm<CR><Cmd>ToggleTerm direction=vertical<CR>"
-        else
-          return "<Cmd>ToggleTerm<CR><Cmd>ToggleTerm direction=tab<CR>"
-        end
-      end
-    end
-  end
-  return "<Cmd>ToggleTerm<CR><Cmd>ToggleTerm direction=horizontal<CR>"
-end, { expr = true, desc = "ToggleTerm direction" })
+-- Function to remove leading and ending whitespace strings
+local function trim_whitespace_strings(lines)
+	local start_idx, end_idx = 1, #lines
 
-vim.keymap.set("n", "<leader>ft", "<Cmd>TermSelect<CR>", { desc = "find_terminal" })
+	-- Find the index of the first non-whitespace string
+	while start_idx <= #lines and is_whitespace(lines[start_idx]) do
+		start_idx = start_idx + 1
+	end
+
+	-- Find the index of the last non-whitespace string
+	while end_idx >= 1 and is_whitespace(lines[end_idx]) do
+		end_idx = end_idx - 1
+	end
+
+	-- Create a new table containing only the non-whitespace strings
+	local trimmed_lines = {}
+	for i = start_idx, end_idx do
+		table.insert(trimmed_lines, lines[i])
+	end
+
+	return trimmed_lines
+end
+
+function send_lines_to_ipython()
+	local id = 1
+
+	local current_window = vim.api.nvim_get_current_win() -- save current window
+
+	local vstart = vim.fn.getpos("'<")
+	local vend = vim.fn.getpos("'>")
+	local line_start = vstart[2]
+	local line_end = vend[2]
+	local lines = vim.fn.getline(line_start, line_end)
+        local toggleterm = require("toggleterm")
+	--
+	local cmd = string.char(15)
+
+	for _, line in ipairs(trim_whitespace_strings(lines)) do
+		local l = line
+		if l == "" then
+			cmd = cmd .. string.char(15) .. string.char(14)
+		else
+			cmd = cmd .. l .. string.char(10)
+		end
+	end
+	cmd = cmd
+	toggleterm.exec(cmd, id)
+        toggleterm.exec(string.char(13),id)
+	vim.api.nvim_set_current_win(current_window)
+end
+
+vim.keymap.set("v", "<cr>", ":'<,'>lua send_lines_to_ipython()<cr>")

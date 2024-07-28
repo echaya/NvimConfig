@@ -84,7 +84,7 @@ if !exists('g:vscode')
         Plug 'SmiteshP/nvim-navic'
 
         "programming tools
-        Plug 'Vigemus/iron.nvim'
+        "Plug 'Vigemus/iron.nvim'
         Plug 'stevearc/conform.nvim'
         Plug 'lewis6991/gitsigns.nvim'
         Plug 'windwp/nvim-autopairs'
