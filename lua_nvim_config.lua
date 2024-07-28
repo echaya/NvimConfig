@@ -448,7 +448,6 @@ local config = {
 				}, -- Shows specific buffer name for that filetype ( { `filetype` = `buffer_name`, ... } )
 				use_mode_colors = false,
 				buffers_color = {
-					-- -- Same values as the general color option can be used here.
 					active = { fg = colors.magenta, bg = "#2d313b" },
 					inactive = { fg = "#7f848e", bg = "#2d313b" },
 				},
@@ -458,7 +457,15 @@ local config = {
 		lualine_b = {},
 		lualine_x = {},
 		lualine_y = {},
-		lualine_z = { "tabs" },
+		lualine_z = {
+			{
+				"tabs",
+				tabs_color = {
+					active = { fg = colors.orange, bg = "#2d313b" },
+					inactive = { fg = "#7f848e", bg = "#2d313b" },
+				},
+			},
+		},
 	},
 	winbar = {
 		lualine_a = {},
