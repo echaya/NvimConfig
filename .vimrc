@@ -17,7 +17,6 @@ call plug#begin(g:WorkDir.'nvim-win64/share/nvim/vimfiles/plugged')
 " universal plugins
 Plug 'unblevable/quick-scope'
 Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-speeddating'
 Plug 'svermeulen/vim-cutlass'
 "text obj plugin
 Plug 'kana/vim-textobj-user' "dependent plugin
@@ -26,6 +25,7 @@ Plug 'Julian/vim-textobj-variable-segment' "av,iv
 Plug 'bps/vim-textobj-python' "ac,ic,af,if
 Plug 'ggandor/leap.nvim'
 Plug 'kylechui/nvim-surround'
+Plug 'monaqa/dial.nvim'
 Plug 'dstein64/vim-startuptime'
 
 if !exists('g:vscode')
@@ -58,7 +58,7 @@ if !exists('g:vscode')
         Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
         Plug 'ahmedkhalf/project.nvim'
         Plug 'nvim-tree/nvim-tree.lua'
-        Plug 'folke/which-key.nvim'
+        Plug 'folke/which-key.nvim' 
 
         "lsp and snippets
         Plug 'neovim/nvim-lspconfig'
@@ -91,6 +91,7 @@ if !exists('g:vscode')
         Plug 'itchyny/lightline.vim'
         Plug 'itchyny/vim-gitbranch'
         Plug 'tpope/vim-commentary' "comment / uncomment code
+        Plug 'tpope/vim-speeddating'
     endif
 
 endif
