@@ -4,16 +4,16 @@
 "
 "set work directory for nvim
 if isdirectory("c:/Users/echay/")
-    let g:WorkDir = 'D:/Dropbox/'
+    let g:WorkDir = 'D:/Dropbox/neovim/'
 else
-    let g:WorkDir = 'C:/tools/'
+    let g:WorkDir = 'C:/tools/neovim/'
 endif
 
 "source plug.vim manually from plugged folder. It should normally sit in the
 " nvim working dir autoload folder
-exe 'source '.g:WorkDir.'Neovim/nvim-win64/share/nvim/vimfiles/plugged/plug.vim'
+exe 'source '.g:WorkDir.'nvim-win64/share/nvim/vimfiles/plugged/plug.vim'
 
-call plug#begin(g:WorkDir..'Neovim/nvim-win64/share/nvim/vimfiles/plugged')
+call plug#begin(g:WorkDir.'nvim-win64/share/nvim/vimfiles/plugged')
 " universal plugins
 Plug 'unblevable/quick-scope'
 Plug 'tpope/vim-repeat'
@@ -97,22 +97,22 @@ endif
 
 call plug#end()
 
-exe 'source '.g:WorkDir.'neovim/config/univ_config.vimrc'
+exe 'source '.g:WorkDir.'config/univ_config.vimrc'
 if has("nvim")
-    exe 'luafile '.g:WorkDir.'neovim/config/lua_univ_config.lua'
+    exe 'luafile '.g:WorkDir.'config/lua_univ_config.lua'
 endif
 
 if exists('g:vscode')
-    exe 'source '.g:WorkDir.'neovim/config/vscode_config.vimrc'
-    exe 'luafile '.g:WorkDir.'neovim/config/lua_vscode_config.lua'
+    exe 'source '.g:WorkDir.'config/vscode_config.vimrc'
+    exe 'luafile '.g:WorkDir.'config/lua_vscode_config.lua'
 else
-    exe 'source '.g:WorkDir.'neovim/config/vim_config.vimrc'
-    exe 'source '.g:WorkDir.'neovim/config/md.vimrc'
-    exe 'source '.g:WorkDir.'neovim/config/python.vimrc'
+    exe 'source '.g:WorkDir.'config/vim_config.vimrc'
+    exe 'source '.g:WorkDir.'config/md.vimrc'
+    exe 'source '.g:WorkDir.'config/python.vimrc'
     if has("nvim")
-        exe 'luafile '.g:WorkDir.'neovim/config/lsp_config.lua'
-        exe 'luafile '.g:WorkDir.'neovim/config/lua_nvim_config.lua'
-        exe 'luafile '.g:WorkDir.'neovim/config/repl_config.lua'
+        exe 'luafile '.g:WorkDir.'config/lsp_config.lua'
+        exe 'luafile '.g:WorkDir.'config/lua_nvim_config.lua'
+        exe 'luafile '.g:WorkDir.'config/repl_config.lua'
     endif
 endif
 

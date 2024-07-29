@@ -60,7 +60,7 @@ augroup END
 
 " vim wiki settings
 if isdirectory("c:/Users/echay/")
-    let g:MDir = g:WorkDir.'markdown\\'
+    let g:MDir = 'd:\\dropbox\\markdown'
 else
     let g:MDir = 'c:\\Users\\fzhang141\\OneDrive - Bloomberg LP\\Notes\\'
 endif
