@@ -59,12 +59,12 @@ cmp.setup({
 	}),
 
 	sources = cmp.config.sources({
+		{ name = "path" },
+	}, {
 		{ name = "luasnip" },
 		{ name = "nvim_lsp" },
 	}, {
 		{ name = "buffer" },
-	}, {
-		{ name = "path" },
 	}),
 })
 
