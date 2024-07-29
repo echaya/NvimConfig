@@ -35,12 +35,12 @@ if !exists('g:vscode')
     Plug '907th/vim-auto-save' "to auto-save files
     Plug 'airblade/vim-rooter'
     " markdown & log plugins
-    Plug 'godlygeek/tabular' "prerequisite for vim-markdown
-    Plug 'plasticboy/vim-markdown'
-    Plug 'vimwiki/vimwiki'
+    Plug 'godlygeek/tabular', {'for':['markdown','md','vimwiki']} "prerequisite for vim-markdown
+    Plug 'plasticboy/vim-markdown', {'for':['markdown','md','vimwiki']}
+    Plug 'vimwiki/vimwiki',{'on':'VimwikiIndex'}
     Plug 'dhruvasagar/vim-table-mode',{'on':'TableModeToggle'}
-    Plug 'ferrine/md-img-paste.vim'
-    Plug 'MTDL9/vim-log-highlighting' "log highlight
+    Plug 'ferrine/md-img-paste.vim', {'for':['markdown','md','vimwiki']}
+    Plug 'MTDL9/vim-log-highlighting', {'for':['log']}
 
     if has('nvim')
         " ui, display
