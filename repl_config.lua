@@ -138,7 +138,7 @@ require("gitsigns").setup({
 local hipatterns = require("mini.hipatterns")
 hipatterns.setup({
 	highlighters = {
-		-- Highlight standalone 'SKIP', 'IMP', 'TODO', 'NOTE', XXX
+		-- Highlight standalone 'SKIP', 'IMP', 'TODO', 'NOTE'
 		fixme = { pattern = "%f[%w]()SKIP()%f[%W]", group = "MiniHipatternsFixme" },
 		hack = { pattern = "%f[%w]()IMP()%f[%W]", group = "MiniHipatternsHack" },
 		todo = { pattern = "%f[%w]()TODO()%f[%W]", group = "MiniHipatternsTodo" },
