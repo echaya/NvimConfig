@@ -24,7 +24,7 @@ Plug 'kana/vim-textobj-indent' "ai,ii, aI, iI
 Plug 'Julian/vim-textobj-variable-segment' "av,iv
 Plug 'bps/vim-textobj-python' "ac,ic,af,if
 Plug 'ggandor/leap.nvim'
-Plug 'kylechui/nvim-surround'
+Plug 'machakann/vim-sandwich'
 Plug 'monaqa/dial.nvim'
 Plug 'dstein64/vim-startuptime'
 
@@ -137,7 +137,11 @@ highlight MiniHipatternsTodo guibg=#d19a66 guifg=#282c34
 highlight MiniHipatternsFixme guibg=#e06c75 guifg=#282c34
 highlight MiniHipatternsHack guibg=#c678dd guifg=#282c34
 highlight MiniHipatternsNote guibg=#98c379 guifg=#282c34
-highlight NvimSurroundHighlight guifg='#edc41f' gui=underline ctermfg='yellow' cterm=underline
+
+highlight OperatorSandwichBuns guifg=#d19a66 gui=underline
+highlight OperatorSandwichChange guifg=#edc41f gui=underline
+highlight OperatorSandwichAdd guibg=#b1fa87 gui=none
+highlight OperatorSandwichDelete guibg=#cf5963 gui=none
 
 highlight clear SpellBad
 highlight clear SpellRare

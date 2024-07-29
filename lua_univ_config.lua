@@ -8,8 +8,6 @@ leap.set_default_keymaps()
 -- vim.keymap.set('o', 's', '<Plug>(leap-forward)')
 -- vim.keymap.set('o', 'S', '<Plug>(leap-backward)')
 
-require("nvim-surround").setup()
-
 local augend = require("dial.augend")
 require("dial.config").augends:register_group({
 	default = {
