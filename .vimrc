@@ -82,6 +82,7 @@ if !exists('g:vscode')
         Plug 'RRethy/vim-illuminate'
         Plug 'sindrets/diffview.nvim'
         Plug 'akinsho/toggleterm.nvim',  { 'tag': '*' }
+        Plug 'SmiteshP/nvim-navic'
 
     else
         " vim specific alternative
