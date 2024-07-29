@@ -81,7 +81,7 @@ if !exists('g:vscode')
         Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
         Plug 'RRethy/vim-illuminate'
         Plug 'sindrets/diffview.nvim'
-        Plug 'akinsho/toggleterm.nvim', {'tag' : '2.12'}
+        Plug 'akinsho/toggleterm.nvim',  { 'tag': '*' }
 
     else
         " vim specific alternative
