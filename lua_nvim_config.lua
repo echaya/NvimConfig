@@ -473,7 +473,7 @@ local config = {
 		lualine_c = {
 			{
 				"navic",
-				color_correction = "dynamic",
+				color_correction = nil,
 				navic_opts = { highlight = true },
 			},
 		},
