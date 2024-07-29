@@ -124,7 +124,10 @@ require("nvim-autopairs").setup({
 local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
-local custom_attach = function(client)
+local lsp = require("lspconfig")
+local navic = require("nvim-navic")
+
+local custom_attach = function(client,bufnr)
 	-- vim.keymap.set('n','gD','<cmd>lua vim.lsp.buf.declaration()<CR>')
 	-- vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
 	-- vim.keymap.set("n", "gD", ":vsplit | lua vim.lsp.buf.definition()<CR>")
@@ -148,9 +151,11 @@ local custom_attach = function(client)
 	vim.keymap.set("n", "<F3>", "<cmd>lua vim.diagnostic.open_float()<CR>")
 	-- vim.keymap.set('n','<leader>=', '<cmd>lua vim.lsp.buf.formatting()<CR>')
 	-- vim.keymap.set('n','<leader>ai','<cmd>lua vim.lsp.buf.incoming_calls()<CR>')
+        if client.server_capabilities.documentSymbolProvider then
+            navic.attach(client, bufnr)
+        end
 end
 
-local lsp = require("lspconfig")
 lsp.basedpyright.setup({
 	on_attach = custom_attach,
 	capabilities = capabilities,

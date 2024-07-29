@@ -345,6 +345,7 @@ vim.keymap.set("n", "<a-b>", "<CMD>NvimTreeToggle<CR>", { noremap = true, silent
 -- Author: shadmansaleh
 -- Credit: glepnir
 local lualine = require("lualine")
+local navic = require("nvim-navic")
 
 -- Color table for highlights
 -- stylua: ignore
@@ -469,7 +470,13 @@ local config = {
 	winbar = {
 		lualine_a = {},
 		lualine_b = {},
-		lualine_c = {},
+		lualine_c = {
+			{
+				"navic",
+				color_correction = "dynamic",
+				navic_opts = { highlight = true },
+			},
+		},
 		lualine_x = {},
 		lualine_y = {},
 		lualine_z = {},
@@ -572,8 +579,8 @@ ins_right({
 		for _, client in ipairs(clients) do
 			local filetypes = client.config.filetypes
 			if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-				return client.name
-				-- return "running"
+				-- return client.name
+				return "lsp"
 			end
 		end
 		return msg
