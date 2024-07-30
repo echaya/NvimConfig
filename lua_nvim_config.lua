@@ -440,6 +440,15 @@ local config = {
 
 	tabline = {
 		lualine_a = {
+
+			{
+				"navic",
+				color_correction = "dynamic",
+				navic_opts = { highlight = true },
+			},
+		},
+		lualine_b = {},
+		lualine_c = {
 			{
 				"buffers",
 				mode = 4,
@@ -453,8 +462,6 @@ local config = {
 				},
 			},
 		},
-		lualine_c = {},
-		lualine_b = {},
 		lualine_x = {},
 		lualine_y = {},
 		lualine_z = {
@@ -470,13 +477,7 @@ local config = {
 	winbar = {
 		lualine_a = {},
 		lualine_b = {},
-		lualine_c = {
-			{
-				"navic",
-				color_correction = nil,
-				navic_opts = { highlight = true },
-			},
-		},
+		lualine_c = {},
 		lualine_x = {},
 		lualine_y = {},
 		lualine_z = {},

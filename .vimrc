@@ -71,6 +71,7 @@ if !exists('g:vscode')
         Plug 'L3MON4D3/LuaSnip' ", {'tag': 'v2.*', 'do': 'make install_jsregexp'}
         "Plug 'rafamadriz/friendly-snippets'
         Plug 'echaya/friendly-snippets'
+        Plug 'SmiteshP/nvim-navic'
 
         "programming tools
         Plug 'Vigemus/iron.nvim'
@@ -82,7 +83,6 @@ if !exists('g:vscode')
         Plug 'RRethy/vim-illuminate'
         Plug 'sindrets/diffview.nvim'
         Plug 'akinsho/toggleterm.nvim',  { 'tag': '*' }
-        Plug 'SmiteshP/nvim-navic'
 
     else
         " vim specific alternative
@@ -130,8 +130,6 @@ if has('termguicolors')
 endif
 
 hi MatchParen guibg=#c678dd guifg=#282c34
-hi WinBar guibg=#282c34
-hi WinBarNC guibg=#282c34
 
 highlight QuickScopePrimary guifg='#afff5f' gui=underline ctermfg=155 cterm=underline
 highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline
