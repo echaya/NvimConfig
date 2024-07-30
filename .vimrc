@@ -15,6 +15,7 @@ exe 'source '.g:WorkDir.'nvim-win64/share/nvim/vimfiles/plugged/plug.vim'
 
 call plug#begin(g:WorkDir.'nvim-win64/share/nvim/vimfiles/plugged')
 " universal plugins
+Plug 'dstein64/vim-startuptime'
 Plug 'unblevable/quick-scope'
 Plug 'tpope/vim-repeat'
 Plug 'svermeulen/vim-cutlass'
@@ -46,8 +47,8 @@ if !exists('g:vscode')
     if has('nvim')
         " ui, display
         Plug 'olimorris/onedarkpro.nvim'
-        " Plug 'romgrk/barbar.nvim'
         Plug 'nvim-lualine/lualine.nvim'
+
         "utility plugins
         Plug 'nvim-lua/plenary.nvim'
         Plug 'nvim-tree/nvim-web-devicons'
