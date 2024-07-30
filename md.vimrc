@@ -19,9 +19,7 @@ let g:mkdp_preview_options = {
     \ 'sync_scroll_type': 'middle',
     \ 'hide_yaml_meta': 1
     \ }
-
-"nmap <F5> <Plug>MarkdownPreviewToggle
-
+nmap <F5> <Plug>MarkdownPreviewToggle
 let g_mkdp_refresh_slow=0
 
 function! EditMdLink() abort
