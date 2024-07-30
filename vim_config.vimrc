@@ -157,11 +157,6 @@ augroup END
 let g:temp_cb_name = "temp_cb"
 
 
-function! ExitTerm() abort
-    normal i
-    terminal exit
-endfunction
-
 function! PowerClose(strong)
 
     let buffer_count = 0
@@ -192,18 +187,18 @@ function! PowerClose(strong)
         let l:cmd = "call delete('".g:temp_cb_name."') | bd!"
     endif
 
-    if (&buftype == 'terminal' && a:strong !=0)
-        let l:cmd = "call ExitTerm()"
+    if (&buftype == 'terminal' && window_counter == 1)
+        normal i
+    else
+        echo "powercloser: ".cmd."| bc=".buffer_count."|; wc=".window_counter
+        execute cmd
     endif
-
-    echo "PowerCloser: ".cmd."; bc=".buffer_count."; wc=".window_counter
-    execute cmd
-
 endfunction
 
 nnoremap <silent> ZZ :call PowerClose(0)<cr>
 nnoremap <silent> ZQ :call PowerClose(1)<cr>
 tnoremap \\ <cmd>q<cr>
+nmap \\ ZZ
 
 function! ChooseBuffer(buffername)
     let bnr = bufwinnr(a:buffername)
