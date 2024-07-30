@@ -97,17 +97,16 @@ inoremap jk <ESC>
 set hidden
 " noremap <silent> <s-j> :bp<CR>
 " noremap <silent> <s-k> :bn<CR>
-noremap <C-h> <C-w><C-h>
-noremap <C-j> <C-w><C-j>
-noremap <C-k> <C-w><C-k>
-noremap <C-l> <C-w><C-l>
-tnoremap <C-h> <Cmd>wincmd h<CR>
-tnoremap <C-j> <Cmd>wincmd j<CR>
-tnoremap <C-k> <Cmd>wincmd k<CR>
-tnoremap <C-l> <Cmd>wincmd l<CR>
+noremap <A-h> <C-w><C-h>
+noremap <A-j> <C-w><C-j>
+noremap <A-k> <C-w><C-k>
+noremap <A-l> <C-w><C-l>
+tnoremap <A-h> <Cmd>wincmd h<CR>
+tnoremap <A-j> <Cmd>wincmd j<CR>
+tnoremap <A-k> <Cmd>wincmd k<CR>
+tnoremap <A-l> <Cmd>wincmd l<CR>
 " noremap <silent> <C-F4> :bdelete<CR>:bn<CR>
 " noremap <silent> <C-n> :enew<CR>
-nnoremap <F5> :noh<CR>:diffupdate<CR>:redraw<CR>
 
 " adjust split window size
 " nnoremap <down> :vertical resize-5<CR>
