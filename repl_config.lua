@@ -176,7 +176,7 @@ require("illuminate").configure({
 		"lsp",
 		"treesitter",
 	},
-	delay = 100,
+	delay = 200,
 	filetype_overrides = {},
 	filetypes_denylist = {
 		"dirbuf",
