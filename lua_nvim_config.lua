@@ -457,8 +457,8 @@ local config = {
 				}, -- Shows specific buffer name for that filetype ( { `filetype` = `buffer_name`, ... } )
 				use_mode_colors = false,
 				buffers_color = {
-					active = { fg = colors.magenta, bg = "#2d313b" },
-					inactive = { fg = "#7f848e", bg = "#2d313b" },
+					active = { fg = colors.magenta, bg = "#282C34" },
+					inactive = { fg = "#7f848e", bg = "#282C34" },
 				},
 			},
 		},
@@ -468,8 +468,8 @@ local config = {
 			{
 				"tabs",
 				tabs_color = {
-					active = { fg = colors.orange, bg = "#2d313b" },
-					inactive = { fg = "#7f848e", bg = "#2d313b" },
+					active = { fg = colors.orange, bg = "#282C34" },
+					inactive = { fg = "#7f848e", bg = "#282C34" },
 				},
 			},
 		},
