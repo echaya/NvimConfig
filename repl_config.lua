@@ -175,6 +175,7 @@ require("illuminate").configure({
 	providers = {
 		"lsp",
 		"treesitter",
+		"regex",
 	},
 	delay = 200,
 	filetype_overrides = {},
