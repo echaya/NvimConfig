@@ -132,7 +132,10 @@ if has('termguicolors')
     set termguicolors
 endif
 
-hi MatchParen guibg=#c678dd guifg=#282c34
+highlight MatchParen guibg=#c678dd guifg=#282c34
+highlight IlluminatedWordText guibg=#505664 gui=NONE
+highlight IlluminatedWordRead guibg=#505664 gui=NONE
+highlight IlluminatedWordWrite guibg=#505664 gui=NONE
 
 highlight QuickScopePrimary guifg='#afff5f' gui=underline ctermfg=155 cterm=underline
 highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline
