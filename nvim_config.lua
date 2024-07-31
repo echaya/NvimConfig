@@ -346,6 +346,9 @@ vim.keymap.set("n", "<a-b>", "<CMD>NvimTreeToggle<CR>", { noremap = true, silent
 -- Credit: glepnir
 local lualine = require("lualine")
 local navic = require("nvim-navic")
+navic.setup({
+	separator = "  ",
+})
 
 -- Color table for highlights
 -- stylua: ignore
