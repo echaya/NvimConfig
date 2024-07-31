@@ -4,9 +4,23 @@
 
 local leap = require("leap")
 leap.opts.case_sensitive = true
-leap.set_default_keymaps()
--- vim.keymap.set('o', 's', '<Plug>(leap-forward)')
--- vim.keymap.set('o', 'S', '<Plug>(leap-backward)')
+-- leap.set_default_keymaps()
+-- Define equivalence classes for brackets and quotes, in addition to <space>
+leap.opts.equivalence_classes = { " \t\r\n", "([{", ")]}", "'\"`" }
+vim.keymap.set({ "n" }, "s", "<Plug>(leap-forward-to)")
+vim.keymap.set({ "n" }, "S", "<Plug>(leap-backward-to)")
+vim.keymap.set({ "x", "o" }, "z", "<Plug>(leap-forward-to)")
+vim.keymap.set({ "x", "o" }, "Z", "<Plug>(leap-backward-to)")
+vim.keymap.set({ "n" }, "gs", "<Plug>(leap-from-window)")
+-- s<CR> to traverse forward, s<BS> to traverse backward
+vim.keymap.set({'n', 'x', 'o'}, 'ga',  function ()
+  require('leap.treesitter').select()
+end)
+
+-- Linewise.
+vim.keymap.set({'n', 'x', 'o'}, 'gA',
+  'V<cmd>lua require("leap.treesitter").select()<cr>'
+)
 
 local augend = require("dial.augend")
 require("dial.config").augends:register_group({
@@ -46,3 +60,4 @@ end)
 vim.keymap.set("v", "<C-x>", function()
 	require("dial.map").manipulate("decrement", "visual")
 end)
+-- abcdefghijklmn
