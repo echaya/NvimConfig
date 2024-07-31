@@ -451,14 +451,15 @@ local config = {
 		lualine_c = {
 			{
 				"buffers",
+				max_length = vim.o.columns * 4 / 5,
 				mode = 4,
 				filetype_names = {
 					TelescopePrompt = "Telescope",
 				}, -- Shows specific buffer name for that filetype ( { `filetype` = `buffer_name`, ... } )
 				use_mode_colors = false,
 				buffers_color = {
-					active = { fg = colors.magenta, bg = "#282C34" },
-					inactive = { fg = "#7f848e", bg = "#282C34" },
+					active = { fg = colors.magenta, bg = colors.bg },
+					inactive = { fg = "#7f848e", bg = colors.bg },
 				},
 			},
 		},
@@ -468,8 +469,8 @@ local config = {
 			{
 				"tabs",
 				tabs_color = {
-					active = { fg = colors.orange, bg = "#282C34" },
-					inactive = { fg = "#7f848e", bg = "#282C34" },
+					active = { fg = colors.orange, bg = colors.bg },
+					inactive = { fg = "#7f848e", bg = colors.bg },
 				},
 			},
 		},
@@ -616,7 +617,7 @@ ins_right({
 	color = { fg = colors.green, gui = "bold" },
 })
 
-ins_right({ "location" })
+ins_right({ "location", color = { fg = colors.fg, gui = "bold" } })
 
 ins_right({ "progress", color = { fg = colors.fg, gui = "bold" } })
 
