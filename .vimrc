@@ -104,19 +104,19 @@ call plug#end()
 
 exe 'source '.g:WorkDir.'config/univ_config.vimrc'
 if has("nvim")
-    exe 'luafile '.g:WorkDir.'config/lua_univ_config.lua'
+    exe 'luafile '.g:WorkDir.'config/univ_config.lua'
 endif
 
 if exists('g:vscode')
     exe 'source '.g:WorkDir.'config/vscode_config.vimrc'
-    exe 'luafile '.g:WorkDir.'config/lua_vscode_config.lua'
+    exe 'luafile '.g:WorkDir.'config/vscode_config.lua'
 else
     exe 'source '.g:WorkDir.'config/vim_config.vimrc'
     exe 'source '.g:WorkDir.'config/md.vimrc'
     exe 'source '.g:WorkDir.'config/python.vimrc'
     if has("nvim")
         exe 'luafile '.g:WorkDir.'config/lsp_config.lua'
-        exe 'luafile '.g:WorkDir.'config/lua_nvim_config.lua'
+        exe 'luafile '.g:WorkDir.'config/nvim_config.lua'
         exe 'luafile '.g:WorkDir.'config/repl_config.lua'
     endif
 endif
