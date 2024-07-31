@@ -20,11 +20,13 @@ Plug 'unblevable/quick-scope'
 Plug 'tpope/vim-repeat'
 Plug 'svermeulen/vim-cutlass'
 Plug 'machakann/vim-sandwich'
+
 "text obj plugin
 Plug 'kana/vim-textobj-user' "dependent plugin
 Plug 'kana/vim-textobj-indent' "ai,ii, aI, iI
 Plug 'Julian/vim-textobj-variable-segment' "av,iv
 Plug 'bps/vim-textobj-python' "ac,ic,af,if
+
 "neovim universal plugins
 Plug 'ggandor/leap.nvim'
 Plug 'monaqa/dial.nvim'
@@ -35,6 +37,7 @@ if !exists('g:vscode')
     Plug 'mhinz/vim-startify' "butify the vim start up page
     Plug '907th/vim-auto-save' "to auto-save files
     Plug 'airblade/vim-rooter'
+
     " markdown & log plugins
     Plug 'godlygeek/tabular', {'for':['markdown','md','vimwiki']} "prerequisite for vim-markdown
     Plug 'plasticboy/vim-markdown', {'for':['markdown','md','vimwiki']}
