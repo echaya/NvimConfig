@@ -68,7 +68,7 @@ end)
 
 -- lua, default settings
 require("better_escape").setup {
-    timeout = vim.o.timeoutlen,
+    timeout = 200,
     default_mappings = false,
     mappings = {
         i = {
