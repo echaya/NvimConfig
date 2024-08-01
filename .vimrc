@@ -30,6 +30,7 @@ Plug 'bps/vim-textobj-python' "ac,ic,af,if
 "neovim universal plugins
 Plug 'ggandor/leap.nvim'
 Plug 'monaqa/dial.nvim'
+Plug 'max397574/better-escape.nvim'
 
 if !exists('g:vscode')
 
@@ -45,7 +46,7 @@ if !exists('g:vscode')
     Plug 'dhruvasagar/vim-table-mode',{'on':'TableModeToggle'}
     Plug 'ferrine/md-img-paste.vim', {'for':['markdown','md','vimwiki']}
     Plug 'MTDL9/vim-log-highlighting', {'for':['log']}
-    Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for':['markdown','vim-plug','md','vimwiki']}
+    Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install()}, 'for':['markdown','vim-plug','vimwiki'],'on':'MarkdownPreviewToggle'}
 
     if has('nvim')
         " ui, display
