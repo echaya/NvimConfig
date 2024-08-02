@@ -91,7 +91,7 @@ augroup END
 
 
 " Escape shortcut
-"inoremap jk <ESC>
+inoremap jk <ESC>
 
 " buffers management
 set hidden
