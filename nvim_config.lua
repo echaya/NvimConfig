@@ -648,10 +648,86 @@ wk.setup({
 		-- { "<leader>", mode = {"n","v","t"}},
 	},
 	delay = function(ctx)
-		return ctx.plugin and 0 or 200
+		return ctx.plugin and 0 or 150
 	end,
 	defer = function(ctx)
 		return ctx.mode == "V" or ctx.mode == "<C-V>" or ctx.mode == "v"
 	end,
 	debug = false,
+})
+
+-- delete jk binding in vim mode
+-- for vscode it is handled on vscode level (composite-keys)
+vim.keymap.del("i", "jk")
+require("better_escape").setup({
+	timeout = 150,
+	default_mappings = false,
+	mappings = {
+		i = {
+			j = {
+				-- These can all also be functions
+				k = "<Esc>",
+			},
+		},
+		c = {
+			j = {
+				k = "<Esc>",
+			},
+		},
+		t = {
+			j = {
+				-- k = function()
+				--                 vim.api.nvim_input([[<C-\><C-n>]])
+				--                 vim.cmd([[normal <C-\><C-n>]])
+				-- 	-- vim.api.nvim_input([[<C-\><C-n]])
+				-- 	-- local key = vim.api.nvim_replace_termcodes([[<C-\><C-n>]],v:true,v:true,v:true)
+				-- 	-- vim.api.nvim_feedkeys(key,'n',v:false)
+				-- end,
+				k = "<Esc>",
+			},
+		},
+		v = {
+			j = {
+				k = "<Esc>",
+			},
+		},
+		s = {
+			j = {
+				k = "<Esc>",
+			},
+		},
+	},
+})
+-- lua, default settings
+require("better_escape").setup({
+	timeout = 150,
+	default_mappings = false,
+	mappings = {
+		i = {
+			j = {
+				-- These can all also be functions
+				k = "<Esc>",
+			},
+		},
+		c = {
+			j = {
+				k = "<Esc>",
+			},
+		},
+		t = {
+			j = {
+				k = "<Esc>",
+			},
+		},
+		v = {
+			j = {
+				k = "<Esc>",
+			},
+		},
+		s = {
+			j = {
+				k = "<Esc>",
+			},
+		},
+	},
 })
