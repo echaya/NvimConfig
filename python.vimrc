@@ -67,11 +67,6 @@ function! SelectCell() abort
     endif
 endfunction
 
-function! SendCell() abort
-    call feedkeys("\<CR>")
-    call search('^'.g:CodeFence, 'W') 
-endfunction
-
 augroup PythonRepl
     autocmd!
     " code snippet
@@ -82,5 +77,5 @@ augroup PythonRepl
     autocmd Filetype python nnoremap <buffer> <leader>p yiwoprint(<esc>pa)<esc>
     " REPL actions
     autocmd Filetype python nnoremap <buffer> <BS> :call SelectCell()<cr>
-    autocmd Filetype python vmap <buffer> <BS> <CR>/###<CR>
+    autocmd Filetype python vmap <buffer> <BS> <CR>
 augroup END
