@@ -1,3 +1,4 @@
+local telescope = require("telescope")
 local builtin = require("telescope.builtin")
 vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "find_file" })
 vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "live_grep" })
@@ -9,16 +10,10 @@ vim.keymap.set("n", "<leader>`", builtin.marks, {})
 vim.keymap.set("n", "<leader>fo", builtin.oldfiles, { desc = "old_files" })
 vim.keymap.set("n", "<leader>fw", builtin.grep_string, { desc = "grep_string" })
 vim.keymap.set("n", "<leader>fd", builtin.diagnostics, { desc = "lsp_diagnostics" })
-vim.keymap.set(
-  "n",
-  "<leader>fp",
-  require("telescope").extensions.projects.projects,
-  { desc = "projects" }
-)
+vim.keymap.set("n", "<leader>fp", telescope.extensions.projects.projects, { desc = "projects" })
 
 -- You dont need to set any of these options. These are the default ones. Only
 -- the loading is important
-local telescope = require("telescope")
 local telescopeConfig = require("telescope.config")
 -- Clone the default Telescope configuration
 local vimgrep_arguments = { unpack(telescopeConfig.values.vimgrep_arguments) }
