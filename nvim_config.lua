@@ -1,9 +1,14 @@
 local telescope = require("telescope")
 local builtin = require("telescope.builtin")
+local telescopeConfig = require("telescope.config")
+local vimgrep_arguments = { unpack(telescopeConfig.values.vimgrep_arguments) }
+local actions = require("telescope.actions")
+
 vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "find_file" })
 vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "live_grep" })
 vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "find_buffers" })
-vim.keymap.set("n", "<leader>ss", builtin.spell_suggest, { desc = "spell_suggest" })
+-- vim.keymap.set("n", "<leader>fg", builtin.git_commits, { desc = "git_commits" })
+-- vim.keymap.set("n", "<leader>ss", builtin.spell_suggest, { desc = "spell_suggest" })
 -- vim.keymap.set('n', '<leader>cc', builtin.commands, {})
 vim.keymap.set("n", '<leader>"', builtin.registers, {})
 vim.keymap.set("n", "<leader>`", builtin.marks, {})
@@ -14,10 +19,7 @@ vim.keymap.set("n", "<leader>fp", telescope.extensions.projects.projects, { desc
 
 -- You dont need to set any of these options. These are the default ones. Only
 -- the loading is important
-local telescopeConfig = require("telescope.config")
 -- Clone the default Telescope configuration
-local vimgrep_arguments = { unpack(telescopeConfig.values.vimgrep_arguments) }
-local actions = require("telescope.actions")
 
 telescope.setup({
   defaults = {
@@ -26,16 +28,16 @@ telescope.setup({
     path_display = { "truncate" },
     mappings = {
       n = {
-        ["<C-w>"] = actions.send_selected_to_qflist + actions.open_qflist,
+        ["/"] = "which_key",
+        ["w"] = actions.send_selected_to_qflist + actions.open_qflist,
+        ["d"] = actions.delete_buffer + actions.move_to_top,
       },
       i = {
         ["<C-j>"] = actions.cycle_history_next,
         ["<C-k>"] = actions.cycle_history_prev,
         ["<CR>"] = select_one_or_multi,
         ["<C-w>"] = actions.send_selected_to_qflist + actions.open_qflist,
-        ["<C-S-d>"] = actions.delete_buffer,
-        ["<C-s>"] = actions.cycle_previewers_next,
-        ["<C-a>"] = actions.cycle_previewers_prev,
+        ["<C-d>"] = actions.delete_buffer + actions.move_to_top,
       },
     },
   },
@@ -63,8 +65,8 @@ telescope.setup({
 })
 -- -- To get fzf loaded and working with telescope, you need to call
 -- -- load_extension, somewhere after setup function:
-require("telescope").load_extension("fzf")
-require("telescope").load_extension("projects")
+telescope.load_extension("fzf")
+telescope.load_extension("projects")
 
 require("oil").setup({
   -- Oil will take over directory buffers (e.g. `vim .` or `:e src/`)
