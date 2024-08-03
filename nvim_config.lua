@@ -278,7 +278,7 @@ require("marks").setup({
 		toggle = "mm",
 		next = "mj",
 		prev = "mk",
-		annotate = "mi",
+		-- annotate = "mi",
 		delete_buf = "dmm",
 	},
 })
