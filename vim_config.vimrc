@@ -209,7 +209,7 @@ function! ChooseBuffer(buffername)
     endif
 endfunction
 
-"noremap <silent><leader>p :call ChooseBuffer(g:temp_cb_name)<cr>Go<esc>p
+noremap <silent><leader>p :call ChooseBuffer(g:temp_cb_name)<cr>Go<esc>p
 
 if !has('nvim')
     " hunk navigation and viewing using signify
