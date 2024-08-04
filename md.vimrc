@@ -44,7 +44,8 @@ augroup mdgroup
     autocmd Filetype markdown nnoremap <buffer> <leader>md :call EditMdLink()<cr>
     "table-mode
     autocmd Filetype markdown nnoremap <buffer> <leader>\ :TableModeToggle<CR>
-    autocmd Filetype markdown nnoremap <buffer> <leader>= :TableModeRealign<CR>
+    autocmd Filetype markdown nnoremap <buffer> == :TableModeRealign<CR>
+    let g:table_mode_syntax = 0
 
 augroup END
 
