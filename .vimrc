@@ -133,7 +133,6 @@ if has('termguicolors')
     set termguicolors
 endif
 
-highlight MatchParen guibg=#c678dd guifg=#282c34
 highlight IlluminatedWordText guibg=#505664 gui=NONE
 highlight IlluminatedWordRead guibg=#505664 gui=NONE
 highlight IlluminatedWordWrite guibg=#505664 gui=NONE
@@ -155,6 +154,6 @@ highlight OperatorSandwichDelete guibg=#cf5963 gui=none
 highlight clear SpellBad
 highlight clear SpellRare
 highlight clear SpellLocal
-highlight SpellBad gui=undercurl cterm=undercurl guifg=pink ctermfg=210
-highlight SpellRare gui=underline guifg='#63D6FD' ctermfg=81 cterm=underline
-highlight SpellLocal gui=undercurl cterm=undercurl guifg='#FFFEE2' ctermfg=226
+highlight SpellBad gui=undercurl guifg=pink
+highlight SpellRare guifg='#63D6FD'
+highlight SpellLocal gui=undercurl guifg='#FFFEE2'

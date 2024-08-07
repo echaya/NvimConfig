@@ -47,7 +47,7 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.keymap.set("n", [[\s]], function()
       iron.run_motion("send_motion")
     end, { buffer = args.buf, desc = "repl_send_motion" })
-    vim.keymap.set("n", "<CR>", function()
+    vim.keymap.set("n", [[\<cr>]], function()
       iron.send(nil, string.char(13))
     end, { buffer = args.buf, desc = "repl_cr" })
     vim.keymap.set("v", "<CR>", function()
@@ -298,3 +298,4 @@ vim.api.nvim_set_keymap(
   "<cmd>lua _pwsh_toggle()<CR>",
   { noremap = true, silent = true, desc = "powershell" }
 )
+vim.cmd("tnoremap <A-`> <Cmd>q<CR>")

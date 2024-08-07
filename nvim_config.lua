@@ -315,6 +315,8 @@ require("onedarkpro").setup({
     -- variable = {},
     ["@variable"] = {},
     ["@variable.member"] = {},
+    LineNr = { fg = "#7f848e" },
+    MatchParen = { bg = "#c678dd", fg = "#282c34" },
   },
 })
 
@@ -685,6 +687,13 @@ require("better_escape").setup({
     t = {
       j = {
         k = "<C-\\><C-n>",
+      },
+      ["\\"] = {
+        ["\\"] = function()
+          vim.schedule(function()
+            vim.cmd("q")
+          end)
+        end,
       },
     },
     v = {

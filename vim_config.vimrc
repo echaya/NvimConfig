@@ -35,6 +35,11 @@ set showcmd
 set noshowmode
 set ruler
 set shellslash
+let &shell = 'pwsh'
+let &shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
+let &shellredir = '-RedirectStandardOutput %s -NoNewWindow -Wait'
+let &shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+set shellquote= shellxquote=
 
 if has('gui_running')
     set guioptions-=e
@@ -196,8 +201,6 @@ endfunction
 
 nnoremap <silent> ZZ :call PowerClose(0)<cr>
 nnoremap <silent> ZQ :call PowerClose(1)<cr>
-tnoremap \\ <cmd>q<cr>
-nmap \\ ZZ
 
 function! ChooseBuffer(buffername)
     let bnr = bufwinnr(a:buffername)
@@ -209,7 +212,7 @@ function! ChooseBuffer(buffername)
     endif
 endfunction
 
-noremap <silent><leader>p :call ChooseBuffer(g:temp_cb_name)<cr>Go<esc>p
+noremap <silent><leader>y :call ChooseBuffer(g:temp_cb_name)<cr>Go<esc>p
 
 if !has('nvim')
     " hunk navigation and viewing using signify
