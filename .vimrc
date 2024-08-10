@@ -11,9 +11,9 @@ endif
 
 "source plug.vim manually from plugged folder. It should normally sit in the
 " nvim working dir autoload folder
-exe 'source '.g:WorkDir.'nvim-win64/share/nvim/vimfiles/plugged/plug.vim'
+exe 'source '.g:WorkDir.'plugged/plug.vim'
 
-call plug#begin(g:WorkDir.'nvim-win64/share/nvim/vimfiles/plugged')
+call plug#begin(g:WorkDir.'plugged')
 " universal plugins
 Plug 'dstein64/vim-startuptime'
 Plug 'unblevable/quick-scope'
