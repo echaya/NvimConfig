@@ -314,7 +314,6 @@ require("onedarkpro").setup({
     ["@variable"] = {},
     ["@variable.member"] = {},
     LineNr = { fg = "#7f848e" },
-    MatchParen = { bg = "#c678dd", fg = "#282c34" },
   },
 })
 
