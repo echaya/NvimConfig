@@ -28,6 +28,7 @@ Plug 'Julian/vim-textobj-variable-segment' "av,iv
 Plug 'bps/vim-textobj-python' "ac,ic,af,if
 
 "neovim universal plugins
+Plug 'nvim-lua/plenary.nvim'
 Plug 'ggandor/leap.nvim'
 Plug 'monaqa/dial.nvim'
 Plug 'max397574/better-escape.nvim'
@@ -52,7 +53,6 @@ if !exists('g:vscode')
         Plug 'nvim-lualine/lualine.nvim'
 
         "utility plugins
-        Plug 'nvim-lua/plenary.nvim'
         Plug 'nvim-tree/nvim-web-devicons'
         Plug 'stevearc/oil.nvim'
         Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
