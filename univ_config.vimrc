@@ -13,7 +13,7 @@ nnoremap <silent><Esc> :noh<CR><Esc>
 
 "copy paste
 set clipboard=unnamed
-inoremap <silent> <c-v> <Esc>:set paste<Cr>a<c-r>+<Esc>:set nopaste<Cr>a
+inoremap <silent> <c-s-v> <Esc>:set paste<Cr>a<c-r>+<Esc>:set nopaste<Cr>a
 " change default Y behavior to match with D, C, etc
 noremap Y y$
 " reselect just pasted block

@@ -73,8 +73,8 @@ augroup PythonRepl
     autocmd Filetype python inoremap <buffer> ;f ###<cr>
     autocmd Filetype python inoremap <buffer> ;cb .to_clipboard()
     autocmd Filetype python inoremap <buffer> ;ct .copy(True)
-    autocmd Filetype python inoremap <buffer> ;it ,inplace=True
-    autocmd Filetype python nnoremap <buffer> <leader>p yiwoprint(<esc>pa)<esc>
+    autocmd Filetype python inoremap <buffer> ;it inplace=True
+    autocmd Filetype python nnoremap <buffer> <leader>p yiwoprint(<esc>pa)<esc>V
     " REPL actions
     autocmd Filetype python nmap \\ :call SelectCell()<cr><cr>
     "autocmd Filetype python nnoremap <buffer> <BS> :call SelectCell()<cr>
