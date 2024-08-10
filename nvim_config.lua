@@ -15,7 +15,6 @@ vim.keymap.set("n", "<leader>`", builtin.marks, {})
 vim.keymap.set("n", "<leader>fo", builtin.oldfiles, { desc = "old_files" })
 vim.keymap.set("n", "<leader>fw", builtin.grep_string, { desc = "grep_string" })
 vim.keymap.set("n", "<leader>fd", builtin.diagnostics, { desc = "lsp_diagnostics" })
-vim.keymap.set("n", "<leader>fp", telescope.extensions.projects.projects, { desc = "projects" })
 
 -- You dont need to set any of these options. These are the default ones. Only
 -- the loading is important
@@ -66,7 +65,6 @@ telescope.setup({
 -- -- To get fzf loaded and working with telescope, you need to call
 -- -- load_extension, somewhere after setup function:
 telescope.load_extension("fzf")
-telescope.load_extension("projects")
 
 require("oil").setup({
   -- Oil will take over directory buffers (e.g. `vim .` or `:e src/`)
@@ -320,7 +318,6 @@ require("onedarkpro").setup({
   },
 })
 
-require("project_nvim").setup({})
 
 -- disable netrw at the very start of your init.lua
 vim.g.loaded_netrw = 1
@@ -707,4 +704,42 @@ require("better_escape").setup({
       },
     },
   },
+})
+
+local Path = require("plenary.path")
+local config = require("session_manager.config")
+require("session_manager").setup({
+  sessions_dir = Path:new(vim.fn.stdpath("data"), "sessions"), -- The directory where the session files will be saved.
+  session_filename_to_dir = session_filename_to_dir, 
+  dir_to_session_filename = dir_to_session_filename, 
+  autoload_mode = {
+    config.AutoloadMode.CurrentDir,
+    config.AutoloadMode.LastSession,
+  }, -- Define what to do when Neovim is started without arguments.
+  autosave_last_session = true, -- Automatically save last session on exit and on session switch.
+  autosave_ignore_not_normal = true, 
+  autosave_ignore_dirs = {}, 
+  autosave_ignore_filetypes = { -- All buffers of these file types will be closed before the session is saved.
+    "gitcommit",
+    "gitrebase",
+    "toggleterm",
+  },
+  autosave_ignore_buftypes = {
+    "terminal",
+  }, -- All buffers of these bufer types will be closed before the session is saved.
+  autosave_only_in_session = false, -- Always autosaves session. If true, only autosaves after a session is active.
+  max_path_length = 60, -- Shorten the display path if length exceeds this threshold. Use 0 if don't want to shorten the path at all.
+})
+vim.keymap.set("n", "<leader>sm", "<cmd>SessionManager<cr>", { desc = "session manager" })
+-- Auto save session
+vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+  callback = function ()
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+      -- Don't save while there's any 'nofile' buffer open.
+      if vim.api.nvim_get_option_value("buftype", { buf = buf }) == 'nofile' then
+        return
+      end
+    end
+    session_manager.save_current_session()
+  end
 })
