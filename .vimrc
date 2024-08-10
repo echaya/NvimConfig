@@ -35,7 +35,6 @@ Plug 'max397574/better-escape.nvim'
 if !exists('g:vscode')
 
     "vim and neovim specific plugins
-    Plug 'mhinz/vim-startify' "butify the vim start up page
     Plug '907th/vim-auto-save' "to auto-save files
     Plug 'airblade/vim-rooter'
 
@@ -46,7 +45,6 @@ if !exists('g:vscode')
     Plug 'dhruvasagar/vim-table-mode',{'on':'TableModeToggle'}
     Plug 'ferrine/md-img-paste.vim', {'for':['markdown','md','vimwiki']}
     Plug 'MTDL9/vim-log-highlighting', {'for':['log']}
-    Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install()}, 'for':['markdown','vim-plug','vimwiki'],'on':'MarkdownPreviewToggle'}
 
     if has('nvim')
         " ui, display
@@ -60,9 +58,10 @@ if !exists('g:vscode')
         Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
         Plug 'chentoast/marks.nvim'
         Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-        Plug 'ahmedkhalf/project.nvim'
+        Plug 'Shatur/neovim-session-manager'
         Plug 'nvim-tree/nvim-tree.lua'
         Plug 'folke/which-key.nvim' 
+        Plug 'stevearc/dressing.nvim'
 
         "lsp and snippets
         Plug 'neovim/nvim-lspconfig'
@@ -90,6 +89,7 @@ if !exists('g:vscode')
 
     else
         " vim specific alternative
+        Plug 'mhinz/vim-startify' "butify the vim start up page
         Plug 'joshdick/onedark.vim'
         Plug 'ap/vim-buftabline' "butify the tab line
         Plug 'mhinz/vim-signify'
