@@ -3,10 +3,14 @@
 "To find the working directory is exactly, use the command :echo stdpath('config') inside Neovim.
 "
 "set work directory for nvim
-if isdirectory("c:/Users/echay/")
-    let g:WorkDir = 'D:/Dropbox/neovim/'
+if has('univ')
+    let g:WorkDir = '/home/z/.config/nvim/'
 else
-    let g:WorkDir = 'C:/tools/neovim/'
+    if isdirectory("c:/Users/echay/")
+        let g:WorkDir = 'D:/Dropbox/neovim/'
+    else
+        let g:WorkDir = 'C:/tools/neovim/'
+    endif
 endif
 
 "source plug.vim manually from plugged folder. It should normally sit in the
@@ -28,10 +32,12 @@ Plug 'Julian/vim-textobj-variable-segment' "av,iv
 Plug 'bps/vim-textobj-python' "ac,ic,af,if
 
 "neovim universal plugins
-Plug 'nvim-lua/plenary.nvim'
-Plug 'ggandor/leap.nvim'
-Plug 'monaqa/dial.nvim'
-Plug 'max397574/better-escape.nvim'
+if has ('nvim')
+    Plug 'nvim-lua/plenary.nvim'
+    Plug 'ggandor/leap.nvim'
+    Plug 'max397574/better-escape.nvim'
+    Plug 'monaqa/dial.nvim'
+endif
 
 if !exists('g:vscode')
 
@@ -85,7 +91,7 @@ if !exists('g:vscode')
         Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
         Plug 'RRethy/vim-illuminate'
         Plug 'sindrets/diffview.nvim'
-        Plug 'akinsho/toggleterm.nvim',  { 'tag': '*' }
+        Plug 'akinsho/toggleterm.nvim'
 
     else
         " vim specific alternative
