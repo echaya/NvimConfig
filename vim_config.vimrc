@@ -10,7 +10,7 @@ set mouse=a
 set showmatch
 set backspace=indent,eol,start
 if has('persistent_undo')
-    exe 'set undodir='.g:WorkDir.'neovim\\undo'
+    exe 'set undodir='.g:WorkDir.'neovim/undo'
     set undolevels=10000
     set undofile
 endif
