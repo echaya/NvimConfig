@@ -3,7 +3,7 @@
 "To find the working directory is exactly, use the command :echo stdpath('config') inside Neovim.
 "
 "set work directory for nvim
-if has('univ')
+if has('unix')
     let g:WorkDir = '/home/z/.config/nvim/'
 else
     if isdirectory("c:/Users/echay/")
