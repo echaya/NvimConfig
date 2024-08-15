@@ -59,12 +59,16 @@ function! BetweenCell() abort
     endif
 endfunction
 
-function! SelectCell() abort
+function! SelectVisual() abort
     if IsFence()
         call OpenCell()
     else
         call BetweenCell()
     endif
+endfunction
+
+function! SendCell() abort
+    call SelectVisual()
 endfunction
 
 augroup PythonRepl
@@ -76,7 +80,8 @@ augroup PythonRepl
     autocmd Filetype python inoremap <buffer> ;it inplace=True
     autocmd Filetype python nnoremap <buffer> <leader>p yiwoprint(<esc>pa)<esc>V
     " REPL actions
-    autocmd Filetype python nmap \\ :call SelectCell()<cr><cr>
+    autocmd Filetype python nmap \\ :call SendCell()<cr><cr>
+    autocmd Filetype python nmap \v :call SelectVisual()<cr>
     "autocmd Filetype python nnoremap <buffer> <BS> :call SelectCell()<cr>
     "autocmd Filetype python vmap <buffer> <BS> <CR>
 augroup END

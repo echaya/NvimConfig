@@ -20,7 +20,7 @@ iron.setup({
         command = { "zsh" },
       },
     },
-    repl_open_cmd = require("iron.view").split.vertical.botright("55%"),
+    repl_open_cmd = require("iron.view").split.vertical.botright("45%"),
   },
   keymaps = {},
   -- If the highlight is on, you can change how it looks
@@ -36,17 +36,14 @@ vim.api.nvim_create_autocmd("FileType", {
     -- TODO norm! gv after Iron start/restart
     vim.keymap.set(
       { "n", "v" },
-      [[\r]],
+      [[<a-\>]],
       "<cmd>IronRepl<cr>",
       { buffer = args.buf, desc = "repl_toggle" }
     )
-    vim.keymap.set({ "n", "v" }, [[\d]], function()
+    vim.keymap.set({ "n", "v" }, [[\r]], function()
       vim.cmd("IronRestart")
       vim.cmd("IronRepl")
     end, { buffer = args.buf, desc = "repl_restart" })
-    vim.keymap.set("n", [[\s]], function()
-      iron.run_motion("send_motion")
-    end, { buffer = args.buf, desc = "repl_send_motion" })
     vim.keymap.set("n", [[\<cr>]], function()
       iron.send(nil, string.char(13))
     end, { buffer = args.buf, desc = "repl_cr" })
@@ -62,11 +59,13 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.keymap.set({ "n", "v" }, [[\c]], function()
       iron.send(nil, string.char(03))
     end, { buffer = args.buf, desc = "repl_interrupt" })
-    vim.keymap.set({ "n", "v" }, [[\l]], function()
+    vim.keymap.set({ "n", "v" }, [[<a-del>]], function()
       iron.send(nil, string.char(12))
     end, { buffer = args.buf, desc = "repl_clear" })
+    vim.keymap.set("n", [[\f]], "<cmd>IronFocus<cr>i", { buffer = args.buf, desc = "repl_toggle" })
   end,
 })
+vim.keymap.set("t", [[<a-\>]], "<cmd>q<cr>", { desc = "repl_toggle" })
 
 require("conform").setup({
   formatters_by_ft = {
@@ -159,9 +158,9 @@ require("gitsigns").setup({
 local hipatterns = require("mini.hipatterns")
 hipatterns.setup({
   highlighters = {
-    -- Highlight standalone 'SKIP', 'IMP', 'TODO', 'NOTE'
+    -- Highlight standalone 'XXX', 'IMP', 'TODO', 'NOTE'
     fixme = {
-      pattern = "%f[%w]()SKIP()%f[%W]",
+      pattern = "%f[%w]()XXX()%f[%W]",
       group = "MiniHipatternsFixme",
     },
     hack = { pattern = "%f[%w]()IMP()%f[%W]", group = "MiniHipatternsHack" },
@@ -205,6 +204,7 @@ require("nvim-treesitter.configs").setup({
     additional_vim_regex_highlighting = false,
   },
 })
+vim.treesitter.language.register("markdown", "vimwiki")
 
 -- default configuration
 require("illuminate").configure({
@@ -255,30 +255,11 @@ function _lazygit_toggle()
   lazygit:toggle()
 end
 
-vim.api.nvim_set_keymap(
-  "n",
-  "<leader>lg",
+vim.keymap.set(
+  { "n", "t" },
+  "<a-m>",
   "<cmd>lua _lazygit_toggle()<CR>",
   { noremap = true, silent = true, desc = "lazygit" }
-)
-
-local ipython = Terminal:new({
-  cmd = "ipython --no-autoindent",
-  dir = "git_dir",
-  direction = "vertical",
-  name = "ipython",
-  hidden = true,
-})
-
-function _ipython_toggle()
-  ipython:toggle()
-end
-
-vim.api.nvim_set_keymap(
-  "n",
-  "<leader>py",
-  "<cmd>lua _ipython_toggle()<CR>",
-  { noremap = true, silent = true, desc = "ipython" }
 )
 
 local pwsh = Terminal:new({
@@ -293,10 +274,9 @@ function _pwsh_toggle()
   pwsh:toggle()
 end
 
-vim.api.nvim_set_keymap(
-  "n",
+vim.keymap.set(
+  { "n", "t" },
   "<a-`>",
   "<cmd>lua _pwsh_toggle()<CR>",
   { noremap = true, silent = true, desc = "powershell" }
 )
-vim.cmd("tnoremap <A-`> <Cmd>q<CR>")

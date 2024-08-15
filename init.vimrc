@@ -146,7 +146,7 @@ highlight IlluminatedWordWrite guibg=#505664 gui=NONE
 highlight QuickScopePrimary guifg='#afff5f' gui=underline ctermfg=155 cterm=underline
 highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline
 
-" colorschme TODO, SKIP, IMP, NOTE
+" colorschme TODO, XXX, IMP, NOTE
 highlight MiniHipatternsTodo guibg=#d19a66 guifg=#282c34
 highlight MiniHipatternsFixme guibg=#e06c75 guifg=#282c34
 highlight MiniHipatternsHack guibg=#c678dd guifg=#282c34
