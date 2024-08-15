@@ -10,7 +10,7 @@ set mouse=a
 set showmatch
 set backspace=indent,eol,start
 if has('persistent_undo')
-    exe 'set undodir='.g:WorkDir.'neovim/undo'
+    exe 'set undodir='.g:WorkDir.'undo'
     set undolevels=10000
     set undofile
 endif
@@ -24,7 +24,6 @@ set fileencodings=ucs-bom,utf-8,utf-16,gbk,big5,gb18030,latin1
 set enc=utf-8
 " color, display, theme
 syntax on
-set t_Co=256
 set number relativenumber
 set scrolloff=3
 set splitright
@@ -78,6 +77,8 @@ noremap <silent> <PageUp> :tabp<CR>
 noremap <silent> <PageDown> :tabn<CR>
 noremap <silent> <Del> :tabc<CR>
 noremap <silent> <Insert> :tabnew<CR>
+noremap <silent> H :tabp<CR>
+noremap <silent> L :tabn<CR>
 
 augroup CursorLine
     au!
@@ -89,12 +90,6 @@ augroup END
 
 au InsertLeave,WinEnter * set cursorline
 au InsertEnter,WinLeave * set nocursorline
-
-augroup numbertoggle
-    autocmd!
-    autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
-    autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
-augroup END
 
 
 " Escape shortcut

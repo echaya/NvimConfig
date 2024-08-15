@@ -7,6 +7,7 @@ local actions = require("telescope.actions")
 vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "find_file" })
 vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "live_grep" })
 vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "find_buffers" })
+vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "find_keymaps" })
 -- vim.keymap.set("n", "<leader>fg", builtin.git_commits, { desc = "git_commits" })
 -- vim.keymap.set("n", "<leader>ss", builtin.spell_suggest, { desc = "spell_suggest" })
 -- vim.keymap.set('n', '<leader>cc', builtin.commands, {})
@@ -36,7 +37,7 @@ telescope.setup({
         ["<C-k>"] = actions.cycle_history_prev,
         ["<CR>"] = select_one_or_multi,
         ["<C-w>"] = actions.send_selected_to_qflist + actions.open_qflist,
-        ["<C-d>"] = actions.delete_buffer + actions.move_to_top,
+        ["<del>"] = actions.delete_buffer + actions.move_to_top,
       },
     },
   },
@@ -314,6 +315,7 @@ require("onedarkpro").setup({
     ["@variable"] = {},
     ["@variable.member"] = {},
     LineNr = { fg = "#7f848e" },
+    MatchParen = {fg ="white", underline = true },
   },
 })
 
@@ -713,7 +715,9 @@ require("session_manager").setup({
   dir_to_session_filename = dir_to_session_filename, 
   autoload_mode = {
     config.AutoloadMode.CurrentDir,
-    config.AutoloadMode.LastSession,
+    config.AutoloadMode.GitSession,
+    config.AutoloadMode.Disabled,
+    -- config.AutoloadMode.LastSession,
   }, -- Define what to do when Neovim is started without arguments.
   autosave_last_session = true, -- Automatically save last session on exit and on session switch.
   autosave_ignore_not_normal = true, 
