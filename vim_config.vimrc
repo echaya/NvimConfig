@@ -217,4 +217,9 @@ if !has('nvim')
     nnoremap gJ :SignifyHunkDiff<cr>
     nnoremap <leader>hr :SignifyHunkUndo<cr>
     vnoremap <leader>hr :SignifyHunkUndo<cr>
+else
+    augroup nvimrc_aucmd
+      autocmd!
+      autocmd CursorHold * rshada|wshada
+    augroup END
 endif
