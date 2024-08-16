@@ -13,16 +13,9 @@ vim.keymap.set({ "x", "o" }, "z", "<Plug>(leap-forward-to)", { desc = "leap forw
 vim.keymap.set({ "x", "o" }, "Z", "<Plug>(leap-backward-to)", { desc = "leap back textobj" })
 vim.keymap.set({ "n" }, "gs", "<Plug>(leap-from-window)", { desc = "leap from window" })
 -- s<CR> to traverse forward, s<BS> to traverse backward
-require('leap.user').set_repeat_keys('<enter>', '<backspace>')
 vim.keymap.set(
   { "n", "x", "o" },
-  "ga",
-  '<cmd> lua require("leap.treesitter").select()<cr>',
-  { desc = "select treesitter textobj" }
-)
-vim.keymap.set(
-  { "n", "x", "o" },
-  "gA",
+  "gt",
   'V<cmd>lua require("leap.treesitter").select()<cr>',
   { desc = "select treesitter textobj" }
 )
