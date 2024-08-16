@@ -11,13 +11,8 @@ iron.setup({
     -- Your repl definitions come here
     repl_definition = {
       python = {
-        format = require("iron.fts.common").bracketed_paste,
+        format = require("iron.fts.common").bracketed_paste_python,
         command = { "ipython", "--no-autoindent" },
-      },
-      sh = {
-        -- Can be a table or a function that
-        -- returns a table (see below)
-        command = { "zsh" },
       },
     },
     repl_open_cmd = require("iron.view").split.vertical.botright("45%"),
@@ -62,7 +57,13 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.keymap.set({ "n", "v" }, [[<a-del>]], function()
       iron.send(nil, string.char(12))
     end, { buffer = args.buf, desc = "repl_clear" })
-    vim.keymap.set("n", [[\f]], "<cmd>IronFocus<cr>i", { buffer = args.buf, desc = "repl_toggle" })
+    vim.keymap.set("n", [[\f]], "<cmd>IronFocus<cr>i", { buffer = args.buf, desc = "repl_focus" })
+    vim.keymap.set({ "n" },[[\t]], function()
+      vim.cmd("normal V")
+      require("leap.treesitter").select()
+      iron.visual_send()
+      vim.cmd("norm! j")
+    end, { buffer = args.buf, desc = "repl_send_tree" })
   end,
 })
 vim.keymap.set("t", [[<a-\>]], "<cmd>q<cr>", { desc = "repl_toggle" })
