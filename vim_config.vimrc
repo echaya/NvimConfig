@@ -219,7 +219,7 @@ if !has('nvim')
     vnoremap <leader>hr :SignifyHunkUndo<cr>
 else
     augroup nvimrc_aucmd
-      autocmd!
-      autocmd CursorHold * rshada|wshada
+        autocmd!
+        autocmd CursorHold * rshada|wshada
     augroup END
-endif
+endif		
