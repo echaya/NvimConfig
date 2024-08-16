@@ -31,7 +31,7 @@ function! IsFence()
 endfunction!
 
 function! BuildFence()
-    normal Go###
+    exe "normal Go".g:CodeFence
     if IsLineIndented()
         normal 0dt#
     endif
@@ -83,6 +83,9 @@ augroup PythonRepl
     autocmd Filetype python inoremap <buffer> ;it inplace=True
     autocmd Filetype python nnoremap <buffer> <leader>p yiwoprint(<esc>pa)<esc>V
     " REPL actions
-    autocmd Filetype python nmap <buffer> \\ :call SendCell()<cr><cr>
-    autocmd Filetype python nmap <buffer> \v :call SelectVisual()<cr>
+    "autocmd Filetype python nmap <buffer> \\ :call SendCell()<cr><cr>
+    "autocmd Filetype python nmap <buffer> \v :call SelectVisual()<cr>
 augroup END
+
+nmap  \\ :call SendCell()<cr><cr>
+nmap  \v :call SelectVisual()<cr>
