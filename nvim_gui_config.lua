@@ -369,3 +369,7 @@ wk.setup({
   end,
   debug = false,
 })
+
+require("satellite").setup({
+  excluded_filetypes = { "toggleterm", "nvim-tree" },
+})
