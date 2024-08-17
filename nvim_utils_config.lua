@@ -103,7 +103,8 @@ vim.keymap.set("n", "<Leader>-", "<CMD>Oil<CR>", { desc = "Open parent directory
 
 require("marks").setup({
   -- which builtin marks to show. default {}
-  builtin_marks = { ".", "<", ">", "^" },
+  builtin_marks = {},
+  -- builtin_marks = { ".", "<", ">", "^" },
   default_mappings = false,
   mappings = {
     set = "m",
@@ -123,7 +124,6 @@ require("better_escape").setup({
   mappings = {
     i = {
       j = {
-        -- These can all also be functions
         k = "<Esc>",
       },
     },
