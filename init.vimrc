@@ -26,11 +26,6 @@ Plug 'tpope/vim-repeat'
 Plug 'svermeulen/vim-cutlass'
 Plug 'machakann/vim-sandwich'
 
-"text obj plugin
-Plug 'kana/vim-textobj-user' "dependent plugin
-Plug 'kana/vim-textobj-indent' "ai,ii, aI, iI
-Plug 'Julian/vim-textobj-variable-segment' "av,iv
-Plug 'bps/vim-textobj-python' "ac,ic,af,if
 
 "neovim universal plugins
 if has ('nvim')
@@ -105,6 +100,10 @@ if !exists('g:vscode')
         Plug 'itchyny/vim-gitbranch'
         Plug 'tpope/vim-commentary' "comment / uncomment code
         Plug 'tpope/vim-speeddating'
+        Plug 'kana/vim-textobj-user' "dependent plugin
+        Plug 'Julian/vim-textobj-variable-segment' "av,iv
+        Plug 'kana/vim-textobj-indent' "ai,ii, aI, iI
+        Plug 'bps/vim-textobj-python' "ac,ic,af,if
     endif
 
 endif
@@ -128,6 +127,8 @@ else
         exe 'luafile '.g:WorkDir.'config/nvim_utils_config.lua'
         exe 'luafile '.g:WorkDir.'config/lsp_config.lua'
         exe 'luafile '.g:WorkDir.'config/repl_config.lua'
+    else
+         exe 'source '.g:WorkDir.'config/vim_config.vimrc'
     endif
 endif
 
