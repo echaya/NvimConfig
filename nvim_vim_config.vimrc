@@ -66,15 +66,9 @@ noremap <silent> L :tabn<CR>
 
 augroup CursorLine
     au!
-    au VimEnter * setlocal cursorline
-    au WinEnter * setlocal cursorline
-    au BufWinEnter * setlocal cursorline
-    au WinLeave * setlocal nocursorline
+    au InsertLeave,WinEnter * set cursorline
+    au InsertEnter,WinLeave * set nocursorline
 augroup END
-
-au InsertLeave,WinEnter * set cursorline
-au InsertEnter,WinLeave * set nocursorline
-
 
 " Escape shortcut
 inoremap jk <ESC>
@@ -97,10 +91,10 @@ tnoremap <A-l> <Cmd>wincmd l<CR>
 " adjust split window size
 " nnoremap <down> :vertical resize-5<CR>
 " nnoremap <up> :vertical resize+5<CR>
-nnoremap <up> :res +5<CR>
-nnoremap <down> :res -5<CR>
-nnoremap <left> :vertical resize-5<CR>
-nnoremap <right> :vertical resize+5<CR>
+nnoremap <up> :res +2<CR>
+nnoremap <down> :res -2<CR>
+nnoremap <left> :vertical resize-2<CR>
+nnoremap <right> :vertical resize+2<CR>
 
 " to overcome accidental c-u/w to delete the word/line
 inoremap <c-u> <c-g>u<c-u>
