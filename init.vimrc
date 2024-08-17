@@ -3,19 +3,20 @@
 "To find the working directory is exactly, use the command :echo stdpath('config') inside Neovim.
 "
 "set work directory for nvim
-if has('unix')
-    let g:WorkDir = '/home/z/.config/nvim/'
+if isdirectory("c:/Users/echay/")
+    let g:WorkDir = 'D:/Dropbox/neovim/'
 else
-    if isdirectory("c:/Users/echay/")
-        let g:WorkDir = 'D:/Dropbox/neovim/'
-    else
-        let g:WorkDir = 'C:/tools/neovim/'
-    endif
+    let g:WorkDir = 'C:/tools/neovim/'
 endif
 
 "source plug.vim manually from plugged folder. It should normally sit in the
 " nvim working dir autoload folder
-exe 'source '.g:WorkDir.'plugged/plug.vim'
+try
+    exe 'source '.g:WorkDir.'plugged/plug.vim'
+catch
+    let g:WorkDir = '/home/z/.config/nvim/'
+    exe 'source '.g:WorkDir.'plugged/plug.vim'
+endtry
 
 call plug#begin(g:WorkDir.'plugged')
 " universal plugins
@@ -57,6 +58,7 @@ if !exists('g:vscode')
         " ui, display
         Plug 'olimorris/onedarkpro.nvim'
         Plug 'nvim-lualine/lualine.nvim'
+        Plug 'lewis6991/satellite.nvim'
 
         "utility plugins
         Plug 'nvim-tree/nvim-web-devicons'
