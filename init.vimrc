@@ -170,3 +170,4 @@ highlight SpellRare guifg=#63D6FD
 highlight SpellLocal gui=undercurl guifg=#FFFEE2
 
 highlight SatelliteCursor guifg=#63D6FD
+highlight SatelliteMark guifg=#c678dd
