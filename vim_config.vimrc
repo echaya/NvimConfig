@@ -12,3 +12,21 @@ nnoremap gK :SignifyDiff<cr>
 nnoremap gJ :SignifyHunkDiff<cr>
 nnoremap <leader>hr :SignifyHunkUndo<cr>
 vnoremap <leader>hr :SignifyHunkUndo<cr>
+
+"coloring and status line
+let g:lightline = {
+            \ 'colorscheme': 'one',
+            \ 'active': {
+            \   'left': [ [ 'mode', 'paste' ],
+            \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+            \ },
+            \ 'component_function': {
+            \   'gitbranch': 'gitbranch#name'
+            \ },
+            \ }
+
+" use startify to handle session. Need to SSave a session to become persistent
+let g:startify_session_persistence = 1
+
+"open the cursor at the last saved position even without session
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif

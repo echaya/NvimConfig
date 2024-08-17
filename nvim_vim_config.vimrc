@@ -34,6 +34,8 @@ set showcmd
 set noshowmode
 set ruler
 set shellslash
+set showtabline=2
+
 if !has('unix')
     let &shell = 'pwsh'
     let &shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
@@ -48,24 +50,6 @@ else
     let &t_SI = "\e[6 q"
     let &t_EI = "\e[2 q"
 endif
-
-"coloring and status line
-set showtabline=2
-let g:lightline = {
-            \ 'colorscheme': 'one',
-            \ 'active': {
-            \   'left': [ [ 'mode', 'paste' ],
-            \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
-            \ },
-            \ 'component_function': {
-            \   'gitbranch': 'gitbranch#name'
-            \ },
-            \ }
-
-" use startify to handle session. Need to SSave a session to become persistent
-let g:startify_session_persistence = 1
-"open the cursor at the last saved position even without session
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 " Navigate buffers. use :bufferN to jump based on buffer number
 noremap <silent> J :bp<CR>
