@@ -311,14 +311,12 @@ require("onedarkpro").setup({
     transparency = false,
   },
   highlights = {
-    -- variable = {},
     ["@variable"] = {},
     ["@variable.member"] = {},
     LineNr = { fg = "#7f848e" },
-    MatchParen = {fg ="white", underline = true },
+    MatchParen = { bg = "#505664", underline = true },
   },
 })
-
 
 -- disable netrw at the very start of your init.lua
 vim.g.loaded_netrw = 1
