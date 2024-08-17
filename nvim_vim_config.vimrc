@@ -211,15 +211,3 @@ endfunction
 
 noremap <silent><leader>y :call ChooseBuffer(g:temp_cb_name)<cr>Go<esc>p
 
-if !has('nvim')
-    " hunk navigation and viewing using signify
-    nnoremap gK :SignifyDiff<cr>
-    nnoremap gJ :SignifyHunkDiff<cr>
-    nnoremap <leader>hr :SignifyHunkUndo<cr>
-    vnoremap <leader>hr :SignifyHunkUndo<cr>
-" else
-"     augroup nvimrc_aucmd
-"         autocmd!
-"         autocmd CursorHold * rshada|wshada
-"     augroup END
-endif		

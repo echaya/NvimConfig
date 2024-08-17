@@ -120,7 +120,7 @@ if exists('g:vscode')
     exe 'source '.g:WorkDir.'config/vscode_config.vimrc'
     exe 'luafile '.g:WorkDir.'config/vscode_config.lua'
 else
-    exe 'source '.g:WorkDir.'config/vim_config.vimrc'
+    exe 'source '.g:WorkDir.'config/nvim_vim_config.vimrc'
     exe 'source '.g:WorkDir.'config/md.vimrc'
     exe 'source '.g:WorkDir.'config/python.vimrc'
     if has("nvim")
