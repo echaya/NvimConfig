@@ -371,5 +371,5 @@ wk.setup({
 })
 
 require("satellite").setup({
-  excluded_filetypes = { "toggleterm", "nvim-tree" },
+  excluded_filetypes = { "toggleterm", "NvimTree", "oil" },
 })
