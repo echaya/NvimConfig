@@ -124,8 +124,9 @@ else
     exe 'source '.g:WorkDir.'config/md.vimrc'
     exe 'source '.g:WorkDir.'config/python.vimrc'
     if has("nvim")
+        exe 'luafile '.g:WorkDir.'config/nvim_gui_config.lua'
+        exe 'luafile '.g:WorkDir.'config/nvim_utils_config.lua'
         exe 'luafile '.g:WorkDir.'config/lsp_config.lua'
-        exe 'luafile '.g:WorkDir.'config/nvim_config.lua'
         exe 'luafile '.g:WorkDir.'config/repl_config.lua'
     endif
 endif

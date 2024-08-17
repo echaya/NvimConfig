@@ -26,7 +26,7 @@ iron.setup({
   ignore_blank_lines = false, -- ignore blank lines when sending visual select lines
 })
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = "python",
+  pattern = 'python',
   callback = function(args)
     -- TODO norm! gv after Iron start/restart
     vim.keymap.set(
