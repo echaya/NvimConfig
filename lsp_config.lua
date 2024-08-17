@@ -117,9 +117,7 @@ luasnip.config.set_config({
 -- Setup Autocomplete
 
 require("nvim-autopairs").setup({
-  map_cr = true,
-  map_complete = true,
-  auto_select = true,
+  disable_filetype = { "TelescopePrompt", "NvimTree", "oil" },
 })
 local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
