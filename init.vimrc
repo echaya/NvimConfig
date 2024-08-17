@@ -33,6 +33,7 @@ if has ('nvim')
     Plug 'ggandor/leap.nvim'
     Plug 'max397574/better-escape.nvim'
     Plug 'monaqa/dial.nvim'
+    Plug 'echasnovski/mini.ai'
 endif
 
 if !exists('g:vscode')
