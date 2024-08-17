@@ -448,13 +448,7 @@ local config = {
   },
 
   tabline = {
-    lualine_a = {
-      {
-        "navic",
-        color_correction = "dynamic",
-        navic_opts = { highlight = true },
-      },
-    },
+    lualine_a = {},
     lualine_b = {},
     lualine_c = {
       {
@@ -487,7 +481,13 @@ local config = {
     },
   },
   winbar = {
-    lualine_a = {},
+    lualine_a = {
+      {
+        "navic",
+        color_correction = "dynamic",
+        navic_opts = { highlight = true },
+      },
+    },
     lualine_b = {},
     lualine_c = {},
     lualine_x = {},
@@ -709,8 +709,8 @@ local Path = require("plenary.path")
 local config = require("session_manager.config")
 require("session_manager").setup({
   sessions_dir = Path:new(vim.fn.stdpath("data"), "sessions"), -- The directory where the session files will be saved.
-  session_filename_to_dir = session_filename_to_dir, 
-  dir_to_session_filename = dir_to_session_filename, 
+  session_filename_to_dir = session_filename_to_dir,
+  dir_to_session_filename = dir_to_session_filename,
   autoload_mode = {
     config.AutoloadMode.CurrentDir,
     config.AutoloadMode.GitSession,
@@ -718,8 +718,8 @@ require("session_manager").setup({
     -- config.AutoloadMode.LastSession,
   }, -- Define what to do when Neovim is started without arguments.
   autosave_last_session = true, -- Automatically save last session on exit and on session switch.
-  autosave_ignore_not_normal = true, 
-  autosave_ignore_dirs = {}, 
+  autosave_ignore_not_normal = true,
+  autosave_ignore_dirs = {},
   autosave_ignore_filetypes = { -- All buffers of these file types will be closed before the session is saved.
     "gitcommit",
     "gitrebase",
@@ -733,14 +733,14 @@ require("session_manager").setup({
 })
 vim.keymap.set("n", "<leader>sm", "<cmd>SessionManager<cr>", { desc = "session manager" })
 -- Auto save session
-vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
-  callback = function ()
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+  callback = function()
     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
       -- Don't save while there's any 'nofile' buffer open.
-      if vim.api.nvim_get_option_value("buftype", { buf = buf }) == 'nofile' then
+      if vim.api.nvim_get_option_value("buftype", { buf = buf }) == "nofile" then
         return
       end
     end
     session_manager.save_current_session()
-  end
+  end,
 })
