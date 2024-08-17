@@ -148,7 +148,7 @@ highlight IlluminatedWordText guibg=#505664 gui=NONE
 highlight IlluminatedWordRead guibg=#505664 gui=NONE
 highlight IlluminatedWordWrite guibg=#505664 gui=NONE
 
-highlight QuickScopePrimary guifg='#afff5f' gui=underline ctermfg=155 cterm=underline
+highlight QuickScopePrimary guifg=#afff5f gui=underline ctermfg=155 cterm=underline
 highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline
 
 " colorschme TODO, XXX, IMP, NOTE
@@ -166,5 +166,7 @@ highlight clear SpellBad
 highlight clear SpellRare
 highlight clear SpellLocal
 highlight SpellBad gui=undercurl guifg=pink
-highlight SpellRare guifg='#63D6FD'
-highlight SpellLocal gui=undercurl guifg='#FFFEE2'
+highlight SpellRare guifg=#63D6FD
+highlight SpellLocal gui=undercurl guifg=#FFFEE2
+
+highlight SatelliteCursor guifg=#63D6FD
