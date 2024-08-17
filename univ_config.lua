@@ -58,4 +58,18 @@ end)
 vim.keymap.set("v", "<C-x>", function()
   require("dial.map").manipulate("decrement", "visual")
 end)
--- abcdefghijklmn
+
+require("mini.ai").setup({
+  custom_textobjects = {
+  v = {
+    {
+      '%u[%l%d]+%f[^%l%d]',
+      '%f[%S][%l%d]+%f[^%l%d]',
+      '%f[%P][%l%d]+%f[^%l%d]',
+      '^[%l%d]+%f[^%l%d]',
+    },
+    '^().*()$'
+  }
+  },
+})
+
