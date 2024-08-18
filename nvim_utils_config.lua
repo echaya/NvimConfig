@@ -139,6 +139,12 @@ local open_totalcmd = function(path)
   MiniFiles.close()
 end
 
+local open_file = function(path)
+  local cur_entry_path = MiniFiles.get_fs_entry().path
+  vim.ui.open(cur_entry_path)
+  MiniFiles.close()
+end
+
 vim.api.nvim_create_autocmd("User", {
   pattern = "MiniFilesBufferCreate",
   callback = function(args)
@@ -146,6 +152,7 @@ vim.api.nvim_create_autocmd("User", {
     -- Tweak left-hand side of mapping to your liking
     vim.keymap.set("n", "g.", toggle_dotfiles, { buffer = buf_id })
     vim.keymap.set("n", "gt", open_totalcmd, { buffer = buf_id })
+    vim.keymap.set("n", "gx", open_file, { buffer = buf_id })
     vim.keymap.set("n", "<esc>", require("mini.files").close, { buffer = buf_id })
   end,
 })
@@ -153,7 +160,6 @@ vim.api.nvim_create_autocmd("User", {
 require("marks").setup({
   -- which builtin marks to show. default {}
   builtin_marks = {},
-  -- builtin_marks = { ".", "<", ">", "^" },
   default_mappings = false,
   mappings = {
     set = "m",
