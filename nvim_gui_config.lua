@@ -27,8 +27,6 @@ require("onedarkpro").setup({
 })
 
 -- Eviline config for lualine
--- Author: shadmansaleh
--- Credit: glepnir
 local lualine = require("lualine")
 local navic = require("nvim-navic")
 navic.setup({
@@ -278,12 +276,12 @@ ins_right({
 ins_right({
   "diagnostics",
   sources = { "nvim_diagnostic" },
-  symbols = { error = " ", warn = " ", info = " " , hint=" "},
+  symbols = { error = " ", warn = " ", info = " ", hint = " " },
   diagnostics_color = {
     error = { fg = colors.red },
     warn = { fg = colors.yellow },
     info = { fg = colors.cyan },
-    hint = {fg = colors.blue}
+    hint = { fg = colors.blue },
   },
 })
 
@@ -304,14 +302,19 @@ ins_right({
 
 -- ins_right({ "location", icon = " ", color = { fg = colors.green, gui = "bold" } })
 
-ins_right({ "progress", icon = " ", color = { fg = colors.green, gui = "bold" } })
+ins_right({
+  "progress",
+  icon = " ",
+  color = function()
+    return { fg = mode_color[vim.fn.mode()], gui = "bold" }
+  end,
+})
 
 ins_right({
   function()
     return "▊"
   end,
   color = function()
-    -- auto change color according to neovims mode
     return { fg = mode_color[vim.fn.mode()] }
   end,
   padding = { left = 1, right = 0 },
@@ -333,6 +336,19 @@ wk.setup({
     return ctx.mode == "V" or ctx.mode == "<C-V>" or ctx.mode == "v"
   end,
   debug = false,
+  win = {
+    padding = { 0, 2 },
+    wo = {
+      winblend = 20, -- value between 0-100 0 for fully opaque and 100 for fully transparent
+    },
+  },
+  layout = {
+    spacing = 2, -- spacing between columns
+  },
+  disable = {
+    ft = { "toggleterm", "NvimTree", "oil", "minifiles" },
+    bt = {},
+  },
 })
 
 require("satellite").setup({
