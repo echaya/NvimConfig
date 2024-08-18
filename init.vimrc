@@ -59,8 +59,7 @@ if !exists('g:vscode')
         "utility plugins
         Plug 'nvim-tree/nvim-web-devicons'
         Plug 'echasnovski/mini.files'
-        "Plug 'stevearc/oil.nvim'
-        Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
+        Plug 'nvim-telescope/telescope.nvim'
         Plug 'chentoast/marks.nvim'
         Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
         Plug 'Shatur/neovim-session-manager'
