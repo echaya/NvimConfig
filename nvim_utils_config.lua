@@ -67,39 +67,121 @@ telescope.setup({
 -- -- load_extension, somewhere after setup function:
 telescope.load_extension("fzf")
 
-require("oil").setup({
-  -- See :help oil-columns
-  columns = {
-    "icon",
-    -- "permissions",
-    "size",
-    "mtime",
+require("mini.files").setup({
+
+  -- Use `''` (empty string) to not create one.
+  mappings = {
+    go_in_plus = "<CR>",
+    trim_left = ">",
+    trim_right = "<",
   },
-  -- Skip the confirmation popup for simple operations (:help oil.skip_confirm_for_simple_edits)
-  skip_confirm_for_simple_edits = true,
-  -- See :help oil-actions for a list of all available actions
-  keymaps = {
-    ["g?"] = "actions.show_help",
-    ["<CR>"] = "actions.select",
-    ["<C-v>"] = "actions.select_vsplit",
-    ["<C-x>"] = "actions.select_split",
-    ["<C-t>"] = "actions.select_tab",
-    ["<C-p>"] = "actions.preview",
-    ["<C-c>"] = "actions.close",
-    ["<C-l>"] = "actions.refresh",
-    ["-"] = "actions.parent",
-    ["_"] = "actions.open_cwd",
-    ["`"] = "actions.cd",
-    ["~"] = "actions.tcd",
-    ["gs"] = "actions.change_sort",
-    ["gx"] = "actions.open_external",
-    ["g."] = "actions.toggle_hidden",
-    ["g\\"] = "actions.toggle_trash",
+
+  -- General options
+  options = {
+    -- Whether to delete permanently or move into module-specific trash
+    permanent_delete = true,
+    -- Whether to use for editing directories
+    use_as_default_explorer = true,
   },
-  -- Set to false to disable all of the above keymaps
-  use_default_keymaps = false,
+
+  -- Customization of explorer windows
+  windows = {
+    -- Maximum number of windows to show side by side
+    max_number = math.huge,
+    -- Whether to show preview of file/directory under cursor
+    preview = true,
+    -- Width of focused window
+    width_focus = 50,
+    -- Width of non-focused window
+    width_nofocus = 15,
+    -- Width of preview window
+    width_preview = 100,
+  },
 })
-vim.keymap.set("n", "<Leader>-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+
+vim.keymap.set("n", "<a-e>", function()
+  if not MiniFiles.close() then
+    MiniFiles.open()
+  end
+end)
+
+local show_dotfiles = true
+
+local filter_show = function(fs_entry)
+  return true
+end
+
+local filter_hide = function(fs_entry)
+  return not vim.startswith(fs_entry.name, ".")
+end
+
+local gio_open = function()
+  local fs_entry = require("mini.files").get_fs_entry()
+  vim.notify(vim.inspect(fs_entry))
+  vim.fn.system(string.format("gio open '%s'", fs_entry.path))
+end
+
+local toggle_dotfiles = function()
+  show_dotfiles = not show_dotfiles
+  local new_filter = show_dotfiles and filter_show or filter_hide
+  require("mini.files").refresh({ content = { filter = new_filter } })
+end
+
+if vim.fn.isdirectory("C:/tools/totalcmd") ~= 0 then
+  local total_cmd_exe = "c:/tools/totalcmd/TOTALCMD.EXE"
+else
+  local total_cmd_exe = "d:/Dropbox/software/TC/totalcmd/TOTALCMD.EXE"
+end
+
+local open_totalcmd = function(path)
+  -- Works only if cursor is on the valid file system entry
+  vim.notify(vim.inspect(total_cmd_exe))
+  local cur_entry_path = MiniFiles.get_fs_entry().path
+  vim.notify(vim.inspect(cur_entry_path))
+  -- local cur_directory = vim.fs.dirname(cur_entry_path)
+  vim.api.nvim_command(string.format("!%s /O /T /L='%s'", total_cmd_exe, cur_entry_path))
+  MiniFiles.close()
+end
+
+vim.api.nvim_create_autocmd("User", {
+  pattern = "MiniFilesBufferCreate",
+  callback = function(args)
+    local buf_id = args.data.buf_id
+    -- Tweak left-hand side of mapping to your liking
+    vim.keymap.set("n", "g.", toggle_dotfiles, { buffer = buf_id })
+    vim.keymap.set("n", "o", open_totalcmd, { buffer = buf_id })
+    vim.keymap.set("n", "<esc>", require("mini.files").close, { buffer = buf_id })
+  end,
+})
+
+-- disable netrw at the very start of your init.lua
+-- vim.g.loaded_netrw = 1
+-- vim.g.loaded_netrwPlugin = 1
+
+-- -- OR setup with some options
+require("nvim-tree").setup({
+  sort = {
+    sorter = "case_sensitive",
+  },
+  view = {
+    width = 40,
+    side = "right",
+  },
+  renderer = {
+    group_empty = true,
+  },
+  filters = {
+    dotfiles = true,
+  },
+  sync_root_with_cwd = true,
+  respect_buf_cwd = true,
+  update_focused_file = {
+    enable = true,
+    update_root = true,
+  },
+})
+
+vim.keymap.set("n", "<a-b>", "<CMD>NvimTreeToggle<CR>", { noremap = true, silent = true })
 
 require("marks").setup({
   -- which builtin marks to show. default {}
