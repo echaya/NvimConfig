@@ -318,14 +318,14 @@ ins_right({
   "fileformat",
   -- fmt = string.upper,
   icons_enabled = true,
-  color = { fg = colors.blue, gui = "bold" },
+  color = { fg = colors.yellow, gui = "bold" },
 })
 
 ins_right({
   "o:encoding", -- option component same as &encoding in viml
   fmt = string.upper, -- I'm not sure why it's upper case either ;)
   cond = conditions.hide_in_width,
-  color = { fg = colors.blue, gui = "bold" },
+  color = { fg = colors.yellow, gui = "bold" },
 })
 
 ins_right({ "location", icon = " ", color = { fg = colors.green, gui = "bold" } })
