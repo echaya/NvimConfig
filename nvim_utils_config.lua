@@ -225,6 +225,7 @@ require("session_manager").setup({
     "gitcommit",
     "gitrebase",
     "toggleterm",
+    "minifiles",
   },
   autosave_ignore_buftypes = {
     "terminal",
