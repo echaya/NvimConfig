@@ -3,6 +3,7 @@
 nnoremap <SPACE> <Nop>
 nnoremap <TAB> <Nop>
 let mapleader=" "
+let maplocalleader="\\"
 
 "seaerch
 set incsearch
