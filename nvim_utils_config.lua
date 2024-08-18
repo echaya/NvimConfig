@@ -127,17 +127,13 @@ local toggle_dotfiles = function()
   require("mini.files").refresh({ content = { filter = new_filter } })
 end
 
-if vim.fn.isdirectory("C:/tools/totalcmd") ~= 0 then
-  local total_cmd_exe = "c:/tools/totalcmd/TOTALCMD.EXE"
-else
-  local total_cmd_exe = "d:/Dropbox/software/TC/totalcmd/TOTALCMD.EXE"
-end
-
 local open_totalcmd = function(path)
-  -- Works only if cursor is on the valid file system entry
-  vim.notify(vim.inspect(total_cmd_exe))
+  if vim.fn.isdirectory("C:/tools/totalcmd") ~= 0 then
+    total_cmd_exe = "c:/tools/totalcmd/TOTALCMD.EXE"
+  else
+    total_cmd_exe = "d:/Dropbox/software/TC/totalcmd/TOTALCMD.EXE"
+  end
   local cur_entry_path = MiniFiles.get_fs_entry().path
-  vim.notify(vim.inspect(cur_entry_path))
   -- local cur_directory = vim.fs.dirname(cur_entry_path)
   vim.api.nvim_command(string.format("!%s /O /T /L='%s'", total_cmd_exe, cur_entry_path))
   MiniFiles.close()
@@ -149,7 +145,7 @@ vim.api.nvim_create_autocmd("User", {
     local buf_id = args.data.buf_id
     -- Tweak left-hand side of mapping to your liking
     vim.keymap.set("n", "g.", toggle_dotfiles, { buffer = buf_id })
-    vim.keymap.set("n", "o", open_totalcmd, { buffer = buf_id })
+    vim.keymap.set("n", "gt", open_totalcmd, { buffer = buf_id })
     vim.keymap.set("n", "<esc>", require("mini.files").close, { buffer = buf_id })
   end,
 })
