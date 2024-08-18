@@ -243,6 +243,7 @@ ins_left({
   end,
 })
 
+-- ins_left({"filetype", color = { fg = colors.bg, gui = "bold" }})
 ins_left({
   "filename",
   cond = conditions.buffer_not_empty,
@@ -265,23 +266,24 @@ ins_right({
       local filetypes = client.config.filetypes
       if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
         -- return client.name
-        return "lsp"
+        return " "
       end
     end
     return msg
   end,
-  icon = " ",
-  color = { fg = "#ffffff", gui = "italic" },
+  -- icon = " ",
+  color = { fg = colors.fg, gui = "italic" },
 })
 
 ins_right({
   "diagnostics",
   sources = { "nvim_diagnostic" },
-  symbols = { error = " ", warn = " ", info = " " },
+  symbols = { error = " ", warn = " ", info = " " , hint=" "},
   diagnostics_color = {
     error = { fg = colors.red },
     warn = { fg = colors.yellow },
     info = { fg = colors.cyan },
+    hint = {fg = colors.blue}
   },
 })
 
@@ -300,9 +302,9 @@ ins_right({
   color = { fg = colors.yellow, gui = "bold" },
 })
 
-ins_right({ "location", icon = " ", color = { fg = colors.green, gui = "bold" } })
+-- ins_right({ "location", icon = " ", color = { fg = colors.green, gui = "bold" } })
 
-ins_right({ "progress", color = { fg = colors.green, gui = "bold" } })
+ins_right({ "progress", icon = " ", color = { fg = colors.green, gui = "bold" } })
 
 ins_right({
   function()
@@ -312,7 +314,7 @@ ins_right({
     -- auto change color according to neovims mode
     return { fg = mode_color[vim.fn.mode()] }
   end,
-  padding = { left = 0, right = 0 },
+  padding = { left = 1, right = 0 },
 })
 -- Now don't forget to initialize lualine
 lualine.setup(config)
