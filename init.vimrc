@@ -168,5 +168,5 @@ highlight SpellBad gui=undercurl guifg=pink
 highlight SpellRare guifg=#63D6FD
 highlight SpellLocal gui=undercurl guifg=#FFFEE2
 
-highlight SatelliteCursor guifg=#63D6FD
+highlight SatelliteCursor guifg=#ECBE7B
 highlight SatelliteMark guifg=#c678dd

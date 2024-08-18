@@ -333,5 +333,11 @@ wk.setup({
 })
 
 require("satellite").setup({
-  excluded_filetypes = { "toggleterm", "NvimTree", "oil" , "minifiles"},
+  handlers = {
+    cursor = {
+      enable = true,
+      symbols = { ">" },
+    },
+  },
+  excluded_filetypes = { "toggleterm", "NvimTree", "oil", "minifiles" },
 })
