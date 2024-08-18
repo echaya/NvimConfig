@@ -127,9 +127,15 @@ local config = {
   },
 
   tabline = {
-    lualine_a = {},
-    lualine_b = {},
-    lualine_c = {
+    lualine_c = {},
+    lualine_b = {
+      {
+        "navic",
+        color_correction = "dynamic",
+        navic_opts = { highlight = true },
+      },
+    },
+    lualine_a = {
       {
         "buffers",
         show_filename_only = true, -- Shows shortened relative path when set to false.
@@ -138,7 +144,8 @@ local config = {
         max_length = vim.o.columns * 4 / 5,
         mode = 4,
         filetype_names = {
-          TelescopePrompt = "Telescope"
+          TelescopePrompt = "Telescope",
+          minifiles = "mini.files",
         }, -- Shows specific buffer name for that filetype ( { `filetype` = `buffer_name`, ... } )
         use_mode_colors = false,
         buffers_color = {
@@ -160,13 +167,7 @@ local config = {
     },
   },
   winbar = {
-    lualine_a = {
-      {
-        "navic",
-        color_correction = "dynamic",
-        navic_opts = { highlight = true },
-      },
-    },
+    lualine_a = {},
     lualine_b = {},
     lualine_c = {},
     lualine_x = {},
@@ -305,7 +306,7 @@ ins_right({ "progress", color = { fg = colors.green, gui = "bold" } })
 
 ins_right({
   function()
-    return '▊'
+    return "▊"
   end,
   color = function()
     -- auto change color according to neovims mode
