@@ -25,7 +25,7 @@ set enc=utf-8
 " color, display, theme
 syntax on
 set number relativenumber
-set scrolloff=3
+set scrolloff=5
 set splitright
 set splitbelow
 set wrap
