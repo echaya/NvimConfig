@@ -64,7 +64,6 @@ if !exists('g:vscode')
         Plug 'chentoast/marks.nvim'
         Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
         Plug 'Shatur/neovim-session-manager'
-        Plug 'nvim-tree/nvim-tree.lua'
         Plug 'folke/which-key.nvim' 
         Plug 'stevearc/dressing.nvim'
 

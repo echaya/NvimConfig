@@ -154,35 +154,6 @@ vim.api.nvim_create_autocmd("User", {
   end,
 })
 
--- disable netrw at the very start of your init.lua
--- vim.g.loaded_netrw = 1
--- vim.g.loaded_netrwPlugin = 1
-
--- -- OR setup with some options
-require("nvim-tree").setup({
-  sort = {
-    sorter = "case_sensitive",
-  },
-  view = {
-    width = 40,
-    side = "right",
-  },
-  renderer = {
-    group_empty = true,
-  },
-  filters = {
-    dotfiles = true,
-  },
-  sync_root_with_cwd = true,
-  respect_buf_cwd = true,
-  update_focused_file = {
-    enable = true,
-    update_root = true,
-  },
-})
-
-vim.keymap.set("n", "<a-b>", "<CMD>NvimTreeToggle<CR>", { noremap = true, silent = true })
-
 require("marks").setup({
   -- which builtin marks to show. default {}
   builtin_marks = {},
