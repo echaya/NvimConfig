@@ -138,7 +138,7 @@ local config = {
         max_length = vim.o.columns * 4 / 5,
         mode = 4,
         filetype_names = {
-          TelescopePrompt = "Telescope",
+          TelescopePrompt = "Telescope"
         }, -- Shows specific buffer name for that filetype ( { `filetype` = `buffer_name`, ... } )
         use_mode_colors = false,
         buffers_color = {
@@ -333,5 +333,5 @@ wk.setup({
 })
 
 require("satellite").setup({
-  excluded_filetypes = { "toggleterm", "NvimTree", "oil" },
+  excluded_filetypes = { "toggleterm", "NvimTree", "oil" , "minifiles"},
 })

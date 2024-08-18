@@ -26,7 +26,7 @@ iron.setup({
   ignore_blank_lines = false, -- ignore blank lines when sending visual select lines
 })
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = 'python',
+  pattern = "python",
   callback = function(args)
     -- TODO norm! gv after Iron start/restart
     vim.keymap.set(
@@ -58,7 +58,7 @@ vim.api.nvim_create_autocmd("FileType", {
       iron.send(nil, string.char(12))
     end, { buffer = args.buf, desc = "repl_clear" })
     vim.keymap.set("n", [[\f]], "<cmd>IronFocus<cr>i", { buffer = args.buf, desc = "repl_focus" })
-    vim.keymap.set({ "n" },[[\t]], function()
+    vim.keymap.set({ "n" }, [[\t]], function()
       vim.cmd("normal V")
       require("leap.treesitter").select()
       iron.visual_send()
@@ -220,6 +220,7 @@ require("illuminate").configure({
     "dirbuf",
     "dirvish",
     "fugitive",
+    "minifiles",
   },
   filetypes_allowlist = {},
   modes_denylist = { "i", "ic", "ix" },
