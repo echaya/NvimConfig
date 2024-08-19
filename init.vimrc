@@ -39,8 +39,7 @@ endif
 if !exists('g:vscode')
 
     "vim and neovim specific plugins
-    Plug '907th/vim-auto-save' "to auto-save files
-    Plug 'airblade/vim-rooter'
+    Plug '907th/vim-auto-save'
 
     " markdown & log plugins
     Plug 'godlygeek/tabular', {'for':['markdown','md','vimwiki']} "prerequisite for vim-markdown
@@ -96,6 +95,7 @@ if !exists('g:vscode')
         " vim specific alternative
         Plug 'mhinz/vim-startify' "butify the vim start up page
         Plug 'joshdick/onedark.vim'
+        Plug 'airblade/vim-rooter'
         Plug 'ap/vim-buftabline' "butify the tab line
         Plug 'mhinz/vim-signify'
         Plug 'itchyny/lightline.vim'
