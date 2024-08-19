@@ -246,3 +246,5 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
     session_manager.save_current_session()
   end,
 })
+
+require('mini.bufremove').setup()

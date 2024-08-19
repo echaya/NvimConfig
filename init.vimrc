@@ -53,6 +53,7 @@ if !exists('g:vscode')
     if has('nvim')
         " ui, display
         Plug 'olimorris/onedarkpro.nvim'
+        Plug 'rebelot/kanagawa.nvim'
         Plug 'nvim-lualine/lualine.nvim'
         Plug 'lewis6991/satellite.nvim'
 
@@ -63,8 +64,9 @@ if !exists('g:vscode')
         Plug 'chentoast/marks.nvim'
         Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
         Plug 'Shatur/neovim-session-manager'
-        Plug 'folke/which-key.nvim' 
+        Plug 'folke/which-key.nvim'
         Plug 'stevearc/dressing.nvim'
+        Plug 'echasnovski/mini.bufremove'
 
         "lsp and snippets
         Plug 'neovim/nvim-lspconfig'
@@ -128,13 +130,13 @@ else
         exe 'luafile '.g:WorkDir.'config/lsp_config.lua'
         exe 'luafile '.g:WorkDir.'config/repl_config.lua'
     else
-         exe 'source '.g:WorkDir.'config/vim_config.vimrc'
+        exe 'source '.g:WorkDir.'config/vim_config.vimrc'
     endif
 endif
 
 " colorscheme and highlight
 try
-    colorscheme onedark
+    colorscheme kanagawa
 catch
     colorscheme habamax
 endtry
@@ -168,5 +170,5 @@ highlight SpellBad gui=undercurl guifg=pink
 highlight SpellRare guifg=#63D6FD
 highlight SpellLocal gui=undercurl guifg=#FFFEE2
 
-highlight SatelliteCursor guifg=#ECBE7B
-highlight SatelliteMark guifg=#c678dd
+highlight link SatelliteCursor CursorLineNr
+highlight link SatelliteMark NvimString

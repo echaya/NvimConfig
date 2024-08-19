@@ -26,6 +26,29 @@ require("onedarkpro").setup({
   },
 })
 
+require("kanagawa").setup({
+
+  colors = {
+    theme = {
+      all = {
+        ui = {
+          bg_gutter = "none",
+        },
+      },
+    },
+  },
+  overrides = function(colors)
+    return {
+      -- Assign a static color to strings
+      -- String = { fg = colors.palette.carpYellow, italic = true },
+      -- theme colors will update dynamically when you change theme!
+      -- SomePluginHl = { fg = colors.theme.syn.type, bold = true },
+    LineNr = { fg = "#7f848e" },
+    MatchParen = { bg = "#505664", underline = true },
+    }
+  end,
+})
+
 -- Eviline config for lualine
 local lualine = require("lualine")
 local navic = require("nvim-navic")
