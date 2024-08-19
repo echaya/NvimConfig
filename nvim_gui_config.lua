@@ -43,8 +43,8 @@ require("kanagawa").setup({
       -- String = { fg = colors.palette.carpYellow, italic = true },
       -- theme colors will update dynamically when you change theme!
       -- SomePluginHl = { fg = colors.theme.syn.type, bold = true },
-    LineNr = { fg = "#7f848e" },
-    MatchParen = { bg = "#505664", underline = true },
+      LineNr = { fg = "#7f848e" },
+      MatchParen = { bg = "#505664", underline = true },
     }
   end,
 })
@@ -59,17 +59,17 @@ navic.setup({
 -- Color table for highlights
 -- stylua: ignore
 local colors = {
-  bg       = '#202328',
-  fg       = '#bbc2cf',
-  yellow   = '#ECBE7B',
-  cyan     = '#008080',
-  darkblue = '#081633',
-  green    = '#98be65',
-  orange   = '#FF8800',
-  violet   = '#a9a1e1',
-  magenta  = '#c678dd',
-  blue     = '#51afef',
-  red      = '#ec5f67',
+  bg       = '#16161D',
+  fg       = '#727169',
+  yellow   = '#DCA561',
+  cyan     = '#6A9589',
+  darkblue = '#252535',
+  green    = '#76946A',
+  orange   = '#FF9E3B',
+  violet   = '#957FB8',
+  magenta  = '#D27E99',
+  blue     = '#7E9CD8',
+  red      = '#C34043',
 }
 
 local mode_color = {
@@ -171,7 +171,7 @@ local config = {
         use_mode_colors = false,
         buffers_color = {
           active = { fg = colors.magenta, bg = colors.bg },
-          inactive = { fg = "#7f848e", bg = colors.bg },
+          inactive = { fg = colors.fg, bg = colors.bg },
         },
       },
     },
