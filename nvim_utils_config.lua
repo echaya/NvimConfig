@@ -164,9 +164,10 @@ end
 
 local files_set_cwd = function(path)
   -- Works only if cursor is on the valid file system entry
+  -- Does not work with have vim-rooter is on
   local cur_entry_path = MiniFiles.get_fs_entry().path
   local cur_directory = vim.fs.dirname(cur_entry_path)
-  vim.fn.chdir(cur_entry_path)
+  vim.fn.chdir(cur_directory)
   vim.notify(vim.inspect(cur_directory))
 end
 
