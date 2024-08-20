@@ -18,7 +18,7 @@ inoremap <silent> <c-s-v> <Esc>:set paste<Cr>a<c-r>+<Esc>:set nopaste<Cr>a
 " change default Y behavior to match with D, C, etc
 noremap Y y$
 " reselect just pasted block
-nnoremap gp `[v`]
+nnoremap gV `[v`]
 " join lines by <leader>j
 nnoremap <leader>j J
 " highlight yanked text
@@ -31,8 +31,8 @@ nnoremap <expr> k v:count == 0 ? 'gk' : 'k'
 xnoremap <expr> k v:count == 0 ? 'gk' : 'k'
 
 " insert lines without entering insert mode (allow count)
-noremap <silent> <leader>o :<C-u>call append(line("."),   repeat([""], v:count1))<CR>
-nnoremap <silent> <leader>O :<C-u>call append(line(".")-1, repeat([""], v:count1))<CR>
+noremap <silent> go :<C-u>call append(line("."),   repeat([""], v:count1))<CR>
+nnoremap <silent> gO :<C-u>call append(line(".")-1, repeat([""], v:count1))<CR>
 
 " use Ctrl+j/k to swap lines (allow count)
 nnoremap <C-j> :<c-u>execute 'move +'. v:count1<cr>
