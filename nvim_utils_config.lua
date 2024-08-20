@@ -79,7 +79,7 @@ require("mini.files").setup({
   -- General options
   options = {
     -- Whether to delete permanently or move into module-specific trash
-    permanent_delete = true,
+    permanent_delete = false,
     -- Whether to use for editing directories
     use_as_default_explorer = true,
   },
