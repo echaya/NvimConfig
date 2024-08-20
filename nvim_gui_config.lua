@@ -75,14 +75,14 @@ local colors = {
 local mode_color = {
   n = colors.green,
   i = colors.blue,
-  v = colors.magenta,
-  [""] = colors.magenta,
-  V = colors.magenta,
+  v = colors.violet,
+  [""] = colors.violet,
+  V = colors.violet,
   c = colors.orange,
   no = colors.orange,
-  s = colors.magenta,
-  S = colors.magenta,
-  [""] = colors.magenta,
+  s = colors.violet,
+  S = colors.violet,
+  [""] = colors.violet,
   ic = colors.blue,
   R = colors.orange,
   Rv = colors.orange,
@@ -238,7 +238,7 @@ ins_left({
 ins_left({
   "branch",
   icon = "",
-  color = { fg = colors.yellow, gui = "bold" },
+  color = { fg = colors.yellow }, -- gui = "bold" },
 })
 
 ins_left({
@@ -268,7 +268,7 @@ ins_left({
 ins_left({
   "filename",
   cond = conditions.buffer_not_empty,
-  color = { fg = colors.magenta, gui = "bold" },
+  color = { fg = colors.magenta }, -- gui = "bold" },
 })
 
 -- Insert mid section. You can make any number of sections in neovim :)
@@ -313,14 +313,14 @@ ins_right({
   "fileformat",
   -- fmt = string.upper,
   icons_enabled = true,
-  color = { fg = colors.yellow, gui = "bold" },
+  color = { fg = colors.yellow }, -- gui = "bold" },
 })
 
 ins_right({
   "o:encoding", -- option component same as &encoding in viml
   fmt = string.upper, -- I'm not sure why it's upper case either ;)
   cond = conditions.hide_in_width,
-  color = { fg = colors.yellow, gui = "bold" },
+  color = { fg = colors.yellow }, -- gui = "bold" },
 })
 
 -- ins_right({ "location", icon = " ", color = { fg = colors.green, gui = "bold" } })
