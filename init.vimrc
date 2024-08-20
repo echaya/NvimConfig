@@ -40,6 +40,7 @@ if !exists('g:vscode')
 
     "vim and neovim specific plugins
     Plug '907th/vim-auto-save'
+    Plug 'airblade/vim-rooter'
 
     " markdown & log plugins
     Plug 'godlygeek/tabular', {'for':['markdown','md','vimwiki']} "prerequisite for vim-markdown
@@ -95,7 +96,6 @@ if !exists('g:vscode')
         " vim specific alternative
         Plug 'mhinz/vim-startify' "butify the vim start up page
         Plug 'joshdick/onedark.vim'
-        Plug 'airblade/vim-rooter'
         Plug 'ap/vim-buftabline' "butify the tab line
         Plug 'mhinz/vim-signify'
         Plug 'itchyny/lightline.vim'
@@ -172,3 +172,5 @@ highlight SpellLocal gui=undercurl guifg=#FFFEE2
 
 highlight link SatelliteCursor CursorLineNr
 highlight link SatelliteMark NvimString
+
+highlight TermCursor guifg=#D27E99
