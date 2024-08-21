@@ -241,11 +241,10 @@ require("toggleterm").setup({
     if term.direction == "horizontal" then
       return 15
     elseif term.direction == "vertical" then
-      return vim.o.columns * 0.4
-    else
-      return 30
+      return vim.o.columns * 0.3
     end
   end,
+  direction = "horizontal",
 })
 
 local Terminal = require("toggleterm.terminal").Terminal
@@ -262,26 +261,38 @@ end
 
 vim.keymap.set(
   { "n", "t" },
-  "<a-m>",
+  "<a-z>",
   "<cmd>lua _lazygit_toggle()<CR>",
   { noremap = true, silent = true, desc = "lazygit" }
 )
 
-local pwsh = Terminal:new({
-  -- cmd = "ipython --no-autoindent",
-  -- dir = "git_dir",
-  direction = "horizontal",
-  name = "powershell",
-  hidden = true,
-})
-
-function _pwsh_toggle()
-  pwsh:toggle()
-end
-
 vim.keymap.set(
   { "n", "t" },
   "<a-`>",
-  "<cmd>lua _pwsh_toggle()<CR>",
-  { noremap = true, silent = true, desc = "powershell" }
+  "<cmd>ToggleTerm<CR>",
+  { noremap = true, silent = true, desc = "ToggleTerm" }
 )
+
+vim.keymap.set("n", "<a-`>", function()
+  return "<cmd>" .. vim.v.count .. "ToggleTerm<cr>"
+end, { expr = true, desc = "X ToggleTerm" })
+
+vim.keymap.set({ "n", "t" }, "<a-d>", function()
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    local bufnr = vim.api.nvim_win_get_buf(win)
+    if vim.bo[bufnr].buftype == "terminal" then
+      local _, term = require("toggleterm.terminal").identify(vim.api.nvim_buf_get_name(bufnr))
+      if term and term:is_split() then
+        cur_dir = term.direction
+        if cur_dir == "horizontal" then
+          return "<Cmd>ToggleTerm<CR><Cmd>ToggleTerm direction=vertical<CR>"
+        else
+          return "<Cmd>ToggleTerm<CR><Cmd>ToggleTerm direction=tab<CR>"
+        end
+      end
+    end
+  end
+  return "<Cmd>ToggleTerm<CR><Cmd>ToggleTerm direction=horizontal<CR>"
+end, { expr = true, desc = "ToggleTerm direction" })
+
+vim.keymap.set("n", "<leader>ft", "<Cmd>TermSelect<CR>", { desc = "find_terminal" })
