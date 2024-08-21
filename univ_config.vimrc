@@ -19,8 +19,14 @@ inoremap <silent> <c-s-v> <Esc>:set paste<Cr>a<c-r>+<Esc>:set nopaste<Cr>a
 noremap Y y$
 " reselect just pasted block
 nnoremap gV `[v`]
-" join lines by <leader>j
-nnoremap <leader>j J
+" kep cursor in the middle of the screen
+nnoremap n nzzzv
+nnoremap N Nzzzv
+nnoremap <C-u> <C-u>zz
+nnoremap <C-d> <C-d>zz
+" join lines by gj
+nnoremap gj J
+" TODO to move it to nvim_utils_config
 " highlight yanked text
 autocmd TextYankPost * silent! lua vim.highlight.on_yank {higroup='Visual', timeout=500}
 
