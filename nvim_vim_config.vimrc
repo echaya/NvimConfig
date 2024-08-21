@@ -35,6 +35,7 @@ set noshowmode
 set ruler
 set shellslash
 set showtabline=2
+set fillchars = "eob: "
 
 if !has('unix')
     let &shell = 'pwsh'
@@ -61,8 +62,6 @@ noremap <silent> <PageUp> :tabp<CR>
 noremap <silent> <PageDown> :tabn<CR>
 noremap <silent> <Del> :tabc<CR>
 noremap <silent> <Insert> :tabnew<CR>
-noremap <silent> H :tabp<CR>
-noremap <silent> L :tabn<CR>
 
 augroup CursorLine
     au!
