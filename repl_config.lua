@@ -149,10 +149,10 @@ require("gitsigns").setup({
     map("v", "<leader>hu", function()
       gitsigns.undo_stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
     end, { desc = "hunk_unstage" })
-    map("n", "gJ", gitsigns.preview_hunk, { desc = "preview_hunk" })
-    -- map("n", "gK", '<cmd>lua require"gitsigns".diffthis("~")<CR>', { desc = "gitsign: diffthis" })
-    map("n", "gK", "<cmd>DiffviewFileHistory %<CR>", { desc = "diffview: file_history" })
-    map("n", "<leader>td", gitsigns.toggle_deleted, { desc = "gitsign: toggle_deleted" })
+    map({ "n", "v" }, "<leader>hh", gitsigns.preview_hunk, { desc = "hunk_hover" })
+    map("n", "<leader>hd", "<cmd>DiffviewFileHistory %<CR>", { desc = "diffview: file_history" })
+    map("v", "<leader>hd", ":'<,'>DiffviewFileHistory<CR>", { desc = "diffview: hunk_history" })
+    map("n", "<leader>htd", gitsigns.toggle_deleted, { desc = "gitsign: toggle_deleted" })
 
     -- Text object
     map({ "o", "x" }, "gh", ":<C-U>Gitsigns select_hunk<CR>")
