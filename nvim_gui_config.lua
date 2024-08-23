@@ -149,13 +149,7 @@ local config = {
 
   tabline = {
     lualine_c = {},
-    lualine_b = {
-      {
-        "navic",
-        color_correction = "dynamic",
-        navic_opts = { highlight = true },
-      },
-    },
+    lualine_b = {},
     lualine_a = {
       {
         "buffers",
@@ -230,7 +224,6 @@ end
 ins_left({
   "mode",
   color = function()
-    -- auto change color according to neovims mode
     return { bg = mode_color[vim.fn.mode()], fg = colors.darkblue, gui = "bold" }
   end,
 })
@@ -238,7 +231,9 @@ ins_left({
 ins_left({
   "branch",
   icon = "",
-  color = { fg = colors.yellow }, -- gui = "bold" },
+  color = function()
+    return { fg = mode_color[vim.fn.mode()], gui = "bold" }
+  end,
 })
 
 ins_left({
@@ -252,11 +247,6 @@ ins_left({
   },
   cond = conditions.hide_in_width,
 })
--- ins_left {
---   -- filesize component
---   'filesize',
---   cond = conditions.buffer_not_empty,
--- }
 
 ins_left({
   function()
@@ -271,8 +261,11 @@ ins_left({
   color = { fg = colors.magenta }, -- gui = "bold" },
 })
 
--- Insert mid section. You can make any number of sections in neovim :)
--- for lualine it's any number greater then 2
+ins_left({
+  "navic",
+  color_correction = "dynamic",
+  navic_opts = { highlight = true },
+})
 
 ins_right({
   -- Lsp server name .
@@ -307,8 +300,8 @@ ins_right({
     hint = { fg = colors.blue },
   },
 })
+-- ins_left({"filetype", color = { fg = colors.bg, gui = "bold" }})
 
--- Add components to right sections
 ins_right({
   "fileformat",
   -- fmt = string.upper,
@@ -323,26 +316,27 @@ ins_right({
   color = { fg = colors.yellow }, -- gui = "bold" },
 })
 
--- ins_right({ "location", icon = " ", color = { fg = colors.green, gui = "bold" } })
-
 ins_right({
-  "progress",
-  icon = " ",
+  "location",
   color = function()
     return { fg = mode_color[vim.fn.mode()], gui = "bold" }
   end,
 })
 
 ins_right({
+  -- filesize by number of lines
   function()
-    return "▊"
+    return vim.api.nvim_buf_line_count(0)
   end,
+  cond = conditions.buffer_not_empty,
+  icon = " ",
   color = function()
-    return { fg = mode_color[vim.fn.mode()] }
+    return { bg = mode_color[vim.fn.mode()], fg = colors.darkblue, gui = "bold" }
   end,
-  padding = { left = 1, right = 0 },
 })
--- Now don't forget to initialize lualine
+
+-- ins_right({ "progress" })
+
 lualine.setup(config)
 
 local wk = require("which-key")
@@ -373,7 +367,9 @@ wk.setup({
     bt = {},
   },
 })
-
+-- vim.opt.wrap = false
+-- vim.opt.sidescrolloff = 36 -- Set a large value
+-- require("neominimap").setup()
 require("satellite").setup({
   handlers = {
     cursor = {
