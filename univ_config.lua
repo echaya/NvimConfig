@@ -8,6 +8,9 @@ vim.keymap.set({ "n" }, "S", "<Plug>(leap-backward-to)")
 vim.keymap.set({ "x", "o" }, "z", "<Plug>(leap-forward-to)", { desc = "leap forward textobj" })
 vim.keymap.set({ "x", "o" }, "Z", "<Plug>(leap-backward-to)", { desc = "leap back textobj" })
 vim.keymap.set({ "n" }, "gs", "<Plug>(leap-from-window)", { desc = "leap from window" })
+leap.opts.preview_filter = function()
+  return false
+end
 -- s<CR> to traverse forward, s<BS> to traverse backward
 vim.keymap.set(
   { "n", "x", "o" },
@@ -57,15 +60,14 @@ end)
 
 require("mini.ai").setup({
   custom_textobjects = {
-  v = {
-    {
-      '%u[%l%d]+%f[^%l%d]',
-      '%f[%S][%l%d]+%f[^%l%d]',
-      '%f[%P][%l%d]+%f[^%l%d]',
-      '^[%l%d]+%f[^%l%d]',
+    v = {
+      {
+        "%u[%l%d]+%f[^%l%d]",
+        "%f[%S][%l%d]+%f[^%l%d]",
+        "%f[%P][%l%d]+%f[^%l%d]",
+        "^[%l%d]+%f[^%l%d]",
+      },
+      "^().*()$",
     },
-    '^().*()$'
-  }
   },
 })
-

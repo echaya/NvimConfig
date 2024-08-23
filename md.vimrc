@@ -46,7 +46,8 @@ augroup mdgroup
     autocmd Filetype markdown nnoremap <buffer> <leader>\ :TableModeToggle<CR>
     autocmd Filetype markdown nnoremap <buffer> == :TableModeRealign<CR>
     let g:table_mode_syntax = 0
-
+    " vimwiki checkbox toggle
+    autocmd Filetype markdown nnoremap <buffer> <leader><leader> <Cmd>VimwikiToggleListItem<CR>
 augroup END
 
 " spell check

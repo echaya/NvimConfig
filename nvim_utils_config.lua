@@ -180,7 +180,7 @@ vim.api.nvim_create_autocmd("User", {
     vim.keymap.set("n", "gt", open_totalcmd, { buffer = buf_id, desc = "Open in TotalCmd" })
     vim.keymap.set("n", "gx", open_file, { buffer = buf_id, desc = "Open Externally" })
     vim.keymap.set('n', 'g`', files_set_cwd, { buffer = args.data.buf_id, desc = "Set dir" })
-    vim.keymap.set("n", "<esc>", require("mini.files").close, { buffer = buf_id, desc = "Quit" })
+    vim.keymap.set("n", "<esc>", require("mini.files").close, { buffer = buf_id, desc = "Close (alt.)" })
     map_split(buf_id, "gs", "belowright horizontal")
     map_split(buf_id, "gv", "belowright vertical")
   end,
