@@ -60,7 +60,12 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.keymap.set({ "n", "v" }, "<a-del>", function()
       iron.send(nil, string.char(12))
     end, { buffer = args.buf, desc = "repl_clear" })
-    vim.keymap.set("n", "<localleader>f", "<cmd>IronFocus<cr>i", { buffer = args.buf, desc = "repl_focus" })
+    vim.keymap.set(
+      "n",
+      "<localleader>f",
+      "<cmd>IronFocus<cr>i",
+      { buffer = args.buf, desc = "repl_focus" }
+    )
     vim.keymap.set({ "n" }, "<localleader>t", function()
       vim.cmd("normal V")
       require("leap.treesitter").select()
