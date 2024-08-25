@@ -31,6 +31,8 @@ let g:startify_session_persistence = 1
 "open the cursor at the last saved position even without session
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
+" Escape shortcut
+inoremap jk <ESC>
 
 let &t_SI = "\e[6 q"
 let &t_EI = "\e[2 q"

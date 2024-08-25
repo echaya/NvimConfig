@@ -49,9 +49,9 @@ if has('gui_running')
     set guioptions-=e
 endif
 
-set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
-  \,a:blinkwait1000-blinkoff400-blinkon250-Cursor/lCursor
-  \,sm:block-blinkwait1000-blinkoff150-blinkon155
+"set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
+"  \,a:blinkwait1000-blinkoff200-blinkon100-Cursor/lCursor
+"  \,sm:block-blinkwait1000-blinkoff150-blinkon155
 
 " Navigate buffers. use :bufferN to jump based on buffer number
 noremap <silent> J :bp<CR>
@@ -69,9 +69,6 @@ augroup CursorLine
     au InsertLeave,WinEnter * set cursorline
     au InsertEnter,WinLeave * set nocursorline
 augroup END
-
-" Escape shortcut
-inoremap jk <ESC>
 
 " buffers management
 set hidden

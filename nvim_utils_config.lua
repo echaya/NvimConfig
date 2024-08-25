@@ -201,7 +201,6 @@ require("marks").setup({
 
 -- delete jk binding in vim mode
 -- for vscode it is handled on vscode level (composite-keys)
-vim.keymap.del("i", "jk")
 require("better_escape").setup({
   timeout = 150,
   default_mappings = false,
