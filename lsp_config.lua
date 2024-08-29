@@ -3,6 +3,12 @@ local cmp = require("cmp")
 local luasnip = require("luasnip")
 
 cmp.setup({
+  opts = {
+    performance = {
+      debounce = 20, -- default is 60ms
+      throttle = 10, -- default is 30ms
+    },
+  },
   snippet = {
     expand = function(args)
       require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
@@ -78,7 +84,14 @@ cmp.setup.cmdline(":", {
   }, {
     { name = "cmdline" },
   }),
-  matching = { disallow_symbol_nonprefix_matching = false },
+  matching = {
+    disallow_fuzzy_matching = true,
+    disallow_fullfuzzy_matching = true,
+    disallow_partial_fuzzy_matching = true,
+    disallow_partial_matching = false,
+    disallow_prefix_unmatching = false,
+    disallow_symbol_nonprefix_matching = false,
+  },
 })
 
 -- Setup luasnip
