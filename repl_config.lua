@@ -247,9 +247,7 @@ end
 
 function send_lines_to_ipython()
   local id = 1
-
   local current_window = vim.api.nvim_get_current_win() -- save current window
-
   local vstart = vim.fn.getpos("'<")
   local vend = vim.fn.getpos("'>")
   local line_start = vstart[2]
@@ -269,10 +267,6 @@ function send_lines_to_ipython()
   end
   cmd = cmd .. string.char(4)
   toggleterm.exec(cmd, id)
-  local enter_in_string = string.char(13)
-  vim.defer_fn(function()
-    toggleterm.exec(enter_in_string, id)
-  end, 150)
   vim.api.nvim_set_current_win(current_window)
 end
 
@@ -287,8 +281,15 @@ function send_sth_to_ipython(char)
   vim.api.nvim_set_current_win(current_window)
 end
 
+function send_code_to_ipython()
+  vim.cmd("call SelectVisual()")
+  vim.defer_fn(function()
+    vim.cmd(":'<,'>lua send_lines_to_ipython()")
+  end, 100)
+  send_sth_to_ipython(13)
+end
 
-
-vim.keymap.set("v", "<cr>", ":'<,'>lua send_lines_to_ipython()<cr>")
-vim.keymap.set("n", [[\c]], ":'<,'>lua send_sth_to_ipython(03)<cr>")
+vim.keymap.set("n", [[\\]], ":lua send_code_to_ipython()<cr>:norm! j<cr>")
+vim.keymap.set("n", [[\c]], ":lua send_sth_to_ipython(03)<cr>")
 vim.keymap.set("n", "<a-del>", ":'<,'>lua send_sth_to_ipython(12)<cr>")
+vim.keymap.set("v", "<cr>", ":'<,'>lua send_sth_to_ipython(13)<cr>")
