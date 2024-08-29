@@ -29,4 +29,6 @@ unmap X
 map ZQ removeTab
 map ZZ removeTab
 map ZX restoreTab
+map <c-s-j> previousTab
+map <c-s-k> nextTab
 ```
