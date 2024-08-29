@@ -36,6 +36,7 @@ set ruler
 set shellslash
 set showtabline=2
 set fillchars = "eob: "
+set signcolumn=yes:2
 
 if !has('unix')
     let &shell = 'pwsh'
@@ -48,10 +49,6 @@ endif
 if has('gui_running')
     set guioptions-=e
 endif
-
-"set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
-"  \,a:blinkwait1000-blinkoff200-blinkon100-Cursor/lCursor
-"  \,sm:block-blinkwait1000-blinkoff150-blinkon155
 
 " Navigate buffers. use :bufferN to jump based on buffer number
 noremap <silent> J :bp<CR>
@@ -69,6 +66,7 @@ augroup CursorLine
     au InsertLeave,WinEnter * set cursorline
     au InsertEnter,WinLeave * set nocursorline
 augroup END
+
 
 " buffers management
 set hidden
@@ -90,8 +88,8 @@ tnoremap <A-l> <Cmd>wincmd l<CR>
 " nnoremap <up> :vertical resize+5<CR>
 nnoremap <up> :res +2<CR>
 nnoremap <down> :res -2<CR>
-nnoremap <left> :vertical resize-2<CR>
-nnoremap <right> :vertical resize+2<CR>
+nnoremap <left> :vertical resize-5<CR>
+nnoremap <right> :vertical resize+5<CR>
 
 " to overcome accidental c-u/w to delete the word/line
 inoremap <c-u> <c-g>u<c-u>
@@ -184,5 +182,4 @@ function! ChooseBuffer(buffername)
     endif
 endfunction
 
-noremap <silent><leader>y :call ChooseBuffer(g:temp_cb_name)<cr>Go<esc>p
-
+"noremap <silent><leader>y :call ChooseBuffer(g:temp_cb_name)<cr>Go<esc>p
