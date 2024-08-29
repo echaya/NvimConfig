@@ -12,7 +12,7 @@ iron.setup({
     repl_definition = {
       python = {
         format = require("iron.fts.common").bracketed_paste_python,
-        command = { "ipython", "--no-autoindent" },
+        command = { "ipython", "-i", "--no-autoindent" },
       },
     },
     repl_open_cmd = require("iron.view").split.vertical.botright("45%"),
@@ -42,13 +42,38 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.keymap.set("n", "<localleader><cr>", function()
       iron.send(nil, string.char(13))
     end, { buffer = args.buf, desc = "repl_cr" })
+    vim.keymap.set("n", "<localleader><localleader>", function()
+      vim.cmd("call SelectVisual()")
+      vim.cmd("norm! y`>")
+      iron.send(nil, "%paste")
+      vim.cmd("norm! j")
+    end, { buffer = args.buf, desc = "repl_%paste" })
+    vim.keymap.set("n", "<localleader>]", function()
+      vim.cmd("call SelectVisual()")
+      iron.visual_send()
+      vim.cmd("norm! j")
+    end, { buffer = args.buf, desc = "repl_send_cell" })
+    vim.keymap.set("n", "<localleader>y", function()
+      vim.cmd("norm! yiwo")
+      vim.cmd("norm! pA.to_clipboard()")
+      vim.cmd("norm! V")
+      iron.visual_send()
+      vim.cmd("norm! dd")
+    end, { buffer = args.buf, desc = "repl_df_to_clipboard" })
+    vim.keymap.set("n", "<localleader>p", function()
+      vim.cmd("norm! yiwoprint(")
+      vim.cmd("norm! pA)")
+      vim.cmd("norm! V")
+      iron.visual_send()
+      vim.cmd("norm! dd")
+    end, { buffer = args.buf, desc = "repl_print" })
     vim.keymap.set("v", "<CR>", function()
       iron.visual_send()
       vim.cmd("norm! j")
     end, { buffer = args.buf, desc = "repl_v_send" })
     vim.keymap.set({ "n", "v" }, "<localleader>u", function()
       iron.send_until_cursor()
-      vim.api.nvim_input("<ESC>")
+      vim.api.nvim_input("<ESC>") -- to escape from visual mode
     end, { buffer = args.buf, desc = "repl_send_until" })
     vim.keymap.set({ "n", "v" }, "<localleader>q", function()
       iron.close_repl()
