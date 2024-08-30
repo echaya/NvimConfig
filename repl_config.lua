@@ -12,7 +12,7 @@ iron.setup({
     repl_definition = {
       python = {
         format = require("iron.fts.common").bracketed_paste_python,
-        command = { "ipython", "-i", "--no-autoindent" },
+        command = { "ipython", "--no-autoindent" },
       },
     },
     repl_open_cmd = require("iron.view").split.vertical.botright("45%"),
