@@ -121,6 +121,11 @@ let g:rooter_patterns = ['.git']
 :command S split
 :command RemoveTrailingSpace %s/\s\+$//e
 
+"table-mode
+nnoremap <localleader>tt <cmd>TableModeToggle<CR>
+nnoremap <localleader>t= <cmd>TableModeRealign<CR>
+let g:table_mode_syntax = 0
+
 " add comment string for bat, autohotkey files
 "use `:lua print(vim.bo.filetype)` to check file type of current window
 augroup MyGroup | au!
