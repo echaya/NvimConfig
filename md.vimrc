@@ -34,7 +34,6 @@ augroup mdgroup
     autocmd FileType markdown set conceallevel=0
     autocmd FileType markdown normal zR
 
-
     " markdown paste from clipboard
     autocmd FileType markdown nmap <buffer><silent> <leader><leader>p :call mdip#MarkdownClipboardImage()<CR>
     let g:mdip_imgdir = 'img'
@@ -42,10 +41,6 @@ augroup mdgroup
 
     "edit link
     autocmd Filetype markdown nnoremap <buffer> <leader>md :call EditMdLink()<cr>
-    "table-mode
-    autocmd Filetype markdown nnoremap <buffer> <leader>\ :TableModeToggle<CR>
-    autocmd Filetype markdown nnoremap <buffer> == :TableModeRealign<CR>
-    let g:table_mode_syntax = 0
     " vimwiki checkbox toggle
     autocmd Filetype markdown nnoremap <buffer> <leader><leader> <Cmd>VimwikiToggleListItem<CR>
 augroup END
