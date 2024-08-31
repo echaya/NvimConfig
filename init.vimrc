@@ -174,5 +174,6 @@ highlight SpellLocal gui=undercurl guifg=#FFFEE2
 
 highlight link SatelliteCursor CursorLineNr
 highlight link SatelliteMark Identifier
+"highlight link NeominimapMarkIcon Identifier
 
 highlight TermCursor guifg=#D27E99

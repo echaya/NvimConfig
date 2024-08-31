@@ -369,9 +369,6 @@ wk.setup({
     bt = {},
   },
 })
--- vim.opt.wrap = false
--- vim.opt.sidescrolloff = 36 -- Set a large value
--- require("neominimap").setup()
 require("satellite").setup({
   handlers = {
     cursor = {
@@ -381,3 +378,18 @@ require("satellite").setup({
   },
   excluded_filetypes = { "toggleterm", "NvimTree", "oil", "minifiles" },
 })
+--
+-- vim.opt.wrap = false
+-- vim.opt.sidescrolloff = 36 -- Set a large value
+-- vim.g.neominimap = {
+--   -- Enable the plugin by default
+--   auto_enable = true, ---@type boolean
+--   mark = {
+--     enabled = true, ---@type boolean
+--   },
+--   search = {
+--     enabled = true,
+--     mode = "icon",
+--   },
+-- }
+-- require("neominimap").setup()
