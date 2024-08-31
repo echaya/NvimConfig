@@ -11,14 +11,14 @@ let g:mkdp_open_ip = ''
 let g:mkdp_echo_preview_url = 0
 let g:mkdp_browserfunc = ''
 let g:mkdp_preview_options = {
-    \ 'mkit': {},
-    \ 'katex': {},
-    \ 'uml': {},
-    \ 'maid': {},
-    \ 'disable_sync_scroll': 0,
-    \ 'sync_scroll_type': 'middle',
-    \ 'hide_yaml_meta': 1
-    \ }
+            \ 'mkit': {},
+            \ 'katex': {},
+            \ 'uml': {},
+            \ 'maid': {},
+            \ 'disable_sync_scroll': 0,
+            \ 'sync_scroll_type': 'middle',
+            \ 'hide_yaml_meta': 1
+            \ }
 nmap <F5> <Plug>MarkdownPreviewToggle
 let g_mkdp_refresh_slow=0
 
@@ -52,10 +52,10 @@ augroup END
 
 " spell check
 augroup markdownSpell
-        autocmd!
-        autocmd FileType markdown setlocal spell spelllang=en_us,cjk
-        autocmd BufRead,BufNewFile *.md setlocal spell spelllang=en_us,cjk
-        autocmd FileType markdown inoremap ;f <c-g>u<Esc>[s1z=`]a<c-g>u
+    autocmd!
+    autocmd FileType markdown setlocal spell spelllang=en_us,cjk
+    autocmd BufRead,BufNewFile *.md setlocal spell spelllang=en_us,cjk
+    autocmd FileType markdown inoremap ;f <c-g>u<Esc>[s1z=`]a<c-g>u
 augroup END
 
 " vim wiki settings
@@ -67,10 +67,10 @@ endif
 let g:vimwiki_list = [{'path': g:MDir, 'syntax': 'markdown','ext': '.md'}]
 let g:vimwiki_ext2syntax = {'.md': 'markdown', '.markdown': 'markdown'}
 let g:vimwiki_key_mappings =
-\ {
-\ 'table_mappings': 0,
-\ 'lists': 0, 
-\ }
+            \ {
+            \ 'table_mappings': 0,
+            \ 'lists': 0, 
+            \ }
 " nmap <F7> <Plug>VimwikiNextLink
 " nmap <F9> <Plug>VimwikiPrevLink
 " nmap <S-Cr> <Plug>VimwikiFollowLink
