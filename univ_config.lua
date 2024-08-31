@@ -62,7 +62,6 @@ require("mini.ai").setup({
   custom_textobjects = {
     V = {
       {
-          -- firstSecondCast
         "%u[%l%d]+%f[^%l%d]",
         "%f[%S][%l%d]+%f[^%l%d]",
         "%f[%P][%l%d]+%f[^%l%d]",
@@ -71,18 +70,10 @@ require("mini.ai").setup({
       "^().*()$",
     },
     v = {
-      -- Wrapping in curly brackets means that "unwrapping" composed pattern will
-      -- result in those particular nested patterns.
       {
-        -- Cases like ` a*aa_bbb_ccc` and `aaa_b*bb_ccc`
-        { "[ _][^ _]+_", "^.()().*().()$" },
-        -- Cases like `a*aa_bbb_ccc` at start of line
-        { "^[^ _]+_", "^()().*().()$" },
-        -- Cases like `aaa_bbb_c*cc `
-        { "_[^ _]+ ", "^().().*()().$" },
-        -- Cases like `aaa_bbb_c*cc` at the end of line
-        { "_[^ _]+\n", "^().().*()().$" },
+        { "[^%w]()()[^_]+()_()" },
+        { "^()()[^_]+()_()" },
+        { "_()()[^_]+()_()" },
+        { "()_()[^_]+()()[%p \n]" },
       },
     },
-  },
-})
