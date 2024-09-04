@@ -74,6 +74,21 @@ function! SendCell() abort
     call SelectVisual()
 endfunction
 
+function DebugCell()
+    call SelectVisual()
+    normal >O
+    normal Idef DebugCell():
+    normal `>o
+    normal IDebugCell()
+endfunction
+
+function DebugDelete()
+    call SelectVisual()
+    normal <
+    normal '<dd
+    normal `>dd
+endfunction
+
 augroup PythonRepl
     autocmd!
     " code snippet
@@ -81,9 +96,14 @@ augroup PythonRepl
     autocmd Filetype python inoremap <buffer> ;cb .to_clipboard()
     autocmd Filetype python inoremap <buffer> ;ct .copy(True)
     autocmd Filetype python inoremap <buffer> ;it inplace=True
+    autocmd Filetype python inoremap <buffer> ;db __import__("IPython").core.debugger.set_trace()
     " REPL actions
     "autocmd Filetype python nmap <buffer> <localleader><localleader> :call SendCell()<cr><cr>
-    autocmd Filetype python nmap <buffer> <localleader>v :call SelectVisual()<cr>
+    autocmd Filetype python nnoremap <buffer> <localleader>v <cmd>call SelectVisual()<cr>
+    autocmd Filetype python nnoremap <buffer> <localleader>dc <cmd>call DebugCell()<cr>
+    autocmd Filetype python nnoremap <buffer> <localleader>dd :<cmd>call DebugDelete()<cr>:'<,'>g/core.debugger.set_trace/d<cr>
 augroup END
 
 "autocmd CursorHold * lua vim.diagnostic.open_float()
+
+tnoremap ;cb .to_clipboard()
