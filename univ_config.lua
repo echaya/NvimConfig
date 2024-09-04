@@ -71,10 +71,17 @@ require("mini.ai").setup({
     },
     v = {
       {
-        { "[^%w]()()[^_]+()_()" },
-        { "^()()[^_]+()_()" },
-        { "_()()[^_]+()_()" },
-        { "()_()[^_]+()()[%p \n]" },
+        -- a*aa_bbb "[test_abc_def
+        { "[^%w]()()[%w]+()_()" },
+        -- a*aa_bb at the start of the line
+        { "^()()[%w]+()_()" },
+        -- aaa_bbb*_ccc
+        { "_()()[%w]+()_()" },
+        -- bbb_cc*cc p/dmmp/df_mom_v2.pickle"
+        { "()_()[%w]+()()%f[%W]" },
+        -- bbb_cc*c at the end of the line
+-- df_univ = pd.read_pickle("./data/df_mom.pickle")
+        { "()_()[%w]+()()$" },
       },
     },
   },
