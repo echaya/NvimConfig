@@ -277,6 +277,7 @@ function send_sth_to_ipython(char)
   local enter_in_string = string.char(char)
   vim.defer_fn(function()
     toggleterm.exec(enter_in_string, id)
+  end, 100)
   vim.api.nvim_set_current_win(current_window)
 end
 
