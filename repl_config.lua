@@ -163,7 +163,9 @@ require("illuminate").configure({
   end,
 })
 
-require("toggleterm").setup({
+local toggleterm = require("toggleterm")
+
+toggleterm.setup({
   size = function(term)
     if term.direction == "horizontal" then
       return 15
@@ -253,7 +255,6 @@ function send_lines_to_ipython()
   local line_start = vstart[2]
   local line_end = vend[2]
   local lines = vim.fn.getline(line_start, line_end)
-  local toggleterm = require("toggleterm")
   --
   local cmd = string.char(15)
 
@@ -273,11 +274,10 @@ end
 function send_sth_to_ipython(char)
   local id = 1
   local current_window = vim.api.nvim_get_current_win() -- save current window
-  local toggleterm = require("toggleterm")
   local enter_in_string = string.char(char)
   vim.defer_fn(function()
     toggleterm.exec(enter_in_string, id)
-  end, 100)
+  end, 200)
   vim.api.nvim_set_current_win(current_window)
 end
 
@@ -289,7 +289,23 @@ function send_code_to_ipython()
   send_sth_to_ipython(13)
 end
 
-vim.keymap.set("n", [[\\]], ":lua send_code_to_ipython()<cr>:norm! j<cr>")
+function send_paste_to_ipython()
+  vim.cmd("call SelectVisual()")
+  vim.cmd("norm y")
+  vim.cmd("norm `>j")
+  local id = 1
+  local current_window = vim.api.nvim_get_current_win() -- save current window
+  -- local toggleterm = require("toggleterm")
+  local cmd = "%paste"
+  vim.defer_fn(function()
+    toggleterm.exec(cmd, id)
+  end, 50)
+  send_sth_to_ipython(13)
+  vim.api.nvim_set_current_win(current_window)
+end
+
+vim.keymap.set("n", "<localleader>]", ":lua send_code_to_ipython()<cr>:norm! j<cr>")
+vim.keymap.set("n", [[\\]], ":lua send_paste_to_ipython()<cr>:norm! j<cr>")
 vim.keymap.set("n", [[\c]], ":lua send_sth_to_ipython(03)<cr>")
 vim.keymap.set("n", "<a-del>", ":'<,'>lua send_sth_to_ipython(12)<cr>")
 vim.keymap.set("v", "<cr>", ":'<,'>lua send_sth_to_ipython(13)<cr>")
