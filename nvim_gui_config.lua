@@ -53,10 +53,10 @@ require("kanagawa").setup({
 
 -- Eviline config for lualine
 local lualine = require("lualine")
-local navic = require("nvim-navic")
-navic.setup({
-  separator = "  ",
-})
+-- local navic = require("nvim-navic")
+-- navic.setup({
+--   separator = "  ",
+-- })
 
 -- Color table for highlights
 -- stylua: ignore
@@ -263,11 +263,11 @@ ins_left({
   color = { fg = colors.magenta }, -- gui = "bold" },
 })
 
-ins_left({
-  "navic",
-  color_correction = "dynamic",
-  navic_opts = { highlight = true },
-})
+-- ins_left({
+--   "navic",
+--   color_correction = "dynamic",
+--   navic_opts = { highlight = true },
+-- })
 
 ins_right({
   -- Lsp server name .
