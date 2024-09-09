@@ -55,7 +55,6 @@ if !exists('g:vscode')
         Plug 'olimorris/onedarkpro.nvim'
         Plug 'rebelot/kanagawa.nvim'
         Plug 'nvim-lualine/lualine.nvim'
-        "Plug 'Isrothy/neominimap.nvim'
         Plug 'lewis6991/satellite.nvim'
 
         "utility plugins
