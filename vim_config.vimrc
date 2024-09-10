@@ -36,3 +36,7 @@ inoremap jk <ESC>
 
 let &t_SI = "\e[6 q"
 let &t_EI = "\e[2 q"
+
+
+let g:undotree_WindowLayout = 2
+nnoremap <leader>fu :UndotreeToggle<CR>

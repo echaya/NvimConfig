@@ -16,6 +16,7 @@ vim.keymap.set("n", "<leader>`", builtin.marks, {})
 vim.keymap.set("n", "<leader>fo", builtin.oldfiles, { desc = "old_files" })
 vim.keymap.set("n", "<leader>fw", builtin.grep_string, { desc = "grep_string" })
 vim.keymap.set("n", "<leader>fd", builtin.diagnostics, { desc = "lsp_diagnostics" })
+vim.keymap.set("n", "<leader>fu", "<cmd>Telescope undo<cr>", { desc = "lsp_diagnostics" })
 
 -- You dont need to set any of these options. These are the default ones. Only
 -- the loading is important
@@ -61,11 +62,20 @@ telescope.setup({
       case_mode = "smart_case", -- or "ignore_case" or "respect_case"
       -- the default case_mode is "smart_case"
     },
+    undo = {
+      use_delta = false,
+      side_by_side = false,
+      layout_strategy = "vertical",
+      layout_config = {
+        preview_height = 0.7,
+      },
+    },
   },
 })
 -- -- To get fzf loaded and working with telescope, you need to call
 -- -- load_extension, somewhere after setup function:
 telescope.load_extension("fzf")
+telescope.load_extension("undo")
 
 require("mini.files").setup({
 
@@ -179,8 +189,13 @@ vim.api.nvim_create_autocmd("User", {
     vim.keymap.set("n", "g.", toggle_dotfiles, { buffer = buf_id, desc = "Toggle dot file" })
     vim.keymap.set("n", "gt", open_totalcmd, { buffer = buf_id, desc = "Open in TotalCmd" })
     vim.keymap.set("n", "gx", open_file, { buffer = buf_id, desc = "Open Externally" })
-    vim.keymap.set('n', 'g`', files_set_cwd, { buffer = args.data.buf_id, desc = "Set dir" })
-    vim.keymap.set("n", "<esc>", require("mini.files").close, { buffer = buf_id, desc = "Close (alt.)" })
+    vim.keymap.set("n", "g`", files_set_cwd, { buffer = args.data.buf_id, desc = "Set dir" })
+    vim.keymap.set(
+      "n",
+      "<esc>",
+      require("mini.files").close,
+      { buffer = buf_id, desc = "Close (alt.)" }
+    )
     map_split(buf_id, "gs", "belowright horizontal")
     map_split(buf_id, "gv", "belowright vertical")
   end,

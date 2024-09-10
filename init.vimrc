@@ -64,6 +64,7 @@ if !exists('g:vscode')
         Plug 'nvim-tree/nvim-web-devicons'
         Plug 'echasnovski/mini.files'
         Plug 'nvim-telescope/telescope.nvim'
+        Plug 'debugloop/telescope-undo.nvim'
         Plug 'chentoast/marks.nvim'
         Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
         Plug 'Shatur/neovim-session-manager'
@@ -110,6 +111,7 @@ if !exists('g:vscode')
         Plug 'Julian/vim-textobj-variable-segment' "av,iv
         Plug 'kana/vim-textobj-indent' "ai,ii, aI, iI
         Plug 'bps/vim-textobj-python' "ac,ic,af,if
+        Plug 'mbbill/undotree'
     endif
 
 endif
