@@ -36,7 +36,11 @@ set ruler
 set shellslash
 set showtabline=2
 set fillchars = "eob: "
-set signcolumn=yes:2
+if has("nvim")
+    set signcolumn=yes:2
+else
+    set signcolumn=yes
+endif
 
 if !has('unix')
     let &shell = 'pwsh'

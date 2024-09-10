@@ -58,7 +58,7 @@ if !exists('g:vscode')
         Plug 'lewis6991/satellite.nvim'
         Plug 'MunifTanjim/nui.nvim'
         Plug 'rcarriga/nvim-notify'
-        Plug 'folke/noice.nvim', {'tag':'4.*'}
+        Plug 'folke/noice.nvim', {'tag':'v4.*'}
 
         "utility plugins
         Plug 'nvim-tree/nvim-web-devicons'
