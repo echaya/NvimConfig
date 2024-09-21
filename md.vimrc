@@ -15,7 +15,7 @@ augroup mdgroup
     autocmd FileType markdown normal zR
 
     " markdown paste from clipboard
-    autocmd FileType markdown nmap <buffer><silent> <leader><leader>p :call mdip#MarkdownClipboardImage()<CR>
+    autocmd FileType markdown nmap <buffer><silent> <leader><localleader>p :call mdip#MarkdownClipboardImage()<CR>
     let g:mdip_imgdir = 'img'
     let g:mdip_imgname = 'image'
 
