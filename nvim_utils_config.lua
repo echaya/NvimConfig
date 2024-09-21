@@ -138,14 +138,9 @@ local toggle_dotfiles = function()
 end
 
 local open_totalcmd = function(path)
-  if vim.fn.isdirectory("C:/tools/totalcmd") ~= 0 then
-    total_cmd_exe = "c:/tools/totalcmd/TOTALCMD.EXE"
-  else
-    total_cmd_exe = "d:/Dropbox/software/TC/totalcmd/TOTALCMD.EXE"
-  end
   local cur_entry_path = MiniFiles.get_fs_entry().path
   -- local cur_directory = vim.fs.dirname(cur_entry_path)
-  vim.api.nvim_command(string.format("!%s /O /T /L='%s'", total_cmd_exe, cur_entry_path))
+  vim.api.nvim_command(string.format("!%s /O /T /L='%s'", vim.g.total_cmd_exe, cur_entry_path))
   MiniFiles.close()
 end
 
