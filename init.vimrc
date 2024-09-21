@@ -1,20 +1,11 @@
-"NOTICE: one need to create a file under nvim working directory and source this file. 
+"NOTE one need to create a file under nvim working directory and source this file. 
 "To find the working directory is exactly, use the command :echo stdpath('config') inside Neovim.
 
-" for windows it is usually users/abc/nvim/init.vim
-"source d:\vnim\init.vim
-
+" for windows it is usually c:\Users\abc\AppData\Local\nvim\
 "for linux, a init.vim file should be created in ~/.config/nvim/init.vim
+"IMP
 "let g:WorkDir = '~/.config/nvim/'
 "exe 'source '.g:WorkDir.'config/init.vimrc'
-
-if !exists("g:WorkDir")
-    if isdirectory("c:/Users/echay/")
-        let g:WorkDir = 'D:/Dropbox/neovim/'
-    else
-        let g:WorkDir = 'C:/tools/neovim/'
-    endif
-endif
 
 "source plug.vim manually from plugged folder. It should normally sit in
 " nvim working dir autoload folder
