@@ -32,7 +32,6 @@ function! CloseCell() abort
     execute cmd
     normal -
 endfunction
-" nnoremap <leader>cc :call CloseCell()<cr>
 
 function! BetweenCell() abort
     let Start = line(".")
@@ -91,8 +90,9 @@ augroup PythonRepl
     autocmd Filetype python nnoremap <buffer> <localleader>dd :<cmd>call DebugDelete()<cr>:'<,'>g/core.debugger.set_trace/d<cr>
 augroup END
 
-"autocmd CursorHold * lua vim.diagnostic.open_float()
-
 tnoremap ;cb .to_clipboard()
 tnoremap ;fr .iloc[0].T
 tnoremap ;lr .iloc[-1].T
+
+" diagnostic box open by cursor
+"autocmd CursorHold * lua vim.diagnostic.open_float()
