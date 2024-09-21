@@ -3,7 +3,7 @@
 
 " for windows it is usually c:\Users\abc\AppData\Local\nvim\
 "for linux, a init.vim file should be created in ~/.config/nvim/init.vim
-"IMP
+"IMP example
 "let g:WorkDir = '~/.config/nvim/'
 "exe 'source '.g:WorkDir.'config/init.vimrc'
 
@@ -171,6 +171,5 @@ highlight SpellLocal gui=undercurl guifg=#FFFEE2
 
 highlight link SatelliteCursor CursorLineNr
 highlight link SatelliteMark Identifier
-"highlight link NeominimapMarkIcon Identifier
 
 highlight TermCursor guifg=#D27E99
