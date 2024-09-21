@@ -1,8 +1,5 @@
 "python config
-let pythonthreedll='c:\blp\bqnt\environments\bqnt-3\python\python39.dll'
-let pythonthreehome='c:\blp\bqnt\environments\bqnt-3\python\python39'
-let g:python3_host_prog='c:\blp\bqnt\environments\bqnt-3\python'
-
+" g:pythonthreedll, g:pythonthreehome & g:python3_host_prog are set in init.vim
 let g:CodeFence = "###"
 
 function! IsLineIndented()
