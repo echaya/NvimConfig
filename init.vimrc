@@ -36,11 +36,11 @@ if !exists('g:vscode')
     Plug 'airblade/vim-rooter'
 
     " markdown & log plugins
-    Plug 'godlygeek/tabular', {'for':['markdown','md','vimwiki']} "prerequisite for vim-markdown
-    Plug 'plasticboy/vim-markdown', {'for':['markdown','md','vimwiki']}
+    Plug 'godlygeek/tabular', {'for':['markdown','vimwiki']} "prerequisite for vim-markdown
+    Plug 'plasticboy/vim-markdown', {'for':['markdown','vimwiki']}
     Plug 'vimwiki/vimwiki'
     Plug 'dhruvasagar/vim-table-mode',{'on':'TableModeToggle'}
-    Plug 'ferrine/md-img-paste.vim', {'for':['markdown','md','vimwiki']}
+    Plug 'ferrine/md-img-paste.vim', {'for':['markdown','vimwiki']}
     Plug 'MTDL9/vim-log-highlighting', {'for':['log']}
 
     if has('nvim')
