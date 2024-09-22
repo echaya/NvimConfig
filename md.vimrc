@@ -22,7 +22,7 @@ augroup mdgroup
     "edit link
     autocmd Filetype markdown nnoremap <buffer> <leader>md :call EditMdLink()<cr>
     " vimwiki checkbox toggle
-    autocmd Filetype markdown nnoremap <buffer> <leader><leader> <Cmd>VimwikiToggleListItem<CR>
+    autocmd Filetype markdown nnoremap <buffer> <localleader><localleader> <Cmd>VimwikiToggleListItem<CR>
 augroup END
 
 " spell check
