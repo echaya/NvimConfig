@@ -89,6 +89,7 @@ if !exists('g:vscode')
         Plug 'RRethy/vim-illuminate'
         Plug 'sindrets/diffview.nvim'
         Plug 'akinsho/toggleterm.nvim'
+        Plug 'MeanderingProgrammer/render-markdown.nvim'
 
     else
         " vim specific alternative

@@ -286,3 +286,18 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 })
 
 require("mini.bufremove").setup()
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "markdown", "vimwiki", "md" },
+  callback = function(args)
+    require('render-markdown').setup({
+        enabled = false,
+    })
+    vim.keymap.set(
+      "n",
+      "<F5>",
+      "<cmd>RenderMarkdown toggle<cr>",
+      { buffer = args.buf, desc = "Render Markdown" }
+    )
+  end,
+})
