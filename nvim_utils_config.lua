@@ -290,8 +290,21 @@ require("mini.bufremove").setup()
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "markdown", "vimwiki", "md" },
   callback = function(args)
-    require('render-markdown').setup({
-        enabled = false,
+    require("render-markdown").setup({
+      enabled = true,
+      code = {
+        sign = false,
+        width = "block",
+        right_pad = 1,
+      },
+      heading = {
+        sign = false,
+        icons = {},
+      },
+      bullet = {
+        left_pad = 0,
+        right_pad = 1,
+      },
     })
     vim.keymap.set(
       "n",
