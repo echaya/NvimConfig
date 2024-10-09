@@ -333,3 +333,4 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = disable_indentscope,
   desc = "Disable 'mini.indentscope' in markdown buffer",
 })
+require("mini.trailspace").setup()

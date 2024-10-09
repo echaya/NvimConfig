@@ -65,6 +65,7 @@ if !exists('g:vscode')
         Plug 'stevearc/dressing.nvim'
         Plug 'echasnovski/mini.bufremove'
         Plug 'echasnovski/mini.indentscope'
+        Plug 'echasnovski/mini.trailspace'
 
         "lsp and snippets
         Plug 'neovim/nvim-lspconfig'
