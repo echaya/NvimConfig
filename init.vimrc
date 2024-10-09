@@ -77,7 +77,7 @@ if !exists('g:vscode')
         Plug 'L3MON4D3/LuaSnip' ", {'tag': 'v2.*', 'do': 'make install_jsregexp'}
         "Plug 'rafamadriz/friendly-snippets'
         Plug 'echaya/friendly-snippets'
-        "Plug 'SmiteshP/nvim-navic'
+        Plug 'SmiteshP/nvim-navic'
 
         "programming tools
         Plug 'Vigemus/iron.nvim'

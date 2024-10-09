@@ -28,7 +28,7 @@ require("onedarkpro").setup({
 
 -- vim.highlight.priorities.semantic_tokens = 95 -- Or any number lower than 100, treesitter's priority level
 require("kanagawa").setup({
-  -- keywordStyle = { italic = false },
+  keywordStyle = { italic = false },
   transparent = false,
   colors = {
     theme = {
@@ -53,10 +53,10 @@ require("kanagawa").setup({
 
 -- Eviline config for lualine
 local lualine = require("lualine")
--- local navic = require("nvim-navic")
--- navic.setup({
---   separator = "  ",
--- })
+local navic = require("nvim-navic")
+navic.setup({
+  separator = "  ",
+})
 
 -- Color table for highlights
 -- stylua: ignore
@@ -263,11 +263,14 @@ ins_left({
   color = { fg = colors.magenta }, -- gui = "bold" },
 })
 
--- ins_left({
---   "navic",
---   color_correction = "dynamic",
---   navic_opts = { highlight = true },
--- })
+ins_left({
+  "navic",
+  color_correction = "dynamic",
+  navic_opts = { highlight = true },
+  cond = function()
+    return navic.is_available()
+  end,
+})
 
 ins_right({
   -- Lsp server name .

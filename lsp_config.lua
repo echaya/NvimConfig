@@ -111,7 +111,7 @@ cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
 -- Setup LSP
 local lsp = require("lspconfig")
--- local navic = require("nvim-navic")
+local navic = require("nvim-navic")
 
 local custom_attach = function(client, bufnr)
   -- vim.keymap.set('n','gD','<cmd>lua vim.lsp.buf.declaration()<CR>')
@@ -143,7 +143,7 @@ local custom_attach = function(client, bufnr)
   -- vim.keymap.set('n','<leader>=', '<cmd>lua vim.lsp.buf.formatting()<CR>')
   -- vim.keymap.set('n','<leader>ai','<cmd>lua vim.lsp.buf.incoming_calls()<CR>')
   -- if client.server_capabilities.documentSymbolProvider then
-  --   navic.attach(client, bufnr)
+    navic.attach(client, bufnr)
   -- end
 end
 
@@ -194,3 +194,4 @@ vim.diagnostic.config({
     end,
   },
 })
+
