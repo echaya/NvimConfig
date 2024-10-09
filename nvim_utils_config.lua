@@ -315,3 +315,21 @@ vim.api.nvim_create_autocmd("FileType", {
     )
   end,
 })
+require("mini.indentscope").setup({
+  draw = {
+    delay = 200,
+  },
+})
+local disable_indentscope = function(data)
+  vim.b[data.buf].miniindentscope_disable = true
+end
+vim.api.nvim_create_autocmd(
+  "TermOpen",
+  { desc = "Disable 'mini.indentscope' in terminal buffer", callback = disable_indentscope }
+)
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "markdown", "vimwiki" },
+  callback = disable_indentscope,
+  desc = "Disable 'mini.indentscope' in markdown buffer",
+})
