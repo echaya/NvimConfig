@@ -15,6 +15,7 @@ if has('persistent_undo')
     set undofile
 endif
 set updatetime=100
+set timeoutlen=500
 
 set splitbelow
 set splitright
@@ -173,13 +174,18 @@ function! PowerClose(strong)
     if (&buftype == 'terminal' && window_counter == 1)
         normal i
     else
-        echo "powercloser: ".cmd."| bc=".buffer_count."|; wc=".window_counter
+        "echo "powercloser: ".cmd."| bc=".buffer_count."|; wc=".window_counter
         execute cmd
     endif
 endfunction
 
-nnoremap <silent> ZZ :call PowerClose(0)<cr>
-nnoremap <silent> ZQ :call PowerClose(1)<cr>
+if has("nvim")
+    nnoremap <silent> ZZ <cmd>Noice dismiss<cr> <cmd>call PowerClose(0)<cr>
+    nnoremap <silent> ZQ <cmd>Noice dismiss<cr> <cmd>call PowerClose(1)<cr>
+else
+    nnoremap <silent> ZZ <cmd>call PowerClose(0)<cr>
+    nnoremap <silent> ZQ <cmd>call PowerClose(1)<cr>
+endif
 
 function! ChooseBuffer(buffername)
     let bnr = bufwinnr(a:buffername)
