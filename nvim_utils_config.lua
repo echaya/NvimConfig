@@ -18,9 +18,20 @@ vim.keymap.set("n", "<leader>fw", builtin.grep_string, { desc = "grep_string" })
 vim.keymap.set("n", "<leader>fd", builtin.diagnostics, { desc = "lsp_diagnostics" })
 vim.keymap.set("n", "<leader>fu", "<cmd>Telescope undo<cr>", { desc = "lsp_diagnostics" })
 
--- You dont need to set any of these options. These are the default ones. Only
--- the loading is important
--- Clone the default Telescope configuration
+local select_one_or_multi = function(prompt_bufnr)
+  local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
+  local multi = picker:get_multi_selection()
+  if not vim.tbl_isempty(multi) then
+    require("telescope.actions").close(prompt_bufnr)
+    for _, j in pairs(multi) do
+      if j.path ~= nil then
+        vim.cmd(string.format("%s %s", "edit", j.path))
+      end
+    end
+  else
+    require("telescope.actions").select_default(prompt_bufnr)
+  end
+end
 
 telescope.setup({
   defaults = {
@@ -28,17 +39,13 @@ telescope.setup({
     vimgrep_arguments = vimgrep_arguments,
     path_display = { "truncate" },
     mappings = {
-      n = {
-        ["/"] = "which_key",
-        ["w"] = actions.send_selected_to_qflist + actions.open_qflist,
-        ["d"] = actions.delete_buffer + actions.move_to_top,
-      },
       i = {
         ["<C-j>"] = actions.cycle_history_next,
         ["<C-k>"] = actions.cycle_history_prev,
         ["<CR>"] = select_one_or_multi,
         ["<C-w>"] = actions.send_selected_to_qflist + actions.open_qflist,
         ["<del>"] = actions.delete_buffer + actions.move_to_top,
+        ["<esc>"] = actions.close,
       },
     },
   },
@@ -315,6 +322,7 @@ vim.api.nvim_create_autocmd("FileType", {
     )
   end,
 })
+
 require("mini.indentscope").setup({
   draw = {
     delay = 200,
@@ -333,4 +341,5 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = disable_indentscope,
   desc = "Disable 'mini.indentscope' in markdown buffer",
 })
+
 require("mini.trailspace").setup()
