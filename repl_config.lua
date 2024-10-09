@@ -11,7 +11,7 @@ iron.setup({
     -- Your repl definitions come here
     repl_definition = {
       python = {
-        format = require("iron.fts.common").bracketed_paste_python,
+        format = require("iron.fts.common").bracketed_paste,
         command = { "ipython", "--no-autoindent" },
       },
     },
@@ -89,7 +89,7 @@ vim.api.nvim_create_autocmd("FileType", {
     end, { buffer = args.buf, desc = "repl_clear" })
     vim.keymap.set(
       "n",
-      "<localleader>f",
+      "<localleader>i",
       "<cmd>IronFocus<cr>i",
       { buffer = args.buf, desc = "repl_focus" }
     )
@@ -290,7 +290,7 @@ end
 
 vim.keymap.set(
   { "n", "t" },
-  "<a-z>",
+  "<a-g>",
   "<cmd>lua _lazygit_toggle()<CR>",
   { noremap = true, silent = true, desc = "lazygit" }
 )
