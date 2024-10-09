@@ -73,10 +73,20 @@ function DebugDelete()
     normal `>dd
 endfunction
 
+"function RedrawiPython()
+"    let l:current_window = win_getid()
+"    "echo current_window
+"    let wins = win_findbuf(bufnr('ipython.EXE'))
+"    "echo wins
+"    call win_gotoid(wins[0])
+"    norm i
+"    norm <c-l>
+"endfunction
+
 augroup PythonRepl
     autocmd!
     " code snippet
-    autocmd Filetype python inoremap <buffer> ;f ###<cr>
+    autocmd Filetype python inoremap <buffer> ;f ###<CR><Esc>
     autocmd Filetype python inoremap <buffer> ;cb .to_clipboard()
     autocmd Filetype python inoremap <buffer> ;ct .copy(True)
     autocmd Filetype python inoremap <buffer> ;it inplace=True
@@ -85,8 +95,12 @@ augroup PythonRepl
     autocmd Filetype python inoremap <buffer> ;db __import__("IPython").core.debugger.set_trace()
     " REPL actions
     "autocmd Filetype python nmap <buffer> <localleader><localleader> :call SendCell()<cr><cr>
+    " TODO to activate terminal and jump back using 
+    " local current_window = vim.api.nvim_get_current_win() -- save current window
+    " vim.api.nvim_set_current_win(current_window)
+    autocmd Filetype python nnoremap <buffer> <localleader>l <c-w><c-l>i<c-l><Cmd>wincmd h<CR>
     autocmd Filetype python nnoremap <buffer> <localleader>v <cmd>call SelectVisual()<cr>
-    autocmd Filetype python nnoremap <buffer> <localleader>dc <cmd>call DebugCell()<cr>
+    autocmd Filetype python nnoremap <buffer> <localleader>db <cmd>call DebugCell()<cr>
     autocmd Filetype python nnoremap <buffer> <localleader>dd :<cmd>call DebugDelete()<cr>:'<,'>g/core.debugger.set_trace/d<cr>
 augroup END
 
