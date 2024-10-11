@@ -3,12 +3,6 @@ local cmp = require("cmp")
 local luasnip = require("luasnip")
 
 cmp.setup({
-  opts = {
-    performance = {
-      debounce = 20, -- default is 60ms
-      throttle = 10, -- default is 30ms
-    },
-  },
   snippet = {
     expand = function(args)
       require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
@@ -66,6 +60,18 @@ cmp.setup({
   }, {
     { name = "buffer" },
   }),
+  matching = {
+    disallow_fuzzy_matching = true,
+    disallow_fullfuzzy_matching = true,
+    disallow_partial_fuzzy_matching = true,
+    disallow_partial_matching = false,
+    disallow_prefix_unmatching = true,
+    disallow_symbol_nonprefix_matching = false,
+  },
+  performance = {
+    debounce = 0, -- default is 60ms
+    throttle = 0, -- default is 30ms
+  },
 })
 
 -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
@@ -143,7 +149,7 @@ local custom_attach = function(client, bufnr)
   -- vim.keymap.set('n','<leader>=', '<cmd>lua vim.lsp.buf.formatting()<CR>')
   -- vim.keymap.set('n','<leader>ai','<cmd>lua vim.lsp.buf.incoming_calls()<CR>')
   -- if client.server_capabilities.documentSymbolProvider then
-    navic.attach(client, bufnr)
+  navic.attach(client, bufnr)
   -- end
 end
 
@@ -194,4 +200,3 @@ vim.diagnostic.config({
     end,
   },
 })
-
