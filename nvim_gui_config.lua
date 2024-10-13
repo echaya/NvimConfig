@@ -26,9 +26,7 @@ require("kanagawa").setup({
 -- Eviline config for lualine
 local lualine = require("lualine")
 local navic = require("nvim-navic")
-navic.setup({
-  separator = "  ",
-})
+navic.setup({ separator = "  " })
 
 -- Color table for highlights
 -- stylua: ignore
@@ -379,10 +377,12 @@ vim.api.nvim_create_autocmd("RecordingEnter", {
     _MACRO_RECORDING_STATUS = true
     vim.notify(msg, vim.log.levels.INFO, {
       title = "Macro Recording",
-      keep = function() return _MACRO_RECORDING_STATUS end,
+      keep = function()
+        return _MACRO_RECORDING_STATUS
+      end,
     })
   end,
-  group = vim.api.nvim_create_augroup("NoiceMacroNotfication", {clear = true})
+  group = vim.api.nvim_create_augroup("NoiceMacroNotfication", { clear = true }),
 })
 
 vim.api.nvim_create_autocmd("RecordingLeave", {
@@ -393,5 +393,26 @@ vim.api.nvim_create_autocmd("RecordingLeave", {
       timeout = 2000,
     })
   end,
-  group = vim.api.nvim_create_augroup("NoiceMacroNotficationDismiss", {clear = true})
+  group = vim.api.nvim_create_augroup("NoiceMacroNotficationDismiss", { clear = true }),
 })
+
+
+require("mini.indentscope").setup({
+  draw = {
+    delay = 200,
+  },
+})
+local disable_indentscope = function(data)
+  vim.b[data.buf].miniindentscope_disable = true
+end
+vim.api.nvim_create_autocmd(
+  "TermOpen",
+  { desc = "Disable 'mini.indentscope' in terminal buffer", callback = disable_indentscope }
+)
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "markdown", "vimwiki" },
+  callback = disable_indentscope,
+  desc = "Disable 'mini.indentscope' in markdown buffer",
+})
+
