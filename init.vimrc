@@ -1,4 +1,4 @@
-"NOTE one need to create a file under nvim working directory and source this file. 
+"NOTE one need to create a file under nvim working directory and source this file.
 "To find the working directory is exactly, use the command :echo stdpath('config') inside Neovim.
 
 " for windows it is usually c:\Users\abc\AppData\Local\nvim\

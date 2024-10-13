@@ -95,7 +95,7 @@ augroup PythonRepl
     autocmd Filetype python inoremap <buffer> ;db __import__("IPython").core.debugger.set_trace()
     " REPL actions
     "autocmd Filetype python nmap <buffer> <localleader><localleader> :call SendCell()<cr><cr>
-    " TODO to activate terminal and jump back using 
+    " TODO to activate terminal and jump back using
     " local current_window = vim.api.nvim_get_current_win() -- save current window
     " vim.api.nvim_set_current_win(current_window)
     autocmd Filetype python nnoremap <buffer> <localleader>l <c-w><c-l>i<c-l><Cmd>wincmd h<CR>
