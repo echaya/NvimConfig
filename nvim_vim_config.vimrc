@@ -114,6 +114,10 @@ let g:auto_save_silent = 1
 :command! LV source $MYVIMRC
 :command! EV e $MYVIMRC
 
+" jump to the next / previous quickfix item
+nnoremap [q <cmd>cp<CR>
+nnoremap ]q <cmd>cn<CR>
+
 " auto root change by vim-roooter
 let g:rooter_targets = '/,*'
 let g:rooter_buftypes = ['']

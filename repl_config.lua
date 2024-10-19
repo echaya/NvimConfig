@@ -77,7 +77,7 @@ vim.api.nvim_create_autocmd("FileType", {
       iron.send_until_cursor()
       vim.api.nvim_input("<ESC>") -- to escape from visual mode
     end, { buffer = args.buf, desc = "repl_send_until" })
-    vim.keymap.set({ "n", "v" }, "<localleader>q", function()
+    vim.keymap.set({ "n", "v" }, "<localleader>qq", function()
       iron.close_repl()
       iron.send(nil, string.char(13))
     end, { buffer = args.buf, desc = "repl_exit" })

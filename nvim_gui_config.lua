@@ -33,6 +33,7 @@ navic.setup({ separator = "  " })
 local colors = {
   bg       = '#16161D',
   fg       = '#727169',
+  -- fg       = '#DCD7BA',
   yellow   = '#DCA561',
   cyan     = '#6A9589',
   darkblue = '#252535',
@@ -261,7 +262,7 @@ ins_right({
     return msg
   end,
   -- icon = " ",
-  color = { fg = colors.fg, gui = "italic" },
+  color = { fg = '#DCD7BA', gui = "italic" },
 })
 
 ins_right({
@@ -396,7 +397,6 @@ vim.api.nvim_create_autocmd("RecordingLeave", {
   group = vim.api.nvim_create_augroup("NoiceMacroNotficationDismiss", { clear = true }),
 })
 
-
 require("mini.indentscope").setup({
   draw = {
     delay = 200,
@@ -415,4 +415,3 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = disable_indentscope,
   desc = "Disable 'mini.indentscope' in markdown buffer",
 })
-
