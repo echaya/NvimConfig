@@ -5,7 +5,7 @@ local vimgrep_arguments = { unpack(telescopeConfig.values.vimgrep_arguments) }
 local actions = require("telescope.actions")
 
 vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "find_file" })
-vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "live_grep" })
+vim.keymap.set("n", "<leader>gg", builtin.live_grep, { desc = "live_grep" })
 -- vim.keymap.set("n", "<leader><leader>", "", { desc = "find_buffers" })
 vim.keymap.set("n", "<leader><leader>", "<cmd>Telescope frecency<cr>", { desc = "frencency" })
 vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "find_keymaps" })
