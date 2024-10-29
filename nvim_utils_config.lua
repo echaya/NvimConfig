@@ -6,7 +6,8 @@ local actions = require("telescope.actions")
 
 vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "find_file" })
 vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "live_grep" })
-vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "find_buffers" })
+-- vim.keymap.set("n", "<leader><leader>", "", { desc = "find_buffers" })
+vim.keymap.set("n", "<leader><leader>", "<cmd>Telescope frecency<cr>", { desc = "frencency" })
 vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "find_keymaps" })
 -- vim.keymap.set("n", "<leader>fg", builtin.git_commits, { desc = "git_commits" })
 -- vim.keymap.set("n", "<leader>ss", builtin.spell_suggest, { desc = "spell_suggest" })
@@ -83,6 +84,7 @@ telescope.setup({
 -- -- load_extension, somewhere after setup function:
 telescope.load_extension("fzf")
 telescope.load_extension("undo")
+telescope.load_extension("frecency")
 
 require("mini.files").setup({
 

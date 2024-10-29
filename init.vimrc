@@ -66,6 +66,7 @@ if !exists('g:vscode')
         Plug 'echasnovski/mini.bufremove'
         Plug 'echasnovski/mini.indentscope'
         Plug 'echasnovski/mini.trailspace'
+        Plug 'nvim-telescope/telescope-frecency.nvim'
 
         "lsp and snippets
         Plug 'neovim/nvim-lspconfig'
