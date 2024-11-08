@@ -280,7 +280,7 @@ require("session_manager").setup({
   autosave_only_in_session = false, -- Always autosaves session. If true, only autosaves after a session is active.
   max_path_length = 60, -- Shorten the display path if length exceeds this threshold. Use 0 if don't want to shorten the path at all.
 })
-vim.keymap.set("n", "<leader>fs", "<cmd>SessionManager<cr>", { desc = "find_session" })
+vim.keymap.set("n", "<leader>fs", "<cmd>SessionManager load_session<cr>", { desc = "find_session" })
 -- Auto save session
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   callback = function()
