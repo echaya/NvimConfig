@@ -112,12 +112,8 @@ local lsp = require("lspconfig")
 local navic = require("nvim-navic")
 
 local custom_attach = function(client, bufnr)
-  -- vim.keymap.set('n','gD','<cmd>lua vim.lsp.buf.declaration()<CR>')
   -- vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
   -- vim.keymap.set("n", "gD", ":vsplit | lua vim.lsp.buf.definition()<CR>")
-  vim.keymap.set("n", "gd", function()
-    require("telescope.builtin").lsp_definitions({ reuse_win = true })
-  end, { desc = "lsp_definition" })
   vim.keymap.set("n", "gD", function()
     vim.cmd("vsplit")
     require("telescope.builtin").lsp_definitions({ reuse_win = true })
@@ -126,23 +122,15 @@ local custom_attach = function(client, bufnr)
   -- vim.keymap.set('n','gr','<cmd>lua vim.lsp.buf.references()<CR>')
   vim.keymap.set(
     "n",
-    "gr",
+    "gR",
     require("telescope.builtin").lsp_references,
     { desc = "lsp_references" }
   )
-  -- vim.keymap.set('n','gs','<cmd>lua vim.lsp.buf.signature_help()<CR>')
-  -- vim.keymap.set('n','gi','<cmd>lua vim.lsp.buf.implementation()<CR>')
-  -- vim.keymap.set('n','gt','<cmd>lua vim.lsp.buf.type_definition()<CR>')
-  -- vim.keymap.set('n','<leader>gw','<cmd>lua vim.lsp.buf.document_symbol()<CR>')
-  -- vim.keymap.set('n','<leader>gW','<cmd>lua vim.lsp.buf.workspace_symbol()<CR>')
-  -- vim.keymap.set('n','<leader>af','<cmd>lua vim.lsp.buf.code_action()<CR>')
   vim.keymap.set("n", "<F2>", "<cmd>lua vim.lsp.buf.rename()<CR>")
   vim.keymap.set("n", "<F3>", "<cmd>lua vim.diagnostic.open_float()<CR>")
+  -- ]d and [d goto next and prev diagnostic
   vim.keymap.set("n", "]D", "<cmd>lua vim.diagnostic.goto_next({severity='error'})<CR>")
   vim.keymap.set("n", "[D", "<cmd>lua vim.diagnostic.goto_prev({severity='error'})<CR>")
-  -- vim.keymap.set('n','<leader>=', '<cmd>lua vim.lsp.buf.formatting()<CR>')
-  -- vim.keymap.set('n','<leader>ai','<cmd>lua vim.lsp.buf.incoming_calls()<CR>')
-  -- if client.server_capabilities.documentSymbolProvider then
   navic.attach(client, bufnr)
   -- end
 end

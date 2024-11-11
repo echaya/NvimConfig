@@ -1,6 +1,6 @@
 "log config
-set autoread 
-au CursorHold * checktime 
+set autoread
+au CursorHold * checktime
 call feedkeys("lh")
 
 " iwaylog.vim
@@ -9,7 +9,7 @@ call feedkeys("lh")
 if exists("b:current_syntax")
      finish
 endif
-"we use solarized scheme as a base. It has a very good contrast 
+"we use solarized scheme as a base. It has a very good contrast
 "for log files
 "We want to match lines with keywords like FATAL or ERROR
 syn match log_error 'c.*<(FATAL|ERROR|ERRORS|FAIL|FAILED|FAILURE|CRITICAL).*'
