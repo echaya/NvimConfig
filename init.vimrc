@@ -142,7 +142,11 @@ endif
 try
     colorscheme kanagawa
 catch
-    colorscheme onedark
+    try
+        colorscheme onedark
+    catch
+        colorscheme  habamax
+    endtry
 endtry
 
 if has('termguicolors')
