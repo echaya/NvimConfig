@@ -147,6 +147,56 @@ local custom_attach = function(client, bufnr)
   -- end
 end
 
+-- Lua configuration
+local glance = require("glance")
+local actions = glance.actions
+
+glance.setup({
+  height = 25, -- Height of the window
+  zindex = 45,
+
+  border = {
+    enable = true, -- Show window borders. Only horizontal borders allowed
+    top_char = "─",
+    bottom_char = "─",
+  },
+
+  mappings = {
+    list = {
+      ["j"] = actions.next, -- Bring the cursor to the next item in the list
+      ["k"] = actions.previous, -- Bring the cursor to the previous item in the list
+      ["<Tab>"] = actions.next_location, -- Bring the cursor to the next location skipping groups in the list
+      ["<S-Tab>"] = actions.previous_location, -- Bring the cursor to the previous location skipping groups in the list
+      ["<C-u>"] = actions.preview_scroll_win(5),
+      ["<C-d>"] = actions.preview_scroll_win(-5),
+      ["v"] = actions.jump_vsplit,
+      ["s"] = actions.jump_split,
+      ["t"] = actions.jump_tab,
+      ["<CR>"] = actions.jump,
+      ["o"] = actions.jump,
+      ["l"] = actions.open_fold,
+      ["h"] = actions.close_fold,
+      ["<a-h>"] = actions.enter_win("preview"), -- Focus preview window
+      ["q"] = actions.close,
+      ["Q"] = actions.close,
+      ["<Esc>"] = actions.close,
+      ["<C-q>"] = actions.quickfix,
+      -- ['<Esc>'] = false -- disable a mapping
+    },
+    preview = {
+      ["q"] = actions.close,
+      ["Q"] = actions.close,
+      ["<Esc>"] = actions.close,
+      ["<Tab>"] = actions.next_location,
+      ["<S-Tab>"] = actions.previous_location,
+      ["<a-l>"] = actions.enter_win("list"), -- Focus list window
+    },
+  },
+})
+-- Lua
+vim.keymap.set("n", "gd", "<CMD>Glance definitions<CR>")
+vim.keymap.set("n", "gr", "<CMD>Glance references<CR>")
+
 lsp.basedpyright.setup({
   on_attach = custom_attach,
   capabilities = capabilities,
@@ -194,4 +244,3 @@ vim.diagnostic.config({
     end,
   },
 })
-

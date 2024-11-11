@@ -81,6 +81,7 @@ if !exists('g:vscode')
         "Plug 'rafamadriz/friendly-snippets'
         Plug 'echaya/friendly-snippets'
         Plug 'SmiteshP/nvim-navic'
+        Plug 'dnlhc/glance.nvim'
 
         "programming tools
         Plug 'Vigemus/iron.nvim'
