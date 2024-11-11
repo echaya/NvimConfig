@@ -6,8 +6,7 @@ local actions = require("telescope.actions")
 
 vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "find_file" })
 vim.keymap.set("n", "<leader>gg", builtin.live_grep, { desc = "live_grep" })
--- vim.keymap.set("n", "<leader><leader>", "", { desc = "find_buffers" })
-vim.keymap.set("n", "<leader><leader>", "<cmd>Telescope frecency<cr>", { desc = "frencency" })
+vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "find_buffers" })
 vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "find_keymaps" })
 -- vim.keymap.set("n", "<leader>fg", builtin.git_commits, { desc = "git_commits" })
 -- vim.keymap.set("n", "<leader>ss", builtin.spell_suggest, { desc = "spell_suggest" })
@@ -17,7 +16,7 @@ vim.keymap.set("n", "<leader>`", builtin.marks, {})
 vim.keymap.set("n", "<leader>fo", builtin.oldfiles, { desc = "old_files" })
 vim.keymap.set("n", "<leader>fw", builtin.grep_string, { desc = "grep_string" })
 vim.keymap.set("n", "<leader>fd", builtin.diagnostics, { desc = "lsp_diagnostics" })
-vim.keymap.set("n", "<leader>fu", "<cmd>Telescope undo<cr>", { desc = "lsp_diagnostics" })
+vim.keymap.set("n", "<leader>fu", "<cmd>Telescope undo<cr>", { desc = "undo_history" })
 
 local select_one_or_multi = function(prompt_bufnr)
   local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
@@ -43,8 +42,10 @@ telescope.setup({
       i = {
         ["<C-j>"] = actions.cycle_history_next,
         ["<C-k>"] = actions.cycle_history_prev,
+        ["<C-x>"] = false,
+        ["<C-s>"] = actions.select_horizontal,
         ["<CR>"] = select_one_or_multi,
-        ["<C-w>"] = actions.send_selected_to_qflist + actions.open_qflist,
+        ["<C-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
         ["<del>"] = actions.delete_buffer + actions.move_to_top,
         ["<esc>"] = actions.close,
       },
@@ -84,7 +85,6 @@ telescope.setup({
 -- -- load_extension, somewhere after setup function:
 telescope.load_extension("fzf")
 telescope.load_extension("undo")
-telescope.load_extension("frecency")
 
 require("mini.files").setup({
 
