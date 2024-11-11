@@ -117,6 +117,7 @@ let g:auto_save_silent = 1
 " jump to the next / previous quickfix item
 nnoremap [q <cmd>cp<CR>
 nnoremap ]q <cmd>cn<CR>
+:command CC cclose
 
 " auto root change by vim-roooter
 let g:rooter_targets = '/,*'
