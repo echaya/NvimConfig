@@ -195,8 +195,8 @@ lsp.basedpyright.setup({
         diagnosticMode = "openFilesOnly",
         typeCheckingMode = "basic",
         diagnosticSeverityOverrides = {
-          reportAbstractUsage = "information", -- or anything
-          reportUnusedVariable = "information", -- or anything
+          reportAbstractUsage = "information",
+          reportUnusedVariable = "information",
           reportUnusedFunction = "information",
           reportDuplicateImport = "warning",
           reportAttributeAccessIssue = "none",
