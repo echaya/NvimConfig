@@ -31,4 +31,6 @@ map ZZ removeTab
 map ZX restoreTab
 map <c-s-j> previousTab
 map <c-s-k> nextTab
+map <c-d> scrollPageDown
+map <c-u> scrollPageUp
 ```
