@@ -301,7 +301,7 @@ end
 
 vim.keymap.set(
   { "n", "t" },
-  "<a-g>",
+  "<a-.>",
   "<cmd>lua _lazygit_toggle()<CR>",
   { noremap = true, silent = true, desc = "lazygit" }
 )
