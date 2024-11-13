@@ -42,6 +42,7 @@ if !exists('g:vscode')
     Plug 'dhruvasagar/vim-table-mode',{'on':'TableModeToggle'}
     Plug 'ferrine/md-img-paste.vim', {'for':['markdown','vimwiki']}
     Plug 'MTDL9/vim-log-highlighting', {'for':['log']}
+    Plug 'tpope/vim-fugitive'
 
     if has('nvim')
         " ui, display
