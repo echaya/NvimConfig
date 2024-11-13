@@ -136,6 +136,10 @@ nnoremap <localleader>tt <cmd>TableModeToggle<CR>
 nnoremap <localleader>t= <cmd>TableModeRealign<CR>
 let g:table_mode_syntax = 0
 
+"vim-fugitive
+:command GC Git commit
+:command GP Git! push
+
 " add comment string for bat, autohotkey files
 "use `:lua print(vim.bo.filetype)` to check file type of current window
 augroup MyGroup | au!
