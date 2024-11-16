@@ -325,3 +325,39 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 require("mini.trailspace").setup()
+
+require("snacks").setup({
+  bigfile = { enabled = true },
+  notifier = {
+    enabled = true,
+    timeout = 3000,
+  },
+  quickfile = { enabled = true },
+  statuscolumn = { enabled = true },
+  words = { enabled = true },
+  styles = {
+    notification = {
+      wo = { wrap = true }, -- Wrap notifications
+    },
+  },
+})
+
+vim.keymap.set("n", "<leader>un", function()
+  Snacks.notifier.hide()
+end, { desc = "Dismiss All Notifications" })
+
+vim.keymap.set("n", "<leader>bd", function()
+  Snacks.bufdelete()
+end, { desc = "Delete Buffer" })
+
+vim.keymap.set("n", "<leader>gB", function()
+  Snacks.gitbrowse()
+end, { desc = "Git Browse" })
+
+vim.keymap.set("n", "<leader>gf", function()
+  Snacks.lazygit.log_file()
+end, { desc = "Lazygit Current File History" })
+
+vim.keymap.set("n", "<leader>gl", function()
+  Snacks.lazygit.log()
+end, { desc = "Lazygit Log (cwd)" })

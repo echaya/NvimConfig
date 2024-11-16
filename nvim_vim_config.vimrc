@@ -168,7 +168,11 @@ function! PowerClose(strong)
         if buffer_count <= 1
             let l:cmd = "q"
         else
-            let l:cmd = "bd"
+            if has("nvim")
+                let l:cmd = "lua Snacks.bufdelete()"
+            else
+                let l:cmd = "bd"
+            endif
         endif
     endif
 

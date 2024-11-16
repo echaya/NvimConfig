@@ -52,6 +52,7 @@ if !exists('g:vscode')
         Plug 'lewis6991/satellite.nvim'
         Plug 'MunifTanjim/nui.nvim'
         Plug 'rcarriga/nvim-notify'
+        Plug 'folke/snacks.nvim'
         Plug 'folke/noice.nvim'
 
         "utility plugins
