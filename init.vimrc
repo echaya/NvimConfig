@@ -64,7 +64,6 @@ if !exists('g:vscode')
         Plug 'Shatur/neovim-session-manager'
         Plug 'folke/which-key.nvim'
         Plug 'stevearc/dressing.nvim'
-        Plug 'echasnovski/mini.bufremove'
         Plug 'echasnovski/mini.indentscope'
         Plug 'echasnovski/mini.trailspace'
 

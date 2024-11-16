@@ -294,7 +294,6 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   end,
 })
 
-require("mini.bufremove").setup()
 
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "markdown", "vimwiki" },
