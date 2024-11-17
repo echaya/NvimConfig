@@ -126,6 +126,7 @@ let g:rooter_patterns = ['.git']
 :command V vsplit
 :command S split
 :command RemoveTrailingSpace %s/\s\+$//e
+:command CopyLinuxTreesitter !source ~/.config/nvim/config/copy_linux_treesitter.sh
 
 "table-mode
 nnoremap <localleader>tt <cmd>TableModeToggle<CR>
