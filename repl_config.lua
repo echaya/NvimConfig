@@ -54,18 +54,20 @@ vim.api.nvim_create_autocmd("FileType", {
 
     vim.keymap.set("n", "<localleader><cr>", send_cr, { buffer = args.buf, desc = "repl_cr" })
     vim.keymap.set("n", "<C-CR>", send_cr, { buffer = args.buf, desc = "repl_cr" })
-    vim.keymap.set(
-      "n",
-      "<localleader><localleader>",
-      send_magic_paste,
-      { buffer = args.buf, desc = "repl_%paste" }
-    )
-    vim.keymap.set("n", "<S-CR>", send_magic_paste, { buffer = args.buf, desc = "repl_%paste" })
-    vim.keymap.set("n", "<localleader>]", function()
-      vim.cmd("call SelectVisual()")
-      iron.visual_send()
-      vim.cmd("norm! j")
-    end, { buffer = args.buf, desc = "repl_send_cell" })
+    if vim.fn.has("linux") == 1 then
+      vim.keymap.set("n", "<S-CR>", function()
+        vim.cmd("call SelectVisual()")
+        iron.visual_send()
+        vim.cmd("norm! j")
+      end, { buffer = args.buf, desc = "repl_send_cell" })
+    else
+      vim.keymap.set(
+        "n",
+        "<S-CR>",
+        send_magic_paste,
+        { buffer = args.buf, desc = "repl_send_cell" }
+      )
+    end
     vim.keymap.set("n", "<localleader>y", function()
       vim.cmd("norm! yiwo")
       vim.cmd("norm! pA.to_clipboard()")
