@@ -294,7 +294,6 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   end,
 })
 
-
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "markdown", "vimwiki" },
   callback = function(args)
@@ -360,3 +359,25 @@ end, { desc = "Lazygit Current File History" })
 vim.keymap.set("n", "<leader>gl", function()
   Snacks.lazygit.log()
 end, { desc = "Lazygit Log (cwd)" })
+
+if vim.fn.has("linux") == 1 then
+
+  local function paste()
+    return {
+      vim.fn.split(vim.fn.getreg(""), "\n"),
+      vim.fn.getregtype(""),
+    }
+  end
+
+  vim.g.clipboard = {
+    name = "OSC 52",
+    copy = {
+      ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+      ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+    },
+    paste = {
+      ["+"] = paste,
+      ["*"] = paste,
+    },
+  }
+end
