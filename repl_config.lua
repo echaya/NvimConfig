@@ -232,6 +232,7 @@ require("nvim-treesitter.configs").setup({
     "query",
     "vim",
     "vimdoc",
+    "bash",
   },
   sync_install = false,
   auto_install = false,
