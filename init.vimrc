@@ -46,7 +46,6 @@ if !exists('g:vscode')
 
     if has('nvim')
         " ui, display
-        Plug 'olimorris/onedarkpro.nvim'
         Plug 'rebelot/kanagawa.nvim'
         Plug 'nvim-lualine/lualine.nvim'
         Plug 'lewis6991/satellite.nvim'
