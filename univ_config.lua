@@ -80,7 +80,7 @@ require("mini.ai").setup({
         -- bbb_cc*cc p/dmmp/df_mom_v2.pickle"
         { "()_()[%w]+()()%f[%W]" },
         -- bbb_cc*c at the end of the line
--- df_univ = pd.read_pickle("./data/df_mom.pickle")
+        -- df_univ = pd.read_pickle("./data/df_mom.pickle")
         { "()_()[%w]+()()$" },
       },
     },
@@ -97,16 +97,16 @@ require("mini.surround").setup({
     replace = "cs",
     update_n_lines = "",
 
-      -- Add this only if you don't want to use extended mappings
-      suffix_last = '',
-      suffix_next = '',
-    },
-    search_method = 'cover_or_next',
-  })
+    -- Add this only if you don't want to use extended mappings
+    suffix_last = "",
+    suffix_next = "",
+  },
+  search_method = "cover_or_next",
+})
 
-  -- Remap adding surrounding to Visual mode selection
-  vim.keymap.del('x', 'ys')
-  vim.keymap.set('x', 'S', [[:<C-u>lua MiniSurround.add('visual')<CR>]], { silent = true })
+-- Remap adding surrounding to Visual mode selection
+vim.keymap.del("x", "ys")
+vim.keymap.set("x", "S", [[:<C-u>lua MiniSurround.add('visual')<CR>]], { silent = true })
 
-  -- Make special mapping for "add surrounding for line"
-  vim.keymap.set('n', 'yss', 'ys_', { remap = true })
+-- Make special mapping for "add surrounding for line"
+vim.keymap.set("n", "yss", "ys_", { remap = true })
