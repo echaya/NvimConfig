@@ -26,7 +26,6 @@ if has ('nvim')
     Plug 'ggandor/leap.nvim'
     Plug 'max397574/better-escape.nvim'
     Plug 'monaqa/dial.nvim'
-    Plug 'echasnovski/mini.ai'
 endif
 
 if !exists('g:vscode')
@@ -56,7 +55,6 @@ if !exists('g:vscode')
 
         "utility plugins
         Plug 'nvim-tree/nvim-web-devicons'
-        Plug 'echasnovski/mini.files'
         Plug 'nvim-telescope/telescope.nvim'
         Plug 'debugloop/telescope-undo.nvim'
         Plug 'chentoast/marks.nvim'
@@ -64,8 +62,6 @@ if !exists('g:vscode')
         Plug 'Shatur/neovim-session-manager'
         Plug 'folke/which-key.nvim'
         Plug 'stevearc/dressing.nvim'
-        Plug 'echasnovski/mini.indentscope'
-        Plug 'echasnovski/mini.trailspace'
 
         "lsp and snippets
         Plug 'neovim/nvim-lspconfig'
@@ -87,7 +83,6 @@ if !exists('g:vscode')
         Plug 'stevearc/conform.nvim'
         Plug 'lewis6991/gitsigns.nvim'
         Plug 'windwp/nvim-autopairs'
-        Plug 'echasnovski/mini.hipatterns'
         Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
         Plug 'sindrets/diffview.nvim'
         Plug 'akinsho/toggleterm.nvim'

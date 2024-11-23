@@ -332,7 +332,7 @@ require("snacks").setup({
     timeout = 3000,
   },
   quickfile = { enabled = true },
-  statuscolumn = { enabled = true },
+  statuscolumn = { enabled = true, refresh = 50 },
   words = { enabled = true },
   styles = {
     notification = {
