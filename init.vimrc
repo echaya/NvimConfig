@@ -17,7 +17,7 @@ Plug 'dstein64/vim-startuptime'
 Plug 'unblevable/quick-scope'
 Plug 'tpope/vim-repeat'
 Plug 'svermeulen/vim-cutlass'
-Plug 'machakann/vim-sandwich'
+Plug 'echasnovski/mini.nvim'
 
 
 "neovim universal plugins
@@ -108,6 +108,7 @@ if !exists('g:vscode')
         Plug 'kana/vim-textobj-indent' "ai,ii, aI, iI
         Plug 'bps/vim-textobj-python' "ac,ic,af,if
         Plug 'mbbill/undotree'
+        Plug 'machakann/vim-sandwich'
     endif
 
 endif

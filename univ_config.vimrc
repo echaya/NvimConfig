@@ -90,4 +90,3 @@ nnoremap X D
 
 " quick-scope specs
 let g:qs_lazy_highlight = 0
-runtime macros/sandwich/keymap/surround.vim
