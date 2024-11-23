@@ -54,7 +54,7 @@ if !exists('g:vscode')
         Plug 'folke/noice.nvim'
 
         "utility plugins
-        Plug 'nvim-tree/nvim-web-devicons'
+        "Plug 'nvim-tree/nvim-web-devicons'
         Plug 'nvim-telescope/telescope.nvim'
         Plug 'debugloop/telescope-undo.nvim'
         Plug 'chentoast/marks.nvim'
