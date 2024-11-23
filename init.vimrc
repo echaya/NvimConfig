@@ -90,7 +90,6 @@ if !exists('g:vscode')
         Plug 'windwp/nvim-autopairs'
         Plug 'echasnovski/mini.hipatterns'
         Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-        Plug 'RRethy/vim-illuminate'
         Plug 'sindrets/diffview.nvim'
         Plug 'akinsho/toggleterm.nvim'
         Plug 'MeanderingProgrammer/render-markdown.nvim'
@@ -152,10 +151,6 @@ endtry
 if has('termguicolors')
     set termguicolors
 endif
-
-highlight IlluminatedWordText guibg=#505664 gui=NONE
-highlight IlluminatedWordRead guibg=#505664 gui=NONE
-highlight IlluminatedWordWrite guibg=#505664 gui=NONE
 
 highlight QuickScopePrimary guifg=#afff5f gui=underline ctermfg=155 cterm=underline
 highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline

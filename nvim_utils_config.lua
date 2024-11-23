@@ -333,6 +333,7 @@ require("snacks").setup({
   },
   quickfile = { enabled = true },
   statuscolumn = { enabled = true },
+  words = { enabled = true },
   styles = {
     notification = {
       wo = { wrap = true }, -- Wrap notifications
@@ -361,7 +362,6 @@ vim.keymap.set("n", "<leader>gl", function()
 end, { desc = "Lazygit Log (cwd)" })
 
 if vim.fn.has("linux") == 1 then
-
   local function paste()
     return {
       vim.fn.split(vim.fn.getreg(""), "\n"),

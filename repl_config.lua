@@ -253,31 +253,6 @@ require("nvim-treesitter.configs").setup({
 })
 vim.treesitter.language.register("markdown", "vimwiki")
 
--- default configuration
-require("illuminate").configure({
-  providers = {
-    "lsp",
-    "treesitter",
-    -- "regex",
-  },
-  delay = 200,
-  filetype_overrides = {},
-  filetypes_denylist = {
-    "dirbuf",
-    "dirvish",
-    "fugitive",
-    "minifiles",
-  },
-  filetypes_allowlist = {},
-  modes_denylist = { "i", "ic", "ix" },
-  under_cursor = true,
-  large_file_cutoff = nil,
-  large_file_overrides = nil,
-  min_count_to_highlight = 2,
-  should_enable = function(bufnr)
-    return true
-  end,
-})
 
 require("toggleterm").setup({
   size = function(term)
