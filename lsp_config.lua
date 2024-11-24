@@ -127,7 +127,7 @@ local custom_attach = function(client, bufnr)
   -- )
   vim.keymap.set("n", "gh", "<cmd>lua vim.lsp.buf.hover()<CR>")
   vim.keymap.set("n", "gd", "<CMD>Glance definitions<CR>")
-  vim.keymap.set("n", "gi", "<CMD>Glance references<CR>")
+  vim.keymap.set("n", "gr", "<CMD>Glance references<CR>")
   vim.keymap.set("n", "<F2>", "<cmd>lua vim.lsp.buf.rename()<CR>")
   vim.keymap.set("n", "gl", "<cmd>lua vim.diagnostic.open_float()<CR>")
   -- ]d and [d goto next and prev diagnostic
