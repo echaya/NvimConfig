@@ -110,3 +110,5 @@ vim.keymap.set("x", "S", [[:<C-u>lua MiniSurround.add('visual')<CR>]], { silent 
 
 -- Make special mapping for "add surrounding for line"
 vim.keymap.set("n", "yss", "ys_", { remap = true })
+require('mini.operators').setup()
+-- g= for evaluation, gr for replacement, gx for exchange, gm for multiplier , gs for sort
