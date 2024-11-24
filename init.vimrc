@@ -149,10 +149,6 @@ catch
     endtry
 endtry
 
-if has('termguicolors')
-    set termguicolors
-endif
-
 highlight QuickScopePrimary guifg=#afff5f gui=underline ctermfg=155 cterm=underline
 highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline
 
@@ -179,4 +175,3 @@ highlight link SatelliteMark Identifier
 
 highlight TermCursor guifg=#D27E99
 
-set guifont=Iosevka_NF:h11
