@@ -17,9 +17,6 @@ Plug 'dstein64/vim-startuptime'
 Plug 'unblevable/quick-scope'
 Plug 'tpope/vim-repeat'
 Plug 'svermeulen/vim-cutlass'
-Plug 'echasnovski/mini.ai'
-Plug 'echasnovski/mini.surround'
-Plug 'echasnovski/mini.operators'
 
 
 "neovim universal plugins
@@ -28,6 +25,9 @@ if has ('nvim')
     Plug 'ggandor/leap.nvim'
     Plug 'max397574/better-escape.nvim'
     Plug 'monaqa/dial.nvim'
+    Plug 'echasnovski/mini.ai'
+    Plug 'echasnovski/mini.surround'
+    Plug 'echasnovski/mini.operators'
 endif
 
 if !exists('g:vscode')
@@ -48,6 +48,7 @@ if !exists('g:vscode')
     if has('nvim')
         " ui, display
         Plug 'rebelot/kanagawa.nvim'
+        Plug 'echasnovski/mini.icons'
         Plug 'nvim-lualine/lualine.nvim'
         Plug 'lewis6991/satellite.nvim'
         Plug 'MunifTanjim/nui.nvim'
@@ -55,12 +56,10 @@ if !exists('g:vscode')
         Plug 'folke/snacks.nvim'
         Plug 'folke/noice.nvim'
         Plug 'echasnovski/mini.indentscope'
-        Plug 'echasnovski/mini.icons'
         Plug 'echasnovski/mini.trailspace'
         Plug 'echasnovski/mini.hipatterns'
 
         "utility plugins
-        "Plug 'nvim-tree/nvim-web-devicons'
         Plug 'nvim-telescope/telescope.nvim'
         Plug 'debugloop/telescope-undo.nvim'
         Plug 'chentoast/marks.nvim'
