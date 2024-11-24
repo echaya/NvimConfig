@@ -153,6 +153,22 @@ vim.api.nvim_create_autocmd("FileType", {
 
 local gitsigns = require("gitsigns")
 gitsigns.setup({
+  signs = {
+    add = { text = "" }, -- dashed / double line for unstaged
+    change = { text = "" },
+    delete = { text = "_" },
+    topdelete = { text = "'‾'" },
+    changedelete = { text = "󱓉" },
+    untracked = { text = "󰇝" },
+  },
+  signs_staged = {
+    add = { text = "┃" },
+    change = { text = "┃" },
+    delete = { text = "󱘹" },
+    topdelete = { text = "󱘹" },
+    changedelete = { text = "󰦒" },
+    untracked = { text = "┆" },
+  },
   on_attach = function(bufnr)
     local function map(mode, l, r, opts)
       opts = opts or {}
