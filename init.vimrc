@@ -17,7 +17,9 @@ Plug 'dstein64/vim-startuptime'
 Plug 'unblevable/quick-scope'
 Plug 'tpope/vim-repeat'
 Plug 'svermeulen/vim-cutlass'
-Plug 'echasnovski/mini.nvim'
+Plug 'echasnovski/mini.ai'
+Plug 'echasnovski/mini.surround'
+Plug 'echasnovski/mini.operators'
 
 
 "neovim universal plugins
@@ -52,6 +54,10 @@ if !exists('g:vscode')
         Plug 'rcarriga/nvim-notify'
         Plug 'folke/snacks.nvim'
         Plug 'folke/noice.nvim'
+        Plug 'echasnovski/mini.indentscope'
+        Plug 'echasnovski/mini.icons'
+        Plug 'echasnovski/mini.trailspace'
+        Plug 'echasnovski/mini.hipatterns'
 
         "utility plugins
         "Plug 'nvim-tree/nvim-web-devicons'
@@ -62,6 +68,7 @@ if !exists('g:vscode')
         Plug 'Shatur/neovim-session-manager'
         Plug 'folke/which-key.nvim'
         Plug 'stevearc/dressing.nvim'
+        Plug 'echasnovski/mini.files'
 
         "lsp and snippets
         Plug 'neovim/nvim-lspconfig'
