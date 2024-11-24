@@ -114,20 +114,22 @@ local navic = require("nvim-navic")
 local custom_attach = function(client, bufnr)
   -- vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
   -- vim.keymap.set("n", "gD", ":vsplit | lua vim.lsp.buf.definition()<CR>")
-  vim.keymap.set("n", "gD", function()
-    vim.cmd("vsplit")
-    require("telescope.builtin").lsp_definitions({ reuse_win = true })
-  end, { desc = "V_lsp_definition" })
-  vim.keymap.set("n", "gh", "<cmd>lua vim.lsp.buf.hover()<CR>")
+  -- vim.keymap.set("n", "gD", function()
+  --   vim.cmd("vsplit")
+  --   require("telescope.builtin").lsp_definitions({ reuse_win = true })
+  -- end, { desc = "V_lsp_definition" })
   -- vim.keymap.set('n','gr','<cmd>lua vim.lsp.buf.references()<CR>')
-  vim.keymap.set(
-    "n",
-    "gR",
-    require("telescope.builtin").lsp_references,
-    { desc = "lsp_references" }
-  )
+  -- vim.keymap.set(
+  --   "n",
+  --   "gR",
+  --   require("telescope.builtin").lsp_references,
+  --   { desc = "lsp_references" }
+  -- )
+  vim.keymap.set("n", "gh", "<cmd>lua vim.lsp.buf.hover()<CR>")
+  vim.keymap.set("n", "gd", "<CMD>Glance definitions<CR>")
+  vim.keymap.set("n", "gi", "<CMD>Glance references<CR>")
   vim.keymap.set("n", "<F2>", "<cmd>lua vim.lsp.buf.rename()<CR>")
-  vim.keymap.set("n", "<F3>", "<cmd>lua vim.diagnostic.open_float()<CR>")
+  vim.keymap.set("n", "gl", "<cmd>lua vim.diagnostic.open_float()<CR>")
   -- ]d and [d goto next and prev diagnostic
   vim.keymap.set("n", "]D", "<cmd>lua vim.diagnostic.goto_next({severity='error'})<CR>")
   vim.keymap.set("n", "[D", "<cmd>lua vim.diagnostic.goto_prev({severity='error'})<CR>")
@@ -181,9 +183,6 @@ glance.setup({
     },
   },
 })
--- Lua
-vim.keymap.set("n", "gd", "<CMD>Glance definitions<CR>")
-vim.keymap.set("n", "gr", "<CMD>Glance references<CR>")
 
 lsp.basedpyright.setup({
   on_attach = custom_attach,
