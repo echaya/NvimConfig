@@ -179,3 +179,5 @@ highlight link SatelliteCursor CursorLineNr
 highlight link SatelliteMark Identifier
 
 highlight TermCursor guifg=#D27E99
+
+set guifont=Iosevka_NF:h11
