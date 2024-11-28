@@ -44,6 +44,7 @@ if !exists('g:vscode')
     Plug 'ferrine/md-img-paste.vim', {'for':['markdown','vimwiki']}
     Plug 'MTDL9/vim-log-highlighting', {'for':['log']}
     Plug 'tpope/vim-fugitive'
+    Plug 'bluz71/vim-nightfly-colors', { 'as': 'nightfly' }
 
     if has('nvim')
         " ui, display
@@ -97,7 +98,6 @@ if !exists('g:vscode')
     else
         " vim specific alternative
         Plug 'mhinz/vim-startify' "butify the vim start up page
-        Plug 'joshdick/onedark.vim'
         Plug 'ap/vim-buftabline' "butify the tab line
         Plug 'mhinz/vim-signify'
         Plug 'itchyny/lightline.vim'
@@ -143,7 +143,7 @@ try
     colorscheme kanagawa
 catch
     try
-        colorscheme onedark
+        colorscheme nightfly
     catch
         colorscheme  habamax
     endtry
