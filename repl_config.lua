@@ -309,7 +309,6 @@ vim.keymap.set(
 vim.keymap.set("n", "<a-`>", function()
   return "<cmd>" .. vim.v.count .. "ToggleTerm<cr>"
 end, { expr = true, desc = "X ToggleTerm" })
-
 vim.keymap.set({ "n", "t" }, "<a-d>", function()
   for _, win in ipairs(vim.api.nvim_list_wins()) do
     local bufnr = vim.api.nvim_win_get_buf(win)
@@ -329,3 +328,4 @@ vim.keymap.set({ "n", "t" }, "<a-d>", function()
 end, { expr = true, desc = "ToggleTerm direction" })
 
 vim.keymap.set("n", "<leader>ft", "<Cmd>TermSelect<CR>", { desc = "find_terminal" })
+-- test 1
