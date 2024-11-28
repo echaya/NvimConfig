@@ -112,7 +112,7 @@ local lsp = require("lspconfig")
 local navic = require("nvim-navic")
 
 local custom_attach = function(client, bufnr)
-  -- vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
+  vim.keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.definition()<CR>")
   -- vim.keymap.set("n", "gD", ":vsplit | lua vim.lsp.buf.definition()<CR>")
   -- vim.keymap.set("n", "gD", function()
   --   vim.cmd("vsplit")
