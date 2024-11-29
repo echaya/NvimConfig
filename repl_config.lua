@@ -158,7 +158,7 @@ gitsigns.setup({
     change = { text = "" },
     delete = { text = "_" },
     topdelete = { text = "'‾'" },
-    changedelete = { text = "󱓉" },
+    changedelete = { text = "~" },
     untracked = { text = "󰇝" },
   },
   signs_staged = {
@@ -166,7 +166,7 @@ gitsigns.setup({
     change = { text = "┃" },
     delete = { text = "󱘹" },
     topdelete = { text = "󱘹" },
-    changedelete = { text = "󰦒" },
+    changedelete = { text = "󰜥" },
     untracked = { text = "┆" },
   },
   on_attach = function(bufnr)
