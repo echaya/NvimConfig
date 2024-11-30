@@ -50,11 +50,11 @@ if !exists('g:vscode')
         " ui, display
         Plug 'rebelot/kanagawa.nvim'
         Plug 'echasnovski/mini.icons'
+        Plug 'folke/snacks.nvim'
         Plug 'nvim-lualine/lualine.nvim'
         Plug 'lewis6991/satellite.nvim'
         Plug 'MunifTanjim/nui.nvim'
         Plug 'rcarriga/nvim-notify'
-        Plug 'folke/snacks.nvim'
         Plug 'folke/noice.nvim'
         Plug 'echasnovski/mini.indentscope'
         Plug 'echasnovski/mini.trailspace'
