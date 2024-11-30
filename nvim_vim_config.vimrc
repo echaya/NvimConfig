@@ -176,13 +176,9 @@ function! PowerClose(strong)
         let l:cmd = "q"
     else
         if buffer_count <= 1
-            let l:cmd = "q"
+            let l:cmd = "wq"
         else
-            if has("nvim")
-                let l:cmd = "lua Snacks.bufdelete()"
-            else
-                let l:cmd = "bd"
-            endif
+            let l:cmd = "bd"
         endif
     endif
 
@@ -203,11 +199,9 @@ function! PowerClose(strong)
 endfunction
 
 if has("nvim")
-    nnoremap <silent> ZZ <cmd>Noice dismiss<cr> <cmd>call PowerClose(0)<cr>
-    nnoremap <silent> ZQ <cmd>Noice dismiss<cr> <cmd>call PowerClose(1)<cr>
+    nnoremap <silent> ZZ <cmd>Noice dismiss<cr> <cmd>lua Snacks.bufdelete()<cr>
 else
     nnoremap <silent> ZZ <cmd>call PowerClose(0)<cr>
-    nnoremap <silent> ZQ <cmd>call PowerClose(1)<cr>
 endif
 
 function! ChooseBuffer(buffername)
