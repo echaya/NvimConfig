@@ -142,8 +142,8 @@ let g:rooter_patterns = ['.git']
 :command CopyLinuxTreesitter !source ~/.config/nvim/config/copy_linux_treesitter.sh
 
 "table-mode
-nnoremap <localleader>tt <cmd>TableModeToggle<CR>
-nnoremap <localleader>t= <cmd>TableModeRealign<CR>
+nnoremap <leader>tt <cmd>TableModeToggle<CR>
+nnoremap <leader>t= <cmd>TableModeRealign<CR>
 let g:table_mode_syntax = 0
 
 "vim-fugitive

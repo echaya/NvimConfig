@@ -72,7 +72,7 @@ telescope.setup({
       -- the default case_mode is "smart_case"
     },
     undo = {
-      use_delta = false,
+      use_delta = true,
       side_by_side = false,
       layout_strategy = "vertical",
       layout_config = {
@@ -325,6 +325,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 require("mini.trailspace").setup()
 
+local snacks = require("snacks")
 require("snacks").setup({
   bigfile = { enabled = true },
   notifier = {
@@ -340,6 +341,12 @@ require("snacks").setup({
     },
   },
 })
+
+snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>ts")
+snacks.toggle
+  .option("background", { off = "light", on = "dark", name = "Dark Background" })
+  :map("<leader>tb")
+snacks.toggle.inlay_hints():map("<leader>th")
 
 vim.keymap.set("n", "<leader>un", function()
   Snacks.notifier.hide()
