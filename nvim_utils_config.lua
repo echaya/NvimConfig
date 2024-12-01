@@ -364,6 +364,14 @@ vim.keymap.set({ "n", "t" }, "<a-`>", function()
   Snacks.terminal()
 end, { desc = "Toggle terminal" })
 
+vim.keymap.set({ "n" }, "<leader>.", function()
+  Snacks.scratch()
+end, { desc = "Toggle Scratch Buffer" })
+
+vim.keymap.set({ "n" }, "<leader>fs", function()
+  Snacks.scratch.select()
+end, { desc = "Find Scratch" })
+
 if vim.fn.has("linux") == 1 then
   local function paste()
     return {
