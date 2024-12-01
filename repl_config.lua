@@ -1,5 +1,5 @@
 local iron = require("iron.core")
-
+local view = require("iron.view")
 iron.setup({
   config = {
     -- Scope of the repl
@@ -15,7 +15,9 @@ iron.setup({
         command = { "ipython", "--no-autoindent" },
       },
     },
-    repl_open_cmd = require("iron.view").split.vertical.botright("45%"),
+    repl_open_cmd = view.split.vertical.botright(function()
+      return math.max(vim.o.columns * 0.4, 80)
+    end),
   },
   keymaps = {},
   -- If the highlight is on, you can change how it looks
@@ -328,4 +330,3 @@ vim.keymap.set({ "n", "t" }, "<a-d>", function()
 end, { expr = true, desc = "ToggleTerm direction" })
 
 vim.keymap.set("n", "<leader>ft", "<Cmd>TermSelect<CR>", { desc = "find_terminal" })
--- test 1
