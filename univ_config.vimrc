@@ -25,9 +25,6 @@ nnoremap <C-u> <C-u>zz
 nnoremap <C-d> <C-d>zz
 " join lines by gj
 nnoremap gj J
-" TODO to move it to nvim_utils_config
-" highlight yanked text
-autocmd TextYankPost * silent! lua vim.highlight.on_yank {higroup='Visual', timeout=500}
 
 " " better j/k using gj and gk
 nnoremap <expr> j v:count == 0 ? 'gj' : 'j'

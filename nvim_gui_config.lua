@@ -416,3 +416,9 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = disable_indentscope,
   desc = "Disable 'mini.indentscope' in markdown buffer",
 })
+
+vim.api.nvim_create_autocmd('TextYankPost', {
+  callback = function()
+    vim.highlight.on_yank({higroup='Visual', timeout=500})
+  end,
+})
