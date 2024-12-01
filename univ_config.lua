@@ -115,4 +115,7 @@ require("mini.operators").setup({
     reindent_linewise = true,
   },
 })
--- g= for evaluation, gm for multiplier, gp for paste from (registery), gs for sort , gx for exchange
+-- g= for evaluation,
+-- gm for multiplier,
+-- gp for paste from (registery),
+-- gs for sort , gx for exchange
