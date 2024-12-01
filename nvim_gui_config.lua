@@ -362,13 +362,13 @@ require("noice").setup({
       ["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
     },
   },
-  -- you can enable a preset for easier configuration
+  signature = { auto_open = { throttle = 10 } },
   presets = {
     bottom_search = true, -- use a classic bottom cmdline for search
     command_palette = true, -- position the cmdline and popupmenu together
     long_message_to_split = true, -- long messages will be sent to a split
     inc_rename = false, -- enables an input dialog for inc-rename.nvim
-    lsp_doc_border = false, -- add a border to hover docs and signature help
+    lsp_doc_border = true, -- add a border to hover docs and signature help
   },
 })
 
@@ -417,8 +417,8 @@ vim.api.nvim_create_autocmd("FileType", {
   desc = "Disable 'mini.indentscope' in markdown buffer",
 })
 
-vim.api.nvim_create_autocmd('TextYankPost', {
+vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function()
-    vim.highlight.on_yank({higroup='Visual', timeout=500})
+    vim.highlight.on_yank({ higroup = "Visual", timeout = 500 })
   end,
 })
