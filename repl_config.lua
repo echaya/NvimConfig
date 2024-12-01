@@ -157,7 +157,7 @@ gitsigns.setup({
     add = { text = "" }, -- dashed / double line for unstaged
     change = { text = "" },
     delete = { text = "_" },
-    topdelete = { text = "'‾'" },
+    topdelete = { text = "‾" },
     changedelete = { text = "~" },
     untracked = { text = "󰇝" },
   },
