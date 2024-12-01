@@ -92,9 +92,7 @@ if !exists('g:vscode')
         Plug 'windwp/nvim-autopairs'
         Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
         Plug 'sindrets/diffview.nvim'
-        Plug 'akinsho/toggleterm.nvim'
         Plug 'MeanderingProgrammer/render-markdown.nvim'
-
     else
         " vim specific alternative
         Plug 'mhinz/vim-startify' "butify the vim start up page

@@ -11,8 +11,8 @@ vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "find_keymaps" })
 -- vim.keymap.set("n", "<leader>fg", builtin.git_commits, { desc = "git_commits" })
 -- vim.keymap.set("n", "<leader>ss", builtin.spell_suggest, { desc = "spell_suggest" })
 -- vim.keymap.set('n', '<leader>cc', builtin.commands, {})
-vim.keymap.set("n", '<leader>"', builtin.registers, {desc = "registers"})
-vim.keymap.set("n", "<leader>`", builtin.marks, {desc = "marks"})
+vim.keymap.set("n", '<leader>"', builtin.registers, { desc = "registers" })
+vim.keymap.set("n", "<leader>`", builtin.marks, { desc = "marks" })
 vim.keymap.set("n", "<leader>fo", builtin.oldfiles, { desc = "old_files" })
 vim.keymap.set("n", "<leader>fw", builtin.grep_string, { desc = "grep_string" })
 vim.keymap.set("n", "<leader>fd", builtin.diagnostics, { desc = "lsp_diagnostics" })
@@ -352,14 +352,17 @@ vim.keymap.set("n", "<leader>un", function()
   Snacks.notifier.hide()
 end, { desc = "Dismiss All Notifications" })
 
-vim.keymap.set("n", "<leader>bd", function()
-  Snacks.bufdelete()
-end, { desc = "Delete Buffer" })
-
 vim.keymap.set("n", "<leader>gB", function()
   Snacks.gitbrowse()
 end, { desc = "Git Browse" })
 
+vim.keymap.set({ "n", "t" }, "<a-.>", function()
+  Snacks.lazygit()
+end, { desc = "Lazygit" })
+
+vim.keymap.set({ "n", "t" }, "<a-`>", function()
+  Snacks.terminal()
+end, { desc = "Toggle terminal" })
 
 if vim.fn.has("linux") == 1 then
   local function paste()
