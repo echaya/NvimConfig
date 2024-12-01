@@ -360,13 +360,6 @@ vim.keymap.set("n", "<leader>gB", function()
   Snacks.gitbrowse()
 end, { desc = "Git Browse" })
 
-vim.keymap.set("n", "<leader>gf", function()
-  Snacks.lazygit.log_file()
-end, { desc = "Lazygit Current File History" })
-
-vim.keymap.set("n", "<leader>gl", function()
-  Snacks.lazygit.log()
-end, { desc = "Lazygit Log (cwd)" })
 
 if vim.fn.has("linux") == 1 then
   local function paste()
