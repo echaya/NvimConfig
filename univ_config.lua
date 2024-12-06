@@ -11,7 +11,9 @@ vim.keymap.set({ "n" }, "<leader>s", "<Plug>(leap-from-window)", { desc = "leap 
 leap.opts.preview_filter = function()
   return false
 end
--- s<CR> to traverse forward, s<BS> to traverse backward
+-- <CR> to traverse forward, <BS> to traverse backward
+vim.api.nvim_set_hl(0, "LeapBackdrop", { link = "Comment" })
+require("leap.user").set_repeat_keys("<enter>", "<backspace>")
 vim.keymap.set(
   { "n", "x", "o" },
   "gt",
