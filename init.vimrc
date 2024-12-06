@@ -96,10 +96,10 @@ if !exists('g:vscode')
     else
         " vim specific alternative
         Plug 'mhinz/vim-startify' "butify the vim start up page
-        Plug 'ap/vim-buftabline' "butify the tab line
+        Plug 'ap/vim-buftabline' "butify the tb line
         Plug 'mhinz/vim-signify'
         Plug 'itchyny/lightline.vim'
-        Plug 'itchyny/vim-gitbranch'
+        Plug 'itchyny/vim-gitbrnch'
         Plug 'tpope/vim-commentary' "comment / uncomment code
         Plug 'tpope/vim-speeddating'
         Plug 'kana/vim-textobj-user' "dependent plugin
