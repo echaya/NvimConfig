@@ -27,6 +27,7 @@ iron.setup({
   },
   ignore_blank_lines = false, -- ignore blank lines when sending visual select lines
 })
+
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "python",
   callback = function(args)
@@ -144,14 +145,14 @@ end, { range = true })
 vim.keymap.set("n", "==", "<cmd>Format<cr>", { desc = "conform_format" })
 -- sync black call
 vim.keymap.set("n", "<leader>==", ":!black %<cr>")
+-- autocmd FileType vim nnoremap == ggVG=<C-o> for vim_format
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "vim",
   callback = function(args)
-    vim.keymap.set("n", "==", "ggVG=", { buffer = args.buf, desc = "vim_format" })
+    vim.keymap.set("n", "==", "ggVG=<C-o>", { buffer = args.buf, desc = "vim_format" })
   end,
 })
 
--- autocmd FileType vim nnoremap == ggVG=<C-o>
 
 local gitsigns = require("gitsigns")
 gitsigns.setup({
