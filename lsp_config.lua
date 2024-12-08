@@ -53,7 +53,7 @@ cmp.setup({
   }),
 
   sources = cmp.config.sources({
-    { name = "path" },
+    { name = "async_path" },
   }, {
     { name = "luasnip" },
     { name = "nvim_lsp" },
@@ -67,10 +67,6 @@ cmp.setup({
     disallow_partial_matching = false,
     disallow_prefix_unmatching = true,
     disallow_symbol_nonprefix_matching = false,
-  },
-  performance = {
-    debounce = 0, -- default is 60ms
-    throttle = 0, -- default is 30ms
   },
 })
 
@@ -86,7 +82,7 @@ cmp.setup.cmdline({ "/", "?" }, {
 cmp.setup.cmdline(":", {
   mapping = cmp.mapping.preset.cmdline(),
   sources = cmp.config.sources({
-    { name = "path" },
+    { name = "async_path" },
   }, {
     { name = "cmdline" },
   }),
