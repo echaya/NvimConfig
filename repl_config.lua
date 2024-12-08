@@ -1,36 +1,29 @@
-local iron = require("iron.core")
-local view = require("iron.view")
-iron.setup({
-  config = {
-    -- Scope of the repl
-    -- By default it is one for the same `pwd`
-    -- Other options are `tab_based` and `singleton`
-    scope = require("iron.scope").path_based,
-    -- Whether a repl should be discarded or not
-    scratch_repl = true,
-    -- Your repl definitions come here
-    repl_definition = {
-      python = {
-        format = require("iron.fts.common").bracketed_paste,
-        command = { "ipython", "--no-autoindent" },
-      },
-    },
-    repl_open_cmd = view.split.vertical.botright(function()
-      return math.max(vim.o.columns * 0.4, 80)
-    end),
-  },
-  keymaps = {},
-  -- If the highlight is on, you can change how it looks
-  -- For the available options, check nvim_set_hl
-  highlight = {
-    italic = true,
-  },
-  ignore_blank_lines = false, -- ignore blank lines when sending visual select lines
-})
-
+-- REPL using iron
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "python",
   callback = function(args)
+    local iron = require("iron.core")
+    local view = require("iron.view")
+    iron.setup({
+      config = {
+        scope = require("iron.scope").path_based,
+        scratch_repl = true,
+        repl_definition = {
+          python = {
+            format = require("iron.fts.common").bracketed_paste,
+            command = { "ipython", "--no-autoindent" },
+          },
+        },
+        repl_open_cmd = view.split.vertical.botright(function()
+          return math.max(vim.o.columns * 0.4, 80)
+        end),
+      },
+      keymaps = {},
+      highlight = {
+        italic = true,
+      },
+      ignore_blank_lines = false, -- ignore blank lines when sending visual select lines
+    })
     -- TODO norm! gv after Iron start/restart
     vim.keymap.set(
       { "n", "v" },
@@ -55,6 +48,7 @@ vim.api.nvim_create_autocmd("FileType", {
       iron.send(nil, string.char(13))
     end
 
+    vim.keymap.set("t", [[<a-\>]], "<cmd>q<cr>", { desc = "repl_toggle" })
     vim.keymap.set("n", "<localleader><cr>", send_cr, { buffer = args.buf, desc = "repl_cr" })
     vim.keymap.set("n", "<C-CR>", send_cr, { buffer = args.buf, desc = "repl_cr" })
     if vim.fn.has("linux") == 1 then
@@ -117,7 +111,6 @@ vim.api.nvim_create_autocmd("FileType", {
     end, { buffer = args.buf, desc = "repl_send_tree" })
   end,
 })
-vim.keymap.set("t", [[<a-\>]], "<cmd>q<cr>", { desc = "repl_toggle" })
 
 require("conform").setup({
   formatters_by_ft = {
