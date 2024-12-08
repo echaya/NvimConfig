@@ -218,6 +218,14 @@ gitsigns.setup({
   end,
 })
 
+require("diffview").setup({
+  view = {
+    merge_tool = {
+      layout = "diff3_mixed",
+    },
+  },
+})
+
 local hipatterns = require("mini.hipatterns")
 hipatterns.setup({
   highlighters = {
@@ -269,5 +277,3 @@ require("nvim-treesitter.configs").setup({
   },
 })
 vim.treesitter.language.register("markdown", "vimwiki")
-
-
