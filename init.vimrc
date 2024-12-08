@@ -93,13 +93,14 @@ if !exists('g:vscode')
         Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
         Plug 'sindrets/diffview.nvim'
         Plug 'MeanderingProgrammer/render-markdown.nvim'
+
     else
         " vim specific alternative
         Plug 'mhinz/vim-startify' "butify the vim start up page
         Plug 'ap/vim-buftabline' "butify the tb line
         Plug 'mhinz/vim-signify'
         Plug 'itchyny/lightline.vim'
-        Plug 'itchyny/vim-gitbrnch'
+        Plug 'itchyny/vim-gitbranch'
         Plug 'tpope/vim-commentary' "comment / uncomment code
         Plug 'tpope/vim-speeddating'
         Plug 'kana/vim-textobj-user' "dependent plugin
