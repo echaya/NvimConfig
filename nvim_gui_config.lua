@@ -397,7 +397,7 @@ vim.api.nvim_create_autocmd("RecordingLeave", {
   group = vim.api.nvim_create_augroup("NoiceMacroNotficationDismiss", { clear = true }),
 })
 
-require("mini.icons").setup()
+
 require("mini.indentscope").setup({
   draw = {
     delay = 200,
