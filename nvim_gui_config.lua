@@ -18,7 +18,7 @@ require("kanagawa").setup({
       -- theme colors will update dynamically when you change theme!
       -- SomePluginHl = { fg = colors.theme.syn.type, bold = true },
       LineNr = { fg = "#7f848e" },
-      MatchParen = { bg = "#505664", underline = true },
+      MatchParen = { bg = "#505665", fg = "#FF9E3B", underline = true },
     }
   end,
 })
@@ -396,7 +396,6 @@ vim.api.nvim_create_autocmd("RecordingLeave", {
   end,
   group = vim.api.nvim_create_augroup("NoiceMacroNotficationDismiss", { clear = true }),
 })
-
 
 require("mini.indentscope").setup({
   draw = {

@@ -237,13 +237,13 @@ require("better_escape").setup({
       j = {
         k = "<C-\\><C-n>",
       },
-      ["\\"] = {
-        ["\\"] = function()
-          vim.schedule(function()
-            vim.cmd("q")
-          end)
-        end,
-      },
+      -- ["\\"] = {
+      --   ["\\"] = function()
+      --     vim.schedule(function()
+      --       vim.cmd("q")
+      --     end)
+      --   end,
+      -- },
     },
     v = {
       j = {
