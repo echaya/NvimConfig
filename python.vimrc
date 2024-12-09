@@ -101,7 +101,7 @@ augroup PythonRepl
     autocmd Filetype python nnoremap <buffer> <localleader>l <c-w><c-l>i<c-l><Cmd>wincmd h<CR>
     autocmd Filetype python nnoremap <buffer> <localleader>v <cmd>call SelectVisual()<cr>
     autocmd Filetype python nnoremap <buffer> <localleader>db <cmd>call DebugCell()<cr>
-    autocmd Filetype python nnoremap <buffer> <localleader>dd :<cmd>call DebugDelete()<cr>:'<,'>g/core.debugger.set_trace/d<cr>
+    autocmd Filetype python nnoremap <buffer> <localleader>dd <cmd>call DebugDelete()<cr>:'<,'>g/core.debugger.set_trace/d<cr>
 augroup END
 
 tnoremap ;cb .to_clipboard()
