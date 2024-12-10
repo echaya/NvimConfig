@@ -148,7 +148,7 @@ nnoremap <leader>tt <cmd>TableModeToggle<CR>
 nnoremap <leader>t= <cmd>TableModeRealign<CR>
 let g:table_mode_syntax = 0
 
-"vim-fugitive
+"vim-fugitive or mini.git
 :command GC Git commit
 :command GP Git! push
 

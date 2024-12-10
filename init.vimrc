@@ -25,9 +25,7 @@ if has ('nvim')
     Plug 'ggandor/leap.nvim'
     Plug 'max397574/better-escape.nvim'
     Plug 'monaqa/dial.nvim'
-    Plug 'echasnovski/mini.ai'
-    Plug 'echasnovski/mini.surround'
-    Plug 'echasnovski/mini.operators'
+    Plug 'echasnovski/mini.nvim'
 endif
 
 if !exists('g:vscode')
@@ -43,7 +41,6 @@ if !exists('g:vscode')
     Plug 'dhruvasagar/vim-table-mode',{'on':'TableModeToggle'}
     Plug 'ferrine/md-img-paste.vim', {'for':['markdown','vimwiki']}
     Plug 'MTDL9/vim-log-highlighting', {'for':['log']}
-    Plug 'tpope/vim-fugitive'
 
     if has('nvim')
         " ui, display
@@ -55,21 +52,17 @@ if !exists('g:vscode')
         Plug 'MunifTanjim/nui.nvim'
         Plug 'rcarriga/nvim-notify'
         Plug 'folke/noice.nvim'
-        Plug 'echasnovski/mini.indentscope'
-        Plug 'echasnovski/mini.trailspace'
-        Plug 'echasnovski/mini.hipatterns'
 
         "utility plugins
         Plug 'nvim-telescope/telescope.nvim'
         Plug 'debugloop/telescope-undo.nvim'
-        Plug 'chentoast/marks.nvim'
         Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+        Plug 'chentoast/marks.nvim'
         Plug 'Shatur/neovim-session-manager'
         Plug 'folke/which-key.nvim'
         Plug 'stevearc/dressing.nvim'
-        Plug 'echasnovski/mini.files'
 
-        "lsp and snippets
+        "lsp, treesitter, and autocomplete
         Plug 'neovim/nvim-lspconfig'
         Plug 'iguanacucumber/mag-nvim-lsp', {'as':'cmp-nvim-lsp'}
         Plug 'iguanacucumber/mag-nvim-lua',  {'as':'cmp-nvim-lua'}
@@ -83,13 +76,12 @@ if !exists('g:vscode')
         Plug 'iguanacucumber/magazine.nvim', { 'as': 'nvim-cmp' }
         Plug 'SmiteshP/nvim-navic'
         Plug 'dnlhc/glance.nvim'
+        Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
-        "programming tools
+        "other programming tools
         Plug 'Vigemus/iron.nvim'
         Plug 'stevearc/conform.nvim'
         Plug 'lewis6991/gitsigns.nvim'
-        Plug 'windwp/nvim-autopairs'
-        Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
         Plug 'sindrets/diffview.nvim'
         Plug 'MeanderingProgrammer/render-markdown.nvim'
 
@@ -108,6 +100,7 @@ if !exists('g:vscode')
         Plug 'bps/vim-textobj-python' "ac,ic,af,if
         Plug 'mbbill/undotree'
         Plug 'machakann/vim-sandwich'
+        Plug 'tpope/vim-fugitive'
     endif
 
 endif

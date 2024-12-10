@@ -97,11 +97,7 @@ luasnip.config.set_config({
 })
 
 -- Setup Autocomplete
-require("nvim-autopairs").setup({
-  disable_filetype = { "TelescopePrompt", "NvimTree", "oil", "minifiles" },
-})
-local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+require('mini.pairs').setup()
 
 -- Setup LSP
 local lsp = require("lspconfig")

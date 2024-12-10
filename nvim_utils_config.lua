@@ -395,3 +395,7 @@ if vim.fn.has("linux") == 1 then
     },
   }
 end
+
+-- prevent the swap alert
+vim.opt.swapfile = false
+require('mini.git').setup()
