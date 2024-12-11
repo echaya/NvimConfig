@@ -374,6 +374,12 @@ end, { desc = "Toggle Scratch Buffer" })
 vim.keymap.set({ "n" }, "<leader>fS", function()
   Snacks.scratch.select()
 end, { desc = "Find Scratch" })
+vim.keymap.set("n", "<leader>z", function()
+  Snacks.zen()
+end, { desc = "Toggle Zen Mode" })
+vim.keymap.set("n", "<leader>Z", function()
+  Snacks.zen.zoom()
+end, { desc = "Toggle Zoom" })
 
 if vim.fn.has("linux") == 1 then
   local function paste()
@@ -398,4 +404,4 @@ end
 
 -- prevent the swap alert
 vim.opt.swapfile = false
-require('mini.git').setup()
+require("mini.git").setup()
