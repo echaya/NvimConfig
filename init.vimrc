@@ -9,6 +9,11 @@
 
 "source plug.vim manually from plugged folder. It should normally sit in
 " nvim working dir autoload folder
+
+if has('nvim')
+  lua if vim.loader then vim.loader.enable() end
+endif
+
 exe 'source '.g:WorkDir.'plugged/plug.vim'
 
 call plug#begin(g:WorkDir.'plugged')
