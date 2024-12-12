@@ -3,8 +3,11 @@ require("mini.deps").setup({ path = { package = path_package } })
 
 local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 
--- deps now: UI
+-- deps now: UI & early utilities
 now(function()
+  add({ source = "nvim-lua/plenary.nvim" })
+  add({ source = "Shatur/neovim-session-manager" })
+  add({ source = "folke/snacks.nvim" })
   add({ source = "rebelot/kanagawa.nvim" })
   add({ source = "nvim-lualine/lualine.nvim" })
   add({ source = "SmiteshP/nvim-navic" })

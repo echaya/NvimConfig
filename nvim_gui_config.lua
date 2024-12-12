@@ -1,3 +1,59 @@
+local snacks = require("snacks")
+require("snacks").setup({
+  bigfile = { enabled = true },
+  notifier = {
+    enabled = true,
+    timeout = 2000,
+  },
+  quickfile = { enabled = true },
+  statuscolumn = { enabled = true, refresh = 50 },
+  words = { enabled = true },
+  styles = {
+    notification = {
+      wo = { wrap = true }, -- Wrap notifications
+    },
+  },
+})
+
+snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>ts")
+snacks.toggle
+  .option("background", { off = "light", on = "dark", name = "Dark Background" })
+  :map("<leader>tb")
+snacks.toggle.inlay_hints():map("<leader>th")
+
+vim.keymap.set("n", "<leader>un", function()
+  Snacks.notifier.hide()
+end, { desc = "Dismiss All Notifications" })
+
+vim.keymap.set("n", "<leader>bd", function()
+  Snacks.bufdelete()
+end, { desc = "Delete Buffer" })
+
+vim.keymap.set("n", "<leader>gB", function()
+  Snacks.gitbrowse()
+end, { desc = "Git Browse" })
+
+vim.keymap.set({ "n", "t" }, "<a-.>", function()
+  Snacks.lazygit()
+end, { desc = "Lazygit" })
+
+vim.keymap.set({ "n", "t" }, "<a-`>", function()
+  Snacks.terminal()
+end, { desc = "Toggle terminal" })
+
+vim.keymap.set({ "n" }, "<leader>.", function()
+  Snacks.scratch()
+end, { desc = "Toggle Scratch Buffer" })
+
+vim.keymap.set({ "n" }, "<leader>fS", function()
+  Snacks.scratch.select()
+end, { desc = "Find Scratch" })
+vim.keymap.set("n", "<leader>z", function()
+  Snacks.zen()
+end, { desc = "Toggle Zen Mode" })
+vim.keymap.set("n", "<leader>Z", function()
+  Snacks.zen.zoom()
+end, { desc = "Toggle Zoom" })
 -- vim.highlight.priorities.semantic_tokens = 95 -- Or any number lower than 100, treesitter's priority level
 require("kanagawa").setup({
   keywordStyle = { italic = false },
@@ -23,7 +79,7 @@ require("kanagawa").setup({
   end,
 })
 
-icon = require('mini.icons')
+icon = require("mini.icons")
 icon.setup()
 icon.mock_nvim_web_devicons()
 vim.g.nvim_web_devicons = 1
@@ -374,4 +430,37 @@ vim.api.nvim_create_autocmd("RecordingLeave", {
   group = vim.api.nvim_create_augroup("NoiceMacroNotficationDismiss", { clear = true }),
 })
 
-
+local Path = require("plenary.path")
+local config = require("session_manager.config")
+require("session_manager").setup({
+  autoload_mode = {
+    config.AutoloadMode.CurrentDir,
+    config.AutoloadMode.GitSession,
+    config.AutoloadMode.Disabled,
+    -- config.AutoloadMode.LastSession,
+  }, -- Define what to do when Neovim is started without arguments.
+  autosave_ignore_filetypes = { -- All buffers of these file types will be closed before the session is saved.
+    "gitcommit",
+    "gitrebase",
+    "toggleterm",
+    "minifiles",
+  },
+  autosave_ignore_buftypes = {
+    "terminal",
+  }, -- All buffers of these bufer types will be closed before the session is saved.
+  autosave_only_in_session = false, -- Always autosaves session. If true, only autosaves after a session is active.
+  max_path_length = 60, -- Shorten the display path if length exceeds this threshold. Use 0 if don't want to shorten the path at all.
+})
+vim.keymap.set("n", "<leader>fs", "<cmd>SessionManager load_session<cr>", { desc = "find_session" })
+-- Auto save session
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+  callback = function()
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+      -- Don't save while there's any 'nofile' buffer open.
+      if vim.api.nvim_get_option_value("buftype", { buf = buf }) == "nofile" then
+        return
+      end
+    end
+    session_manager.save_current_session()
+  end,
+})
