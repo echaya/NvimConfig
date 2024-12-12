@@ -18,6 +18,31 @@ now(function()
   })
   dofile(vim.g.WorkDir .. "config.mini/nvim_gui_config.lua")
 end)
+
+later(function()
+  add({ source = "folke/which-key.nvim" })
   add({
+    source = "iguanacucumber/magazine.nvim",
+    name = "nvim-cmp",
+  })
+  add({
+    source = "iguanacucumber/mag-nvim-lsp",
+    name = "cmp-nvim-lsp",
+  })
+  add({
+    source = "iguanacucumber/mag-nvim-lua",
+    name = "cmp-nvim-lua",
+  })
+  add({
+    source = "iguanacucumber/mag-buffer",
+    name = "cmp-buffer",
+  })
+  add({
+    source = "iguanacucumber/mag-cmdline",
+    name = "cmp-cmdline",
+  })
+  add({
+    source = "https://codeberg.org/FelipeLema/cmp-async-path",
+    name = "async_path",
   })
 end)
