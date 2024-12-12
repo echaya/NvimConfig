@@ -406,3 +406,59 @@ end
 -- prevent the swap alert
 vim.opt.swapfile = false
 require("mini.git").setup()
+
+require("mini.indentscope").setup({
+  draw = {
+    delay = 200,
+  },
+})
+local disable_indentscope = function(data)
+  vim.b[data.buf].miniindentscope_disable = true
+end
+vim.api.nvim_create_autocmd(
+  "TermOpen",
+  { desc = "Disable 'mini.indentscope' in terminal buffer", callback = disable_indentscope }
+)
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "markdown", "vimwiki" },
+  callback = disable_indentscope,
+  desc = "Disable 'mini.indentscope' in markdown buffer",
+})
+
+
+local wk = require("which-key")
+wk.setup({
+  present = "modern",
+  triggers = {
+    { "<auto>", mode = "nixsoc" },
+    -- { "<leader>", mode = {"n","v","t"}},
+  },
+  delay = function(ctx)
+    return ctx.plugin and 0 or 150
+  end,
+  defer = function(ctx)
+    return ctx.mode == "V" or ctx.mode == "<C-V>" or ctx.mode == "v"
+  end,
+  debug = false,
+  win = {
+    padding = { 0, 2 },
+    wo = {
+      winblend = 20, -- value between 0-100 0 for fully opaque and 100 for fully transparent
+    },
+  },
+  layout = {
+    spacing = 2, -- spacing between columns
+  },
+  disable = {
+    ft = { "toggleterm", "NvimTree", "oil", "minifiles" },
+    bt = {},
+  },
+})
+
+
+-vim.api.nvim_create_autocmd("TextYankPost", {
+-  callback = function()
+-    vim.highlight.on_yank({ higroup = "Visual", timeout = 500 })
+-  end,
+-})

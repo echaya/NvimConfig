@@ -23,6 +23,11 @@ require("kanagawa").setup({
   end,
 })
 
+icon = require('mini.icons')
+icon.setup()
+icon.mock_nvim_web_devicons()
+vim.g.nvim_web_devicons = 1
+
 -- Eviline config for lualine
 local lualine = require("lualine")
 local navic = require("nvim-navic")
@@ -315,34 +320,6 @@ ins_right({
 
 lualine.setup(config)
 
-local wk = require("which-key")
-wk.setup({
-  present = "modern",
-  triggers = {
-    { "<auto>", mode = "nixsoc" },
-    -- { "<leader>", mode = {"n","v","t"}},
-  },
-  delay = function(ctx)
-    return ctx.plugin and 0 or 150
-  end,
-  defer = function(ctx)
-    return ctx.mode == "V" or ctx.mode == "<C-V>" or ctx.mode == "v"
-  end,
-  debug = false,
-  win = {
-    padding = { 0, 2 },
-    wo = {
-      winblend = 20, -- value between 0-100 0 for fully opaque and 100 for fully transparent
-    },
-  },
-  layout = {
-    spacing = 2, -- spacing between columns
-  },
-  disable = {
-    ft = { "toggleterm", "NvimTree", "oil", "minifiles" },
-    bt = {},
-  },
-})
 require("satellite").setup({
   handlers = {
     cursor = {
@@ -398,33 +375,3 @@ vim.api.nvim_create_autocmd("RecordingLeave", {
 })
 
 
-require("mini.indentscope").setup({
-  draw = {
-    delay = 200,
-  },
-})
-local disable_indentscope = function(data)
-  vim.b[data.buf].miniindentscope_disable = true
-end
-vim.api.nvim_create_autocmd(
-  "TermOpen",
-  { desc = "Disable 'mini.indentscope' in terminal buffer", callback = disable_indentscope }
-)
-
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "markdown", "vimwiki" },
-  callback = disable_indentscope,
-  desc = "Disable 'mini.indentscope' in markdown buffer",
-})
-
-vim.api.nvim_create_autocmd("TextYankPost", {
-  callback = function()
-    vim.highlight.on_yank({ higroup = "Visual", timeout = 500 })
-  end,
-})
-
-
-icon = require('mini.icons')
-icon.setup()
-icon.mock_nvim_web_devicons()
-vim.g.nvim_web_devicons = 1
