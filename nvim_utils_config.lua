@@ -9,7 +9,7 @@ vim.keymap.set("n", "<leader>gg", builtin.live_grep, { desc = "live_grep" })
 vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "find_buffers" })
 vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "find_keymaps" })
 -- vim.keymap.set("n", "<leader>fg", builtin.git_commits, { desc = "git_commits" })
-vim.keymap.set("n", "<leader>ss", builtin.spell_suggest, { desc = "spell_suggest" })
+-- vim.keymap.set("n", "<leader>ss", builtin.spell_suggest, { desc = "spell_suggest" })
 vim.keymap.set("n", '<leader>"', builtin.registers, { desc = "registers" })
 vim.keymap.set("n", "<leader>`", builtin.marks, { desc = "marks" })
 vim.keymap.set("n", "<leader>fo", builtin.oldfiles, { desc = "old_files" })
@@ -84,6 +84,7 @@ telescope.setup({
 -- -- load_extension, somewhere after setup function:
 telescope.load_extension("fzf")
 telescope.load_extension("undo")
+-- telescope.load_extension("smart_open")
 
 require("mini.files").setup({
 

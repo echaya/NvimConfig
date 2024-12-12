@@ -11,7 +11,7 @@
 " nvim working dir autoload folder
 
 if has('nvim')
-  lua if vim.loader then vim.loader.enable() end
+    lua if vim.loader then vim.loader.enable() end
 endif
 
 exe 'source '.g:WorkDir.'plugged/plug.vim'
@@ -60,12 +60,14 @@ if !exists('g:vscode')
         Plug 'nvim-telescope/telescope.nvim'
         Plug 'debugloop/telescope-undo.nvim'
         Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+        "Plug 'kkharji/sqlite.lua'
+        "Plug 'danielfalk/smart-open.nvim'
         Plug 'chentoast/marks.nvim'
         Plug 'Shatur/neovim-session-manager'
         Plug 'folke/which-key.nvim'
         Plug 'stevearc/dressing.nvim'
 
-        "lsp, treesitter, and autocomplete
+        "lsp and autocomplete
         Plug 'neovim/nvim-lspconfig'
         Plug 'iguanacucumber/mag-nvim-lsp', {'as':'cmp-nvim-lsp'}
         Plug 'iguanacucumber/mag-nvim-lua',  {'as':'cmp-nvim-lua'}
@@ -79,9 +81,9 @@ if !exists('g:vscode')
         Plug 'iguanacucumber/magazine.nvim', { 'as': 'nvim-cmp' }
         Plug 'SmiteshP/nvim-navic'
         Plug 'dnlhc/glance.nvim'
-        Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
-        "other programming tools
+        "treesitter other programming tools
+        Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
         Plug 'Vigemus/iron.nvim'
         Plug 'stevearc/conform.nvim'
         Plug 'lewis6991/gitsigns.nvim'
