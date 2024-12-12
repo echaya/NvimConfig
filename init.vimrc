@@ -49,10 +49,10 @@ endif
 
 "neovim universal plugins
 "if has ('nvim')
-"    Plug 'nvim-lua/plenary.nvim'
-"    Plug 'ggandor/leap.nvim'
-"    Plug 'max397574/better-escape.nvim'
-"    Plug 'monaqa/dial.nvim'
+"    Plug 
+"    Plug 
+"    Plug 
+"    Plug 
 "    Plug 'echasnovski/mini.nvim'
 "endif
 "
@@ -74,15 +74,15 @@ if !exists('g:vscode')
     "    Plug 
     "
     "    "utility plugins
-    "    Plug 'nvim-telescope/telescope.nvim'
-    "    Plug 'debugloop/telescope-undo.nvim'
-    "    Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+    "    Plug 
+    "    Plug 
+    "    Plug , { 'do': 'make' }
     "    "Plug 'kkharji/sqlite.lua'
     "    "Plug 'danielfalk/smart-open.nvim'
-    "    Plug 'chentoast/marks.nvim'
-    "    Plug 'Shatur/neovim-session-manager'
     "    Plug 
-    "    Plug 'stevearc/dressing.nvim'
+    "    Plug 
+    "    Plug 
+    "    Plug 
     "
     "    "lsp and autocomplete
     "    Plug 'neovim/nvim-lspconfig'
