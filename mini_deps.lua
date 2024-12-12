@@ -22,8 +22,31 @@ now(function()
   dofile(vim.g.WorkDir .. "config.mini/nvim_gui_config.lua")
 end)
 
+-- deps later: utilities
 later(function()
-  add({ source = "folke/which-key.nvim" })
+  add({ source = "ggandor/leap.nvim" })
+  add({ source = "max397574/better-escape.nvim" })
+  add({ source = "monaqa/dial.nvim" })
+  dofile(vim.g.WorkDir .. "config.mini/univ_config.lua")
+  if not vim.g.vscode then
+    add({ source = "folke/which-key.nvim" })
+    add({ source = "nvim-telescope/telescope.nvim" })
+    add({ source = "debugloop/telescope-undo.nvim" })
+    add({
+      source = "nvim-telescope/telescope-fzf-native.nvim",
+      hooks = {
+        post_checkout = function()
+          vim.cmd("make")
+        end,
+      },
+    })
+    add({ source = "chentoast/marks.nvim" })
+    add({ source = "stevearc/dressing.nvim" })
+    dofile(vim.g.WorkDir .. "config.mini/nvim_utils_config.lua")
+  end
+end)
+
+later(function()
   add({
     source = "iguanacucumber/magazine.nvim",
     name = "nvim-cmp",
