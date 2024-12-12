@@ -48,7 +48,6 @@ if !exists('g:vscode')
     if has('nvim')
         " ui, display
         Plug 'rebelot/kanagawa.nvim'
-        Plug 'nvim-tree/nvim-web-devicons'
         Plug 'folke/snacks.nvim'
         Plug 'nvim-lualine/lualine.nvim'
         Plug 'lewis6991/satellite.nvim'
