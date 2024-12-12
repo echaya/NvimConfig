@@ -40,8 +40,6 @@ if !exists('g:vscode')
     Plug 'airblade/vim-rooter'
 
     " markdown & log plugins
-    Plug 'godlygeek/tabular', {'for':['markdown','vimwiki']} "prerequisite for vim-markdown
-    Plug 'plasticboy/vim-markdown', {'for':['markdown','vimwiki']}
     Plug 'vimwiki/vimwiki'
     Plug 'dhruvasagar/vim-table-mode',{'on':'TableModeToggle'}
     Plug 'ferrine/md-img-paste.vim', {'for':['markdown','vimwiki']}
@@ -106,6 +104,8 @@ if !exists('g:vscode')
         Plug 'mbbill/undotree'
         Plug 'machakann/vim-sandwich'
         Plug 'tpope/vim-fugitive'
+        Plug 'godlygeek/tabular', {'for':['markdown','vimwiki']} "prerequisite for vim-markdown
+        Plug 'plasticboy/vim-markdown', {'for':['markdown','vimwiki']}
     endif
 
 endif
