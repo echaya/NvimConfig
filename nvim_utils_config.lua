@@ -358,7 +358,9 @@ end, { desc = "Delete Buffer" })
 
 vim.keymap.set("n", "<leader>fn", function()
   Snacks.notifier.show_history()
-end, { desc = "Notification History" })
+end, { desc = "Find Notification" })
+
+vim.keymap.set("n", "<leader>fm", "<cmd>messages<cr>", { desc = "Find Messages" })
 
 vim.keymap.set("n", "<leader>gB", function()
   Snacks.gitbrowse()
