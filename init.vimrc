@@ -52,7 +52,6 @@ if !exists('g:vscode')
     Plug 'nvim-lualine/lualine.nvim'
     Plug 'lewis6991/satellite.nvim'
     Plug 'MunifTanjim/nui.nvim'
-    Plug 'rcarriga/nvim-notify'
     Plug 'folke/noice.nvim'
 
     "utility plugins
