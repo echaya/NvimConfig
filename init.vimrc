@@ -16,18 +16,27 @@ endif
 
 exe 'source '.g:WorkDir.'plugged/plug.vim'
 
-call plug#begin(g:WorkDir.'plugged')
-" universal plugins
-Plug 'dstein64/vim-startuptime'
-Plug 'unblevable/quick-scope'
-Plug 'tpope/vim-repeat'
-Plug 'svermeulen/vim-cutlass'
+let s:path_package = $HOME . '/AppData/local/nvim-data/site/'
 
 
-if has('nvim')
-    Plug 'echasnovski/mini.nvim'
-else
-    " vim specific alternative
+if !has('nvim')
+    call plug#begin(s:path_package.'pack/deps/opt/')
+    "universal plugins
+    Plug 'dstein64/vim-startuptime'
+    Plug 'unblevable/quick-scope'
+    Plug 'tpope/vim-repeat'
+    Plug 'svermeulen/vim-cutlass'
+    Plug '907th/vim-auto-save'
+    Plug 'airblade/vim-rooter'
+
+    " markdown & log plugins
+    Plug 'vimwiki/vimwiki'
+    Plug 'dhruvasagar/vim-table-mode',{'on':'TableModeToggle'}
+    Plug 'ferrine/md-img-paste.vim', {'for':['markdown','vimwiki']}
+    Plug 'MTDL9/vim-log-highlighting', {'for':['log']}
+    call plug#end()
+    "vim specifit
+    call plug#begin(s:path_package.'pack/deps/vim/')
     Plug 'mhinz/vim-startify' "butify the vim start up page
     Plug 'ap/vim-buftabline' "butify the tab line
     Plug 'mhinz/vim-signify'
@@ -44,74 +53,10 @@ else
     Plug 'tpope/vim-fugitive'
     Plug 'godlygeek/tabular', {'for':['markdown','vimwiki']} "prerequisite for vim-markdown
     Plug 'plasticboy/vim-markdown', {'for':['markdown','vimwiki']}
+    call plug#end()
 endif
 
 
-"neovim universal plugins
-"if has ('nvim')
-"    Plug 
-"    Plug 
-"    Plug 
-"    Plug 
-"    Plug 'echasnovski/mini.nvim'
-"endif
-"
-if !exists('g:vscode')
-
-    "vim and neovim specific plugins
-    Plug '907th/vim-auto-save'
-    Plug 'airblade/vim-rooter'
-
-    " markdown & log plugins
-    Plug 'vimwiki/vimwiki'
-    Plug 'dhruvasagar/vim-table-mode',{'on':'TableModeToggle'}
-    Plug 'ferrine/md-img-paste.vim', {'for':['markdown','vimwiki']}
-    Plug 'MTDL9/vim-log-highlighting', {'for':['log']}
-
-    "if has('nvim')
-    "    " ui, display
-    "    Plug 
-    "    Plug 
-    "
-    "    "utility plugins
-    "    Plug 
-    "    Plug 
-    "    Plug , { 'do': 'make' }
-    "    "Plug 'kkharji/sqlite.lua'
-    "    "Plug 'danielfalk/smart-open.nvim'
-    "    Plug 
-    "    Plug 
-    "    Plug 
-    "    Plug 
-    "
-    "    "lsp and autocomplete
-    "    Plug 'neovim/nvim-lspconfig'
-    "    Plug 'iguanacucumber/mag-nvim-lsp', {'as':'cmp-nvim-lsp'}
-    "    Plug 'iguanacucumber/mag-nvim-lua',  {'as':'cmp-nvim-lua'}
-    "    Plug 'iguanacucumber/mag-buffer',  {'as': 'cmp-buffer'}
-    "    Plug 'iguanacucumber/mag-cmdline',  { 'as':'cmp-cmdline' }
-    "    Plug 'https://codeberg.org/FelipeLema/cmp-async-path', {'as':'async_path'}
-    "    Plug 'saadparwaiz1/cmp_luasnip'
-    "    Plug 'L3MON4D3/LuaSnip' ", {'tag': 'v2.*', 'do': 'make install_jsregexp'}
-    "    "Plug 'rafamadriz/friendly-snippets'
-    "    Plug 'echaya/friendly-snippets'
-    "    Plug 'iguanacucumber/magazine.nvim', { 'as': 'nvim-cmp' }
-    "    Plug 
-    "    Plug 'dnlhc/glance.nvim'
-    "
-    "    "treesitter other programming tools
-    "    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-    "    Plug 'Vigemus/iron.nvim'
-    "    Plug 'stevearc/conform.nvim'
-    "    Plug 'lewis6991/gitsigns.nvim'
-    "    Plug 'sindrets/diffview.nvim'
-    "    Plug 'MeanderingProgrammer/render-markdown.nvim'
-
-    "endif
-
-endif
-
-call plug#end()
 
 exe 'source '.g:WorkDir.'config/univ_config.vimrc'
 "if has("nvim")
@@ -119,20 +64,15 @@ exe 'source '.g:WorkDir.'config/univ_config.vimrc'
 "endif
 
 if exists('g:vscode')
-    exe 'source '.g:WorkDir.'config/vscode_config.vimrc'
-    "exe 'luafile '.g:WorkDir.'config/vscode_config.lua'
+    exe 'source '.g:WorkDir.'config.mini/vscode_config.vimrc'
 else
-    exe 'source '.g:WorkDir.'config/nvim_vim_config.vimrc'
-    exe 'source '.g:WorkDir.'config/md.vimrc'
-    exe 'source '.g:WorkDir.'config/python.vimrc'
+    exe 'source '.g:WorkDir.'config.mini/nvim_vim_config.vimrc'
+    exe 'source '.g:WorkDir.'config.mini/md.vimrc'
+    exe 'source '.g:WorkDir.'config.mini/python.vimrc'
     if has("nvim")
         exe 'luafile '.g:WorkDir.'config.mini/mini_deps.lua'
-    "    exe 'luafile '.g:WorkDir.'config/nvim_gui_config.lua'
-    "    exe 'luafile '.g:WorkDir.'config/nvim_utils_config.lua'
-    "    exe 'luafile '.g:WorkDir.'config/lsp_config.lua'
-    "    exe 'luafile '.g:WorkDir.'config/repl_config.lua'
     else
-        exe 'source '.g:WorkDir.'config/vim_config.vimrc'
+        exe 'source '.g:WorkDir.'config.mini/vim_config.vimrc'
     endif
 endif
 
