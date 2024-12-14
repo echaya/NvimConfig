@@ -62,7 +62,7 @@ exe 'source '.g:WorkDir.'config/univ_config.vimrc'
 "endif
 
 if exists('g:vscode')
-    exe 'source '.g:WorkDir.'config.mini/vscode_config.vimrc'
+    exe 'source '.g:WorkDir.'config/vscode_config.vimrc'
 else
     exe 'source '.g:WorkDir.'config/nvim_vim_config.vimrc'
     exe 'source '.g:WorkDir.'config/md.vimrc'
