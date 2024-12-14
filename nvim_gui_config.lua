@@ -29,6 +29,12 @@ vim.keymap.set("n", "<leader>bd", function()
   Snacks.bufdelete()
 end, { desc = "Delete Buffer" })
 
+vim.keymap.set("n", "<leader>fn", function()
+  Snacks.notifier.show_history()
+end, { desc = "find_notification" })
+
+vim.keymap.set("n", "<leader>fm", "<cmd>messages<cr>", { desc = "find_messages" })
+
 vim.keymap.set("n", "<leader>gB", function()
   Snacks.gitbrowse()
 end, { desc = "Git Browse" })
@@ -464,7 +470,6 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   end,
 })
 
-
-icon = require('mini.icons')
+icon = require("mini.icons")
 icon.setup()
 icon.mock_nvim_web_devicons()
