@@ -27,11 +27,10 @@ end
 
 -- deps now: UI & early utilities
 now(function()
+  -- vim plugins
   add({ source = "dstein64/vim-startuptime" })
-  add({ source = "unblevable/quick-scope" })
-  add({ source = "tpope/vim-repeat" })
-  add({ source = "svermeulen/vim-cutlass" })
   add({ source = "nvim-lua/plenary.nvim" })
+  -- nvim plugins
   add({ source = "Shatur/neovim-session-manager" })
   add({ source = "folke/snacks.nvim" })
   add({ source = "rebelot/kanagawa.nvim" })
@@ -49,6 +48,9 @@ end)
 
 -- deps later: utilities
 later(function()
+  add({ source = "unblevable/quick-scope" })
+  add({ source = "tpope/vim-repeat" })
+  add({ source = "svermeulen/vim-cutlass" })
   add({ source = "907th/vim-auto-save" })
   add({ source = "airblade/vim-rooter" })
   add({ source = "ggandor/leap.nvim" })
