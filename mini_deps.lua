@@ -49,11 +49,13 @@ end)
 
 -- deps later: utilities
 later(function()
+  -- vim plugins
   add({ source = "unblevable/quick-scope" })
   add({ source = "tpope/vim-repeat" })
   add({ source = "svermeulen/vim-cutlass" })
   add({ source = "907th/vim-auto-save" })
   add({ source = "airblade/vim-rooter" })
+  -- nvim plugins
   add({ source = "ggandor/leap.nvim" })
   add({ source = "max397574/better-escape.nvim" })
   add({ source = "monaqa/dial.nvim" })
@@ -74,6 +76,7 @@ later(function()
   end
 end)
 
+-- deps later: auto-complete and lsp
 later(function()
   add({
     source = "iguanacucumber/magazine.nvim",
@@ -115,12 +118,15 @@ later(function()
   dofile(vim.g.WorkDir .. "config/lsp_config.lua")
 end)
 
+-- deps later: programming tools
 later(function()
   if vim.g.vscode == nil then
+    -- vim plugins: markdown and logs tools
     add({ source = "vimwiki/vimwiki" })
     add({ source = "dhruvasagar/vim-table-mode" })
     add({ source = "ferrine/md-img-paste.vim" })
     add({ source = "MTDL9/vim-log-highlighting" })
+    -- nvim plugins
     add({ source = "nvim-treesitter/nvim-treesitter" })
     add({ source = "Vigemus/iron.nvim" })
     add({ source = "stevearc/conform.nvim" })
