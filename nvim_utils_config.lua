@@ -330,7 +330,7 @@ require("snacks").setup({
   bigfile = { enabled = true },
   notifier = {
     enabled = true,
-    timeout = 2000,
+    timeout = 3000,
   },
   quickfile = { enabled = true },
   statuscolumn = { enabled = true, refresh = 50 },
@@ -355,6 +355,12 @@ end, { desc = "Dismiss All Notifications" })
 vim.keymap.set("n", "<leader>bd", function()
   Snacks.bufdelete()
 end, { desc = "Delete Buffer" })
+
+vim.keymap.set("n", "<leader>fn", function()
+  Snacks.notifier.show_history()
+end, { desc = "Find Notification" })
+
+vim.keymap.set("n", "<leader>fm", "<cmd>messages<cr>", { desc = "Find Messages" })
 
 vim.keymap.set("n", "<leader>gB", function()
   Snacks.gitbrowse()

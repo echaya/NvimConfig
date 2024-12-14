@@ -14,6 +14,11 @@ if has('nvim')
     lua if vim.loader then vim.loader.enable() end
 endif
 
+function! Cond(cond, ...)
+    let opts = get(a:000, 0, {})
+    return a:cond ? opts : extend(opts, { 'on': [], 'for': [] })
+endfunction
+
 exe 'source '.g:WorkDir.'plugged/plug.vim'
 
 call plug#begin(g:WorkDir.'plugged')
@@ -22,16 +27,12 @@ Plug 'dstein64/vim-startuptime'
 Plug 'unblevable/quick-scope'
 Plug 'tpope/vim-repeat'
 Plug 'svermeulen/vim-cutlass'
-
-
 "neovim universal plugins
-if has ('nvim')
-    Plug 'nvim-lua/plenary.nvim'
-    Plug 'ggandor/leap.nvim'
-    Plug 'max397574/better-escape.nvim'
-    Plug 'monaqa/dial.nvim'
-    Plug 'echasnovski/mini.nvim'
-endif
+Plug 'nvim-lua/plenary.nvim', Cond(has('nvim'))
+Plug 'ggandor/leap.nvim', Cond(has('nvim'))
+Plug 'max397574/better-escape.nvim', Cond(has('nvim'))
+Plug 'monaqa/dial.nvim', Cond(has('nvim'))
+Plug 'echasnovski/mini.nvim', Cond(has('nvim'))
 
 if !exists('g:vscode')
 
@@ -45,71 +46,65 @@ if !exists('g:vscode')
     Plug 'ferrine/md-img-paste.vim', {'for':['markdown','vimwiki']}
     Plug 'MTDL9/vim-log-highlighting', {'for':['log']}
 
-    if has('nvim')
-        " ui, display
-        Plug 'rebelot/kanagawa.nvim'
-        Plug 'nvim-tree/nvim-web-devicons'
-        Plug 'folke/snacks.nvim'
-        Plug 'nvim-lualine/lualine.nvim'
-        Plug 'lewis6991/satellite.nvim'
-        Plug 'MunifTanjim/nui.nvim'
-        Plug 'rcarriga/nvim-notify'
-        Plug 'folke/noice.nvim'
+    " ui, display
+    Plug 'rebelot/kanagawa.nvim'
+    Plug 'folke/snacks.nvim'
+    Plug 'nvim-lualine/lualine.nvim'
+    Plug 'lewis6991/satellite.nvim'
+    Plug 'MunifTanjim/nui.nvim'
+    Plug 'folke/noice.nvim'
 
-        "utility plugins
-        Plug 'nvim-telescope/telescope.nvim'
-        Plug 'debugloop/telescope-undo.nvim'
-        Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-        "Plug 'kkharji/sqlite.lua'
-        "Plug 'danielfalk/smart-open.nvim'
-        Plug 'chentoast/marks.nvim'
-        Plug 'Shatur/neovim-session-manager'
-        Plug 'folke/which-key.nvim'
-        Plug 'stevearc/dressing.nvim'
+    "utility plugins
+    Plug 'nvim-telescope/telescope.nvim'
+    Plug 'debugloop/telescope-undo.nvim'
+    Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+    "Plug 'kkharji/sqlite.lua'
+    "Plug 'danielfalk/smart-open.nvim'
+    Plug 'chentoast/marks.nvim'
+    Plug 'Shatur/neovim-session-manager'
+    Plug 'folke/which-key.nvim'
+    Plug 'stevearc/dressing.nvim'
 
-        "lsp and autocomplete
-        Plug 'neovim/nvim-lspconfig'
-        Plug 'iguanacucumber/mag-nvim-lsp', {'as':'cmp-nvim-lsp'}
-        Plug 'iguanacucumber/mag-nvim-lua',  {'as':'cmp-nvim-lua'}
-        Plug 'iguanacucumber/mag-buffer',  {'as': 'cmp-buffer'}
-        Plug 'iguanacucumber/mag-cmdline',  { 'as':'cmp-cmdline' }
-        Plug 'https://codeberg.org/FelipeLema/cmp-async-path', {'as':'async_path'}
-        Plug 'saadparwaiz1/cmp_luasnip'
-        Plug 'L3MON4D3/LuaSnip' ", {'tag': 'v2.*', 'do': 'make install_jsregexp'}
-        "Plug 'rafamadriz/friendly-snippets'
-        Plug 'echaya/friendly-snippets'
-        Plug 'iguanacucumber/magazine.nvim', { 'as': 'nvim-cmp' }
-        Plug 'SmiteshP/nvim-navic'
-        Plug 'dnlhc/glance.nvim'
+    "lsp and autocomplete
+    Plug 'neovim/nvim-lspconfig'
+    Plug 'iguanacucumber/mag-nvim-lsp', {'as':'cmp-nvim-lsp'}
+    Plug 'iguanacucumber/mag-nvim-lua',  {'as':'cmp-nvim-lua'}
+    Plug 'iguanacucumber/mag-buffer',  {'as': 'cmp-buffer'}
+    Plug 'iguanacucumber/mag-cmdline',  { 'as':'cmp-cmdline' }
+    Plug 'https://codeberg.org/FelipeLema/cmp-async-path', {'as':'async_path'}
+    Plug 'saadparwaiz1/cmp_luasnip'
+    Plug 'L3MON4D3/LuaSnip' ", {'tag': 'v2.*', 'do': 'make install_jsregexp'}
+    "Plug 'rafamadriz/friendly-snippets'
+    Plug 'echaya/friendly-snippets'
+    Plug 'iguanacucumber/magazine.nvim', { 'as': 'nvim-cmp' }
+    Plug 'SmiteshP/nvim-navic'
+    Plug 'dnlhc/glance.nvim'
 
-        "treesitter other programming tools
-        Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-        Plug 'Vigemus/iron.nvim'
-        Plug 'stevearc/conform.nvim'
-        Plug 'lewis6991/gitsigns.nvim'
-        Plug 'sindrets/diffview.nvim'
-        Plug 'MeanderingProgrammer/render-markdown.nvim'
+    "treesitter other programming tools
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+    Plug 'Vigemus/iron.nvim'
+    Plug 'stevearc/conform.nvim'
+    Plug 'lewis6991/gitsigns.nvim'
+    Plug 'sindrets/diffview.nvim'
+    Plug 'MeanderingProgrammer/render-markdown.nvim'
 
-    else
-        " vim specific alternative
-        Plug 'mhinz/vim-startify' "butify the vim start up page
-        Plug 'ap/vim-buftabline' "butify the tab line
-        Plug 'mhinz/vim-signify'
-        Plug 'itchyny/lightline.vim'
-        Plug 'itchyny/vim-gitbranch'
-        Plug 'tpope/vim-commentary' "comment / uncomment code
-        Plug 'tpope/vim-speeddating'
-        Plug 'kana/vim-textobj-user' "dependent plugin
-        Plug 'Julian/vim-textobj-variable-segment' "av,iv
-        Plug 'kana/vim-textobj-indent' "ai,ii, aI, iI
-        Plug 'bps/vim-textobj-python' "ac,ic,af,if
-        Plug 'mbbill/undotree'
-        Plug 'machakann/vim-sandwich'
-        Plug 'tpope/vim-fugitive'
-        Plug 'godlygeek/tabular', {'for':['markdown','vimwiki']} "prerequisite for vim-markdown
-        Plug 'plasticboy/vim-markdown', {'for':['markdown','vimwiki']}
-    endif
-
+    " vim specific alternative
+    Plug 'mhinz/vim-startify', Cond(!has('nvim'))
+    Plug 'ap/vim-buftabline', Cond(!has('nvim'))
+    Plug 'mhinz/vim-signify', Cond(!has('nvim'))
+    Plug 'itchyny/lightline.vim', Cond(!has('nvim'))
+    Plug 'itchyny/vim-gitbranch', Cond(!has('nvim'))
+    Plug 'tpope/vim-commentary', Cond(!has('nvim'))
+    Plug 'tpope/vim-speeddating', Cond(!has('nvim'))
+    Plug 'kana/vim-textobj-user', Cond(!has('nvim'))
+    Plug 'Julian/vim-textobj-variable-segment', Cond(!has('nvim'))
+    Plug 'kana/vim-textobj-indent', Cond(!has('nvim'))
+    Plug 'bps/vim-textobj-python', Cond(!has('nvim'))
+    Plug 'mbbill/undotree', Cond(!has('nvim'))
+    Plug 'machakann/vim-sandwich', Cond(!has('nvim'))
+    Plug 'tpope/vim-fugitive', Cond(!has('nvim'))
+    Plug 'godlygeek/tabular',Cond(!has('nvim'),{'for':['markdown','vimwiki']})
+    Plug 'plasticboy/vim-markdown',Cond(!has('nvim'),{'for':['markdown','vimwiki']})
 endif
 
 call plug#end()

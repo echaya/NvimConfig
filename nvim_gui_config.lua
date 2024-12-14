@@ -422,3 +422,8 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     vim.highlight.on_yank({ higroup = "Visual", timeout = 500 })
   end,
 })
+
+
+icon = require('mini.icons')
+icon.setup()
+icon.mock_nvim_web_devicons()
