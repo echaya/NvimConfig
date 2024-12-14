@@ -42,7 +42,6 @@ now(function()
     source = "folke/noice.nvim",
     depends = {
       "MunifTanjim/nui.nvim",
-      "rcarriga/nvim-notify",
     },
   })
   dofile(vim.g.WorkDir .. "config/nvim_gui_config.lua")

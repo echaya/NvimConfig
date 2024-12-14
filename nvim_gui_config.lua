@@ -3,7 +3,7 @@ require("snacks").setup({
   bigfile = { enabled = true },
   notifier = {
     enabled = true,
-    timeout = 2000,
+    timeout = 3000,
   },
   quickfile = { enabled = true },
   statuscolumn = { enabled = true, refresh = 50 },
