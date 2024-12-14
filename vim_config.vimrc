@@ -15,7 +15,7 @@ vnoremap <leader>hr :SignifyHunkUndo<cr>
 
 "coloring and status line
 let g:lightline = {
-            \ 'colorscheme': 'nightfly',
+            \ 'colorscheme': 'one',
             \ 'active': {
             \   'left': [ [ 'mode', 'paste' ],
             \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
