@@ -3,6 +3,11 @@ require("mini.deps").setup({ path = { package = path_package } })
 
 local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 
+local build = function(args)
+    local obj = vim.system({ "make", "-C", args.path }, { text = true }):wait()
+    vim.print(vim.inspect(obj))
+  end
+
 -- deps now: UI & early utilities
 now(function()
   add({ source = "nvim-lua/plenary.nvim" })
@@ -35,9 +40,7 @@ later(function()
     add({
       source = "nvim-telescope/telescope-fzf-native.nvim",
       hooks = {
-        post_install = function()
-          vim.cmd("make")
-        end,
+        post_install = build,
       },
     })
     add({ source = "chentoast/marks.nvim" })
