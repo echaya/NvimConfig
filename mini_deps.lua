@@ -14,6 +14,10 @@ if not vim.loop.fs_stat(mini_path) then
   vim.cmd('echo "Installed `mini.nvim`" | redraw')
 end
 
+if vim.loader then
+  vim.loader.enable()
+end
+
 -- Set up 'mini.deps' (customize to your liking)
 require("mini.deps").setup({ path = { package = path_package } })
 

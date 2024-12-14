@@ -10,10 +10,6 @@
 "source plug.vim manually from plugged folder. It should normally sit in
 " nvim working dir autoload folder
 
-if has('nvim')
-    lua if vim.loader then vim.loader.enable() end
-endif
-
 let s:path_package = $HOME . '/AppData/local/nvim-data/site/'
 exe 'source '. s:path_package.'pack/deps/vim/plug.vim'
 
