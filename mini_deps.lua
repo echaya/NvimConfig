@@ -29,9 +29,10 @@ end
 now(function()
   -- vim plugins
   add({ source = "dstein64/vim-startuptime" })
-  add({ source = "nvim-lua/plenary.nvim" })
   -- nvim plugins
-  add({ source = "Shatur/neovim-session-manager" })
+  add({ source = "Shatur/neovim-session-manager", depends = {
+    "nvim-lua/plenary.nvim",
+  } })
   add({ source = "folke/snacks.nvim" })
   add({ source = "rebelot/kanagawa.nvim" })
   add({ source = "nvim-lualine/lualine.nvim" })
