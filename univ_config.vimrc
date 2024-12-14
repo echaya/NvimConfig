@@ -12,7 +12,7 @@ set smartcase
 nnoremap <silent><Esc> :noh<CR><Esc>
 
 "copy paste
-set clipboard=unnamedplus
+"set clipboard=unnamedplus
 inoremap <silent> <c-s-v> <Esc>:set paste<Cr>a<c-r>+<Esc>:set nopaste<Cr>a
 " change default Y behavior to match with D, C, etc
 noremap Y y$

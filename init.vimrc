@@ -1,4 +1,4 @@
-"NOTE one need to create a file under nvim working directory and source this file.
+"NOTE one need to create a file under nvim working dir
 "To find the working directory is exactly, use the command :echo stdpath('config') inside Neovim.
 
 " for windows it is usually c:\Users\abc\AppData\Local\nvim\
@@ -14,115 +14,61 @@ if has('nvim')
     lua if vim.loader then vim.loader.enable() end
 endif
 
-function! Cond(cond, ...)
-    let opts = get(a:000, 0, {})
-    return a:cond ? opts : extend(opts, { 'on': [], 'for': [] })
-endfunction
+let s:path_package = $HOME . '/AppData/local/nvim-data/site/'
+exe 'source '. s:path_package.'pack/deps/vim/plug.vim'
 
-exe 'source '.g:WorkDir.'plugged/plug.vim'
 
-call plug#begin(g:WorkDir.'plugged')
-" universal plugins
-Plug 'dstein64/vim-startuptime'
-Plug 'unblevable/quick-scope'
-Plug 'tpope/vim-repeat'
-Plug 'svermeulen/vim-cutlass'
-"neovim universal plugins
-Plug 'nvim-lua/plenary.nvim', Cond(has('nvim'))
-Plug 'ggandor/leap.nvim', Cond(has('nvim'))
-Plug 'max397574/better-escape.nvim', Cond(has('nvim'))
-Plug 'monaqa/dial.nvim', Cond(has('nvim'))
-Plug 'echasnovski/mini.nvim', Cond(has('nvim'))
-
-if !exists('g:vscode')
-
-    "vim and neovim specific plugins
+if !has('nvim')
+    call plug#begin(s:path_package.'pack/deps/opt/')
+    "universal plugins
+    Plug 'dstein64/vim-startuptime'
+    Plug 'unblevable/quick-scope'
+    Plug 'tpope/vim-repeat'
+    Plug 'svermeulen/vim-cutlass'
     Plug '907th/vim-auto-save'
     Plug 'airblade/vim-rooter'
-
     " markdown & log plugins
     Plug 'vimwiki/vimwiki'
     Plug 'dhruvasagar/vim-table-mode',{'on':'TableModeToggle'}
     Plug 'ferrine/md-img-paste.vim', {'for':['markdown','vimwiki']}
     Plug 'MTDL9/vim-log-highlighting', {'for':['log']}
-
-    " ui, display
-    Plug 'rebelot/kanagawa.nvim'
-    Plug 'folke/snacks.nvim'
-    Plug 'nvim-lualine/lualine.nvim'
-    Plug 'lewis6991/satellite.nvim'
-    Plug 'MunifTanjim/nui.nvim'
-    Plug 'folke/noice.nvim'
-
-    "utility plugins
-    Plug 'nvim-telescope/telescope.nvim'
-    Plug 'debugloop/telescope-undo.nvim'
-    Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-    "Plug 'kkharji/sqlite.lua'
-    "Plug 'danielfalk/smart-open.nvim'
-    Plug 'chentoast/marks.nvim'
-    Plug 'Shatur/neovim-session-manager'
-    Plug 'folke/which-key.nvim'
-    Plug 'stevearc/dressing.nvim'
-
-    "lsp and autocomplete
-    Plug 'neovim/nvim-lspconfig'
-    Plug 'iguanacucumber/mag-nvim-lsp', {'as':'cmp-nvim-lsp'}
-    Plug 'iguanacucumber/mag-nvim-lua',  {'as':'cmp-nvim-lua'}
-    Plug 'iguanacucumber/mag-buffer',  {'as': 'cmp-buffer'}
-    Plug 'iguanacucumber/mag-cmdline',  { 'as':'cmp-cmdline' }
-    Plug 'https://codeberg.org/FelipeLema/cmp-async-path', {'as':'async_path'}
-    Plug 'saadparwaiz1/cmp_luasnip'
-    Plug 'L3MON4D3/LuaSnip' ", {'tag': 'v2.*', 'do': 'make install_jsregexp'}
-    Plug 'echaya/friendly-snippets'
-    Plug 'iguanacucumber/magazine.nvim', { 'as': 'nvim-cmp' }
-    Plug 'SmiteshP/nvim-navic'
-    Plug 'dnlhc/glance.nvim'
-
-    "treesitter other programming tools
-    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-    Plug 'Vigemus/iron.nvim'
-    Plug 'stevearc/conform.nvim'
-    Plug 'lewis6991/gitsigns.nvim'
-    Plug 'sindrets/diffview.nvim'
-    Plug 'MeanderingProgrammer/render-markdown.nvim'
-
-    " vim specific alternative
-    Plug 'mhinz/vim-startify', Cond(!has('nvim'))
-    Plug 'ap/vim-buftabline', Cond(!has('nvim'))
-    Plug 'mhinz/vim-signify', Cond(!has('nvim'))
-    Plug 'itchyny/lightline.vim', Cond(!has('nvim'))
-    Plug 'itchyny/vim-gitbranch', Cond(!has('nvim'))
-    Plug 'tpope/vim-commentary', Cond(!has('nvim'))
-    Plug 'tpope/vim-speeddating', Cond(!has('nvim'))
-    Plug 'kana/vim-textobj-user', Cond(!has('nvim'))
-    Plug 'Julian/vim-textobj-variable-segment', Cond(!has('nvim'))
-    Plug 'mbbill/undotree', Cond(!has('nvim'))
-    Plug 'machakann/vim-sandwich', Cond(!has('nvim'))
-    Plug 'tpope/vim-fugitive', Cond(!has('nvim'))
-    Plug 'godlygeek/tabular',Cond(!has('nvim'),{'for':['markdown','vimwiki']})
-    Plug 'plasticboy/vim-markdown',Cond(!has('nvim'),{'for':['markdown','vimwiki']})
+    call plug#end()
+    "vim specifit
+    call plug#begin(s:path_package.'pack/deps/vim/')
+    Plug 'mhinz/vim-startify' "butify the vim start up page
+    Plug 'ap/vim-buftabline' "butify the tab line
+    Plug 'mhinz/vim-signify'
+    Plug 'itchyny/lightline.vim'
+    Plug 'itchyny/vim-gitbranch'
+    Plug 'tpope/vim-commentary' "comment / uncomment code
+    Plug 'tpope/vim-speeddating'
+    Plug 'kana/vim-textobj-user' "dependent plugin
+    Plug 'Julian/vim-textobj-variable-segment' "av,iv
+    Plug 'kana/vim-textobj-indent' "ai,ii, aI, iI
+    Plug 'bps/vim-textobj-python' "ac,ic,af,if
+    Plug 'mbbill/undotree'
+    Plug 'machakann/vim-sandwich'
+    Plug 'tpope/vim-fugitive'
+    Plug 'godlygeek/tabular', {'for':['markdown','vimwiki']} "prerequisite for vim-markdown
+    Plug 'plasticboy/vim-markdown', {'for':['markdown','vimwiki']}
+    call plug#end()
 endif
 
-call plug#end()
+
 
 exe 'source '.g:WorkDir.'config/univ_config.vimrc'
-if has("nvim")
-    exe 'luafile '.g:WorkDir.'config/univ_config.lua'
-endif
+"if has("nvim")
+"    exe 'luafile '.g:WorkDir.'config/univ_config.lua'
+"endif
 
 if exists('g:vscode')
     exe 'source '.g:WorkDir.'config/vscode_config.vimrc'
-    exe 'luafile '.g:WorkDir.'config/vscode_config.lua'
 else
     exe 'source '.g:WorkDir.'config/nvim_vim_config.vimrc'
     exe 'source '.g:WorkDir.'config/md.vimrc'
     exe 'source '.g:WorkDir.'config/python.vimrc'
     if has("nvim")
-        exe 'luafile '.g:WorkDir.'config/nvim_gui_config.lua'
-        exe 'luafile '.g:WorkDir.'config/nvim_utils_config.lua'
-        exe 'luafile '.g:WorkDir.'config/lsp_config.lua'
-        exe 'luafile '.g:WorkDir.'config/repl_config.lua'
+        exe 'luafile '.g:WorkDir.'config/mini_deps.lua'
     else
         exe 'source '.g:WorkDir.'config/vim_config.vimrc'
     endif
