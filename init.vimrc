@@ -14,9 +14,8 @@ if has('nvim')
     lua if vim.loader then vim.loader.enable() end
 endif
 
-exe 'source '.g:WorkDir.'plugged/plug.vim'
-
 let s:path_package = $HOME . '/AppData/local/nvim-data/site/'
+exe 'source '. s:path_package.'pack/deps/vim/plug.vim'
 
 
 if !has('nvim')
