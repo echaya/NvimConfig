@@ -332,6 +332,7 @@ require("snacks").setup({
     enabled = true,
     timeout = 3000,
   },
+  input = { enabled = true },
   quickfile = { enabled = true },
   statuscolumn = { enabled = true, refresh = 50 },
   words = { enabled = true },

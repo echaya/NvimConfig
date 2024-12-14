@@ -74,7 +74,6 @@ if !exists('g:vscode')
     Plug 'https://codeberg.org/FelipeLema/cmp-async-path', {'as':'async_path'}
     Plug 'saadparwaiz1/cmp_luasnip'
     Plug 'L3MON4D3/LuaSnip' ", {'tag': 'v2.*', 'do': 'make install_jsregexp'}
-    "Plug 'rafamadriz/friendly-snippets'
     Plug 'echaya/friendly-snippets'
     Plug 'iguanacucumber/magazine.nvim', { 'as': 'nvim-cmp' }
     Plug 'SmiteshP/nvim-navic'
@@ -98,8 +97,6 @@ if !exists('g:vscode')
     Plug 'tpope/vim-speeddating', Cond(!has('nvim'))
     Plug 'kana/vim-textobj-user', Cond(!has('nvim'))
     Plug 'Julian/vim-textobj-variable-segment', Cond(!has('nvim'))
-    Plug 'kana/vim-textobj-indent', Cond(!has('nvim'))
-    Plug 'bps/vim-textobj-python', Cond(!has('nvim'))
     Plug 'mbbill/undotree', Cond(!has('nvim'))
     Plug 'machakann/vim-sandwich', Cond(!has('nvim'))
     Plug 'tpope/vim-fugitive', Cond(!has('nvim'))
