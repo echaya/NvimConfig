@@ -74,4 +74,14 @@ later(function()
     source = "https://codeberg.org/FelipeLema/cmp-async-path",
     name = "async_path",
   })
+  add({
+    source = 'nvim-treesitter/nvim-treesitter',
+    hooks = { post_checkout = function() vim.cmd('TSUpdate') end },
+  })
+    add({ source = 'L3MON4D3/LuaSnip' })
+    add({ source = 'echaya/friendly-snippets' })
+    add({ source = 'dnlhc/glance.nvim' })
+    add({ source = 'saadparwaiz1/cmp_luasnip' })
+    add({ source = 'neovim/nvim-lspconfig' })
+    dofile(vim.g.WorkDir .. 'config.mini/lsp_config.lua')
 end)
