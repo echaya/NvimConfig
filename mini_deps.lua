@@ -45,7 +45,7 @@ now(function()
       "rcarriga/nvim-notify",
     },
   })
-  dofile(vim.g.WorkDir .. "config.mini/nvim_gui_config.lua")
+  dofile(vim.g.WorkDir .. "config/nvim_gui_config.lua")
 end)
 
 -- deps later: utilities
@@ -55,7 +55,7 @@ later(function()
   add({ source = "ggandor/leap.nvim" })
   add({ source = "max397574/better-escape.nvim" })
   add({ source = "monaqa/dial.nvim" })
-  dofile(vim.g.WorkDir .. "config.mini/univ_config.lua")
+  dofile(vim.g.WorkDir .. "config/univ_config.lua")
   if not vim.g.vscode then
     add({ source = "folke/which-key.nvim" })
     add({ source = "nvim-telescope/telescope.nvim" })
@@ -68,7 +68,7 @@ later(function()
     })
     add({ source = "chentoast/marks.nvim" })
     add({ source = "stevearc/dressing.nvim" })
-    dofile(vim.g.WorkDir .. "config.mini/nvim_utils_config.lua")
+    dofile(vim.g.WorkDir .. "config/nvim_utils_config.lua")
   end
 end)
 
@@ -110,7 +110,7 @@ later(function()
   add({ source = "dnlhc/glance.nvim" })
   add({ source = "saadparwaiz1/cmp_luasnip" })
   add({ source = "neovim/nvim-lspconfig" })
-  dofile(vim.g.WorkDir .. "config.mini/lsp_config.lua")
+  dofile(vim.g.WorkDir .. "config/lsp_config.lua")
 end)
 
 later(function()
@@ -125,8 +125,8 @@ later(function()
     add({ source = "lewis6991/gitsigns.nvim" })
     add({ source = "sindrets/diffview.nvim" })
     add({ source = "MeanderingProgrammer/render-markdown.nvim" })
-    dofile(vim.g.WorkDir .. "config.mini/repl_config.lua")
+    dofile(vim.g.WorkDir .. "config/repl_config.lua")
   else
-    dofile(vim.g.WorkDir .. "config.mini/vscode_config.lua")
+    dofile(vim.g.WorkDir .. "config/vscode_config.lua")
   end
 end)

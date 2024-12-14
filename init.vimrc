@@ -28,7 +28,6 @@ if !has('nvim')
     Plug 'svermeulen/vim-cutlass'
     Plug '907th/vim-auto-save'
     Plug 'airblade/vim-rooter'
-
     " markdown & log plugins
     Plug 'vimwiki/vimwiki'
     Plug 'dhruvasagar/vim-table-mode',{'on':'TableModeToggle'}
@@ -66,13 +65,13 @@ exe 'source '.g:WorkDir.'config/univ_config.vimrc'
 if exists('g:vscode')
     exe 'source '.g:WorkDir.'config.mini/vscode_config.vimrc'
 else
-    exe 'source '.g:WorkDir.'config.mini/nvim_vim_config.vimrc'
-    exe 'source '.g:WorkDir.'config.mini/md.vimrc'
-    exe 'source '.g:WorkDir.'config.mini/python.vimrc'
+    exe 'source '.g:WorkDir.'config/nvim_vim_config.vimrc'
+    exe 'source '.g:WorkDir.'config/md.vimrc'
+    exe 'source '.g:WorkDir.'config/python.vimrc'
     if has("nvim")
-        exe 'luafile '.g:WorkDir.'config.mini/mini_deps.lua'
+        exe 'luafile '.g:WorkDir.'config/mini_deps.lua'
     else
-        exe 'source '.g:WorkDir.'config.mini/vim_config.vimrc'
+        exe 'source '.g:WorkDir.'config/vim_config.vimrc'
     endif
 endif
 
