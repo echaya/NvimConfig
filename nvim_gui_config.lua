@@ -430,7 +430,6 @@ vim.api.nvim_create_autocmd("RecordingLeave", {
   group = vim.api.nvim_create_augroup("NoiceMacroNotficationDismiss", { clear = true }),
 })
 
-local Path = require("plenary.path")
 local config = require("session_manager.config")
 require("session_manager").setup({
   autoload_mode = {
