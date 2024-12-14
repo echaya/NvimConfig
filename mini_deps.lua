@@ -21,7 +21,7 @@ local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 
 local build = function(args)
   -- local obj = vim.system({ "make", "-C", args.path, "install_jsregexp" }, { text = true }):wait()
-  local obj = vim.system({ "make", "-C", args.path, "" }, { text = true }):wait()
+  local obj = vim.system({ "make", "-C", args.path }, { text = true }):wait()
   vim.print(vim.inspect(obj))
 end
 
