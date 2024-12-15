@@ -8,6 +8,7 @@ require("snacks").setup({
   quickfile = { enabled = true },
   statuscolumn = { enabled = true, refresh = 50 },
   words = { enabled = true },
+  indent = { enabled = true },
   styles = {
     notification = {
       wo = { wrap = true }, -- Wrap notifications
@@ -20,6 +21,8 @@ snacks.toggle
   .option("background", { off = "light", on = "dark", name = "Dark Background" })
   :map("<leader>tb")
 snacks.toggle.inlay_hints():map("<leader>th")
+Snacks.toggle.indent():map("<leader>ti")
+Snacks.toggle.dim():map("<leader>tD")
 
 vim.keymap.set("n", "<leader>un", function()
   Snacks.notifier.hide()
