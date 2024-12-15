@@ -80,45 +80,11 @@ later(function()
   end
 end)
 
--- deps later: auto-complete and lsp
-later(function()
-  add({
-    source = "iguanacucumber/magazine.nvim",
-    name = "nvim-cmp",
-  })
-  add({
-    source = "iguanacucumber/mag-nvim-lsp",
-    name = "cmp-nvim-lsp",
-  })
-  add({
-    source = "iguanacucumber/mag-nvim-lua",
-    name = "cmp-nvim-lua",
-  })
-  add({
-    source = "iguanacucumber/mag-buffer",
-    name = "cmp-buffer",
-  })
-  add({
-    source = "iguanacucumber/mag-cmdline",
-    name = "cmp-cmdline",
-  })
-  add({
-    source = "https://codeberg.org/FelipeLema/cmp-async-path",
-    name = "async_path",
-  })
-  add({
-    source = "nvim-treesitter/nvim-treesitter",
-    hooks = {
-      post_checkout = function()
-        vim.cmd("TSUpdate")
-      end,
-    },
-  })
-  add({ source = "L3MON4D3/LuaSnip" })
-  add({ source = "echaya/friendly-snippets" })
-  add({ source = "dnlhc/glance.nvim" })
-  add({ source = "saadparwaiz1/cmp_luasnip" })
+-- deps later: lsp and iron
+now(function()
   add({ source = "neovim/nvim-lspconfig" })
+  add({ source = "dnlhc/glance.nvim" })
+  add({ source = "Vigemus/iron.nvim" })
   dofile(vim.g.WorkDir .. "config/lsp_config.lua")
 end)
 
@@ -126,7 +92,41 @@ end)
 later(function()
   if vim.g.vscode == nil then
     add({ source = "nvim-treesitter/nvim-treesitter" })
-    add({ source = "Vigemus/iron.nvim" })
+    add({
+      source = "iguanacucumber/magazine.nvim",
+      name = "nvim-cmp",
+    })
+    add({
+      source = "iguanacucumber/mag-nvim-lsp",
+      name = "cmp-nvim-lsp",
+    })
+    add({
+      source = "iguanacucumber/mag-nvim-lua",
+      name = "cmp-nvim-lua",
+    })
+    add({
+      source = "iguanacucumber/mag-buffer",
+      name = "cmp-buffer",
+    })
+    add({
+      source = "iguanacucumber/mag-cmdline",
+      name = "cmp-cmdline",
+    })
+    add({
+      source = "https://codeberg.org/FelipeLema/cmp-async-path",
+      name = "async_path",
+    })
+    add({
+      source = "nvim-treesitter/nvim-treesitter",
+      hooks = {
+        post_checkout = function()
+          vim.cmd("TSUpdate")
+        end,
+      },
+    })
+    add({ source = "L3MON4D3/LuaSnip" })
+    add({ source = "echaya/friendly-snippets" })
+    add({ source = "saadparwaiz1/cmp_luasnip" })
     add({ source = "stevearc/conform.nvim" })
     add({ source = "lewis6991/gitsigns.nvim" })
     add({ source = "sindrets/diffview.nvim" })

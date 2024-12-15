@@ -1,118 +1,103 @@
--- REPL using iron
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "python",
-  callback = function(args)
-    local iron = require("iron.core")
-    local view = require("iron.view")
-    iron.setup({
-      config = {
-        scope = require("iron.scope").path_based,
-        scratch_repl = true,
-        repl_definition = {
-          python = {
-            format = require("iron.fts.common").bracketed_paste,
-            command = { "ipython", "--no-autoindent" },
-          },
-        },
-        repl_open_cmd = view.split.vertical.botright(function()
-          return math.max(vim.o.columns * 0.4, 80)
-        end),
-      },
-      keymaps = {},
-      highlight = {
-        italic = true,
-      },
-      ignore_blank_lines = false, -- ignore blank lines when sending visual select lines
-    })
-    -- TODO norm! gv after Iron start/restart
-    vim.keymap.set(
-      { "n", "v" },
-      [[<a-\>]],
-      "<cmd>IronRepl<cr>",
-      { buffer = args.buf, desc = "repl_toggle" }
-    )
-    vim.keymap.set({ "n", "v" }, "<localleader>r", function()
-      vim.cmd("IronRestart")
-      vim.cmd("IronRepl")
-    end, { buffer = args.buf, desc = "repl_restart" })
+-- Set up nvim-cmp.
+local cmp = require("cmp")
+local luasnip = require("luasnip")
 
-    local send_magic_paste = function()
-      vim.cmd("call SelectVisual()")
-      vim.cmd("norm! y`>")
-      vim.defer_fn(function()
-        iron.send(nil, "%paste")
-      end, 100)
-      vim.cmd("norm! j")
-    end
-    local send_cr = function()
-      iron.send(nil, string.char(13))
-    end
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
+    end,
+  },
+  window = {
+    completion = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered(),
+  },
+  mapping = cmp.mapping.preset.insert({
+    ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+    ["<C-f>"] = cmp.mapping.scroll_docs(4),
+    ["<C-Space>"] = cmp.mapping.complete(),
+    ["<C-e>"] = cmp.mapping.abort(),
+    ["<CR>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        if luasnip.expandable() then
+          luasnip.expand()
+        else
+          cmp.confirm({
+            select = true,
+          })
+        end
+      else
+        fallback()
+      end
+    end),
 
-    vim.keymap.set("t", [[<a-\>]], "<cmd>q<cr>", { desc = "repl_toggle" })
-    vim.keymap.set("n", "<localleader><cr>", send_cr, { buffer = args.buf, desc = "repl_cr" })
-    vim.keymap.set("n", "<C-CR>", send_cr, { buffer = args.buf, desc = "repl_cr" })
-    if vim.fn.has("linux") == 1 then
-      vim.keymap.set("n", "<S-CR>", function()
-        vim.cmd("call SelectVisual()")
-        iron.visual_send()
-        vim.cmd("norm! j")
-      end, { buffer = args.buf, desc = "repl_send_cell" })
-    else
-      vim.keymap.set(
-        "n",
-        "<S-CR>",
-        send_magic_paste,
-        { buffer = args.buf, desc = "repl_send_cell" }
-      )
-    end
-    vim.keymap.set("n", "<localleader>y", function()
-      vim.cmd("norm! yiwo")
-      vim.cmd("norm! pA.to_clipboard()")
-      vim.cmd("norm! V")
-      iron.visual_send()
-      vim.cmd("norm! dd")
-    end, { buffer = args.buf, desc = "repl_df_to_clipboard" })
-    vim.keymap.set("n", "<localleader>p", function()
-      vim.cmd("norm! yiwoprint(")
-      vim.cmd("norm! pA)")
-      vim.cmd("norm! V")
-      iron.visual_send()
-      vim.cmd("norm! dd")
-    end, { buffer = args.buf, desc = "repl_print" })
-    vim.keymap.set("v", "<CR>", function()
-      iron.visual_send()
-      vim.cmd("norm! j")
-    end, { buffer = args.buf, desc = "repl_v_send" })
-    vim.keymap.set({ "n", "v" }, "<localleader>u", function()
-      iron.send_until_cursor()
-      vim.api.nvim_input("<ESC>") -- to escape from visual mode
-    end, { buffer = args.buf, desc = "repl_send_until" })
-    vim.keymap.set({ "n", "v" }, "<localleader>qq", function()
-      iron.close_repl()
-      iron.send(nil, string.char(13))
-    end, { buffer = args.buf, desc = "repl_exit" })
-    vim.keymap.set({ "n", "v" }, "<localleader>c", function()
-      iron.send(nil, string.char(03))
-    end, { buffer = args.buf, desc = "repl_interrupt" })
-    vim.keymap.set({ "n", "v" }, "<a-del>", function()
-      iron.send(nil, string.char(12))
-    end, { buffer = args.buf, desc = "repl_clear" })
-    vim.keymap.set(
-      "n",
-      "<localleader>i",
-      "<cmd>IronFocus<cr>i",
-      { buffer = args.buf, desc = "repl_focus" }
-    )
-    vim.keymap.set({ "n" }, "<localleader>t", function()
-      vim.cmd("normal V")
-      require("leap.treesitter").select()
-      iron.visual_send()
-      vim.cmd("norm! j")
-    end, { buffer = args.buf, desc = "repl_send_tree" })
-  end,
-  -- sync black call
-  vim.keymap.set("n", "<localleader>==", ":!black %<cr>"),
+    ["<Tab>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.locally_jumpable(1) then
+        luasnip.jump(1)
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+
+    ["<S-Tab>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.locally_jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+  }),
+
+  sources = cmp.config.sources({
+    { name = "async_path" },
+  }, {
+    { name = "luasnip" },
+    { name = "nvim_lsp" },
+  }, {
+    { name = "buffer" },
+  }),
+  matching = {
+    disallow_fuzzy_matching = true,
+    disallow_fullfuzzy_matching = true,
+    disallow_partial_fuzzy_matching = true,
+    disallow_partial_matching = false,
+    disallow_prefix_unmatching = true,
+    disallow_symbol_nonprefix_matching = false,
+  },
 })
+
+-- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline({ "/", "?" }, {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = "buffer" },
+  },
+})
+
+-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(":", {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+    { name = "async_path" },
+  }, {
+    { name = "cmdline" },
+  }),
+})
+
+-- Setup luasnip
+require("luasnip.loaders.from_vscode").lazy_load()
+require("luasnip").filetype_extend("vimwiki", { "markdown" })
+luasnip.config.set_config({
+  region_check_events = "InsertEnter",
+  delete_check_events = "InsertLeave",
+})
+
+-- Setup Autocomplete
+require('mini.pairs').setup()
 
 require("conform").setup({
   formatters_by_ft = {
@@ -273,3 +258,4 @@ require("nvim-treesitter.configs").setup({
   },
 })
 vim.treesitter.language.register("markdown", "vimwiki")
+
