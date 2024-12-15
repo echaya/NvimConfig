@@ -439,39 +439,39 @@ vim.api.nvim_create_autocmd("RecordingLeave", {
   group = vim.api.nvim_create_augroup("NoiceMacroNotficationDismiss", { clear = true }),
 })
 
-local config = require("session_manager.config")
-require("session_manager").setup({
-  autoload_mode = {
-    config.AutoloadMode.CurrentDir,
-    config.AutoloadMode.GitSession,
-    config.AutoloadMode.Disabled,
-    -- config.AutoloadMode.LastSession,
-  }, -- Define what to do when Neovim is started without arguments.
-  autosave_ignore_filetypes = { -- All buffers of these file types will be closed before the session is saved.
-    "gitcommit",
-    "gitrebase",
-    "toggleterm",
-    "minifiles",
-  },
-  autosave_ignore_buftypes = {
-    "terminal",
-  }, -- All buffers of these bufer types will be closed before the session is saved.
-  autosave_only_in_session = false, -- Always autosaves session. If true, only autosaves after a session is active.
-  max_path_length = 60, -- Shorten the display path if length exceeds this threshold. Use 0 if don't want to shorten the path at all.
+require("mini.starter").setup()
+
+vim.o.sessionoptions =
+  "buffers,curdir,folds,globals,help,localoptions,resize,tabpages,winpos,winsize"
+
+mini_session = require("mini.sessions")
+mini_session.setup({
+  autoread = false,
+  directory = vim.fn.stdpath("data") .. "/session/",
+  file = "",
 })
-vim.keymap.set("n", "<leader>fs", "<cmd>SessionManager load_session<cr>", { desc = "find_session" })
--- Auto save session
+-- auto save session
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   callback = function()
-    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-      -- Don't save while there's any 'nofile' buffer open.
-      if vim.api.nvim_get_option_value("buftype", { buf = buf }) == "nofile" then
-        return
-      end
-    end
-    session_manager.save_current_session()
+    local cwd = vim.fn.getcwd()
+    cwd = cwd:gsub("[:/\\]$", "")
+    cwd = cwd:gsub(":", "")
+    cwd = cwd:gsub("[/\\]", "_")
+    mini_session.write(cwd)
   end,
 })
+vim.keymap.set(
+  "n",
+  "<leader>fs",
+  "<cmd>lua MiniSessions.select('read')<cr>",
+  { desc = "find_session" }
+)
+vim.keymap.set(
+  "n",
+  "<leader>fS",
+  "<cmd>lua MiniSessions.select('delete')<cr>",
+  { desc = "delete_session" }
+)
 
 icon = require("mini.icons")
 icon.setup()

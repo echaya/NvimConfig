@@ -37,10 +37,6 @@ end
 now(function()
   -- vim plugins, StartupTime
   add({ source = vim.g.lst_plugin[1] })
-  -- nvim plugins
-  add({ source = "Shatur/neovim-session-manager", depends = {
-    "nvim-lua/plenary.nvim",
-  } })
   add({ source = "folke/snacks.nvim" })
   add({ source = "rebelot/kanagawa.nvim" })
   add({ source = "nvim-lualine/lualine.nvim" })
@@ -70,7 +66,12 @@ later(function()
   dofile(vim.g.WorkDir .. "config/univ_config.lua")
   if vim.g.vscode == nil then
     add({ source = "folke/which-key.nvim" })
-    add({ source = "nvim-telescope/telescope.nvim" })
+    add({
+      source = "nvim-telescope/telescope.nvim",
+      depends = {
+        "nvim-lua/plenary.nvim",
+      },
+    })
     add({ source = "debugloop/telescope-undo.nvim" })
     add({
       source = "nvim-telescope/telescope-fzf-native.nvim",
