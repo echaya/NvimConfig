@@ -313,6 +313,7 @@ if vim.fn.has("linux") == 1 then
     },
   }
 end
+vim.opt.clipboard:append("unnamedplus")
 
 -- prevent the swap alert
 vim.opt.swapfile = false

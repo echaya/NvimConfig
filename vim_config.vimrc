@@ -1,4 +1,6 @@
  "adding more character objectives
+set clipboard=unnamedplus
+
 for s:char in [',','/', '*', '%', '_', '`', '!','.']
     execute 'xnoremap i' . s:char . ' :<C-u>normal! T' . s:char . 'vt' . s:char . '<CR>'
     execute 'onoremap i' . s:char . ' :normal vi' . s:char . '<CR>'
