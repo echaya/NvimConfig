@@ -24,6 +24,7 @@ nnoremap <C-u> <C-u>zz
 nnoremap <C-d> <C-d>zz
 " join lines by gj
 nnoremap gj J
+nnoremap q: <nop>
 
 " " better j/k using gj and gk
 nnoremap <expr> j v:count == 0 ? 'gj' : 'j'
