@@ -15,12 +15,12 @@ augroup mdgroup
     autocmd FileType markdown normal zR
 
     " markdown paste from clipboard
-    autocmd FileType markdown nmap <buffer><silent> <leader><localleader>p :call mdip#MarkdownClipboardImage()<CR>
+    autocmd FileType markdown nmap <buffer><silent> <localleader>p :call mdip#MarkdownClipboardImage()<CR>
     let g:mdip_imgdir = 'img'
     let g:mdip_imgname = 'image'
 
     "edit link
-    autocmd Filetype markdown nnoremap <buffer> <leader>md :call EditMdLink()<cr>
+    autocmd Filetype markdown nnoremap <buffer> <localleader>md :call EditMdLink()<cr>
     " vimwiki checkbox toggle
     autocmd Filetype markdown nnoremap <buffer> <localleader><localleader> <Cmd>VimwikiToggleListItem<CR>
 augroup END
