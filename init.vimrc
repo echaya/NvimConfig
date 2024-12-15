@@ -67,6 +67,7 @@ else
     exe 'source '.g:WorkDir.'config/md.vimrc'
     exe 'source '.g:WorkDir.'config/python.vimrc'
     if has("nvim")
+        " loading neovim plugins handled by nvim
         exe 'luafile '.g:WorkDir.'config/mini_deps.lua'
     else
         exe 'source '.g:WorkDir.'config/vim_config.vimrc'

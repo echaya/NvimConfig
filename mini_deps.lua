@@ -64,7 +64,7 @@ later(function()
   add({ source = "max397574/better-escape.nvim" })
   add({ source = "monaqa/dial.nvim" })
   dofile(vim.g.WorkDir .. "config/univ_config.lua")
-  if not vim.g.vscode then
+  if vim.g.vscode == nil then
     add({ source = "folke/which-key.nvim" })
     add({ source = "nvim-telescope/telescope.nvim" })
     add({ source = "debugloop/telescope-undo.nvim" })
