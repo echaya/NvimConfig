@@ -145,7 +145,7 @@ let g:rooter_patterns = ['.git']
 
 "table-mode
 nnoremap <leader>tt <cmd>TableModeToggle<CR>
-nnoremap <leader>t= <cmd>TableModeRealign<CR>
+nnoremap <localleader>t= <cmd>TableModeRealign<CR>
 let g:table_mode_syntax = 0
 
 "vim-fugitive or mini.git
