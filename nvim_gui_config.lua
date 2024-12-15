@@ -454,9 +454,7 @@ mini_session.setup({
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   callback = function()
     local cwd = vim.fn.getcwd()
-    cwd = cwd:gsub("[:/\\]$", "")
-    cwd = cwd:gsub(":", "")
-    cwd = cwd:gsub("[/\\]", "_")
+    cwd = cwd:gsub("[:/\\]$", ""):gsub(":", ""):gsub("[/\\]", "_")
     mini_session.write(cwd)
   end,
 })
@@ -470,7 +468,7 @@ vim.keymap.set(
   "n",
   "<leader>fS",
   "<cmd>lua MiniSessions.select('delete')<cr>",
-  { desc = "delete_session" }
+  { desc = "find_session_to_del" }
 )
 
 icon = require("mini.icons")
