@@ -31,8 +31,8 @@ end
 
 -- deps now: UI & early utilities
 now(function()
-  -- vim plugins
-  add({ source = "dstein64/vim-startuptime" })
+  -- vim plugins, StartupTime
+  add({ source = vim.g.lst_plugin[1] })
   -- nvim plugins
   add({ source = "Shatur/neovim-session-manager", depends = {
     "nvim-lua/plenary.nvim",
@@ -54,11 +54,11 @@ end)
 -- deps later: utilities
 later(function()
   -- vim plugins
-  add({ source = "unblevable/quick-scope" })
-  add({ source = "tpope/vim-repeat" })
-  add({ source = "svermeulen/vim-cutlass" })
-  add({ source = "907th/vim-auto-save" })
-  add({ source = "airblade/vim-rooter" })
+  for index, value in ipairs(vim.g.lst_plugin) do
+    if index > 1 then
+      add({ source = value })
+    end
+  end
   -- nvim plugins
   add({ source = "ggandor/leap.nvim" })
   add({ source = "max397574/better-escape.nvim" })
@@ -125,12 +125,6 @@ end)
 -- deps later: programming tools
 later(function()
   if vim.g.vscode == nil then
-    -- vim plugins: markdown and logs tools
-    add({ source = "vimwiki/vimwiki" })
-    add({ source = "dhruvasagar/vim-table-mode" })
-    add({ source = "ferrine/md-img-paste.vim" })
-    add({ source = "MTDL9/vim-log-highlighting" })
-    -- nvim plugins
     add({ source = "nvim-treesitter/nvim-treesitter" })
     add({ source = "Vigemus/iron.nvim" })
     add({ source = "stevearc/conform.nvim" })

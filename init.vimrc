@@ -16,22 +16,24 @@ else
 endif
 
 exe 'source '. s:path_package.'pack/deps/vim/plug.vim'
+let g:lst_plugin = ['dstein64/vim-startuptime',
+            \'tpope/vim-repeat',
+            \'unblevable/quick-scope',
+            \'svermeulen/vim-cutlass',
+            \'907th/vim-auto-save',
+            \'airblade/vim-rooter',
+            \'vimwiki/vimwiki',
+            \'dhruvasagar/vim-table-mode',
+            \'ferrine/md-img-paste.vim',
+            \'MTDL9/vim-log-highlighting']
 
 
 if !has('nvim')
-    call plug#begin(s:path_package.'pack/deps/opt/')
     "universal plugins
-    Plug 'dstein64/vim-startuptime'
-    Plug 'unblevable/quick-scope'
-    Plug 'tpope/vim-repeat'
-    Plug 'svermeulen/vim-cutlass'
-    Plug '907th/vim-auto-save'
-    Plug 'airblade/vim-rooter'
-    " markdown & log plugins
-    Plug 'vimwiki/vimwiki'
-    Plug 'dhruvasagar/vim-table-mode',{'on':'TableModeToggle'}
-    Plug 'ferrine/md-img-paste.vim', {'for':['markdown','vimwiki']}
-    Plug 'MTDL9/vim-log-highlighting', {'for':['log']}
+    call plug#begin(s:path_package.'pack/deps/opt/')
+    for plugin in g:lst_plugin
+        Plug plugin
+    endfor
     call plug#end()
     "vim specifit
     call plug#begin(s:path_package.'pack/deps/vim/')
@@ -57,9 +59,6 @@ endif
 
 
 exe 'source '.g:WorkDir.'config/univ_config.vimrc'
-"if has("nvim")
-"    exe 'luafile '.g:WorkDir.'config/univ_config.lua'
-"endif
 
 if exists('g:vscode')
     exe 'source '.g:WorkDir.'config/vscode_config.vimrc'
