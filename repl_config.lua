@@ -110,6 +110,8 @@ vim.api.nvim_create_autocmd("FileType", {
       vim.cmd("norm! j")
     end, { buffer = args.buf, desc = "repl_send_tree" })
   end,
+  -- sync black call
+  vim.keymap.set("n", "<localleader>==", ":!black %<cr>"),
 })
 
 require("conform").setup({
@@ -134,18 +136,18 @@ vim.api.nvim_create_user_command("Format", function(args)
     range = range,
   })
 end, { range = true })
--- async black call
-vim.keymap.set("n", "==", "<cmd>Format<cr>", { desc = "conform_format" })
--- sync black call
-vim.keymap.set("n", "<leader>==", ":!black %<cr>")
--- autocmd FileType vim nnoremap == ggVG=<C-o> for vim_format
+
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = "vim",
+  pattern = "*",
   callback = function(args)
-    vim.keymap.set("n", "==", "ggVG=<C-o>", { buffer = args.buf, desc = "vim_format" })
+    if vim.bo.filetype == "vim" then
+      -- autocmd FileType vim nnoremap == ggVG=<C-o> for vim_format
+      vim.keymap.set("n", "==", "ggVG=<C-o>", { buffer = args.buf, desc = "vim_format" })
+    else
+      vim.keymap.set("n", "==", "<cmd>Format<cr>", { desc = "conform_format" })
+    end
   end,
 })
-
 
 local gitsigns = require("gitsigns")
 gitsigns.setup({
