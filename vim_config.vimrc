@@ -44,3 +44,4 @@ let g:undotree_WindowLayout = 2
 nnoremap <leader>fu :UndotreeToggle<CR>
 
 runtime macros/sandwich/keymap/surround.vim
+:command! PU PlugUpdate

@@ -21,6 +21,10 @@ end
 -- Set up 'mini.deps' (customize to your liking)
 require("mini.deps").setup({ path = { package = path_package } })
 
+vim.api.nvim_create_user_command('PU', function()
+    vim.cmd("DepsUpdate")
+end, { desc = 'DepsUpdate' })
+
 local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 
 local build = function(args)
