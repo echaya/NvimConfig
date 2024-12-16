@@ -444,7 +444,7 @@ starter.setup({
   evaluate_single = true,
   items = {
     starter.sections.sessions(10, true),
-    -- starter.sections.recent_files(10, false),
+    starter.sections.recent_files(10, false),
     -- starter.sections.builtin_actions(),
     { action = "Telescope find_files", name = "ff: Find Files", section = "Telescope" },
     { action = "Telescope find_files", name = "fo: Find Old Files", section = "Telescope" },
@@ -468,7 +468,7 @@ starter.setup({
 ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
 ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝]],
   }, "\n"),
-  query_updaters = [[abcdefghilmoqrstuvwxyz0123456789_-,.ABCDEFGHIJKLMOQRSTUVWXYZ]],
+  query_updaters = [[abcdefghijklmnopqrstuvwxyz0123456789_-,.ABCDEFGHIJKLMNOPQRSTUVWXYZ]],
 })
 vim.cmd([[
   augroup MiniStarterJK
