@@ -444,10 +444,14 @@ starter.setup({
   evaluate_single = true,
   items = {
     starter.sections.sessions(10, true),
-    starter.sections.recent_files(10, false),
+    -- starter.sections.recent_files(10, false),
     -- starter.sections.builtin_actions(),
-    { action = "PU", name = "U: Update Plugins", section = "Builtin actions" },
+    { action = "Telescope find_files", name = "ff: Find Files", section = "Telescope" },
+    { action = "Telescope find_files", name = "fo: Find Old Files", section = "Telescope" },
+    { action = "DepsUpdate", name = "pu: Update", section = "Plugin" },
+    { action = "DepsClean", name = "pc: Clean", section = "Plugin" },
     { action = "enew", name = "E: New Buffer", section = "Builtin actions" },
+    { action = "lua MiniFiles.open()", name = "B: Browse Files", section = "Builtin actions" },
     { action = "qall!", name = "Q: Quit Neovim", section = "Builtin actions" },
   },
   content_hooks = {
