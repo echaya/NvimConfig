@@ -94,7 +94,7 @@ now(function()
   add({ source = "neovim/nvim-lspconfig" })
   add({ source = "dnlhc/glance.nvim" })
   add({ source = "Vigemus/iron.nvim" })
-  dofile(vim.g.WorkDir .. "config/lsp_config.lua")
+  dofile(vim.g.WorkDir .. "config/lsp_repl_config.lua")
 end)
 
 -- deps later: programming tools
@@ -140,7 +140,7 @@ later(function()
     add({ source = "lewis6991/gitsigns.nvim" })
     add({ source = "sindrets/diffview.nvim" })
     add({ source = "MeanderingProgrammer/render-markdown.nvim" })
-    dofile(vim.g.WorkDir .. "config/repl_config.lua")
+    dofile(vim.g.WorkDir .. "config/code_utils_config.lua")
   else
     dofile(vim.g.WorkDir .. "config/vscode_config.lua")
   end
