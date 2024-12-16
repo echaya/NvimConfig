@@ -16,10 +16,11 @@ else
 endif
 
 exe 'source '. s:path_package.'pack/deps/vim/plug.vim'
-let g:lst_plugin = ['dstein64/vim-startuptime',
+let g:lst_plugin = [
+            \'dstein64/vim-startuptime',
+            \'svermeulen/vim-cutlass',
             \'tpope/vim-repeat',
             \'unblevable/quick-scope',
-            \'svermeulen/vim-cutlass',
             \'907th/vim-auto-save',
             \'airblade/vim-rooter',
             \'vimwiki/vimwiki',

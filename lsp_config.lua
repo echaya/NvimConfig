@@ -143,6 +143,7 @@ vim.api.nvim_create_autocmd("FileType", {
         },
         repl_open_cmd = view.split.vertical.botright(function()
           return math.max(vim.o.columns * 0.4, 80)
+
         end),
       },
       keymaps = {},
