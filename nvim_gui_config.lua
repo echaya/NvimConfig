@@ -439,7 +439,21 @@ vim.api.nvim_create_autocmd("RecordingLeave", {
   group = vim.api.nvim_create_augroup("NoiceMacroNotficationDismiss", { clear = true }),
 })
 
-require("mini.starter").setup()
+local starter = require("mini.starter")
+starter.setup({
+  evaluate_single = true,
+  items = {
+    starter.sections.sessions(10, true),
+    starter.sections.recent_files(10, false),
+    -- starter.sections.recent_files(10, true),
+    starter.sections.builtin_actions(),
+  },
+  content_hooks = {
+    starter.gen_hook.adding_bullet(),
+    -- starter.gen_hook.indexing('all', { 'Builtin actions' }),
+    starter.gen_hook.padding(vim.o.columns * 0.4, 10),
+  },
+})
 
 vim.o.sessionoptions =
   "buffers,curdir,folds,globals,help,localoptions,resize,tabpages,winpos,winsize"
