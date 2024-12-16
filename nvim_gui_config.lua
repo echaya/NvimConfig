@@ -445,15 +445,34 @@ starter.setup({
   items = {
     starter.sections.sessions(10, true),
     starter.sections.recent_files(10, false),
-    -- starter.sections.recent_files(10, true),
-    starter.sections.builtin_actions(),
+    -- starter.sections.builtin_actions(),
+    { action = "PU", name = "U: Update Plugins", section = "Builtin actions" },
+    { action = "enew", name = "E: New Buffer", section = "Builtin actions" },
+    { action = "qall!", name = "Q: Quit Neovim", section = "Builtin actions" },
   },
   content_hooks = {
     starter.gen_hook.adding_bullet(),
-    -- starter.gen_hook.indexing('all', { 'Builtin actions' }),
     starter.gen_hook.padding(vim.o.columns * 0.4, 10),
   },
+  footer = os.date(),
+  header = table.concat({
+    [[
+███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
+████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
+██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
+██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
+██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
+╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝]],
+  }, "\n"),
+  query_updaters = [[abcdefghilmoqrstuvwxyz0123456789_-,.ABCDEFGHIJKLMOQRSTUVWXYZ]],
 })
+vim.cmd([[
+  augroup MiniStarterJK
+    au!
+    au User MiniStarterOpened nmap <buffer> <c-j> <Cmd>lua MiniStarter.update_current_item('next')<CR>
+    au User MiniStarterOpened nmap <buffer> <c-k> <Cmd>lua MiniStarter.update_current_item('prev')<CR>
+  augroup END
+]])
 
 vim.o.sessionoptions =
   "buffers,curdir,folds,globals,help,localoptions,resize,tabpages,winpos,winsize"
