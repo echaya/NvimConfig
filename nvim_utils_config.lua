@@ -205,19 +205,6 @@ vim.api.nvim_create_autocmd("User", {
   end,
 })
 
-require("marks").setup({
-  -- which builtin marks to show. default {}
-  builtin_marks = {},
-  default_mappings = false,
-  mappings = {
-    set = "m",
-    toggle = "mm",
-    next = "mj",
-    prev = "mk",
-    delete_buf = "dmm",
-  },
-})
-
 -- delete jk binding in vim mode
 -- for vscode it is handled on vscode level (composite-keys)
 require("better_escape").setup({

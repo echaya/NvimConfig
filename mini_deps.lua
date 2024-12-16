@@ -84,7 +84,6 @@ later(function()
         post_install = build,
       },
     })
-    add({ source = "chentoast/marks.nvim" })
     add({ source = "stevearc/dressing.nvim" })
     dofile(vim.g.WorkDir .. "config/nvim_utils_config.lua")
   end
