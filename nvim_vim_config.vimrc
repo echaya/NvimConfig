@@ -128,6 +128,9 @@ nnoremap [q <cmd>cp<CR>
 nnoremap ]q <cmd>cn<CR>
 :command CC cclose
 
+" delete mark X. dma will delete mark a, dmX will delete mark X
+nnoremap dm :execute 'delmarks '.nr2char(getchar())<cr>
+
 " auto root change by vim-roooter
 let g:rooter_targets = '/,*'
 let g:rooter_buftypes = ['']
