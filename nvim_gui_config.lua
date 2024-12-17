@@ -462,7 +462,7 @@ starter.setup({
   },
   content_hooks = {
     starter.gen_hook.adding_bullet(),
-    starter.gen_hook.padding(vim.o.columns * 0.4, 10),
+    starter.gen_hook.padding(vim.o.columns * 0.4, vim.o.lines * 0.25),
   },
   footer = os.date(),
   header = table.concat({
