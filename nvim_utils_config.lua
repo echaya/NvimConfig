@@ -359,3 +359,20 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     vim.highlight.on_yank({ higroup = "Visual", timeout = 500 })
   end,
 })
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = {
+    "help",
+    "startuptime",
+    "qf",
+    "lspinfo",
+    "man",
+    "checkhealth",
+    "noice",
+  },
+  callback = function()
+    vim.keymap.set("n", "<ESC>", "<cmd>close<CR>", { buffer = true, silent = true })
+    vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = true, silent = true })
+    vim.bo.buflisted = false
+  end,
+})
