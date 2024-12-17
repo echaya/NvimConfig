@@ -7,7 +7,7 @@ vim.keymap.set({ "n" }, "s", "<Plug>(leap-forward-to)")
 vim.keymap.set({ "n" }, "S", "<Plug>(leap-backward-to)")
 vim.keymap.set({ "x", "o" }, "z", "<Plug>(leap-forward-to)", { desc = "leap forward textobj" })
 vim.keymap.set({ "x", "o" }, "Z", "<Plug>(leap-backward-to)", { desc = "leap back textobj" })
-vim.keymap.set({ "n" }, "<leader>s", "<Plug>(leap-from-window)", { desc = "leap from window" })
+vim.keymap.set({ "n" }, "gs", "<Plug>(leap-from-window)", { desc = "leap from window" })
 leap.opts.preview_filter = function()
   return false
 end
@@ -116,8 +116,12 @@ require("mini.operators").setup({
     prefix = "gp",
     reindent_linewise = true,
   },
+  sort = {
+    prefix = "ga",
+  },
 })
 -- g= for evaluation,
 -- gm for multiplier,
 -- gp for paste from (registery),
--- gs for sort , gx for exchange
+-- ga for alphabetical,
+-- gx for exchange
