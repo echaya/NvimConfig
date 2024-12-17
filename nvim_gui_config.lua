@@ -448,17 +448,22 @@ starter.setup({
     -- starter.sections.builtin_actions(),
     {
       action = "lua MiniSessions.read(MiniSessions.get_latest())",
-      name = "L: load latest",
-      section = "Session",
+      name = "Latest",
+      section = "Sessions",
     },
-    { action = "lua MiniSessions.select('read')", name = "S: load session", section = "Session" },
-    { action = "lua MiniFiles.open()", name = "E: file explorer", section = "Telescope" },
-    { action = "Telescope find_files", name = "F: find files", section = "Telescope" },
-    { action = "Telescope oldfiles", name = "O: old files", section = "Telescope" },
-    { action = "DepsUpdate", name = "U: update", section = "Plugin" },
-    { action = "DepsClean", name = "C: clean", section = "Plugin" },
-    { action = "enew", name = "N: new buffer", section = "Builtin actions" },
-    { action = "qall!", name = "Q: quit neovim", section = "Builtin actions" },
+    { action = "lua MiniSessions.select('read')", name = "Saved", section = "Sessions" },
+    {
+      action = "lua MiniSessions.select('delete')",
+      name = "Delete",
+      section = "Sessions",
+    },
+    { action = "lua MiniFiles.open()", name = "Explorer", section = "File Picker" },
+    { action = "Telescope find_files", name = "Find files", section = "File Picker" },
+    { action = "Telescope oldfiles", name = "Old files", section = "File Picker" },
+    { action = "DepsUpdate", name = "Update", section = "Plugin" },
+    { action = "DepsClean", name = "Clean", section = "Plugin" },
+    { action = "enew", name = "New buffer", section = "Builtin actions" },
+    { action = "qall!", name = "Quit neovim", section = "Builtin actions" },
   },
   content_hooks = {
     starter.gen_hook.adding_bullet(),
@@ -516,10 +521,13 @@ vim.keymap.set(
 )
 vim.keymap.set(
   "n",
-  "<leader>fS",
+  "<leader>ds",
   "<cmd>lua MiniSessions.select('delete')<cr>",
-  { desc = "find_session_to_del" }
+  { desc = "delete_session" }
 )
+vim.keymap.set("n", "<leader>fS", function()
+  save_session()
+end, { desc = "save_session" })
 
 icon = require("mini.icons")
 icon.setup()
