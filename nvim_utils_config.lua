@@ -5,6 +5,10 @@ local vimgrep_arguments = { unpack(telescopeConfig.values.vimgrep_arguments) }
 local actions = require("telescope.actions")
 
 vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "find_file" })
+vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "find_tags" })
+vim.keymap.set("n", "<leader>fp", function()
+  builtin.find_files({ cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "site") })
+end, { desc = "find_plugin" })
 vim.keymap.set("n", "<leader>gg", builtin.live_grep, { desc = "live_grep" })
 vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "find_buffers" })
 vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "find_keymaps" })
@@ -246,7 +250,6 @@ require("better_escape").setup({
   },
 })
 
-
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "markdown", "vimwiki" },
   callback = function(args)
@@ -277,8 +280,6 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 require("mini.trailspace").setup()
-
-
 
 if vim.fn.has("linux") == 1 then
   local function paste()
@@ -324,7 +325,6 @@ require("mini.git").setup()
 --   desc = "Disable 'mini.indentscope' in markdown buffer",
 -- })
 
-
 local wk = require("which-key")
 wk.setup({
   present = "modern",
@@ -353,7 +353,6 @@ wk.setup({
     bt = {},
   },
 })
-
 
 vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function()
