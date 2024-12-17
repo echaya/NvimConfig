@@ -90,7 +90,7 @@ later(function()
 end)
 
 -- deps later: lsp and iron
-now(function()
+later(function()
   add({ source = "neovim/nvim-lspconfig" })
   add({ source = "dnlhc/glance.nvim" })
   add({ source = "Vigemus/iron.nvim" })
