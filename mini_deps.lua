@@ -26,20 +26,19 @@ vim.api.nvim_create_user_command("PU", function()
 end, { desc = "DepsUpdate" })
 
 -- turn auto save off on acwrite
+local disabled_buftype = { "acwrite", "oil" }
 vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
   callback = function()
     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-      -- Don't save while there's any 'nofile' buffer open.
-      if vim.api.nvim_get_option_value("buftype", { buf = buf }) == "acwrite" then
-        if vim.g.auto_save == 1 then
-          vim.notify("auto save is OFF", "warn")
-          vim.g.auto_save = 0
-        end
+      buf_type = vim.api.nvim_get_option_value("buftype", { buf = buf })
+      if vim.tbl_contains(disabled_buftype, buf_type) and vim.g.auto_save == 1 then
+        vim.notify("vim.g.auto_save = 0 (OFF)", "warn", { title = "AutoSave" })
+        vim.g.auto_save = 0
         return
       end
     end
     if vim.g.auto_save == 0 then
-      vim.notify("auto save is ON", "info")
+      vim.notify("vim.g.auto_save = 1 (ON)", "info", { title = "AutoSave" })
       vim.g.auto_save = 1
     end
   end,
