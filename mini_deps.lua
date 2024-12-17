@@ -52,6 +52,7 @@ local build = function(args)
   vim.print(vim.inspect(obj))
 end
 
+-- control how many vim plugins to be loaded now
 local vim_now_index = 2
 -- deps now: UI & early utilities
 now(function()
