@@ -443,16 +443,22 @@ local starter = require("mini.starter")
 starter.setup({
   evaluate_single = true,
   items = {
-    starter.sections.sessions(10, true),
-    starter.sections.recent_files(10, false),
+    -- starter.sections.sessions(10, true),
+    -- starter.sections.recent_files(10, false),
     -- starter.sections.builtin_actions(),
-    { action = "Telescope find_files", name = "ff: Find Files", section = "Telescope" },
-    { action = "Telescope find_files", name = "fo: Find Old Files", section = "Telescope" },
-    { action = "DepsUpdate", name = "pu: Update", section = "Plugin" },
-    { action = "DepsClean", name = "pc: Clean", section = "Plugin" },
-    { action = "enew", name = "E: New Buffer", section = "Builtin actions" },
-    { action = "lua MiniFiles.open()", name = "B: Browse Files", section = "Builtin actions" },
-    { action = "qall!", name = "Q: Quit Neovim", section = "Builtin actions" },
+    {
+      action = "lua MiniSessions.read(MiniSessions.get_latest())",
+      name = "L: load latest",
+      section = "Session",
+    },
+    { action = "lua MiniSessions.select('read')", name = "S: load session", section = "Session" },
+    { action = "lua MiniFiles.open()", name = "E: file explorer", section = "Telescope" },
+    { action = "Telescope find_files", name = "F: find files", section = "Telescope" },
+    { action = "Telescope oldfiles", name = "O: old files", section = "Telescope" },
+    { action = "DepsUpdate", name = "U: update", section = "Plugin" },
+    { action = "DepsClean", name = "C: clean", section = "Plugin" },
+    { action = "enew", name = "N: new buffer", section = "Builtin actions" },
+    { action = "qall!", name = "Q: quit neovim", section = "Builtin actions" },
   },
   content_hooks = {
     starter.gen_hook.adding_bullet(),
@@ -468,13 +474,13 @@ starter.setup({
 ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
 ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝]],
   }, "\n"),
-  query_updaters = [[abcdefghijklmnopqrstuvwxyz0123456789_-,.ABCDEFGHIJKLMNOPQRSTUVWXYZ]],
+  query_updaters = [[abcdefghilmnopqrstuvwxyz0123456789_-,.ABCDEFGHILMNOPQRSTUVWXYZ]],
 })
 vim.cmd([[
   augroup MiniStarterJK
     au!
-    au User MiniStarterOpened nmap <buffer> <c-j> <Cmd>lua MiniStarter.update_current_item('next')<CR>
-    au User MiniStarterOpened nmap <buffer> <c-k> <Cmd>lua MiniStarter.update_current_item('prev')<CR>
+    au User MiniStarterOpened nmap <buffer> j <Cmd>lua MiniStarter.update_current_item('next')<CR>
+    au User MiniStarterOpened nmap <buffer> k <Cmd>lua MiniStarter.update_current_item('prev')<CR>
   augroup END
 ]])
 
