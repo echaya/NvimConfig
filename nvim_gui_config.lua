@@ -93,7 +93,37 @@ icon.setup()
 icon.mock_nvim_web_devicons()
 vim.g.nvim_web_devicons = 1
 
-require('mini.statusline').setup()
+require("mini.statusline").setup({
+  content = {
+    active = function()
+      local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 10000 })
+      local git = MiniStatusline.section_git({ trunc_width = 40 })
+      local diff = MiniStatusline.section_diff({ trunc_width = 75 })
+      local diagnostics = MiniStatusline.section_diagnostics({ trunc_width = 75 })
+      local lsp = MiniStatusline.section_lsp({ trunc_width = 75 })
+      local filename = MiniStatusline.section_filename({ trunc_width = 140 })
+      local fileinfo = MiniStatusline.section_fileinfo({ trunc_width = 140 })
+
+      return MiniStatusline.combine_groups({
+        { hl = mode_hl, strings = { mode } },
+        { hl = "MiniStatuslineDevinfo", strings = { git, diff } },
+        "%<", -- Mark general truncate point
+        { hl = "MiniStatuslineFilename", strings = { filename } },
+        "%=", -- End left alignment
+        { hl = "MiniStatuslineFileinfo", strings = { fileinfo } },
+        { hl = "MiniStatuslineFileinfo", strings = { diagnostics } },
+        { hl = mode_hl, strings = { tostring(vim.api.nvim_buf_line_count(0)) } },
+      })
+    end,
+  },
+})
+local format_summary = function(data)
+  local summary = vim.b[data.buf].minigit_summary
+  vim.b[data.buf].minigit_summary_string = summary.head_name or ""
+end
+
+local au_opts = { pattern = "MiniGitUpdated", callback = format_summary }
+vim.api.nvim_create_autocmd("User", au_opts)
 
 require("satellite").setup({
   handlers = {
