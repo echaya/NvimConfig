@@ -64,7 +64,6 @@ now(function()
   end
   add({ source = "folke/snacks.nvim" })
   add({ source = "rebelot/kanagawa.nvim" })
-  add({ source = "nvim-lualine/lualine.nvim" })
   add({ source = "SmiteshP/nvim-navic" })
   add({ source = "lewis6991/satellite.nvim" })
   add({
