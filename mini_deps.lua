@@ -64,7 +64,6 @@ now(function()
   end
   add({ source = "folke/snacks.nvim" })
   add({ source = "rebelot/kanagawa.nvim" })
-  add({ source = "nvim-lualine/lualine.nvim" })
   add({ source = "SmiteshP/nvim-navic" })
   add({ source = "lewis6991/satellite.nvim" })
   add({
@@ -102,6 +101,16 @@ later(function()
       source = "nvim-telescope/telescope-fzf-native.nvim",
       hooks = {
         post_install = build,
+        post_checkout = build,
+      },
+    })
+    add({
+      source = "danielfalk/smart-open.nvim",
+      checkout = "0.3.x",
+      monitor = "main",
+      depends = {
+        "kkharji/sqlite.lua",
+        "nvim-telescope/telescope-fzf-native.nvim",
       },
     })
     add({ source = "stevearc/dressing.nvim" })
