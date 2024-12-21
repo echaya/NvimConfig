@@ -1,103 +1,31 @@
 -- Set up nvim-cmp.
-local cmp = require("cmp")
-local luasnip = require("luasnip")
-
+local cmp = require("blink.cmp")
 cmp.setup({
-  snippet = {
-    expand = function(args)
-      require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
-    end,
+  keymap = {
+    preset = "none",
+    ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
+    ["<C-e>"] = { "hide", "fallback" },
+    ["<space>"] = { "select_and_accept", "fallback" },
+    ["<CR>"] = { "select_and_accept", "fallback" },
+
+    ["<C-u>"] = { "scroll_documentation_up", "fallback" },
+    ["<C-d>"] = { "scroll_documentation_down", "fallback" },
+
+    ["<Tab>"] = { "select_next", "snippet_forward", "fallback" },
+    ["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
   },
-  window = {
-    completion = cmp.config.window.bordered(),
-    documentation = cmp.config.window.bordered(),
+
+  appearance = {
+    use_nvim_cmp_as_default = true,
+    nerd_font_variant = "mono",
   },
-  mapping = cmp.mapping.preset.insert({
-    ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-    ["<C-f>"] = cmp.mapping.scroll_docs(4),
-    ["<C-Space>"] = cmp.mapping.complete(),
-    ["<C-e>"] = cmp.mapping.abort(),
-    ["<CR>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        if luasnip.expandable() then
-          luasnip.expand()
-        else
-          cmp.confirm({
-            select = true,
-          })
-        end
-      else
-        fallback()
-      end
-    end),
-
-    ["<Tab>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.locally_jumpable(1) then
-        luasnip.jump(1)
-      else
-        fallback()
-      end
-    end, { "i", "s" }),
-
-    ["<S-Tab>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.locally_jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end, { "i", "s" }),
-  }),
-
-  sources = cmp.config.sources({
-    { name = "async_path" },
-  }, {
-    { name = "luasnip" },
-    { name = "nvim_lsp" },
-  }, {
-    { name = "buffer" },
-  }),
-  matching = {
-    disallow_fuzzy_matching = true,
-    disallow_fullfuzzy_matching = true,
-    disallow_partial_fuzzy_matching = true,
-    disallow_partial_matching = false,
-    disallow_prefix_unmatching = true,
-    disallow_symbol_nonprefix_matching = false,
-  },
-})
-
--- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline({ "/", "?" }, {
-  mapping = cmp.mapping.preset.cmdline(),
   sources = {
-    { name = "buffer" },
+    default = { "snippets", "lsp", "path", "buffer" },
   },
-})
-
--- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline(":", {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = cmp.config.sources({
-    { name = "async_path" },
-  }, {
-    { name = "cmdline" },
-  }),
-})
-
--- Setup luasnip
-require("luasnip.loaders.from_vscode").lazy_load()
-require("luasnip").filetype_extend("vimwiki", { "markdown" })
-luasnip.config.set_config({
-  region_check_events = "InsertEnter",
-  delete_check_events = "InsertLeave",
 })
 
 -- Setup Autocomplete
-require('mini.pairs').setup()
+require("mini.pairs").setup()
 
 require("conform").setup({
   formatters_by_ft = {
@@ -258,4 +186,3 @@ require("nvim-treesitter.configs").setup({
   },
 })
 vim.treesitter.language.register("markdown", "vimwiki")
-
