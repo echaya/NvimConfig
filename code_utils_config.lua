@@ -27,7 +27,6 @@ cmp.setup({
   },
 })
 
--- Setup Autocomplete
 require("mini.pairs").setup()
 
 require("conform").setup({
