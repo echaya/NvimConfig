@@ -113,7 +113,7 @@ later(function()
         "nvim-telescope/telescope-fzf-native.nvim",
       },
     })
-    -- add({ source = "stevearc/dressing.nvim" })
+    add({ source = "stevearc/dressing.nvim" })
     dofile(vim.g.WorkDir .. "config/nvim_utils_config.lua")
   end
 end)
