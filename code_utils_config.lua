@@ -22,6 +22,9 @@ cmp.setup({
   sources = {
     default = { "snippets", "lsp", "path", "buffer" },
   },
+  fuzzy = {
+    prebuilt_binaries = { download = false },
+  },
 })
 
 -- Setup Autocomplete
