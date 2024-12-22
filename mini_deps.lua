@@ -108,23 +108,23 @@ later(function()
   end
 end)
 
--- deps later: lsp and iron
-later(function()
-  add({ source = "neovim/nvim-lspconfig" })
-  add({ source = "dnlhc/glance.nvim" })
-  add({ source = "Vigemus/iron.nvim" })
-  dofile(vim.g.WorkDir .. "config/lsp_repl_config.lua")
-end)
+if vim.g.vscode == nil then
+  -- deps later: lsp and iron
+  later(function()
+    add({ source = "neovim/nvim-lspconfig" })
+    add({ source = "dnlhc/glance.nvim" })
+    add({ source = "Vigemus/iron.nvim" })
+    dofile(vim.g.WorkDir .. "config/lsp_repl_config.lua")
+  end)
 
--- deps later: programming tools
-later(function()
-  if vim.g.vscode == nil then
+  -- deps later: programming tools
+  later(function()
     add({
       source = "saghen/blink.cmp",
       depends = {
         "echaya/friendly-snippets",
       },
-      checkout = "v0.8.0", -- check releases for latest tag
+      checkout = "v0.8.1", -- check releases for latest tag
     })
     add({
       source = "nvim-treesitter/nvim-treesitter",
@@ -134,13 +134,12 @@ later(function()
         end,
       },
     })
-    add({ source = "L3MON4D3/LuaSnip" })
     add({ source = "stevearc/conform.nvim" })
     add({ source = "lewis6991/gitsigns.nvim" })
     add({ source = "sindrets/diffview.nvim" })
     add({ source = "MeanderingProgrammer/render-markdown.nvim" })
     dofile(vim.g.WorkDir .. "config/code_utils_config.lua")
-  else
-    dofile(vim.g.WorkDir .. "config/vscode_config.lua")
-  end
-end)
+  end)
+else
+  dofile(vim.g.WorkDir .. "config/vscode_config.lua")
+end
