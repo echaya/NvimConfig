@@ -86,4 +86,6 @@ nnoremap X D
 
 " quick-scope specs
 let g:qs_lazy_highlight = 0
-let g:sqlite_clib_path = 'c:\\tools\\CliTools\\sqlite3.dll'
+if has("win32")
+    let g:sqlite_clib_path = 'c:/tools/CliTools/sqlite3.dll'
+endif

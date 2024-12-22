@@ -101,9 +101,19 @@ later(function()
       source = "nvim-telescope/telescope-fzf-native.nvim",
       hooks = {
         post_install = build,
+        post_checkout = build,
       },
     })
-    add({ source = "stevearc/dressing.nvim" })
+    add({
+      source = "danielfalk/smart-open.nvim",
+      checkout = "0.3.x",
+      monitor = "main",
+      depends = {
+        "kkharji/sqlite.lua",
+        "nvim-telescope/telescope-fzf-native.nvim",
+      },
+    })
+    -- add({ source = "stevearc/dressing.nvim" })
     dofile(vim.g.WorkDir .. "config/nvim_utils_config.lua")
   end
 end)
