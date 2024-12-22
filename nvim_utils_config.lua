@@ -11,7 +11,9 @@ vim.keymap.set("n", "<leader>fp", function()
   builtin.find_files({ cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "site") })
 end, { desc = "find_plugin" })
 vim.keymap.set("n", "<leader>gg", builtin.live_grep, { desc = "live_grep" })
-vim.keymap.set("n", "<leader><leader>", "<cmd>Telescope smart_open<cr>", { desc = "smart_open" })
+vim.keymap.set("n", "<leader><leader>", function()
+  require("telescope").extensions.smart_open.smart_open()
+end, { desc = "smart_open" })
 vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "find_keymaps" })
 -- vim.keymap.set("n", "<leader>fg", builtin.git_commits, { desc = "git_commits" })
 -- vim.keymap.set("n", "<leader>ss", builtin.spell_suggest, { desc = "spell_suggest" })
@@ -84,6 +86,10 @@ telescope.setup({
       layout_config = {
         preview_height = 0.7,
       },
+    },
+    smart_open = {
+      match_algorithm = "fzf",
+      result_limit = 40,
     },
   },
 })
