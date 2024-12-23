@@ -26,6 +26,7 @@ cmp.setup({
   fuzzy = {
     prebuilt_binaries = { download = false },
   },
+  completion = { list = { selection = "manual" } },
 })
 
 require("mini.pairs").setup()
