@@ -106,7 +106,7 @@ local get_navic_info = function(args)
   end
 end
 
-require("mini.tabline").setup()
+-- require("mini.tabline").setup()
 require("mini.statusline").setup({
   content = {
     active = function()
@@ -243,36 +243,57 @@ vim.cmd([[
   augroup END
 ]])
 
-vim.o.sessionoptions =
-  "buffers,curdir,folds,globals,help,localoptions,resize,skiprtp,tabpages,winpos,winsize"
-
+vim.o.sessionoptions = "buffers,curdir,folds,globals,help,localoptions,resize,skiprtp,tabpages"
 mini_session = require("mini.sessions")
 mini_session.setup({
-  autoread = false,
-  directory = vim.fn.stdpath("data") .. "/session/",
   file = "",
   hooks = {
     pre = { read = save_session },
   },
 })
--- auto save session
-local save_session = function()
-  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-    -- Don't save while there's any 'nofile' buffer open.
-    if vim.api.nvim_get_option_value("filetype", { buf = buf }) == "" then
-      return
+
+-- save session functions copy from nvim-session-manager
+local function is_restorable(buffer)
+  if #vim.api.nvim_buf_get_option(buffer, "bufhidden") ~= 0 then
+    return false
+  end
+  local buftype = vim.api.nvim_buf_get_option(buffer, "buftype")
+  if #buftype == 0 then
+    -- Normal buffer, check if it listed.
+    if not vim.api.nvim_buf_get_option(buffer, "buflisted") then
+      return false
+    end
+    -- Check if it has a filename.
+    if #vim.api.nvim_buf_get_name(buffer) == 0 then
+      return false
+    end
+  elseif buftype ~= "terminal" and buftype ~= "help" then
+    -- Buffers other then normal, terminal and help are impossible to restore.
+    return false
+  end
+  return true
+end
+
+local clean_up_buffer = function()
+  -- Remove all non-file and utility buffers because they cannot be saved.
+  for _, buffer in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_is_valid(buffer) and not is_restorable(buffer) then
+      vim.api.nvim_buf_delete(buffer, { force = true })
     end
   end
+  -- Clear all passed arguments to avoid re-executing them.
+  if vim.fn.argc() > 0 then
+    vim.api.nvim_command("%argdel")
+  end
+end
+
+local save_session = function()
+  clean_up_buffer()
   local cwd = vim.fn.getcwd()
   cwd = cwd:gsub("[:/\\]$", ""):gsub(":", ""):gsub("[/\\]", "_")
   mini_session.write(cwd)
 end
 
-vim.api.nvim_create_autocmd({ "VimLeavePre" }, {
-  callback = function()
-    save_session()
-  end,
-})
 vim.keymap.set(
   "n",
   "<leader>fs",
