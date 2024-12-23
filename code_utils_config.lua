@@ -5,6 +5,7 @@ cmp.setup({
     preset = "none",
     ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
     ["<C-e>"] = { "hide", "fallback" },
+    ["<Esc>"] = { "hide", "fallback" },
     -- ["<space>"] = { "select_and_accept", "fallback" },
     ["<CR>"] = { "select_and_accept", "fallback" },
 
