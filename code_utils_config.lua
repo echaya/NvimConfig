@@ -1,13 +1,12 @@
--- Set up nvim-cmp.
+-- setup cmp
 local cmp = require("blink.cmp")
 cmp.setup({
   keymap = {
     preset = "none",
-    ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
-    ["<C-e>"] = { "hide", "fallback" },
+    ["<C-e>"] = { "show", "show_documentation", "hide_documentation" },
     ["<Esc>"] = { "hide", "fallback" },
-    -- ["<space>"] = { "select_and_accept", "fallback" },
-    ["<CR>"] = { "select_and_accept", "fallback" },
+    ["<space>"] = { "accept", "fallback" },
+    ["<CR>"] = { "accept", "fallback" },
 
     ["<C-u>"] = { "scroll_documentation_up", "fallback" },
     ["<C-d>"] = { "scroll_documentation_down", "fallback" },
