@@ -107,6 +107,7 @@ local get_navic_info = function(args)
 end
 
 -- require("mini.tabline").setup()
+require("mini.tabline").setup()
 require("mini.statusline").setup({
   content = {
     active = function()
