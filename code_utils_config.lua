@@ -4,9 +4,17 @@ cmp.setup({
   keymap = {
     preset = "none",
     ["<C-e>"] = { "show", "show_documentation", "hide_documentation" },
-    ["<Esc>"] = { "hide", "fallback" },
-    ["<space>"] = { "accept", "fallback" },
-    ["<CR>"] = { "accept", "fallback" },
+    ["<Esc>"] = { "cancel", "fallback" },
+    ["<CR>"] = {
+      function(cmp)
+        if vim.api.nvim_get_mode().mode == "c" then
+          return cmp.accept()
+        else
+          return cmp.select_and_accept()
+        end
+      end,
+      "fallback",
+    },
 
     ["<C-u>"] = { "scroll_documentation_up", "fallback" },
     ["<C-d>"] = { "scroll_documentation_down", "fallback" },
@@ -25,7 +33,13 @@ cmp.setup({
   fuzzy = {
     prebuilt_binaries = { download = false },
   },
-  completion = { list = { selection = "manual" } },
+  completion = {
+    list = { selection = "auto_insert" },
+    documentation = {
+      auto_show = true,
+      auto_show_delay_ms = 500,
+    },
+  },
 })
 
 require("mini.pairs").setup()
