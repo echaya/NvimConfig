@@ -128,7 +128,7 @@ if vim.g.vscode == nil then
   end)
 
   -- deps later: programming tools
-  vim.g.update_blink = true
+  vim.g.update_blink = false
   later(function()
     add({
       source = "saghen/blink.cmp",

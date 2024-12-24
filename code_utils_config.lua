@@ -6,13 +6,7 @@ cmp.setup({
     ["<C-e>"] = { "show", "show_documentation", "hide_documentation" },
     ["<Esc>"] = { "cancel", "fallback" },
     ["<CR>"] = {
-      function(cmp)
-        if vim.api.nvim_get_mode().mode == "c" then
-          return cmp.accept()
-        else
-          return cmp.select_and_accept()
-        end
-      end,
+      "accept",
       "fallback",
     },
 
@@ -34,7 +28,11 @@ cmp.setup({
     prebuilt_binaries = { download = vim.g.update_blink },
   },
   completion = {
-    list = { selection = "auto_insert" },
+    list = {
+      selection = function(ctx)
+        return ctx.mode == "cmdline" and "auto_insert" or "preselect"
+      end,
+    },
     documentation = {
       auto_show = true,
       auto_show_delay_ms = 500,
