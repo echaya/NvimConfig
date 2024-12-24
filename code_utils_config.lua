@@ -31,7 +31,7 @@ cmp.setup({
     default = { "snippets", "lsp", "path", "buffer" },
   },
   fuzzy = {
-    prebuilt_binaries = { download = false },
+    prebuilt_binaries = { download = vim.g.update_blink },
   },
   completion = {
     list = { selection = "auto_insert" },

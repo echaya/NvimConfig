@@ -128,13 +128,14 @@ if vim.g.vscode == nil then
   end)
 
   -- deps later: programming tools
+  vim.g.update_blink = true
   later(function()
     add({
       source = "saghen/blink.cmp",
       depends = {
         "echaya/friendly-snippets",
       },
-      checkout = "v0.8.1", -- check releases for latest tag
+      checkout = "v0.8.2", -- check releases for latest tag
     })
     add({
       source = "nvim-treesitter/nvim-treesitter",
