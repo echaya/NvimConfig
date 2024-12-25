@@ -143,7 +143,6 @@ vim.api.nvim_create_autocmd("FileType", {
         },
         repl_open_cmd = view.split.vertical.botright(function()
           return math.max(vim.o.columns * 0.4, 80)
-
         end),
       },
       keymaps = {},
@@ -239,5 +238,20 @@ vim.api.nvim_create_autocmd("FileType", {
     end, { buffer = args.buf, desc = "repl_send_tree" })
     -- sync black call
     vim.keymap.set("n", "<localleader>==", ":!black %<cr>")
+  end,
+})
+
+-- in cmdline use :lua =XYZ to shorthand :lua print(XYZ)
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "lua",
+  callback = function(args)
+    vim.keymap.set(
+      "n",
+      "<localleader><localleader>f",
+      "<cmd>source %<CR>",
+      { buffer = args.buf, desc = "execute lua file" }
+    )
+    vim.keymap.set("n", "<localleader>l", ":.lua<cr>", { buffer = args.buf, desc = "execute lua line" })
+    vim.keymap.set("v", "<localleader>l", ":lua<cr>", { buffer = args.buf, desc = "execute lua line" })
   end,
 })
