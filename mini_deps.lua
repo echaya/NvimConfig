@@ -150,7 +150,7 @@ if vim.g.vscode == nil then
     add({ source = "lewis6991/gitsigns.nvim" })
     add({ source = "sindrets/diffview.nvim" })
     add({ source = "MeanderingProgrammer/render-markdown.nvim" })
-    dofile(vim.g.WorkDir .. "config/code_utils_config.lua")
+    dofile(vim.g.WorkDir .. "config/code_config.lua")
   end)
 else
   dofile(vim.g.WorkDir .. "config/vscode_config.lua")
