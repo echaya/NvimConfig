@@ -124,6 +124,7 @@ end, { range = true })
 
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "*",
+  group = vim.api.nvim_create_augroup("conform-format", { clear = true }),
   callback = function(args)
     if vim.bo.filetype == "vim" then
       -- autocmd FileType vim nnoremap == ggVG=<C-o> for vim_format

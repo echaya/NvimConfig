@@ -128,6 +128,7 @@ vim.diagnostic.config({
 -- REPL using iron
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "python",
+  group = vim.api.nvim_create_augroup("python-repl", { clear = true }),
   callback = function(args)
     local iron = require("iron.core")
     local view = require("iron.view")
@@ -244,6 +245,7 @@ vim.api.nvim_create_autocmd("FileType", {
 -- in cmdline use :lua =XYZ to shorthand :lua print(XYZ)
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "lua",
+  group = vim.api.nvim_create_augroup("lua-repl", { clear = true }),
   callback = function(args)
     vim.keymap.set(
       "n",
@@ -251,7 +253,17 @@ vim.api.nvim_create_autocmd("FileType", {
       "<cmd>source %<CR>",
       { buffer = args.buf, desc = "execute lua file" }
     )
-    vim.keymap.set("n", "<localleader>l", ":.lua<cr>", { buffer = args.buf, desc = "execute lua line" })
-    vim.keymap.set("v", "<localleader>l", ":lua<cr>", { buffer = args.buf, desc = "execute lua line" })
+    vim.keymap.set(
+      "n",
+      "<localleader>l",
+      ":.lua<cr>",
+      { buffer = args.buf, desc = "execute lua line" }
+    )
+    vim.keymap.set(
+      "v",
+      "<CR>",
+      ":lua<cr>",
+      { buffer = args.buf, desc = "execute lua line" }
+    )
   end,
 })

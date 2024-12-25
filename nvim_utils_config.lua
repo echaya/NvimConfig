@@ -200,6 +200,7 @@ end
 
 vim.api.nvim_create_autocmd("User", {
   pattern = "MiniFilesBufferCreate",
+  group = vim.api.nvim_create_augroup("mini-file-buffer", { clear = true }),
   callback = function(args)
     local buf_id = args.data.buf_id
     -- Tweak left-hand side of mapping to your liking
@@ -261,6 +262,7 @@ require("better_escape").setup({
 
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "markdown", "vimwiki" },
+  group = vim.api.nvim_create_augroup("render-markdown", { clear = true }),
   callback = function(args)
     require("render-markdown").setup({
       file_types = { "markdown", "vimwiki" },
@@ -364,6 +366,7 @@ wk.setup({
 })
 
 vim.api.nvim_create_autocmd("TextYankPost", {
+  group = vim.api.nvim_create_augroup("yank-highlight", { clear = true }),
   callback = function()
     vim.highlight.on_yank({ higroup = "Visual", timeout = 500 })
   end,
@@ -379,6 +382,7 @@ vim.api.nvim_create_autocmd("FileType", {
     "checkhealth",
     "noice",
   },
+  group = vim.api.nvim_create_augroup("q-to-close", { clear = true }),
   callback = function()
     vim.keymap.set("n", "<ESC>", "<cmd>close<CR>", { buffer = true, silent = true })
     vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = true, silent = true })
