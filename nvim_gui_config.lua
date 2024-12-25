@@ -21,8 +21,6 @@ snacks.toggle
   .option("background", { off = "light", on = "dark", name = "Dark Background" })
   :map("<leader>tb")
 snacks.toggle.inlay_hints():map("<leader>th")
-Snacks.toggle.indent():map("<leader>ti")
-Snacks.toggle.dim():map("<leader>tD")
 
 vim.keymap.set("n", "<leader>un", function()
   Snacks.notifier.hide()
