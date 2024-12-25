@@ -28,6 +28,7 @@ end, { desc = "DepsUpdate" })
 -- turn auto save off on acwrite
 local disabled_buftype = { "acwrite", "oil" }
 vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
+  group = vim.api.nvim_create_augroup("disable-auto-save", { clear = true }),
   callback = function()
     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
       buf_type = vim.api.nvim_get_option_value("buftype", { buf = buf })
