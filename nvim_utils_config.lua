@@ -389,3 +389,27 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.bo.buflisted = false
   end,
 })
+
+vim.api.nvim_create_user_command("PU", function()
+  vim.cmd("DepsUpdate")
+end, { desc = "DepsUpdate" })
+
+-- turn auto save off on acwrite
+local disabled_buftype = { "acwrite", "oil" }
+vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
+  group = vim.api.nvim_create_augroup("disable-auto-save", { clear = true }),
+  callback = function()
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+      buf_type = vim.api.nvim_get_option_value("buftype", { buf = buf })
+      if vim.tbl_contains(disabled_buftype, buf_type) and vim.g.auto_save == 1 then
+        vim.notify("vim.g.auto_save = 0 (OFF)", "warn", { title = "AutoSave" })
+        vim.g.auto_save = 0
+        return
+      end
+    end
+    if vim.g.auto_save == 0 then
+      vim.notify("vim.g.auto_save = 1 (ON)", "info", { title = "AutoSave" })
+      vim.g.auto_save = 1
+    end
+  end,
+})
