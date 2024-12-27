@@ -45,3 +45,8 @@ nnoremap <leader>fu :UndotreeToggle<CR>
 
 runtime macros/sandwich/keymap/surround.vim
 :command! PU PlugUpdate
+
+" auto root change by vim-roooter
+let g:rooter_targets = '/,*'
+let g:rooter_buftypes = ['']
+let g:rooter_patterns = ['.git']

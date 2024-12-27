@@ -22,7 +22,6 @@ let g:lst_plugin = [
             \'tpope/vim-repeat',
             \'unblevable/quick-scope',
             \'907th/vim-auto-save',
-            \'airblade/vim-rooter',
             \'vimwiki/vimwiki',
             \'dhruvasagar/vim-table-mode',
             \'ferrine/md-img-paste.vim',
@@ -54,6 +53,7 @@ if !has('nvim')
     Plug 'tpope/vim-fugitive'
     Plug 'godlygeek/tabular', {'for':['markdown','vimwiki']} "prerequisite for vim-markdown
     Plug 'plasticboy/vim-markdown', {'for':['markdown','vimwiki']}
+    Plug 'airblade/vim-rooter'
     call plug#end()
 endif
 
@@ -104,7 +104,7 @@ highlight SpellRare guifg=#63D6FD
 highlight SpellLocal gui=undercurl guifg=#FFFEE2
 
 highlight link SatelliteCursor CursorLineNr
-highlight link SatelliteMark Type
+highlight link SatelliteMark Function
 
 highlight TermCursor guifg=#D27E99
 

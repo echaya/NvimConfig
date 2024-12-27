@@ -377,3 +377,7 @@ vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
     end
   end,
 })
+
+local mini_misc = require("mini.misc")
+mini_misc.setup_auto_root()
+mini_misc.setup_restore_cursor()
