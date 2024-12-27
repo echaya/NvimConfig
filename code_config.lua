@@ -233,3 +233,33 @@ require("nvim-treesitter.configs").setup({
   },
 })
 vim.treesitter.language.register("markdown", "vimwiki")
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "markdown", "vimwiki" },
+  group = vim.api.nvim_create_augroup("render-markdown", { clear = true }),
+  callback = function(args)
+    require("render-markdown").setup({
+      file_types = { "markdown", "vimwiki" },
+      enabled = true,
+      code = {
+        sign = false,
+        width = "block",
+        right_pad = 1,
+      },
+      heading = {
+        sign = false,
+        icons = {},
+      },
+      bullet = {
+        left_pad = 0,
+        right_pad = 1,
+      },
+    })
+    vim.keymap.set(
+      "n",
+      "<F5>",
+      "<cmd>RenderMarkdown toggle<cr>",
+      { buffer = args.buf, desc = "Render Markdown" }
+    )
+  end,
+})
