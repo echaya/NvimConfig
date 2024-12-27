@@ -147,12 +147,6 @@ local filter_hide = function(fs_entry)
   return not vim.startswith(fs_entry.name, ".")
 end
 
-local gio_open = function()
-  local fs_entry = require("mini.files").get_fs_entry()
-  vim.notify(vim.inspect(fs_entry))
-  vim.fn.system(string.format("gio open '%s'", fs_entry.path))
-end
-
 local toggle_dotfiles = function()
   show_dotfiles = not show_dotfiles
   local new_filter = show_dotfiles and filter_show or filter_hide
@@ -162,6 +156,7 @@ end
 local open_totalcmd = function(path)
   local cur_entry_path = MiniFiles.get_fs_entry().path
   -- local cur_directory = vim.fs.dirname(cur_entry_path)
+  -- vim.fn.system(string.format("gio open '%s'", cur_entry_path))
   vim.api.nvim_command(string.format("!%s /O /T /L='%s'", vim.g.total_cmd_exe, cur_entry_path))
   MiniFiles.close()
 end
@@ -219,7 +214,6 @@ vim.api.nvim_create_autocmd("User", {
   end,
 })
 
--- delete jk binding in vim mode
 -- for vscode it is handled on vscode level (composite-keys)
 require("better_escape").setup({
   timeout = 150,
@@ -258,36 +252,6 @@ require("better_escape").setup({
       },
     },
   },
-})
-
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "markdown", "vimwiki" },
-  group = vim.api.nvim_create_augroup("render-markdown", { clear = true }),
-  callback = function(args)
-    require("render-markdown").setup({
-      file_types = { "markdown", "vimwiki" },
-      enabled = true,
-      code = {
-        sign = false,
-        width = "block",
-        right_pad = 1,
-      },
-      heading = {
-        sign = false,
-        icons = {},
-      },
-      bullet = {
-        left_pad = 0,
-        right_pad = 1,
-      },
-    })
-    vim.keymap.set(
-      "n",
-      "<F5>",
-      "<cmd>RenderMarkdown toggle<cr>",
-      { buffer = args.buf, desc = "Render Markdown" }
-    )
-  end,
 })
 
 require("mini.trailspace").setup()
