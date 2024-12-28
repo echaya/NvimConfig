@@ -140,17 +140,17 @@ gitsigns.setup({
   signs = {
     add = { text = "" }, -- dashed / double line for unstaged
     change = { text = "" },
-    delete = { text = "_" },
-    topdelete = { text = "‾" },
-    changedelete = { text = "~" },
+    delete = { text = "=", show_count = true },
+    topdelete = { text = "=", show_count = true },
+    changedelete = { text = "󰾞", show_count = true },
     untracked = { text = "󰇝" },
   },
   signs_staged = {
     add = { text = "┃" },
     change = { text = "┃" },
-    delete = { text = "󱘹" },
-    topdelete = { text = "󱘹" },
-    changedelete = { text = "󰜥" },
+    delete = { text = "_", show_count = true },
+    topdelete = { text = "‾", show_count = true },
+    changedelete = { text = "~", show_count = true },
     untracked = { text = "┆" },
   },
   on_attach = function(bufnr)
