@@ -141,7 +141,7 @@ gitsigns.setup({
     add = { text = "" }, -- dashed / double line for unstaged
     change = { text = "" },
     delete = { text = "=", show_count = true },
-    topdelete = { text = "=", show_count = true },
+    topdelete = { text = "󰘣", show_count = true },
     changedelete = { text = "󰾞", show_count = true },
     untracked = { text = "󰇝" },
   },
@@ -153,6 +153,7 @@ gitsigns.setup({
     changedelete = { text = "~", show_count = true },
     untracked = { text = "┆" },
   },
+  count_chars = { "₁", "₂", "₃", "₄", "₅", "₆", "₇", "₈", "₉", ["+"] = "+" },
   on_attach = function(bufnr)
     local function map(mode, l, r, opts)
       opts = opts or {}
