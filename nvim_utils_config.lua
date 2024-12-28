@@ -15,8 +15,6 @@ vim.keymap.set("n", "<leader><leader>", function()
   require("telescope").extensions.smart_open.smart_open()
 end, { desc = "smart_open" })
 vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "find_keymaps" })
--- vim.keymap.set("n", "<leader>fg", builtin.git_commits, { desc = "git_commits" })
--- vim.keymap.set("n", "<leader>ss", builtin.spell_suggest, { desc = "spell_suggest" })
 vim.keymap.set("n", '<leader>"', builtin.registers, { desc = "registers" })
 vim.keymap.set("n", "<leader>`", builtin.marks, { desc = "marks" })
 vim.keymap.set("n", "<leader>fo", builtin.oldfiles, { desc = "old_files" })
@@ -50,6 +48,7 @@ telescope.setup({
         ["<C-p>"] = actions.cycle_history_prev,
         ["<C-k>"] = actions.move_selection_previous,
         ["<C-j>"] = actions.move_selection_next,
+        -- C-v to select and split vertically
         ["<C-x>"] = false,
         ["<C-s>"] = actions.select_horizontal,
         ["<CR>"] = select_one_or_multi,
@@ -76,8 +75,7 @@ telescope.setup({
       fuzzy = true, -- false will only do exact matching
       override_generic_sorter = true, -- override the generic sorter
       override_file_sorter = true, -- override the file sorter
-      case_mode = "smart_case", -- or "ignore_case" or "respect_case"
-      -- the default case_mode is "smart_case"
+      case_mode = "smart_case", -- or "ignore_case" or "respect_case", default "smart_case"
     },
     undo = {
       use_delta = true,
@@ -198,17 +196,11 @@ vim.api.nvim_create_autocmd("User", {
   group = vim.api.nvim_create_augroup("mini-file-buffer", { clear = true }),
   callback = function(args)
     local buf_id = args.data.buf_id
-    -- Tweak left-hand side of mapping to your liking
     vim.keymap.set("n", "g.", toggle_dotfiles, { buffer = buf_id, desc = "Toggle dot file" })
     vim.keymap.set("n", "gt", open_totalcmd, { buffer = buf_id, desc = "Open in TotalCmd" })
     vim.keymap.set("n", "gx", open_file, { buffer = buf_id, desc = "Open Externally" })
     vim.keymap.set("n", "g`", files_set_cwd, { buffer = args.data.buf_id, desc = "Set dir" })
-    vim.keymap.set(
-      "n",
-      "<esc>",
-      require("mini.files").close,
-      { buffer = buf_id, desc = "Close (alt.)" }
-    )
+    vim.keymap.set("n", "<esc>", require("mini.files").close, { buffer = buf_id, desc = "Close" })
     map_split(buf_id, "gs", "belowright horizontal")
     map_split(buf_id, "gv", "belowright vertical")
   end,
