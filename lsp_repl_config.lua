@@ -27,9 +27,9 @@ require("nvim-treesitter.configs").setup({
   },
 })
 vim.treesitter.language.register("markdown", "vimwiki")
+
 -- Setup LSP
 local lsp = require("lspconfig")
-
 local custom_attach = function(client, bufnr)
   -- vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
   -- vim.keymap.set("n", "gD", ":vsplit | lua vim.lsp.buf.definition()<CR>")
@@ -46,10 +46,15 @@ local custom_attach = function(client, bufnr)
   -- )
   vim.keymap.set("n", "gh", "<cmd>lua vim.lsp.buf.hover()<CR>")
   vim.keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.definition()<CR>")
+  vim.keymap.set("n", "gD", "<cmd>Lspsaga goto_definition <CR>")
+  vim.keymap.set("n", "gd", "<CMD>Lspsaga peek_definition<CR>")
   vim.keymap.set("n", "gR", "<cmd>lua vim.lsp.buf.references()<CR>")
+  vim.keymap.set("n", "gr", "<CMD>Lspsaga finder<CR>")
   vim.keymap.set("n", "<F2>", "<cmd>lua vim.lsp.buf.rename()<CR>")
   vim.keymap.set("n", "gl", "<cmd>lua vim.diagnostic.open_float()<CR>")
   -- ]d and [d goto next and prev diagnostic
+  vim.keymap.set("n", "]d", "<cmd>Lspsaga diagnostic_jump_next<CR>")
+  vim.keymap.set("n", "[d", "<cmd>Lspsaga diagnostic_jump_prev<CR>")
   vim.keymap.set("n", "]D", "<cmd>lua vim.diagnostic.goto_next({severity='error'})<CR>")
   vim.keymap.set("n", "[D", "<cmd>lua vim.diagnostic.goto_prev({severity='error'})<CR>")
   -- end
@@ -103,6 +108,8 @@ vim.diagnostic.config({
     end,
   },
 })
+
+require('lspsaga').setup({})
 
 -- REPL using iron
 vim.api.nvim_create_autocmd("FileType", {

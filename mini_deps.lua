@@ -106,6 +106,7 @@ if vim.g.vscode == nil then
         end,
       },
     })
+    add({ source = "nvimdev/lspsaga.nvim" })
     dofile(vim.g.WorkDir .. "config/lsp_repl_config.lua")
   end)
 
