@@ -29,7 +29,6 @@ require("nvim-treesitter.configs").setup({
 vim.treesitter.language.register("markdown", "vimwiki")
 -- Setup LSP
 local lsp = require("lspconfig")
-local navic = require("nvim-navic")
 
 local custom_attach = function(client, bufnr)
   -- vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
@@ -55,7 +54,6 @@ local custom_attach = function(client, bufnr)
   -- ]d and [d goto next and prev diagnostic
   vim.keymap.set("n", "]D", "<cmd>lua vim.diagnostic.goto_next({severity='error'})<CR>")
   vim.keymap.set("n", "[D", "<cmd>lua vim.diagnostic.goto_prev({severity='error'})<CR>")
-  navic.attach(client, bufnr)
   -- end
 end
 

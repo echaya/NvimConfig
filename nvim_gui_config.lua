@@ -91,20 +91,6 @@ icon.setup()
 icon.mock_nvim_web_devicons()
 vim.g.nvim_web_devicons = 1
 
-local navic = require("nvim-navic")
-navic.setup()
-local get_navic_info = function(args)
-  if navic.is_available() then
-    info = navic.get_location()
-  else
-    info = ""
-  end
-  if string.len(info) > 0 then
-    return " 󱣱  " .. info
-  else
-    return ""
-  end
-end
 
 require("mini.tabline").setup()
 require("mini.statusline").setup({
@@ -117,13 +103,12 @@ require("mini.statusline").setup({
       local lsp = MiniStatusline.section_lsp({ trunc_width = 75 })
       local filename = MiniStatusline.section_filename({ trunc_width = 140 })
       local fileinfo = MiniStatusline.section_fileinfo({ trunc_width = 140 })
-      local navic_info = get_navic_info()
 
       return MiniStatusline.combine_groups({
         { hl = mode_hl, strings = { mode } },
         { hl = "MiniStatuslineDevinfo", strings = { git, diff, diagnostics } },
         "%<", -- Mark general truncate point
-        { hl = "MiniStatuslineFilename", strings = { filename, navic_info } },
+        { hl = "MiniStatuslineFilename", strings = { filename } },
         "%=", -- End left alignment
         { hl = "MiniStatuslineFileinfo", strings = { fileinfo } },
         { hl = mode_hl, strings = { tostring(vim.api.nvim_buf_line_count(0)) } },
