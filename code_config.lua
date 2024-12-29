@@ -178,6 +178,12 @@ gitsigns.setup({
       end
     end, { desc = "prev_hunk" })
 
+    map("n", "]C", function()
+      gitsigns.nav_hunk("last")
+    end, { desc = "Last Hunk" })
+    map("n", "[C", function()
+      gitsigns.nav_hunk("first")
+    end, { desc = "First Hunk" })
     -- Actions
     map("n", "<leader>hs", gitsigns.stage_hunk, { desc = "hunk_stage" })
     map("n", "<leader>hr", gitsigns.reset_hunk, { desc = "hunk_reset" })
@@ -194,7 +200,7 @@ gitsigns.setup({
     map({ "n", "v" }, "<leader>hh", gitsigns.preview_hunk, { desc = "hunk_hover" })
     map("n", "<leader>hd", "<cmd>DiffviewFileHistory %<CR>", { desc = "diffview: file_history" })
     map("v", "<leader>hd", ":'<,'>DiffviewFileHistory<CR>", { desc = "diffview: hunk_history" })
-    map("n", "<leader>td", gitsigns.toggle_deleted, { desc = "gitsign: toggle_deleted" })
+    map("n", "<leader>td", gitsigns.toggle_deleted, { desc = "gitsigns: toggle_deleted" })
 
     -- Text object
     map({ "o", "x" }, "gh", ":<C-U>Gitsigns select_hunk<CR>")
