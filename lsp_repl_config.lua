@@ -41,10 +41,11 @@ local custom_attach = function(client, bufnr)
   vim.keymap.set("n", "gh", "<cmd>Lspsaga hover_doc<CR>", { desc = "hover doc" })
   vim.keymap.set("n", "gD", "<cmd>Lspsaga goto_definition<CR>", { desc = "goto definition" })
   vim.keymap.set("n", "gd", "<CMD>Lspsaga peek_definition<CR>", { desc = "peek definition" })
-  vim.keymap.set("n", "gR", "<cmd>lua vim.lsp.buf.references()<CR>", { desc = "lsp_references" })
+  vim.keymap.set("n", "gR", "<cmd>lua vim.lsp.buf.references()<CR>", { desc = "lsp references" })
   vim.keymap.set("n", "gr", "<cmd>Lspsaga finder<CR>", { desc = "peek reference" })
   vim.keymap.set("n", "<F2>", "<cmd>lua vim.lsp.buf.rename()<CR>")
-  vim.keymap.set("n", "<F3>", "<cmd>Lspsaga outline<CR>", { desc = "lsp_outline" })
+  vim.keymap.set("n", "<F3>", "<cmd>Lspsaga outline<CR>", { desc = "lspsaga outline" })
+  vim.keymap.set("n", "<F4>", "<cmd>Lspsaga code_action<CR>", { desc = "code action" })
   vim.keymap.set(
     "n",
     "gl",
