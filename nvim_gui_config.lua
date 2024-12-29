@@ -100,7 +100,8 @@ local get_navic_info = function(args)
     info = ""
   end
   if string.len(info) > 0 then
-    return " 󱣱  " .. info
+    -- return " 󱣱  " .. info
+    return info
   else
     return ""
   end
@@ -123,8 +124,9 @@ require("mini.statusline").setup({
         { hl = mode_hl, strings = { mode } },
         { hl = "MiniStatuslineDevinfo", strings = { git, diff, diagnostics } },
         "%<", -- Mark general truncate point
-        { hl = "MiniStatuslineFilename", strings = { filename, navic_info } },
+        { hl = "MiniStatuslineFilename", strings = { filename } },
         "%=", -- End left alignment
+        { hl = "MiniStatuslineFilename", strings = { navic_info } },
         { hl = "MiniStatuslineFileinfo", strings = { fileinfo } },
         { hl = mode_hl, strings = { tostring(vim.api.nvim_buf_line_count(0)) } },
       })
@@ -247,7 +249,7 @@ vim.cmd([[
   augroup END
 ]])
 
-vim.o.sessionoptions = "buffers,curdir,folds,globals,help,localoptions,resize,skiprtp,tabpages"
+vim.o.sessionoptions = "buffers,curdir,folds,globals,help,skiprtp,tabpages"
 mini_session = require("mini.sessions")
 mini_session.setup({
   file = "",
