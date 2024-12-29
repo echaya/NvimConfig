@@ -33,33 +33,34 @@ local lsp = require("lspconfig")
 local custom_attach = function(client, bufnr)
   -- vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
   -- vim.keymap.set("n", "gD", ":vsplit | lua vim.lsp.buf.definition()<CR>")
-  -- vim.keymap.set("n", "gD", function()
-  --   vim.cmd("vsplit")
-  --   require("telescope.builtin").lsp_definitions({ reuse_win = true })
-  -- end, { desc = "V_lsp_definition" })
   -- vim.keymap.set('n','gr','<cmd>lua vim.lsp.buf.references()<CR>')
-  -- vim.keymap.set(
-  --   "n",
-  --   "gR",
-  --   require("telescope.builtin").lsp_references,
-  --   { desc = "lsp_references" }
-  -- )
-  vim.keymap.set("n", "gh", "<cmd>lua vim.lsp.buf.hover()<CR>")
-  vim.keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.definition()<CR>")
-  vim.keymap.set("n", "gD", "<cmd>Lspsaga goto_definition <CR>")
-  vim.keymap.set("n", "gd", "<CMD>Lspsaga peek_definition<CR>")
-  vim.keymap.set("n", "gR", "<cmd>lua vim.lsp.buf.references()<CR>")
-  vim.keymap.set("n", "gr", "<CMD>Lspsaga finder<CR>")
-  vim.keymap.set("n", "<F2>", "<cmd>lua vim.lsp.buf.rename()<CR>")
-  vim.keymap.set("n", "gl", "<cmd>lua vim.diagnostic.open_float()<CR>")
+  -- vim.keymap.set("n", "gh", "<cmd>lua vim.lsp.buf.hover()<CR>")
   -- ]d and [d goto next and prev diagnostic
-  vim.keymap.set("n", "]d", "<cmd>Lspsaga diagnostic_jump_next<CR>")
-  vim.keymap.set("n", "[d", "<cmd>Lspsaga diagnostic_jump_prev<CR>")
-  vim.keymap.set("n", "]D", "<cmd>lua vim.diagnostic.goto_next({severity='error'})<CR>")
-  vim.keymap.set("n", "[D", "<cmd>lua vim.diagnostic.goto_prev({severity='error'})<CR>")
-  -- end
+  -- vim.keymap.set("n", "]D", "<cmd>lua vim.diagnostic.goto_next({severity='error'})<CR>")
+  -- vim.keymap.set("n", "[D", "<cmd>lua vim.diagnostic.goto_prev({severity='error'})<CR>")
+  vim.keymap.set("n", "gh", "<cmd>Lspsaga hover_doc<CR>", { desc = "hover doc" })
+  vim.keymap.set("n", "gD", "<cmd>Lspsaga goto_definition<CR>", { desc = "goto definition" })
+  vim.keymap.set("n", "gd", "<CMD>Lspsaga peek_definition<CR>", { desc = "peek definition" })
+  vim.keymap.set("n", "gR", "<cmd>lua vim.lsp.buf.references()<CR>", { desc = "lsp_references" })
+  vim.keymap.set("n", "gr", "<cmd>Lspsaga finder<CR>", { desc = "peek reference" })
+  vim.keymap.set("n", "<F2>", "<cmd>lua vim.lsp.buf.rename()<CR>")
+  vim.keymap.set("n", "<F3>", "<cmd>Lspsaga outline<CR>", { desc = "lsp_outline" })
+  vim.keymap.set(
+    "n",
+    "gl",
+    "<cmd>lua vim.diagnostic.open_float()<CR>",
+    { desc = "diagnostic open_float" }
+  )
+  vim.keymap.set("n", "]d", "<cmd>Lspsaga diagnostic_jump_next<CR>", { desc = "next diagnostic" })
+  vim.keymap.set("n", "[d", "<cmd>Lspsaga diagnostic_jump_prev<CR>", { desc = "prev diagnostic" })
+  local lsp_d = require("lspsaga.diagnostic")
+  vim.keymap.set("n", "[D", function()
+    lsp_d:goto_prev({ severity = vim.diagnostic.severity.ERROR })
+  end, { desc = "prev error" })
+  vim.keymap.set("n", "]D", function()
+    lsp_d:goto_next({ severity = vim.diagnostic.severity.ERROR })
+  end, { desc = "next error" })
 end
-
 
 lsp.basedpyright.setup({
   on_attach = custom_attach,
@@ -109,7 +110,36 @@ vim.diagnostic.config({
   },
 })
 
-require('lspsaga').setup({})
+require("lspsaga").setup({
+  definition = {
+    keys = {
+      vsplit = { "v", "<CR>" },
+      split = "s",
+      quit = { "q", "<ESC>" },
+    },
+  },
+
+  finder = {
+    keys = {
+      vsplit = "v",
+      split = "s",
+      toggle_or_open = { "o", "<CR>" },
+      quit = { "q", "<ESC>" },
+    },
+  },
+
+  outline = {
+    win_position = "left",
+    keys = {
+      toggle_or_jump = { "o", "<CR>" },
+      quit = { "q", "<ESC>" },
+    },
+  },
+
+  ui = {
+    code_action = "",
+  },
+})
 
 -- REPL using iron
 vim.api.nvim_create_autocmd("FileType", {
@@ -244,11 +274,6 @@ vim.api.nvim_create_autocmd("FileType", {
       ":.lua<cr>",
       { buffer = args.buf, desc = "execute lua line" }
     )
-    vim.keymap.set(
-      "v",
-      "<CR>",
-      ":lua<cr>",
-      { buffer = args.buf, desc = "execute lua line" }
-    )
+    vim.keymap.set("v", "<CR>", ":lua<cr>", { buffer = args.buf, desc = "execute lua line" })
   end,
 })
