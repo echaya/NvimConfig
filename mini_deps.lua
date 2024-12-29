@@ -95,7 +95,7 @@ later(function()
 end)
 
 if vim.g.vscode == nil then
-  -- deps later: lsp and iron
+  -- deps later: lsp, iron and treesitter
   later(function()
     add({ source = "neovim/nvim-lspconfig" })
     add({ source = "dnlhc/glance.nvim" })

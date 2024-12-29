@@ -9,6 +9,7 @@ require("snacks").setup({
   statuscolumn = { enabled = true, refresh = 50 },
   words = { enabled = true },
   indent = { enabled = true },
+  scope = { enabled = true },
   styles = {
     notification = {
       wo = { wrap = true }, -- Wrap notifications
