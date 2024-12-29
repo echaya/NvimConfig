@@ -100,6 +100,14 @@ if vim.g.vscode == nil then
     add({ source = "neovim/nvim-lspconfig" })
     add({ source = "dnlhc/glance.nvim" })
     add({ source = "Vigemus/iron.nvim" })
+    add({
+      source = "nvim-treesitter/nvim-treesitter",
+      hooks = {
+        post_checkout = function()
+          vim.cmd("TSUpdate")
+        end,
+      },
+    })
     dofile(vim.g.WorkDir .. "config/lsp_repl_config.lua")
   end)
 
@@ -112,14 +120,6 @@ if vim.g.vscode == nil then
         "echaya/friendly-snippets",
       },
       checkout = "v0.8.2", -- check releases for latest tag
-    })
-    add({
-      source = "nvim-treesitter/nvim-treesitter",
-      hooks = {
-        post_checkout = function()
-          vim.cmd("TSUpdate")
-        end,
-      },
     })
     add({ source = "stevearc/conform.nvim" })
     add({ source = "lewis6991/gitsigns.nvim" })
