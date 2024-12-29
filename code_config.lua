@@ -232,32 +232,21 @@ hipatterns.setup({
   },
 })
 
-require("nvim-treesitter.configs").setup({
-  -- A list of parser names, or "all" (the listed parsers MUST always be installed)
-  ensure_installed = {
-    "lua",
-    "markdown",
-    "markdown_inline",
-    "python",
-    "query",
-    "vim",
-    "vimdoc",
-    "bash",
+require("render-markdown").setup({
+  file_types = { "markdown", "vimwiki" },
+  enabled = true,
+  code = {
+    sign = false,
+    width = "block",
+    right_pad = 1,
   },
-  sync_install = false,
-  auto_install = false,
-  ignore_install = { "javascript" },
-  highlight = {
-    enable = true,
-    disable = function(lang, buf)
-      local max_filesize = 100 * 1024 -- 100 KB
-      local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-      if ok and stats and stats.size > max_filesize then
-        return true
-      end
-    end,
-    additional_vim_regex_highlighting = false,
+  heading = {
+    sign = false,
+    icons = {},
+  },
+  bullet = {
+    left_pad = 0,
+    right_pad = 1,
   },
 })
-vim.treesitter.language.register("markdown", "vimwiki")
-
+vim.keymap.set("n", "<F5>", "<cmd>RenderMarkdown toggle<cr>", { desc = "Render Markdown" })

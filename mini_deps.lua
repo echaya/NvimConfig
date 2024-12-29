@@ -94,13 +94,22 @@ later(function()
   end
 end)
 
--- deps later: lsp and iron
-later(function()
-  add({ source = "neovim/nvim-lspconfig" })
-  add({ source = "dnlhc/glance.nvim" })
-  add({ source = "Vigemus/iron.nvim" })
-  dofile(vim.g.WorkDir .. "config/lsp_repl_config.lua")
-end)
+if vim.g.vscode == nil then
+  -- deps later: lsp and iron
+  later(function()
+    add({ source = "neovim/nvim-lspconfig" })
+    add({ source = "dnlhc/glance.nvim" })
+    add({ source = "Vigemus/iron.nvim" })
+    add({
+      source = "nvim-treesitter/nvim-treesitter",
+      hooks = {
+        post_checkout = function()
+          vim.cmd("TSUpdate")
+        end,
+      },
+    })
+    dofile(vim.g.WorkDir .. "config/lsp_repl_config.lua")
+  end)
 
 -- deps later: programming tools
 later(function()
