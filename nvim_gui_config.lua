@@ -135,7 +135,7 @@ require("satellite").setup({
       symbols = { ">" },
     },
   },
-  excluded_filetypes = { "toggleterm", "NvimTree", "oil", "minifiles" },
+  excluded_filetypes = { "toggleterm", "NvimTree", "oil", "minifiles" , "sagaoutline"},
 })
 
 require("noice").setup({
