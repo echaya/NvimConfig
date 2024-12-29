@@ -142,8 +142,8 @@ nnoremap dm :execute 'delmarks '.nr2char(getchar())<cr>
 :command ReplaceIn %s/#\s*In\[\s*\d*\s*\]\?:/###/g
 
 "table-mode
-nnoremap <leader>tt <cmd>TableModeToggle<CR>
-nnoremap <localleader>t= <cmd>TableModeRealign<CR>
+nnoremap <localleader>tm :TableModeToggle<CR>
+nnoremap <localleader>t= :TableModeRealign<CR>
 let g:table_mode_syntax = 0
 
 "vim-fugitive or mini.git
