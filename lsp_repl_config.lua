@@ -129,6 +129,12 @@ require("lspsaga").setup({
     },
   },
 
+  code_action = {
+    keys = {
+      quit = { "q", "<ESC>" },
+    },
+  },
+
   outline = {
     win_position = "left",
     keys = {
