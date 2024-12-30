@@ -63,6 +63,7 @@ vim.keymap.set("n", "<leader>fu", "<cmd>Telescope undo<cr>", { desc = "undo_hist
 
 telescope.setup({
   defaults = {
+    preview = { filesize_limit = 1.0 }, -- MB,
     -- `hidden = true` is not supported in text grep commands.
     vimgrep_arguments = vimgrep_arguments,
     path_display = { "truncate" },
@@ -395,5 +396,6 @@ vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
 })
 
 local mini_misc = require("mini.misc")
+mini_misc.setup()
 mini_misc.setup_auto_root()
 mini_misc.setup_restore_cursor()
