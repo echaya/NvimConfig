@@ -110,6 +110,7 @@ if vim.g.vscode == nil then
     })
     dofile(vim.g.WorkDir .. "config/lsp_repl_config.lua")
   end)
+end
 
 -- deps later: programming tools
 later(function()
