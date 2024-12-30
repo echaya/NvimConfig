@@ -4,7 +4,46 @@ local telescopeConfig = require("telescope.config")
 local vimgrep_arguments = { unpack(telescopeConfig.values.vimgrep_arguments) }
 local actions = require("telescope.actions")
 
-vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "find_file" })
+my_find_files = function(opts, no_ignore)
+  opts = opts or {}
+  no_ignore = vim.F.if_nil(no_ignore, false)
+  opts.attach_mappings = function(_, map)
+    map({ "n", "i" }, "<C-h>", function(prompt_bufnr) -- <C-h> to toggle modes
+      local prompt = require("telescope.actions.state").get_current_line()
+      require("telescope.actions").close(prompt_bufnr)
+      no_ignore = not no_ignore
+      my_find_files({ default_text = prompt }, no_ignore)
+    end, { desc = "toggle_hidden_n_gitignore" })
+    return true
+  end
+
+  if no_ignore then
+    opts.no_ignore = true
+    opts.hidden = true
+    opts.prompt_title = "Find Files <ALL>"
+    require("telescope.builtin").find_files(opts)
+  else
+    opts.prompt_title = "Find Files"
+    require("telescope.builtin").find_files(opts)
+  end
+end
+
+local select_one_or_multi = function(prompt_bufnr)
+  local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
+  local multi = picker:get_multi_selection()
+  if not vim.tbl_isempty(multi) then
+    require("telescope.actions").close(prompt_bufnr)
+    for _, j in pairs(multi) do
+      if j.path ~= nil then
+        vim.cmd(string.format("%s %s", "edit", j.path))
+      end
+    end
+  else
+    require("telescope.actions").select_default(prompt_bufnr)
+  end
+end
+
+vim.keymap.set("n", "<leader>ff", my_find_files, { desc = "find_file" })
 vim.keymap.set("n", "<leader>bb", builtin.buffers, { desc = "find_buffers" })
 vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "find_tags" })
 vim.keymap.set("n", "<leader>fp", function()
@@ -21,21 +60,6 @@ vim.keymap.set("n", "<leader>fo", builtin.oldfiles, { desc = "old_files" })
 vim.keymap.set("n", "<leader>fw", builtin.grep_string, { desc = "grep_string" })
 vim.keymap.set("n", "<leader>fd", builtin.diagnostics, { desc = "lsp_diagnostics" })
 vim.keymap.set("n", "<leader>fu", "<cmd>Telescope undo<cr>", { desc = "undo_history" })
-
-local select_one_or_multi = function(prompt_bufnr)
-  local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
-  local multi = picker:get_multi_selection()
-  if not vim.tbl_isempty(multi) then
-    require("telescope.actions").close(prompt_bufnr)
-    for _, j in pairs(multi) do
-      if j.path ~= nil then
-        vim.cmd(string.format("%s %s", "edit", j.path))
-      end
-    end
-  else
-    require("telescope.actions").select_default(prompt_bufnr)
-  end
-end
 
 telescope.setup({
   defaults = {
@@ -64,9 +88,9 @@ telescope.setup({
       find_command = {
         "rg",
         "--files",
-        "--hidden",
         "--glob",
         "!**/.git/*",
+        -- "--hidden",
       },
     },
   },
