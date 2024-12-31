@@ -386,6 +386,8 @@ vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
         vim.notify("vim.g.auto_save = 0 (OFF)", "warn", { title = "AutoSave" })
         vim.g.auto_save = 0
         return
+      elseif vim.tbl_contains(disabled_buftype, buf_type) and vim.g.auto_save == 0 then
+        return
       end
     end
     if vim.g.auto_save == 0 then
