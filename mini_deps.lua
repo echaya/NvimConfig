@@ -156,7 +156,7 @@ later(function()
     add({ source = "sindrets/diffview.nvim" })
     add({ source = "MeanderingProgrammer/render-markdown.nvim" })
     dofile(vim.g.WorkDir .. "config/code_config.lua")
-else
-  dofile(vim.g.WorkDir .. "config/vscode_config.lua")
+  else
+    dofile(vim.g.WorkDir .. "config/vscode_config.lua")
   end
 end)

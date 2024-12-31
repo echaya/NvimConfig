@@ -67,10 +67,14 @@ function DebugCell()
 endfunction
 
 function DebugDelete()
-    call SelectVisual()
-    normal <
-    normal '<dd
-    normal `>dd
+    if search("def DebugCell", "w") == 0
+        echo "Debug Cell is not found!"
+    else
+        call SelectVisual()
+        normal <
+        normal '<dd
+        normal `>dd
+    endif
 endfunction
 
 "function RedrawiPython()
