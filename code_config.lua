@@ -13,9 +13,9 @@ cmp.setup({
     documentation = cmp.config.window.bordered(),
   },
   mapping = cmp.mapping.preset.insert({
-    ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-    ["<C-f>"] = cmp.mapping.scroll_docs(4),
-    ["<C-Space>"] = cmp.mapping.complete(),
+    ["<C-u>"] = cmp.mapping.scroll_docs(-4),
+    ["<C-d>"] = cmp.mapping.scroll_docs(4),
+    ["<C-y>"] = cmp.mapping.complete(),
     ["<C-e>"] = cmp.mapping.abort(),
     ["<CR>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
@@ -68,6 +68,10 @@ cmp.setup({
     disallow_prefix_unmatching = true,
     disallow_symbol_nonprefix_matching = false,
   },
+  performance = {
+    debounce = 0,
+    throttle = 0,
+  },
 })
 
 -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
@@ -97,7 +101,7 @@ luasnip.config.set_config({
 })
 
 -- Setup Autocomplete
-require('mini.pairs').setup()
+require("mini.pairs").setup()
 
 require("conform").setup({
   formatters_by_ft = {
@@ -128,7 +132,7 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = function(args)
     if vim.bo.filetype == "vim" then
       -- autocmd FileType vim nnoremap == ggVG=<C-o> for vim_format
-      vim.keymap.set("n", "==", "ggVG=<C-o>", { buffer = args.buf, desc = "vim_format" })
+      vim.keymap.set("n", "==", "ggVG=<C-o>zz", { buffer = args.buf, desc = "vim_format" })
     else
       vim.keymap.set("n", "==", "<cmd>Format<cr>", { desc = "conform_format" })
     end
