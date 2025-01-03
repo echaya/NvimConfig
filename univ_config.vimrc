@@ -17,11 +17,6 @@ inoremap <silent> <c-s-v> <Esc>:set paste<Cr>a<c-r>+<Esc>:set nopaste<Cr>a
 noremap Y y$
 " reselect just pasted block
 nnoremap gV `[v`]
-" kep cursor in the middle of the screen
-nnoremap n nzzzv
-nnoremap N Nzzzv
-nnoremap <C-u> <C-u>zz
-nnoremap <C-d> <C-d>zz
 " join lines by gj
 nnoremap gj J
 nnoremap q: <nop>

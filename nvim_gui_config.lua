@@ -320,3 +320,43 @@ end, { desc = "save_session" })
 icon = require("mini.icons")
 icon.setup()
 icon.mock_nvim_web_devicons()
+
+local animate = require("mini.animate")
+animate.setup({
+  cursor = {
+    timing = animate.gen_timing.linear({ duration = 20, unit = "total" }),
+    path = animate.gen_path.line({
+      predicate = function()
+        return true
+      end,
+    }),
+  },
+  scroll = {
+    timing = animate.gen_timing.linear({ duration = 50, unit = "total" }),
+    subscroll = animate.gen_subscroll.equal({ max_output_steps = 50 }),
+  },
+  resize = { enable = false },
+  open = { enable = false },
+  close = { enable = false },
+})
+vim.keymap.set(
+  "n",
+  "<C-d>",
+  [[<Cmd>lua vim.cmd('normal! <C-d>'); MiniAnimate.execute_after('scroll', 'normal! zvzz')<CR>]]
+)
+vim.keymap.set(
+  "n",
+  "<C-u>",
+  [[<Cmd>lua vim.cmd('normal! <C-u>'); MiniAnimate.execute_after('scroll', 'normal! zvzz')<CR>]]
+)
+
+vim.keymap.set(
+  "n",
+  "n",
+  [[<Cmd>lua vim.cmd('normal! n'); MiniAnimate.execute_after('scroll', 'normal! zvzz')<CR>]]
+)
+vim.keymap.set(
+  "n",
+  "N",
+  [[<Cmd>lua vim.cmd('normal! N'); MiniAnimate.execute_after('scroll', 'normal! zvzz')<CR>]]
+)
