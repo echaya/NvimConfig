@@ -115,7 +115,6 @@ end
 -- deps later: programming tools
 later(function()
   if vim.g.vscode == nil then
-    add({ source = "nvim-treesitter/nvim-treesitter" })
     add({
       source = "iguanacucumber/magazine.nvim",
       name = "nvim-cmp",
@@ -139,14 +138,6 @@ later(function()
     add({
       source = "https://codeberg.org/FelipeLema/cmp-async-path",
       name = "async_path",
-    })
-    add({
-      source = "nvim-treesitter/nvim-treesitter",
-      hooks = {
-        post_checkout = function()
-          vim.cmd("TSUpdate")
-        end,
-      },
     })
     add({ source = "L3MON4D3/LuaSnip" })
     add({ source = "echaya/friendly-snippets" })
