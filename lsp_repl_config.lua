@@ -255,7 +255,7 @@ vim.api.nvim_create_autocmd("FileType", {
     end, { buffer = args.buf, desc = "repl_clear" })
     vim.keymap.set(
       "n",
-      "<localleader>i",
+      "<localleader>]",
       "<cmd>IronFocus<cr>i",
       { buffer = args.buf, desc = "repl_focus" }
     )
@@ -287,11 +287,6 @@ vim.api.nvim_create_autocmd("FileType", {
       ":.lua<cr>",
       { buffer = args.buf, desc = "execute lua line" }
     )
-    vim.keymap.set(
-      "v",
-      "<CR>",
-      ":lua<cr>",
-      { buffer = args.buf, desc = "execute lua line" }
-    )
+    vim.keymap.set("v", "<CR>", ":lua<cr>", { buffer = args.buf, desc = "execute lua line" })
   end,
 })
