@@ -1,154 +1,76 @@
 -- Set up nvim-cmp.
-local cmp = require("cmp")
-local luasnip = require("luasnip")
-
-local lsp_kinds = {
-  Class = " ",
-  Color = " ",
-  Constant = " ",
-  Constructor = " ",
-  Enum = " ",
-  EnumMember = " ",
-  Event = " ",
-  Field = " ",
-  File = " ",
-  Folder = " ",
-  Function = " ",
-  Interface = " ",
-  Keyword = " ",
-  Method = " ",
-  Module = " ",
-  Operator = " ",
-  Property = " ",
-  Reference = " ",
-  Snippet = " ",
-  Struct = " ",
-  Text = " ",
-  TypeParameter = " ",
-  Unit = " ",
-  Value = " ",
-  Variable = " ",
-}
-
+local cmp = require("blink.cmp")
 cmp.setup({
-  snippet = {
-    expand = function(args)
-      require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
-    end,
-  },
-  window = {
-    completion = cmp.config.window.bordered(),
-    documentation = cmp.config.window.bordered(),
+  keymap = {
+    preset = "none",
+    ["<C-e>"] = { "show", "show_documentation", "hide_documentation" },
+    ["<Esc>"] = { "cancel", "fallback" },
+    ["<CR>"] = {
+      "accept",
+      "fallback",
+    },
+
+    ["<C-u>"] = { "scroll_documentation_up", "fallback" },
+    ["<C-d>"] = { "scroll_documentation_down", "fallback" },
+
+    ["<Tab>"] = { "select_next", "snippet_forward", "fallback" },
+    ["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
   },
 
-  formatting = {
-    -- See: https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance
-    format = function(entry, vim_item)
-      -- Set `kind` to "$icon $kind".
-      vim_item.kind = string.format("%s %s", lsp_kinds[vim_item.kind], vim_item.kind)
-      vim_item.menu = ({
-        buffer = "",
-        nvim_lsp = "",
-        luasnip = "",
-        nvim_lua = "",
-        latex_symbols = "",
-      })[entry.source.name]
-      return vim_item
-    end,
+  appearance = {
+    use_nvim_cmp_as_default = true,
+    nerd_font_variant = "mono",
   },
-  mapping = cmp.mapping.preset.insert({
-    ["<C-u>"] = cmp.mapping.scroll_docs(-4),
-    ["<C-d>"] = cmp.mapping.scroll_docs(4),
-    ["<C-y>"] = cmp.mapping.complete(),
-    ["<C-e>"] = cmp.mapping.abort(),
-    ["<Esc>"] = cmp.mapping.abort(),
-    ["<CR>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        if luasnip.expandable() then
-          luasnip.expand()
-        else
-          cmp.confirm({
-            select = true,
-          })
-        end
-      else
-        fallback()
-      end
-    end),
-
-    ["<Tab>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.locally_jumpable(1) then
-        luasnip.jump(1)
-      else
-        fallback()
-      end
-    end, { "i", "s" }),
-
-    ["<S-Tab>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.locally_jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end, { "i", "s" }),
-  }),
-
-  sources = cmp.config.sources({
-    { name = "async_path" },
-  }, {
-    { name = "luasnip" },
-    { name = "nvim_lsp" },
-  }, {
-    { name = "buffer" },
-  }),
-  matching = {
-    disallow_fuzzy_matching = true,
-    disallow_fullfuzzy_matching = true,
-    disallow_partial_fuzzy_matching = true,
-    disallow_partial_matching = false,
-    disallow_prefix_unmatching = true,
-    disallow_symbol_nonprefix_matching = false,
-  },
-  performance = {
-    debounce = 0,
-    throttle = 0,
-  },
-})
-
--- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline({ "/", "?" }, {
-  mapping = cmp.mapping.preset.cmdline(),
   sources = {
-    { name = "buffer" },
+    default = { "snippets", "lsp", "path", "buffer" },
   },
-})
-
--- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline(":", {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = cmp.config.sources({
-    { name = "async_path" },
-  }, {
-    { name = "cmdline" },
-  }),
-})
-
--- Setup luasnip
-require("luasnip.loaders.from_vscode").lazy_load()
-require("luasnip").filetype_extend("vimwiki", { "markdown" })
-luasnip.config.set_config({
-  region_check_events = "InsertEnter",
-  delete_check_events = "InsertLeave",
-})
-
--- Setup Autocomplete
-require("mini.pairs").setup({
-  modes = { insert = true, command = false, terminal = false },
-})
+  fuzzy = {
+    prebuilt_binaries = { download = vim.g.update_blink },
+  },
+  completion = {
+    list = {
+      selection = function(ctx)
+        return ctx.mode == "cmdline" and "auto_insert" or "preselect"
+      end,
+    },
+    documentation = {
+      auto_show = true,
+      auto_show_delay_ms = 250,
+    },
+  },
+  sources = {
+    default = { "lsp", "path", "snippets", "buffer" },
+    cmdline = function()
+      local type = vim.fn.getcmdtype()
+      -- Search forward and backward
+      if type == "/" or type == "?" then
+        return { "buffer" }
+      end
+      -- Commands
+      if type == ":" then
+        return { "cmdline" }
+      end
+      return {}
+    end,
+    providers = {
+      lsp = {
+        min_keyword_length = 2, -- Number of characters to trigger porvider
+        score_offset = 0, -- Boost/penalize the score of the items
+      },
+      path = {
+        min_keyword_length = 0,
+      },
+      snippets = {
+        min_keyword_length = 2,
+      },
+      buffer = {
+        min_keyword_length = 3,
+        max_items = 5,
+      },
+    },
+  },
+})-- Setup Autocomplete
+require("mini.pairs").setup()
 
 require("conform").setup({
   formatters_by_ft = {
