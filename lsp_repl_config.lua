@@ -172,7 +172,7 @@ vim.api.nvim_create_autocmd("FileType", {
           },
         },
         repl_open_cmd = view.split.vertical.botright(function()
-          return math.max(vim.o.columns * 0.4, 80)
+          return math.max(vim.o.columns * 0.35, 80)
         end),
       },
       keymaps = {},
@@ -182,15 +182,14 @@ vim.api.nvim_create_autocmd("FileType", {
       ignore_blank_lines = false, -- ignore blank lines when sending visual select lines
     })
     -- TODO norm! gv after Iron start/restart
-    vim.keymap.set(
-      { "n", "v" },
-      [[<a-\>]],
-      "<cmd>IronRepl<cr>",
-      { buffer = args.buf, desc = "repl_toggle" }
-    )
+    vim.keymap.set({ "n", "v" }, [[<a-\>]], function()
+      vim.cmd("IronRepl")
+      vim.cmd("wincmd =")
+    end, { buffer = args.buf, desc = "repl_toggle" })
     vim.keymap.set({ "n", "v" }, "<localleader>r", function()
       vim.cmd("IronRestart")
       vim.cmd("IronRepl")
+      vim.cmd("wincmd =")
     end, { buffer = args.buf, desc = "repl_restart" })
 
     local send_magic_paste = function()
