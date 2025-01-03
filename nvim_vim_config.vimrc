@@ -143,7 +143,7 @@ nnoremap dm :execute 'delmarks '.nr2char(getchar())<cr>
 :command V vsplit
 :command S split
 :command RemoveTrailingSpace %s/\s\+$//e
-:command CopyLinuxTreesitter !source ~/.config/nvim/config/copy_linux_treesitter.sh
+:command CopySo !source ~/.config/nvim/config/copy_so.sh
 " convert # In[ ]: => ###
 :command ReplaceIn %s/#\s*In\[\s*\d*\s*\]\?:/###/g
 
