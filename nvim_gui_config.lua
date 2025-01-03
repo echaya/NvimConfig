@@ -15,6 +15,15 @@ require("snacks").setup({
       wo = { wrap = true }, -- Wrap notifications
     },
   },
+  zen = {
+    toggles = {
+      dim = false,
+      git_signs = true,
+    },
+  },
+  styles = {
+    zen = { width = 160 },
+  },
 })
 
 snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>ts")
