@@ -341,8 +341,8 @@ animate.setup({
     }),
   },
   scroll = {
-    timing = animate.gen_timing.linear({ duration = 50, unit = "total" }),
-    subscroll = animate.gen_subscroll.equal({ max_output_steps = 50 }),
+    timing = animate.gen_timing.linear({ duration = 40, unit = "total" }),
+    subscroll = animate.gen_subscroll.equal({ max_output_steps = 40 }),
   },
   resize = { enable = false },
   open = { enable = false },
