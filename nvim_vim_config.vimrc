@@ -65,11 +65,14 @@ if has('termguicolors')
 endif
 
 " Navigate buffers. use :bufferN to jump based on buffer number
-noremap <silent> J :bp<CR>
-noremap <silent> K :bn<CR>
+"noremap <silent> J :bp<CR>
+"noremap <silent> K :bn<CR>
 nnoremap <silent> ZX :e #<CR>
 
 "Move to previous/next tabpage
+noremap <silent> K :tabp<CR>
+noremap <silent> J :tabn<CR>
+noremap <silent> T :tabnew<CR>
 noremap <silent> <PageUp> :tabp<CR>
 noremap <silent> <PageDown> :tabn<CR>
 noremap <silent> <Del> :tabc<CR>
