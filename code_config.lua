@@ -5,14 +5,9 @@ cmp.setup({
     preset = "none",
     ["<C-e>"] = { "show", "show_documentation", "hide_documentation" },
     ["<Esc>"] = { "cancel", "fallback" },
-    ["<CR>"] = {
-      "accept",
-      "fallback",
-    },
-
+    ["<CR>"] = { "accept", "fallback" },
     ["<C-u>"] = { "scroll_documentation_up", "fallback" },
     ["<C-d>"] = { "scroll_documentation_down", "fallback" },
-
     ["<Tab>"] = { "select_next", "snippet_forward", "fallback" },
     ["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
   },
@@ -69,7 +64,7 @@ cmp.setup({
       },
     },
   },
-})-- Setup Autocomplete
+}) -- Setup Autocomplete
 require("mini.pairs").setup()
 
 require("conform").setup({
