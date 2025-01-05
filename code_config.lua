@@ -146,7 +146,9 @@ luasnip.config.set_config({
 })
 
 -- Setup Autocomplete
-require("mini.pairs").setup()
+require("mini.pairs").setup({
+  modes = { insert = true, command = false, terminal = false },
+})
 
 require("conform").setup({
   formatters_by_ft = {
