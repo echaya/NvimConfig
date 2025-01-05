@@ -47,11 +47,11 @@ cmp.setup({
       -- Set `kind` to "$icon $kind".
       vim_item.kind = string.format("%s %s", lsp_kinds[vim_item.kind], vim_item.kind)
       vim_item.menu = ({
-        buffer = "[Buffer]",
-        nvim_lsp = "[LSP]",
-        luasnip = "[LuaSnip]",
-        nvim_lua = "[Lua]",
-        latex_symbols = "[LaTeX]",
+        buffer = "",
+        nvim_lsp = "",
+        luasnip = "",
+        nvim_lua = "",
+        latex_symbols = "",
       })[entry.source.name]
       return vim_item
     end,
