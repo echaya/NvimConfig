@@ -44,6 +44,12 @@ function! BetweenCell() abort
     endif
 endfunction
 
+function! JumpCell() abort
+    if search('^'.g:CodeFence, 'W') == 0
+        norm G
+    endif
+endfunction
+
 function! SelectVisual() abort
     if search('^'.g:CodeFence, 'W') == 0
         call BuildFence()
@@ -106,6 +112,7 @@ augroup PythonRepl
     autocmd Filetype python nnoremap <buffer> <localleader>v <cmd>call SelectVisual()<cr>
     autocmd Filetype python nnoremap <buffer> <localleader>db <cmd>call DebugCell()<cr>
     autocmd Filetype python nnoremap <buffer> <localleader>dd <cmd>call DebugDelete()<cr>:'<,'>g/core.debugger.set_trace/d<cr>
+    autocmd Filetype python nnoremap <buffer> <localleader><localleader> <cmd>call JumpCell()<cr>
 augroup END
 
 tnoremap ;cb .to_clipboard()
