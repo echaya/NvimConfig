@@ -98,6 +98,7 @@ tnoremap <A-j> <Cmd>wincmd j<CR>
 tnoremap <A-k> <Cmd>wincmd k<CR>
 tnoremap <A-l> <Cmd>wincmd l<CR>
 tnoremap <localleader>[ <Cmd>wincmd p<CR>
+nnoremap <localleader>[ <Cmd>wincmd p<CR>
 nnoremap <leader>= <Cmd>wincmd =<CR>
 " noremap <silent> <C-F4> :bdelete<CR>:bn<CR>
 " noremap <silent> <C-n> :enew<CR>
