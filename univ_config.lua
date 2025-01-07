@@ -7,7 +7,7 @@ vim.keymap.set({ "n" }, "s", "<Plug>(leap-forward-to)")
 vim.keymap.set({ "n" }, "S", "<Plug>(leap-backward-to)")
 vim.keymap.set({ "x", "o" }, "z", "<Plug>(leap-forward-to)", { desc = "leap forward textobj" })
 vim.keymap.set({ "x", "o" }, "Z", "<Plug>(leap-backward-to)", { desc = "leap back textobj" })
-vim.keymap.set({ "n" }, "<leader>s", "<Plug>(leap-from-window)", { desc = "leap from window" })
+vim.keymap.set({ "n" }, "gs", "<Plug>(leap-from-window)", { desc = "leap from window" })
 leap.opts.preview_filter = function()
   return false
 end
@@ -91,16 +91,21 @@ require("mini.ai").setup({
 
 require("mini.surround").setup({
   mappings = {
-    add = "gsa", -- Add surrounding in Normal and Visual modes
-    delete = "gsd", -- Delete surrounding
-    find = "gsf", -- Find surrounding (to the right)
-    find_left = "gsF", -- Find surrounding (to the left)
-    highlight = "gsh", -- Highlight surrounding
-    replace = "gsr", -- Replace surrounding
-    update_n_lines = "gsn", -- Update `n_lines`  },
+      add = 'ys',
+      delete = 'ds',
+      find = '',
+      find_left = '',
+      highlight = '<leader>s',
+      replace = 'cs',
+      update_n_lines = '',
+      suffix_last = '',
+      suffix_next = '',
   },
   search_method = "cover_or_next",
 })
+vim.keymap.del("x", "ys")
+vim.keymap.set("x", "S", [[:<C-u>lua MiniSurround.add('visual')<CR>]], { silent = true })
+vim.keymap.set("n", "yss", "ys_", { remap = true })
 
 require("mini.operators").setup({
   replace = {
