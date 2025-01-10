@@ -89,14 +89,14 @@ augroup END
 set hidden
 " noremap <silent> <s-j> :bp<CR>
 " noremap <silent> <s-k> :bn<CR>
-noremap <A-h> <C-w><C-h>
-noremap <A-j> <C-w><C-j>
-noremap <A-k> <C-w><C-k>
-noremap <A-l> <C-w><C-l>
-tnoremap <A-h> <Cmd>wincmd h<CR>
-tnoremap <A-j> <Cmd>wincmd j<CR>
-tnoremap <A-k> <Cmd>wincmd k<CR>
-tnoremap <A-l> <Cmd>wincmd l<CR>
+noremap <C-h> <C-w><C-h>
+noremap <C-j> <C-w><C-j>
+noremap <C-k> <C-w><C-k>
+noremap <C-l> <C-w><C-l>
+tnoremap <C-h> <Cmd>wincmd h<CR>
+tnoremap <C-j> <Cmd>wincmd j<CR>
+tnoremap <C-k> <Cmd>wincmd k<CR>
+tnoremap <C-l> <Cmd>wincmd l<CR>
 tnoremap <localleader>[ <Cmd>wincmd p<CR>
 nnoremap <localleader>[ <Cmd>wincmd p<CR>
 nnoremap <leader>= <Cmd>wincmd =<CR>
