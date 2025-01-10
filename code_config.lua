@@ -307,3 +307,43 @@ require("render-markdown").setup({
   },
 })
 vim.keymap.set("n", "<F5>", "<cmd>RenderMarkdown toggle<cr>", { desc = "Render Markdown" })
+
+vim.keymap.set("n", "<leader>q", function()
+  -- require("quicker").toggle()
+  local qf_exists = false
+  for _, win in pairs(vim.fn.getwininfo()) do
+    if win["quickfix"] == 1 then
+      qf_exists = true
+    end
+  end
+  if qf_exists == true then
+    vim.cmd("cclose")
+    return
+  end
+  -- if not vim.tbl_isempty(vim.fn.getqflist()) then
+  vim.cmd("bot copen")
+  -- end
+end, {
+  desc = "Toggle quickfix",
+})
+require("quicker").setup({
+  opts = {
+    winfixheight = false,
+  },
+  keys = {
+    {
+      ">",
+      function()
+        require("quicker").expand({ before = 2, after = 2, add_to_existing = true })
+      end,
+      desc = "Expand quickfix context",
+    },
+    {
+      "<",
+      function()
+        require("quicker").collapse()
+      end,
+      desc = "Collapse quickfix context",
+    },
+  },
+})
