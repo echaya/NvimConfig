@@ -107,4 +107,4 @@ highlight link SatelliteCursor CursorLineNr
 highlight link SatelliteMark Function
 
 highlight TermCursor guifg=#D27E99
-
+highlight SnacksStatusColumnMark guibg=#16161d guifg=#D27E99
