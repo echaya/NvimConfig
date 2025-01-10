@@ -44,22 +44,22 @@ local select_one_or_multi = function(prompt_bufnr)
 end
 
 vim.keymap.set("n", "<leader>ff", my_find_files, { desc = "find_file" })
-vim.keymap.set("n", "<leader>bb", builtin.buffers, { desc = "find_buffers" })
-vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "find_tags" })
+vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "find_buffers" })
+vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "find_help" })
 vim.keymap.set("n", "<leader>fp", function()
   builtin.find_files({ cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "site") })
 end, { desc = "find_plugin" })
-vim.keymap.set("n", "<leader>gg", builtin.live_grep, { desc = "live_grep" })
 vim.keymap.set("n", "<leader><leader>", function()
   require("telescope").extensions.smart_open.smart_open()
 end, { desc = "smart_open" })
 vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "find_keymaps" })
-vim.keymap.set("n", '<leader>"', builtin.registers, { desc = "registers" })
-vim.keymap.set("n", "<leader>`", builtin.marks, { desc = "marks" })
 vim.keymap.set("n", "<leader>fo", builtin.oldfiles, { desc = "old_files" })
-vim.keymap.set("n", "<leader>fw", builtin.grep_string, { desc = "grep_string" })
 vim.keymap.set("n", "<leader>fd", builtin.diagnostics, { desc = "lsp_diagnostics" })
 vim.keymap.set("n", "<leader>fu", "<cmd>Telescope undo<cr>", { desc = "undo_history" })
+vim.keymap.set("n", '<leader>"', builtin.registers, { desc = "registers" })
+vim.keymap.set("n", "<leader>`", builtin.marks, { desc = "marks" })
+vim.keymap.set("n", "<leader>gg", builtin.live_grep, { desc = "live_grep" })
+vim.keymap.set("n", "<leader>gw", builtin.grep_string, { desc = "grep_string" })
 
 telescope.setup({
   defaults = {
