@@ -121,7 +121,36 @@ telescope.setup({
 telescope.load_extension("fzf")
 telescope.load_extension("undo")
 telescope.load_extension("smart_open")
-
+local format_size = function(size)
+  if size == nil then
+    return
+  end
+  if size < 1024 then
+    return string.format("%3dB", size)
+  elseif size < 1048576 then
+    return string.format("%3.0fK", size / 1024)
+  else
+    return string.format("%3.0fM", size / 1048576)
+  end
+end
+local format_time_handling = function(time)
+  local format_time = function(time)
+    ret = vim.fn.strftime("%y-%m-%d %H:%M", time.sec)
+    return ret
+  end
+  success, rtn = pcall(format_time, time)
+  if success then
+    return rtn
+  else
+    return " "
+  end
+end
+local my_prefix = function(fs_entry)
+  local prefix, hl = MiniFiles.default_prefix(fs_entry)
+  local fs_stat = vim.loop.fs_stat(fs_entry.path) or {}
+  return format_time_handling(fs_stat.mtime) .. " " .. format_size(fs_stat.size) .. " " .. prefix,
+    hl
+end
 require("mini.files").setup({
 
   -- Use `''` (empty string) to not create one.
@@ -152,6 +181,7 @@ require("mini.files").setup({
     -- Width of preview window
     width_preview = 100,
   },
+  content = { prefix = my_prefix },
 })
 
 vim.keymap.set("n", "<a-e>", function()
