@@ -166,31 +166,41 @@ local show_details = false
 local toggle_details = function()
   show_details = not show_details
   if show_details then
-    require("mini.files").refresh({ content = { prefix = my_prefix } })
+    require("mini.files").refresh({
+      windows = {
+        width_focus = 50,
+        width_nofocus = 35,
+        width_preview = 100,
+      },
+      content = { prefix = my_prefix },
+    })
   else
-    require("mini.files").refresh({ content = { prefix = MiniFiles.default_prefix } })
+    require("mini.files").refresh({
+      windows = {
+        width_focus = 50,
+        width_nofocus = 15,
+        width_preview = 100,
+      },
+      content = { prefix = MiniFiles.default_prefix },
+    })
   end
 end
 
-
 require("mini.files").setup({
-
   mappings = {
     go_in_plus = "<CR>",
     trim_left = ">",
     trim_right = "<",
   },
-
   options = {
     permanent_delete = false,
     use_as_default_explorer = true,
   },
-
   windows = {
     max_number = math.huge,
     preview = true,
-    width_focus = 60,
-    width_nofocus = 30,
+    width_focus = 50,
+    width_nofocus = 15,
     width_preview = 100,
   },
 })
