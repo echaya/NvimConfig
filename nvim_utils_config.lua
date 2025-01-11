@@ -123,7 +123,7 @@ telescope.load_extension("undo")
 telescope.load_extension("smart_open")
 
 local format_size = function(size)
-  if size == nil or size == 0 then
+  if size == nil then
     return
   elseif size < 1024 then
     return string.format("%3dB", size)
@@ -148,9 +148,11 @@ local my_pre_prefix = function(fs_stat)
   if mtime ~= nil then
     pre_prefix = pre_prefix .. " " .. mtime
   end
-  status, size = pcall(format_size, fs_stat.size)
-  if size ~= nil then
-    pre_prefix = pre_prefix .. " " .. size
+  if fs_stat.type == "file" then
+    status, size = pcall(format_size, fs_stat.size)
+    if size ~= nil then
+      pre_prefix = pre_prefix .. " " .. size
+    end
   end
   return pre_prefix
 end
@@ -162,24 +164,20 @@ local my_prefix = function(fs_entry)
   return pre_prefix .. " " .. prefix, hl
 end
 
-local show_details = false
+local show_details = true
 local toggle_details = function()
   show_details = not show_details
   if show_details then
     require("mini.files").refresh({
       windows = {
-        width_focus = 50,
-        width_nofocus = 35,
-        width_preview = 100,
+        width_nofocus = 30,
       },
       content = { prefix = my_prefix },
     })
   else
     require("mini.files").refresh({
       windows = {
-        width_focus = 50,
         width_nofocus = 15,
-        width_preview = 100,
       },
       content = { prefix = MiniFiles.default_prefix },
     })
@@ -200,9 +198,10 @@ require("mini.files").setup({
     max_number = math.huge,
     preview = true,
     width_focus = 50,
-    width_nofocus = 15,
+    width_nofocus = 30,
     width_preview = 100,
   },
+  content = { prefix = my_prefix },
 })
 
 vim.keymap.set("n", "<a-e>", function()
@@ -272,7 +271,8 @@ vim.api.nvim_create_autocmd("User", {
   group = vim.api.nvim_create_augroup("mini-file-buffer", { clear = true }),
   callback = function(args)
     local buf_id = args.data.buf_id
-    vim.keymap.set("n", "g.", toggle_dotfiles, { buffer = buf_id, desc = "Toggle dot file" })
+    -- g? to show keymap table
+    vim.keymap.set("n", "g.", toggle_dotfiles, { buffer = buf_id, desc = "Toggle dot files" })
     vim.keymap.set("n", "g,", toggle_details, { buffer = buf_id, desc = "Toggle file details" })
     vim.keymap.set("n", "gt", open_totalcmd, { buffer = buf_id, desc = "Open in TotalCmd" })
     vim.keymap.set("n", "gx", open_file, { buffer = buf_id, desc = "Open Externally" })
