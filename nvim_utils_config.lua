@@ -161,16 +161,26 @@ local my_prefix = function(fs_entry)
   local pre_prefix = my_pre_prefix(fs_stat)
   return pre_prefix .. " " .. prefix, hl
 end
+
+local show_details = false
+local toggle_details = function()
+  show_details = not show_details
+  if show_details then
+    require("mini.files").refresh({ content = { prefix = my_prefix } })
+  else
+    require("mini.files").refresh({ content = { prefix = MiniFiles.default_prefix } })
+  end
+end
+
+
 require("mini.files").setup({
 
-  -- Use `''` (empty string) to not create one.
   mappings = {
     go_in_plus = "<CR>",
     trim_left = ">",
     trim_right = "<",
   },
 
-  -- General options
   options = {
     permanent_delete = false,
     use_as_default_explorer = true,
@@ -183,7 +193,6 @@ require("mini.files").setup({
     width_nofocus = 30,
     width_preview = 100,
   },
-  content = { prefix = my_prefix },
 })
 
 vim.keymap.set("n", "<a-e>", function()
@@ -254,6 +263,7 @@ vim.api.nvim_create_autocmd("User", {
   callback = function(args)
     local buf_id = args.data.buf_id
     vim.keymap.set("n", "g.", toggle_dotfiles, { buffer = buf_id, desc = "Toggle dot file" })
+    vim.keymap.set("n", "g,", toggle_details, { buffer = buf_id, desc = "Toggle file details" })
     vim.keymap.set("n", "gt", open_totalcmd, { buffer = buf_id, desc = "Open in TotalCmd" })
     vim.keymap.set("n", "gx", open_file, { buffer = buf_id, desc = "Open Externally" })
     vim.keymap.set("n", "g`", files_set_cwd, { buffer = args.data.buf_id, desc = "Set dir" })
