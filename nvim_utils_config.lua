@@ -126,7 +126,9 @@ local format_size = function(size)
   if size == nil then
     return
   end
-  if size < 1024 then
+  if size == 0 then
+    return
+  elseif size < 1024 then
     return string.format("%3dB", size)
   elseif size < 1048576 then
     return string.format("%3.0fK", size / 1024)
