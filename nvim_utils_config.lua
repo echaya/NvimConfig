@@ -121,6 +121,7 @@ telescope.setup({
 telescope.load_extension("fzf")
 telescope.load_extension("undo")
 telescope.load_extension("smart_open")
+
 local format_size = function(size)
   if size == nil then
     return
@@ -133,23 +134,33 @@ local format_size = function(size)
     return string.format("%3.0fM", size / 1048576)
   end
 end
-local format_time_handling = function(time)
-  local format_time = function(time)
+local format_time = function(time)
+  if time == nil then
+    return
+  else
     ret = vim.fn.strftime("%y-%m-%d %H:%M", time.sec)
     return ret
   end
-  success, rtn = pcall(format_time, time)
-  if success then
-    return rtn
-  else
-    return " "
-  end
 end
+
+local my_pre_prefix = function(fs_stat)
+  status, mtime = pcall(format_time, fs_stat.mtime)
+  local pre_prefix = ""
+  if mtime ~= nil then
+    pre_prefix = pre_prefix .. " " .. mtime
+  end
+  status, size = pcall(format_size, fs_stat.size)
+  if size ~= nil then
+    pre_prefix = pre_prefix .. " " .. size
+  end
+  return pre_prefix
+end
+
 local my_prefix = function(fs_entry)
   local prefix, hl = MiniFiles.default_prefix(fs_entry)
   local fs_stat = vim.loop.fs_stat(fs_entry.path) or {}
-  return format_time_handling(fs_stat.mtime) .. " " .. format_size(fs_stat.size) .. " " .. prefix,
-    hl
+  local pre_prefix = my_pre_prefix(fs_stat)
+  return pre_prefix .. " " .. prefix, hl
 end
 require("mini.files").setup({
 
