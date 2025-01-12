@@ -102,7 +102,7 @@ augroup PythonRepl
     autocmd Filetype python inoremap <buffer> ;it inplace=True
     autocmd Filetype python inoremap <buffer> ;fr .iloc[0].T
     autocmd Filetype python inoremap <buffer> ;lr .iloc[-1].T
-    autocmd Filetype python inoremap <buffer> ;db __import__("IPython").core.debugger.set_trace()
+    "autocmd Filetype python inoremap <buffer> ;db __import__("IPython").core.debugger.set_trace()
     " REPL actions
     "autocmd Filetype python nmap <buffer> <localleader><localleader> :call SendCell()<cr><cr>
     " TODO to activate terminal and jump back using
