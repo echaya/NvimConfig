@@ -104,7 +104,7 @@ highlight SpellRare guifg=#63D6FD
 highlight SpellLocal gui=undercurl guifg=#FFFEE2
 
 highlight link SatelliteCursor CursorLineNr
-highlight link SatelliteMark Function
+highlight SatelliteMark guibg=#223249 guifg=#D27E99
 
 highlight TermCursor guifg=#D27E99
 highlight SnacksStatusColumnMark guibg=#16161d guifg=#D27E99
