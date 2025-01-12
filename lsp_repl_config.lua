@@ -88,7 +88,7 @@ glance.setup({
       ["o"] = actions.jump,
       ["l"] = actions.open_fold,
       ["h"] = actions.close_fold,
-      ["<a-h>"] = actions.enter_win("preview"), -- Focus preview window
+      ["<c-h>"] = actions.enter_win("preview"), -- Focus preview window
       ["q"] = actions.close,
       ["Q"] = actions.close,
       ["<Esc>"] = actions.close,
