@@ -16,9 +16,6 @@ cmp.setup({
     use_nvim_cmp_as_default = true,
     nerd_font_variant = "mono",
   },
-  sources = {
-    default = { "snippets", "lsp", "path", "buffer" },
-  },
   fuzzy = {
     prebuilt_binaries = { download = vim.g.update_blink },
   },
@@ -52,7 +49,7 @@ cmp.setup({
     end,
     providers = {
       lsp = {
-        min_keyword_length = 2, -- Number of characters to trigger porvider
+        min_keyword_length = 1, -- Number of characters to trigger porvider
         score_offset = 0, -- Boost/penalize the score of the items
       },
       path = {
