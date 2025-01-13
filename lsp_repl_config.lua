@@ -30,6 +30,7 @@ vim.treesitter.language.register("markdown", "vimwiki")
 -- Setup LSP
 local lsp = require("lspconfig")
 local navic = require("nvim-navic")
+local capabilities = vim.lsp.protocol.make_client_capabilities()
 
 local custom_attach = function(client, bufnr)
   -- vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
@@ -133,6 +134,29 @@ lsp.basedpyright.setup({
           reportOptionalOperand = "information",
           reportGeneralTypeIssues = "none",
         },
+      },
+    },
+  },
+})
+
+lsp.lua_ls.setup({
+  on_attach = custom_attach,
+  capabilities = capabilities,
+  settings = {
+    Lua = {
+      runtime = {
+        version = "LuaJIT",
+        path = vim.split(package.path, ";"),
+      },
+      diagnostics = {
+        globals = { "vim" },
+      },
+      workspace = {
+        library = { vim.env.VIMRUNTIME },
+        checkThirdParty = false,
+      },
+      telemetry = {
+        enable = false,
       },
     },
   },
