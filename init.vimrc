@@ -15,7 +15,6 @@ else
     let s:path_package = $HOME . '/AppData/local/nvim-data/site/'
 endif
 
-exe 'source '. s:path_package.'pack/deps/vim/plug.vim'
 let g:lst_plugin = [
             \'dstein64/vim-startuptime',
             \'svermeulen/vim-cutlass',
@@ -30,6 +29,7 @@ let g:lst_plugin = [
 
 if !has('nvim')
     "universal plugins
+    exe 'source '. s:path_package.'pack/deps/vim/plug.vim'
     call plug#begin(s:path_package.'pack/deps/opt/')
     for plugin in g:lst_plugin
         Plug plugin
