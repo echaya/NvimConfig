@@ -127,3 +127,60 @@ tnoremap ;lr .iloc[-1].T
 
 " diagnostic box open by cursor
 "autocmd CursorHold * lua vim.diagnostic.open_float()
+
+
+function! MyTabLine()
+    let s = ''
+    let t = tabpagenr()
+    let i = 1
+    while i <= tabpagenr('$')
+
+        let buflist = tabpagebuflist(i)
+        let winnr = tabpagewinnr(i)
+        let s .= '%' . i . 'T'
+        let s .= (i == t ? '%1*' : '%2*')
+        let s .= (i == t ? '%#TabLineSel#' : '%#TabLine#')
+        let s .= ' ' . i . ' '
+
+        let bufnr = buflist[winnr - 1]
+        let file = bufname(bufnr)
+        let buftype = getbufvar(bufnr, '&buftype')
+        if buftype == 'help'
+            let file = 'help:' . fnamemodify(file, ':t:r')
+        elseif buftype == 'quickfix'
+            let file = 'quickfix'
+        elseif buftype == 'nofile'
+            if file =~ '\/.'
+                let file = substitute(file, '.*\/\ze.', '', '')
+            endif
+        else
+            let file = pathshorten(fnamemodify(file, ':p:~:.'))
+            if getbufvar(bufnr, '&modified')
+                let file = '+' . file
+            endif
+        endif
+        if file == ''
+            let file = '[No Name]'
+        endif
+        let s .= ' ' . file
+
+        if i < tabpagenr('$')
+            let s .= ' %#TabLine#|'
+        else
+            let s .= ' '
+        endif
+
+        let i = i + 1
+
+    endwhile
+
+    let s .='%#TabLineSel#'
+    let s .="%{%v:lua.require'nvim-navic'.get_location()%}"
+    let s .= '%T%#TabLineFill#%='
+    let s .= (tabpagenr('$') > 1 ? '%999XX' : 'X')
+    return s
+
+endfunction
+
+set tabline=%!MyTabLine()
+
