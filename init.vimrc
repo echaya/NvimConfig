@@ -9,7 +9,7 @@
 
 "source plug.vim manually from plugged folder. It should normally sit in
 " nvim working dir autoload folder
-if has("linux")
+if has("unix")
     let s:path_package = $HOME . '/.local/share/nvim/site/'
 else
     let s:path_package = $HOME . '/AppData/local/nvim-data/site/'
