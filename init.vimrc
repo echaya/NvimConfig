@@ -54,6 +54,7 @@ if !has('nvim')
     Plug 'godlygeek/tabular', {'for':['markdown','vimwiki']} "prerequisite for vim-markdown
     Plug 'plasticboy/vim-markdown', {'for':['markdown','vimwiki']}
     Plug 'airblade/vim-rooter'
+    Plug 'bluz71/vim-nightfly-colors', { 'as': 'nightfly' }
     call plug#end()
 endif
 
@@ -79,7 +80,11 @@ endif
 try
     colorscheme kanagawa
 catch
-    colorscheme  habamax
+    try
+        colorscheme  habamax
+    catch
+        colorscheme nightfly
+    endtry
 endtry
 
 highlight QuickScopePrimary guifg=#afff5f gui=underline ctermfg=155 cterm=underline
