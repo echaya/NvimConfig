@@ -4,7 +4,7 @@ local telescopeConfig = require("telescope.config")
 local vimgrep_arguments = { unpack(telescopeConfig.values.vimgrep_arguments) }
 local actions = require("telescope.actions")
 
-my_find_files = function(opts, no_ignore)
+MyFindFiles = function(opts, no_ignore)
   opts = opts or {}
   no_ignore = vim.F.if_nil(no_ignore, false)
   opts.attach_mappings = function(_, map)
@@ -12,7 +12,7 @@ my_find_files = function(opts, no_ignore)
       local prompt = require("telescope.actions.state").get_current_line()
       require("telescope.actions").close(prompt_bufnr)
       no_ignore = not no_ignore
-      my_find_files({ default_text = prompt }, no_ignore)
+      MyFindFiles({ default_text = prompt }, no_ignore)
     end, { desc = "toggle_hidden_n_gitignore" })
     return true
   end
@@ -43,7 +43,7 @@ local select_one_or_multi = function(prompt_bufnr)
   end
 end
 
-vim.keymap.set("n", "<leader>ff", my_find_files, { desc = "find_file" })
+vim.keymap.set("n", "<leader>ff", MyFindFiles, { desc = "find_file" })
 vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "find_buffers" })
 vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "find_help" })
 vim.keymap.set("n", "<leader>fp", function()
@@ -137,19 +137,19 @@ local format_time = function(time)
   if time == nil then
     return
   else
-    ret = vim.fn.strftime("%y-%m-%d %H:%M", time.sec)
+    local ret = vim.fn.strftime("%y-%m-%d %H:%M", time.sec)
     return ret
   end
 end
 
 local my_pre_prefix = function(fs_stat)
-  status, mtime = pcall(format_time, fs_stat.mtime)
+  local _, mtime = pcall(format_time, fs_stat.mtime)
   local pre_prefix = ""
   if mtime ~= nil then
     pre_prefix = pre_prefix .. " " .. mtime
   end
   if fs_stat.type == "file" then
-    status, size = pcall(format_size, fs_stat.size)
+    local _, size = pcall(format_size, fs_stat.size)
     if size ~= nil then
       pre_prefix = pre_prefix .. " " .. size
     end
@@ -157,6 +157,7 @@ local my_pre_prefix = function(fs_stat)
   return pre_prefix
 end
 
+local MiniFiles = require("mini.files")
 local my_prefix = function(fs_entry)
   local prefix, hl = MiniFiles.default_prefix(fs_entry)
   local fs_stat = vim.loop.fs_stat(fs_entry.path) or {}
@@ -168,14 +169,14 @@ local show_details = true
 local toggle_details = function()
   show_details = not show_details
   if show_details then
-    require("mini.files").refresh({
+    MiniFiles.refresh({
       windows = {
         width_nofocus = 30,
       },
       content = { prefix = my_prefix },
     })
   else
-    require("mini.files").refresh({
+    MiniFiles.refresh({
       windows = {
         width_nofocus = 15,
       },
@@ -184,7 +185,7 @@ local toggle_details = function()
   end
 end
 
-require("mini.files").setup({
+MiniFiles.setup({
   mappings = {
     go_in_plus = "<CR>",
     trim_left = ">",
@@ -212,7 +213,7 @@ end)
 
 local show_dotfiles = true
 
-local filter_show = function(fs_entry)
+local filter_show = function(_)
   return true
 end
 
@@ -226,7 +227,7 @@ local toggle_dotfiles = function()
   require("mini.files").refresh({ content = { filter = new_filter } })
 end
 
-local open_totalcmd = function(path)
+local open_totalcmd = function(_)
   local cur_entry_path = MiniFiles.get_fs_entry().path
   -- local cur_directory = vim.fs.dirname(cur_entry_path)
   -- vim.fn.system(string.format("gio open '%s'", cur_entry_path))
@@ -234,7 +235,7 @@ local open_totalcmd = function(path)
   MiniFiles.close()
 end
 
-local open_file = function(path)
+local open_file = function(_)
   local cur_entry_path = MiniFiles.get_fs_entry().path
   vim.ui.open(cur_entry_path)
   MiniFiles.close()
@@ -257,7 +258,7 @@ local map_split = function(buf_id, lhs, direction)
   vim.keymap.set("n", lhs, rhs, { buffer = buf_id, desc = desc })
 end
 
-local files_set_cwd = function(path)
+local files_set_cwd = function(_)
   -- Works only if cursor is on the valid file system entry
   -- Does not work with have vim-rooter is on
   local cur_entry_path = MiniFiles.get_fs_entry().path
@@ -433,9 +434,9 @@ vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
   group = vim.api.nvim_create_augroup("disable-auto-save", { clear = true }),
   callback = function()
     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-      file_type = vim.api.nvim_buf_get_option(buf, "filetype")
+      local file_type = vim.api.nvim_get_option_value("filetype", { buf = buf })
       if vim.tbl_contains(disabled_filetype, file_type) and vim.g.auto_save == 1 then
-        vim.notify("vim.g.auto_save = 0 (OFF)", "warn", { title = "AutoSave" })
+        vim.notify("vim.g.auto_save = 0 (OFF)", 3, { title = "AutoSave" })
         vim.g.auto_save = 0
         return
       elseif vim.tbl_contains(disabled_filetype, file_type) and vim.g.auto_save == 0 then
@@ -443,7 +444,7 @@ vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
       end
     end
     if vim.g.auto_save == 0 then
-      vim.notify("vim.g.auto_save = 1 (ON)", "info", { title = "AutoSave" })
+      vim.notify("vim.g.auto_save = 1 (ON)", 2, { title = "AutoSave" })
       vim.g.auto_save = 1
     end
   end,
