@@ -70,8 +70,8 @@ endif
 nnoremap <silent> ZX :e #<CR>
 
 "Move to previous/next tabpage
-noremap <silent> K :tabp<CR>
-noremap <silent> J :tabn<CR>
+noremap <silent> J :tabp<CR>
+noremap <silent> K :tabn<CR>
 noremap <silent> T :tabnew<CR>
 noremap <silent> <PageUp> :tabp<CR>
 noremap <silent> <PageDown> :tabn<CR>
