@@ -1,4 +1,4 @@
-local snacks = require("snacks")
+Snacks = require("snacks")
 require("snacks").setup({
   bigfile = { enabled = true },
   notifier = {
@@ -14,6 +14,7 @@ require("snacks").setup({
     notification = {
       wo = { wrap = true }, -- Wrap notifications
     },
+    zen = { width = 160 },
   },
   zen = {
     toggles = {
@@ -21,16 +22,13 @@ require("snacks").setup({
       git_signs = true,
     },
   },
-  styles = {
-    zen = { width = 160 },
-  },
 })
 
-snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>ts")
-snacks.toggle
+Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>ts")
+Snacks.toggle
   .option("background", { off = "light", on = "dark", name = "Dark Background" })
   :map("<leader>tb")
-snacks.toggle.inlay_hints():map("<leader>th")
+Snacks.toggle.inlay_hints():map("<leader>th")
 
 vim.keymap.set("n", "<leader>un", function()
   Snacks.notifier.hide()
@@ -96,29 +94,15 @@ require("kanagawa").setup({
   end,
 })
 
-icon = require("mini.icons")
+local icon = require("mini.icons")
 icon.setup()
 icon.mock_nvim_web_devicons()
 vim.g.nvim_web_devicons = 1
 
-local navic = require("nvim-navic")
-navic.setup()
-local get_navic_info = function(args)
-  if navic.is_available() then
-    info = navic.get_location()
-  else
-    info = ""
-  end
-  if string.len(info) > 0 then
-    -- return " 󱣱  " .. info
-    return info
-  else
-    return ""
-  end
-end
-
 -- require("mini.tabline").setup()
-require("mini.statusline").setup({
+
+local MiniStatusline = require("mini.statusline")
+MiniStatusline.setup({
   content = {
     active = function()
       local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 10000 })
@@ -128,7 +112,6 @@ require("mini.statusline").setup({
       local lsp = MiniStatusline.section_lsp({ trunc_width = 75 })
       local filename = MiniStatusline.section_filename({ trunc_width = 140 })
       local fileinfo = MiniStatusline.section_fileinfo({ trunc_width = 140 })
-      local navic_info = get_navic_info()
 
       return MiniStatusline.combine_groups({
         { hl = mode_hl, strings = { mode } },
@@ -136,8 +119,7 @@ require("mini.statusline").setup({
         "%<", -- Mark general truncate point
         { hl = "MiniStatuslineFilename", strings = { filename } },
         "%=", -- End left alignment
-        { hl = "MiniStatuslineFilename", strings = { navic_info } },
-        { hl = "MiniStatuslineFileinfo", strings = { fileinfo } },
+        { hl = "MiniStatuslineFileinfo", strings = { fileinfo, lsp } },
         { hl = mode_hl, strings = { tostring(vim.api.nvim_buf_line_count(0)) } },
       })
     end,
@@ -260,23 +242,23 @@ vim.cmd([[
 ]])
 
 vim.o.sessionoptions = "buffers,curdir,folds,globals,help,skiprtp,tabpages"
-mini_session = require("mini.sessions")
+local mini_session = require("mini.sessions")
 mini_session.setup({
   file = "",
   hooks = {
-    pre = { read = save_session },
+    pre = { read = SaveMiniSession },
   },
 })
 
 -- save session functions copy from nvim-session-manager
 local function is_restorable(buffer)
-  if #vim.api.nvim_buf_get_option(buffer, "bufhidden") ~= 0 then
+  if #vim.api.nvim_get_option_value("bufhidden", { buf = buffer }) ~= 0 then
     return false
   end
-  local buftype = vim.api.nvim_buf_get_option(buffer, "buftype")
+  local buftype = vim.api.nvim_get_option_value("buftype", { buf = buffer })
   if #buftype == 0 then
     -- Normal buffer, check if it listed.
-    if not vim.api.nvim_buf_get_option(buffer, "buflisted") then
+    if not vim.api.nvim_get_option_value("buflisted", { buf = buffer }) then
       return false
     end
     -- Check if it has a filename.
@@ -303,7 +285,7 @@ local clean_up_buffer = function()
   end
 end
 
-local save_session = function()
+SaveMiniSession = function()
   clean_up_buffer()
   local cwd = vim.fn.getcwd()
   cwd = cwd:gsub("[:/\\]$", ""):gsub(":", ""):gsub("[/\\]", "_")
@@ -323,7 +305,7 @@ vim.keymap.set(
   { desc = "delete_session" }
 )
 vim.keymap.set("n", "<leader>fS", function()
-  save_session()
+  SaveMiniSession()
 end, { desc = "save_session" })
 
 icon = require("mini.icons")
@@ -369,3 +351,12 @@ vim.keymap.set(
   "N",
   [[<Cmd>lua vim.cmd('normal! N'); MiniAnimate.execute_after('scroll', 'normal! zvzz')<CR>]]
 )
+
+require("diffview").setup({
+  view = {
+    merge_tool = {
+      layout = "diff3_mixed",
+    },
+  },
+})
+

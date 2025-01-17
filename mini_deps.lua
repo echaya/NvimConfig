@@ -19,14 +19,14 @@ if vim.loader then
 end
 
 -- Set up 'mini.deps' (customize to your liking)
-require("mini.deps").setup({ path = { package = path_package } })
+MiniDeps = require("mini.deps")
+MiniDeps.setup({ path = { package = path_package } })
 local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 
 local build = function(args)
   -- local obj = vim.system({ "make", "-C", args.path, "install_jsregexp" }, { text = true }):wait()
   local obj = vim.system({ "make", "-C", args.path }, { text = true }):wait()
-  vim.print(vim.inspect(obj))
-end
+  vim.print(vim.inspect(obj))end
 
 -- control how many vim plugins to be loaded now
 local vim_now_index = 2
@@ -47,8 +47,9 @@ now(function()
     depends = {
       "MunifTanjim/nui.nvim",
     },
+    add({ source = "sindrets/diffview.nvim" })
   })
-  dofile(vim.g.WorkDir .. "config/nvim_gui_config.lua")
+  dofile(vim.g.WorkDir .. "config/nvim_now_config.lua")
 end)
 
 -- deps later: utilities
@@ -145,7 +146,6 @@ later(function()
     add({ source = "stevearc/conform.nvim" })
     add({ source = "stevearc/quicker.nvim" })
     add({ source = "lewis6991/gitsigns.nvim" })
-    add({ source = "sindrets/diffview.nvim" })
     add({ source = "MeanderingProgrammer/render-markdown.nvim" })
     dofile(vim.g.WorkDir .. "config/code_config.lua")
   else
