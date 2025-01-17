@@ -22,6 +22,97 @@ require("snacks").setup({
       git_signs = true,
     },
   },
+  picker = {
+    ---@class snacks.picker.matcher.Config
+    win = {
+      -- input window
+      input = {
+        keys = {
+          ["<Esc>"] = { "close", mode = { "n", "i" } },
+          ["<C-c>"] = { "close", mode = { "n", "i" } },
+          ["<CR>"] = "confirm",
+          ["/"] = "toggle_focus",
+          ["<c-/>"] = { "toggle_help", mode = { "n", "i" } },
+          ["<a-d>"] = { "inspect", mode = { "n", "i" } },
+          ["<c-a>"] = { "select_all", mode = { "n", "i" } },
+          ["<a-m>"] = { "toggle_maximize", mode = { "i", "n" } },
+          ["<a-p>"] = { "toggle_preview", mode = { "i", "n" } },
+          ["<a-w>"] = { "cycle_win", mode = { "i", "n" } },
+          ["<C-w>"] = { "<c-s-w>", mode = { "i" }, expr = true, desc = "delete word" },
+          ["<C-Up>"] = { "history_back", mode = { "i", "n" } },
+          ["<C-Down>"] = { "history_forward", mode = { "i", "n" } },
+          ["<Tab>"] = { "select_and_next", mode = { "i", "n" } },
+          ["<S-Tab>"] = { "select_and_prev", mode = { "i", "n" } },
+          ["<Down>"] = { "list_down", mode = { "i", "n" } },
+          ["<Up>"] = { "list_up", mode = { "i", "n" } },
+          ["<c-j>"] = { "list_down", mode = { "i", "n" } },
+          ["<c-k>"] = { "list_up", mode = { "i", "n" } },
+          ["<c-u>"] = { "preview_scroll_up", mode = { "i", "n" } },
+          ["<c-f>"] = { "list_scroll_down", mode = { "i", "n" } },
+          ["<c-b>"] = { "list_scroll_up", mode = { "i", "n" } },
+          ["<c-d>"] = { "preview_scroll_down", mode = { "i", "n" } },
+          ["<c-g>"] = { "toggle_live", mode = { "i", "n" } },
+          ["<ScrollWheelDown>"] = { "list_scroll_wheel_down", mode = { "i", "n" } },
+          ["<ScrollWheelUp>"] = { "list_scroll_wheel_up", mode = { "i", "n" } },
+          ["<c-v>"] = { "edit_vsplit", mode = { "i", "n" } },
+          ["<c-s>"] = { "edit_split", mode = { "i", "n" } },
+          ["<c-q>"] = { "qflist", mode = { "i", "n" } },
+          ["<c-.>"] = { "toggle_ignored", mode = { "i", "n" } },
+          ["<c-h>"] = { "toggle_hidden", mode = { "i", "n" } },
+        },
+        b = {
+          minipairs_disable = true,
+        },
+      },
+      -- result list window
+      list = {
+        keys = {
+          ["<CR>"] = "confirm",
+          ["gg"] = "list_top",
+          ["G"] = "list_bottom",
+          ["i"] = "focus_input",
+          ["j"] = "list_down",
+          ["k"] = "list_up",
+          ["q"] = "close",
+          ["<Tab>"] = "select_and_next",
+          ["<S-Tab>"] = "select_and_prev",
+          ["<Down>"] = "list_down",
+          ["<Up>"] = "list_up",
+          ["<a-d>"] = "inspect",
+          ["<c-f>"] = "list_scroll_down",
+          ["<c-b>"] = "list_scroll_up",
+          ["zt"] = "list_scroll_top",
+          ["zb"] = "list_scroll_bottom",
+          ["zz"] = "list_scroll_center",
+          ["/"] = "toggle_focus",
+          ["<ScrollWheelDown>"] = "list_scroll_wheel_down",
+          ["<ScrollWheelUp>"] = "list_scroll_wheel_up",
+          ["<c-a>"] = "select_all",
+          ["<c-d>"] = "preview_scroll_down",
+          ["<c-u>"] = "preview_scroll_up",
+          ["<c-v>"] = "edit_vsplit",
+          ["<c-s>"] = "edit_split",
+          ["<c-j>"] = "list_down",
+          ["<c-k>"] = "list_up",
+          ["<c-n>"] = "list_down",
+          ["<c-p>"] = "list_up",
+          ["<a-w>"] = "cycle_win",
+          ["<Esc>"] = "close",
+        },
+      },
+      -- preview window
+      preview = {
+        keys = {
+          ["<Esc>"] = "close",
+          ["q"] = "close",
+          ["i"] = "focus_input",
+          ["<ScrollWheelDown>"] = "list_scroll_wheel_down",
+          ["<ScrollWheelUp>"] = "list_scroll_wheel_up",
+          ["<a-w>"] = "cycle_win",
+        },
+      },
+    },
+  },
 })
 
 Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>ts")
@@ -359,4 +450,3 @@ require("diffview").setup({
     },
   },
 })
-
