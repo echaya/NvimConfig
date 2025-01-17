@@ -9,11 +9,6 @@
 
 "source plug.vim manually from plugged folder. It should normally sit in
 " nvim working dir autoload folder
-if has("unix")
-    let s:path_package = $HOME . '/.local/share/nvim/site/'
-else
-    let s:path_package = $HOME . '/AppData/local/nvim-data/site/'
-endif
 
 let g:lst_plugin = [
             \'dstein64/vim-startuptime',
@@ -29,7 +24,13 @@ let g:lst_plugin = [
 
 if !has('nvim')
     "universal plugins
-    exe 'source '. s:path_package.'pack/deps/vim/plug.vim'
+    try
+        let s:path_package = $HOME . '/.local/share/nvim/site/'
+        exe 'source '. s:path_package.'pack/deps/vim/plug.vim'
+    catch
+        let s:path_package = $HOME . '/AppData/local/nvim-data/site/'
+        exe 'source '. s:path_package.'pack/deps/vim/plug.vim'
+    endtry
     call plug#begin(s:path_package.'pack/deps/opt/')
     for plugin in g:lst_plugin
         Plug plugin
