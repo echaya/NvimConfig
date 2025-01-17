@@ -290,8 +290,20 @@ vim.api.nvim_create_autocmd("FileType", {
       iron.visual_send()
       vim.cmd("norm! j")
     end, { buffer = args.buf, desc = "repl_send_tree" })
-    -- sync black call
-    vim.keymap.set("n", "<localleader>==", ":!black %<cr>")
+    vim.keymap.set("n", "]]", function()
+      vim.cmd("call JumpCell()")
+      require("mini.animate").execute_after("scroll", "normal! zvzz")
+    end, { buffer = args.buf, desc = "repl_jump_cell_fwd" })
+    vim.keymap.set("n", "[[", function()
+      vim.cmd("call JumpCellBack()")
+      require("mini.animate").execute_after("scroll", "normal! zvzz")
+    end, { buffer = args.buf, desc = "repl_jump_cell_back" })
+    vim.keymap.set(
+      "n",
+      "<localleader>==",
+      ":!black %<cr>",
+      { buffer = args.buf, desc = "repl_sync_format" }
+    )
   end,
 })
 
