@@ -58,7 +58,7 @@ vim.keymap.set("n", "<leader>fd", builtin.diagnostics, { desc = "lsp_diagnostics
 vim.keymap.set("n", "<leader>fu", "<cmd>Telescope undo<cr>", { desc = "undo_history" })
 vim.keymap.set("n", '<leader>"', builtin.registers, { desc = "registers" })
 vim.keymap.set("n", "<leader>`", builtin.marks, { desc = "marks" })
-vim.keymap.set("n", "<leader>gg", builtin.live_grep, { desc = "live_grep" })
+vim.keymap.set("n", "<leader>/", builtin.live_grep, { desc = "live_grep" })
 vim.keymap.set("n", "<leader>gw", builtin.grep_string, { desc = "grep_string" })
 
 telescope.setup({
