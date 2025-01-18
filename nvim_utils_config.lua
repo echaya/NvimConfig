@@ -1,125 +1,46 @@
-local telescope = require("telescope")
-local builtin = require("telescope.builtin")
-local telescopeConfig = require("telescope.config")
-local vimgrep_arguments = { unpack(telescopeConfig.values.vimgrep_arguments) }
-local actions = require("telescope.actions")
-
-MyFindFiles = function(opts, no_ignore)
-  opts = opts or {}
-  no_ignore = vim.F.if_nil(no_ignore, false)
-  opts.attach_mappings = function(_, map)
-    map({ "n", "i" }, "<C-h>", function(prompt_bufnr) -- <C-h> to toggle modes
-      local prompt = require("telescope.actions.state").get_current_line()
-      require("telescope.actions").close(prompt_bufnr)
-      no_ignore = not no_ignore
-      MyFindFiles({ default_text = prompt }, no_ignore)
-    end, { desc = "toggle_hidden_n_gitignore" })
-    return true
-  end
-
-  if no_ignore then
-    opts.no_ignore = true
-    opts.hidden = true
-    opts.prompt_title = "Find Files <ALL>"
-    require("telescope.builtin").find_files(opts)
-  else
-    opts.prompt_title = "Find Files"
-    require("telescope.builtin").find_files(opts)
-  end
-end
-
-local select_one_or_multi = function(prompt_bufnr)
-  local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
-  local multi = picker:get_multi_selection()
-  if not vim.tbl_isempty(multi) then
-    require("telescope.actions").close(prompt_bufnr)
-    for _, j in pairs(multi) do
-      if j.path ~= nil then
-        vim.cmd(string.format("%s %s", "edit", j.path))
-      end
-    end
-  else
-    require("telescope.actions").select_default(prompt_bufnr)
-  end
-end
-
-vim.keymap.set("n", "<leader>ff", MyFindFiles, { desc = "find_file" })
-vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "find_buffers" })
-vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "find_help" })
-vim.keymap.set("n", "<leader>fp", function()
-  builtin.find_files({ cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "site") })
-end, { desc = "find_plugin" })
+Snacks = require("snacks")
 vim.keymap.set("n", "<leader><leader>", function()
-  require("telescope").extensions.smart_open.smart_open()
+  Snacks.picker.smart()
 end, { desc = "smart_open" })
-vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "find_keymaps" })
-vim.keymap.set("n", "<leader>fo", builtin.oldfiles, { desc = "old_files" })
-vim.keymap.set("n", "<leader>fd", builtin.diagnostics, { desc = "lsp_diagnostics" })
-vim.keymap.set("n", "<leader>fu", "<cmd>Telescope undo<cr>", { desc = "undo_history" })
-vim.keymap.set("n", '<leader>"', builtin.registers, { desc = "registers" })
-vim.keymap.set("n", "<leader>`", builtin.marks, { desc = "marks" })
-vim.keymap.set("n", "<leader>/", builtin.live_grep, { desc = "live_grep" })
-vim.keymap.set("n", "<leader>gw", builtin.grep_string, { desc = "grep_string" })
-
-telescope.setup({
-  defaults = {
-    preview = { filesize_limit = 1.0 }, -- MB,
-    -- `hidden = true` is not supported in text grep commands.
-    vimgrep_arguments = vimgrep_arguments,
-    path_display = { "truncate" },
-    mappings = {
-      i = {
-        ["<C-n>"] = actions.cycle_history_next,
-        ["<C-p>"] = actions.cycle_history_prev,
-        ["<C-k>"] = actions.move_selection_previous,
-        ["<C-j>"] = actions.move_selection_next,
-        -- C-v to select and split vertically
-        ["<C-x>"] = actions.delete_buffer + actions.move_to_top,
-        ["<C-s>"] = actions.select_horizontal,
-        ["<CR>"] = select_one_or_multi,
-        ["<C-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
-        ["<esc>"] = actions.close,
-      },
-    },
-  },
-  pickers = {
-    find_files = {
-      -- `hidden = true` will still show the inside of `.git/` as it's not `.gitignore`d.
-      find_command = {
-        "rg",
-        "--files",
-        "--glob",
-        "!**/.git/*",
-        -- "--hidden",
-      },
-    },
-  },
-  extensions = {
-    fzf = {
-      fuzzy = true, -- false will only do exact matching
-      override_generic_sorter = true, -- override the generic sorter
-      override_file_sorter = true, -- override the file sorter
-      case_mode = "smart_case", -- or "ignore_case" or "respect_case", default "smart_case"
-    },
-    undo = {
-      use_delta = true,
-      side_by_side = false,
-      layout_strategy = "vertical",
-      layout_config = {
-        preview_height = 0.7,
-      },
-    },
-    smart_open = {
-      match_algorithm = "fzf",
-      result_limit = 40,
-    },
-  },
-})
--- -- To get fzf loaded and working with telescope, you need to call
--- -- load_extension, somewhere after setup function:
-telescope.load_extension("fzf")
-telescope.load_extension("undo")
-telescope.load_extension("smart_open")
+vim.keymap.set("n", "<leader>ff", function()
+  Snacks.picker.files()
+end, { desc = "find_file" })
+vim.keymap.set("n", "<leader>fb", function()
+  Snacks.picker.buffers()
+end, { desc = "find_buffers" })
+vim.keymap.set("n", "<leader>fr", function()
+  Snacks.picker.recent()
+end, { desc = "find_recent" })
+vim.keymap.set("n", "<leader>fh", function()
+  Snacks.picker.help()
+end, { desc = "find_help" })
+vim.keymap.set("n", "<leader>fp", function()
+  Snacks.picker.files({ cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "site") })
+end, { desc = "find_plugin" })
+vim.keymap.set("n", "<leader>pp", function()
+  Snacks.picker.pickers()
+end, { desc = "find_plugin" })
+vim.keymap.set("n", "<leader>fk", function()
+  Snacks.picker.keymaps()
+end, { desc = "find_keymaps" })
+vim.keymap.set("n", "<leader>fz", function()
+  Snacks.picker.zoxide()
+end, { desc = "find_zoxide" })
+vim.keymap.set("n", "<leader>fd", function()
+  Snacks.picker.diagnostics()
+end, { desc = "lsp_diagnostics" })
+vim.keymap.set("n", '<leader>"', function()
+  Snacks.picker.registers()
+end, { desc = "registers" })
+vim.keymap.set("n", "<leader>`", function()
+  Snacks.picker.marks()
+end, { desc = "marks" })
+vim.keymap.set("n", "<leader>/", function()
+  Snacks.picker.grep()
+end, { desc = "live_grep" })
+vim.keymap.set("n", "<leader>gw", function()
+  Snacks.picker.grep_word()
+end, { desc = "grep_string" })
 
 local format_size = function(size)
   if size == nil then

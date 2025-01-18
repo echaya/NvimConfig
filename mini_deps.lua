@@ -67,30 +67,6 @@ later(function()
   dofile(vim.g.WorkDir .. "config/univ_config.lua")
   if vim.g.vscode == nil then
     add({ source = "folke/which-key.nvim" })
-    add({
-      source = "nvim-telescope/telescope.nvim",
-      depends = {
-        "nvim-lua/plenary.nvim",
-      },
-    })
-    add({ source = "debugloop/telescope-undo.nvim" })
-    add({
-      source = "nvim-telescope/telescope-fzf-native.nvim",
-      hooks = {
-        post_install = build,
-        post_checkout = build,
-      },
-    })
-    add({
-      source = "danielfalk/smart-open.nvim",
-      checkout = "0.3.x",
-      monitor = "main",
-      depends = {
-        "kkharji/sqlite.lua",
-        "nvim-telescope/telescope-fzf-native.nvim",
-      },
-    })
-    add({ source = "stevearc/dressing.nvim" })
     dofile(vim.g.WorkDir .. "config/nvim_utils_config.lua")
   end
 end)
