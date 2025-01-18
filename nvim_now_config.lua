@@ -23,7 +23,7 @@ require("snacks").setup({
     },
   },
   picker = {
-    ---@class snacks.picker.matcher.Config
+    jump = { reuse_win = true},
     win = {
       -- input window
       input = {
