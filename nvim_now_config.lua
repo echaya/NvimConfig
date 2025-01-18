@@ -28,7 +28,7 @@ require("snacks").setup({
       -- input window
       input = {
         keys = {
-          ["<C-h>"] = { "toggle_help", mode = { "n", "i" } },
+          ["<C-/>"] = { "toggle_help", mode = { "n", "i" } },
           ["<Esc>"] = { "close", mode = { "n", "i" } },
           ["<C-c>"] = { "close", mode = { "n", "i" } },
           ["<CR>"] = { "confirm", mode = { "n", "i" } },
