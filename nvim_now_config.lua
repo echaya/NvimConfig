@@ -121,51 +121,6 @@ require("snacks").setup({
   },
 })
 
-Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>ts")
-Snacks.toggle
-  .option("background", { off = "light", on = "dark", name = "Dark Background" })
-  :map("<leader>tb")
-Snacks.toggle.inlay_hints():map("<leader>th")
-
-vim.keymap.set("n", "<leader>un", function()
-  Snacks.notifier.hide()
-end, { desc = "Dismiss All Notifications" })
-
-vim.keymap.set("n", "<leader>bd", function()
-  Snacks.bufdelete()
-end, { desc = "Delete Buffer" })
-
-vim.keymap.set("n", "<leader>fn", function()
-  Snacks.notifier.show_history()
-end, { desc = "find_notification" })
-
-vim.keymap.set("n", "<leader>fm", "<cmd>messages<cr>", { desc = "find_messages" })
-
-vim.keymap.set("n", "<leader>gB", function()
-  Snacks.gitbrowse()
-end, { desc = "Git Browse" })
-
-vim.keymap.set({ "n", "t" }, "<a-.>", function()
-  Snacks.lazygit()
-end, { desc = "Lazygit" })
-
-vim.keymap.set({ "n", "t" }, "<a-`>", function()
-  Snacks.terminal()
-end, { desc = "Toggle terminal" })
-
-vim.keymap.set({ "n" }, "<leader>.", function()
-  Snacks.scratch()
-end, { desc = "Toggle Scratch Buffer" })
-
-vim.keymap.set({ "n" }, "<leader>fS", function()
-  Snacks.scratch.select()
-end, { desc = "Find Scratch" })
-vim.keymap.set("n", "<leader>z", function()
-  Snacks.zen()
-end, { desc = "Toggle Zen Mode" })
-vim.keymap.set("n", "<leader>Z", function()
-  Snacks.zen.zoom()
-end, { desc = "Toggle Zoom" })
 -- vim.highlight.priorities.semantic_tokens = 95 -- Or any number lower than 100, treesitter's priority level
 require("kanagawa").setup({
   keywordStyle = { italic = false },
@@ -416,46 +371,6 @@ end, { desc = "save_session" })
 icon = require("mini.icons")
 icon.setup()
 icon.mock_nvim_web_devicons()
-
-local animate = require("mini.animate")
-animate.setup({
-  cursor = {
-    timing = animate.gen_timing.linear({ duration = 20, unit = "total" }),
-    path = animate.gen_path.line({
-      predicate = function()
-        return true
-      end,
-    }),
-  },
-  scroll = {
-    timing = animate.gen_timing.linear({ duration = 40, unit = "total" }),
-    subscroll = animate.gen_subscroll.equal({ max_output_steps = 40 }),
-  },
-  resize = { enable = false },
-  open = { enable = false },
-  close = { enable = false },
-})
-vim.keymap.set(
-  "n",
-  "<C-d>",
-  [[<Cmd>lua vim.cmd('normal! <C-d>'); MiniAnimate.execute_after('scroll', 'normal! zvzz')<CR>]]
-)
-vim.keymap.set(
-  "n",
-  "<C-u>",
-  [[<Cmd>lua vim.cmd('normal! <C-u>'); MiniAnimate.execute_after('scroll', 'normal! zvzz')<CR>]]
-)
-
-vim.keymap.set(
-  "n",
-  "n",
-  [[<Cmd>lua vim.cmd('normal! n'); MiniAnimate.execute_after('scroll', 'normal! zvzz')<CR>]]
-)
-vim.keymap.set(
-  "n",
-  "N",
-  [[<Cmd>lua vim.cmd('normal! N'); MiniAnimate.execute_after('scroll', 'normal! zvzz')<CR>]]
-)
 
 require("diffview").setup({
   view = {
