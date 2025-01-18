@@ -74,11 +74,10 @@ telescope.setup({
         ["<C-k>"] = actions.move_selection_previous,
         ["<C-j>"] = actions.move_selection_next,
         -- C-v to select and split vertically
-        ["<C-x>"] = false,
+        ["<C-x>"] = actions.delete_buffer + actions.move_to_top,
         ["<C-s>"] = actions.select_horizontal,
         ["<CR>"] = select_one_or_multi,
         ["<C-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
-        ["<del>"] = actions.delete_buffer + actions.move_to_top,
         ["<esc>"] = actions.close,
       },
     },
