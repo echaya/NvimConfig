@@ -23,11 +23,6 @@ MiniDeps = require("mini.deps")
 MiniDeps.setup({ path = { package = path_package } })
 local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 
-local build = function(args)
-  -- local obj = vim.system({ "make", "-C", args.path, "install_jsregexp" }, { text = true }):wait()
-  local obj = vim.system({ "make", "-C", args.path }, { text = true }):wait()
-  vim.print(vim.inspect(obj))end
-
 -- control how many vim plugins to be loaded now
 local vim_now_index = 2
 -- deps now: UI & early utilities
@@ -47,7 +42,7 @@ now(function()
     depends = {
       "MunifTanjim/nui.nvim",
     },
-    add({ source = "sindrets/diffview.nvim" })
+    add({ source = "sindrets/diffview.nvim" }),
   })
   dofile(vim.g.WorkDir .. "config/nvim_now_config.lua")
 end)
