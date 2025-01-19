@@ -255,38 +255,11 @@ require("better_escape").setup({
   timeout = 150,
   default_mappings = false,
   mappings = {
-    i = {
-      j = {
-        k = "<Esc>",
-      },
-    },
-    c = {
-      j = {
-        k = "<Esc>",
-      },
-    },
-    t = {
-      j = {
-        k = "<C-\\><C-n>",
-      },
-      ["\\"] = {
-        ["\\"] = function()
-          vim.schedule(function()
-            vim.cmd("q")
-          end)
-        end,
-      },
-    },
-    v = {
-      j = {
-        k = "<Esc>",
-      },
-    },
-    s = {
-      j = {
-        k = "<Esc>",
-      },
-    },
+    i = { j = { k = "<Esc>" } },
+    c = { j = { k = "<Esc>" } },
+    t = { j = { k = "<C-\\><C-n>" } },
+    v = { j = { k = "<Esc>" } },
+    s = { j = { k = "<Esc>" } },
   },
 })
 
