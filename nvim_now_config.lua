@@ -23,7 +23,7 @@ require("snacks").setup({
     },
   },
   picker = {
-    jump = { reuse_win = true },
+    jump = { reuse_win = false },
     win = {
       -- input window
       input = {
