@@ -58,7 +58,7 @@ local custom_attach = function(client, bufnr)
   vim.keymap.set("n", "gR", "<cmd>lua vim.lsp.buf.references()<CR>")
   vim.keymap.set("n", "gr", "<CMD>Glance references<CR>")
   vim.keymap.set("n", "<F2>", "<cmd>lua vim.lsp.buf.rename()<CR>")
-  vim.keymap.set("n", "gl", "<cmd>lua vim.diagnostic.open_float()<CR>")
+  -- vim.keymap.set("n", "gl", "<cmd>lua vim.diagnostic.open_float()<CR>")
   -- ]d and [d goto next and prev diagnostic
   vim.keymap.set("n", "]D", "<cmd>lua vim.diagnostic.goto_next({severity='error'})<CR>")
   vim.keymap.set("n", "[D", "<cmd>lua vim.diagnostic.goto_prev({severity='error'})<CR>")
@@ -171,6 +171,9 @@ vim.diagnostic.config({
     end,
   },
 })
+
+vim.cmd('autocmd CursorHold * lua vim.diagnostic.open_float({scope="line"})')
+vim.o.updatetime = 300
 
 -- REPL using iron
 vim.api.nvim_create_autocmd("FileType", {
