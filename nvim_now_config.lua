@@ -310,13 +310,13 @@ vim.keymap.set(
 )
 vim.keymap.set(
   "n",
-  "<leader>ds",
+  "<leader>sd",
   "<cmd>lua MiniSessions.select('delete')<cr>",
-  { desc = "delete_session" }
+  { desc = "session_delete" }
 )
-vim.keymap.set("n", "<leader>fS", function()
+vim.keymap.set("n", "<leader>ss", function()
   SaveMiniSession()
-end, { desc = "save_session" })
+end, { desc = "session_save" })
 
 icon = require("mini.icons")
 icon.setup()
