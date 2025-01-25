@@ -153,7 +153,7 @@ require("mini.pairs").setup({
 require("conform").setup({
   formatters_by_ft = {
     lua = { "stylua" },
-    python = { "isort", "black" },
+    python = { "isort","ruff_format"},
   },
 })
 
