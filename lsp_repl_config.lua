@@ -47,6 +47,11 @@ local custom_attach = function(client, bufnr)
   --   require("telescope.builtin").lsp_references,
   --   { desc = "lsp_references" }
   -- )
+  if client.name == "ruff" then
+    client.server_capabilities.hoverProvider = false
+  else
+    navic.attach(client, bufnr)
+  end
   vim.keymap.set("n", "gh", "<cmd>lua vim.lsp.buf.hover()<CR>")
   vim.keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.definition()<CR>")
   vim.keymap.set("n", "gd", "<CMD>Glance definitions<CR>")
@@ -57,7 +62,6 @@ local custom_attach = function(client, bufnr)
   -- ]d and [d goto next and prev diagnostic
   vim.keymap.set("n", "]D", "<cmd>lua vim.diagnostic.goto_next({severity='error'})<CR>")
   vim.keymap.set("n", "[D", "<cmd>lua vim.diagnostic.goto_prev({severity='error'})<CR>")
-  navic.attach(client, bufnr)
   -- end
 end
 
@@ -108,36 +112,24 @@ glance.setup({
   },
 })
 
-lsp.basedpyright.setup({
+require("lspconfig").pylsp.setup({
   on_attach = custom_attach,
   capabilities = capabilities,
   settings = {
-    basedpyright = {
-      analysis = {
-        useLibraryCodeForTypes = true,
-        diagnosticMode = "openFilesOnly",
-        typeCheckingMode = "basic",
-        diagnosticSeverityOverrides = {
-          reportAbstractUsage = "information",
-          reportUnusedVariable = "information",
-          reportUnusedFunction = "information",
-          reportDuplicateImport = "warning",
-          reportAttributeAccessIssue = "none",
-          reportOptionalSubscript = "none",
-          reportOptionalMemberAccess = "none",
-          reportArgumentType = "none",
-          reportAssignmentType = "information",
-          reportPossiblyUnboundVariable = "information",
-          reportIndexIssue = "none",
-          reportCallIssue = "information",
-          reportRedeclaration = "information",
-          reportOperatorIssue = "information",
-          reportOptionalOperand = "information",
-          reportGeneralTypeIssues = "none",
-        },
+    pylsp = {
+      plugins = {
+        flake8 = { enabled = false },
+        mypy = { enabled = false },
+        pycodestyle = { enabled = false },
+        pyflakes = { enabled = false },
       },
     },
   },
+})
+
+require("lspconfig").ruff.setup({
+  on_attach = custom_attach,
+  capabilities = capabilities,
 })
 
 lsp.lua_ls.setup({
@@ -302,7 +294,7 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.keymap.set(
       "n",
       "<localleader>==",
-      ":!black %<cr>",
+      ":!ruff format %<cr>",
       { buffer = args.buf, desc = "repl_sync_format" }
     )
   end,
