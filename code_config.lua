@@ -153,7 +153,7 @@ require("mini.pairs").setup({
 require("conform").setup({
   formatters_by_ft = {
     lua = { "stylua" },
-    python = { "isort","ruff_format"},
+    python = { "isort", "ruff_format" },
   },
 })
 
@@ -257,7 +257,6 @@ gitsigns.setup({
     map({ "o", "x" }, "gh", ":<C-U>Gitsigns select_hunk<CR>")
   end,
 })
-
 
 local hipatterns = require("mini.hipatterns")
 hipatterns.setup({
