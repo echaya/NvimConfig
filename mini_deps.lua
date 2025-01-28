@@ -24,7 +24,7 @@ MiniDeps.setup({ path = { package = path_package } })
 local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 
 -- control how many vim plugins to be loaded now
-local vim_now_index = 2
+local vim_now_index = 3
 -- deps now: UI & early utilities
 now(function()
   -- vim plugins, StartupTime

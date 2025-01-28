@@ -13,13 +13,13 @@
 let g:lst_plugin = [
             \'dstein64/vim-startuptime',
             \'svermeulen/vim-cutlass',
+            \'MTDL9/vim-log-highlighting',
             \'tpope/vim-repeat',
             \'unblevable/quick-scope',
             \'907th/vim-auto-save',
             \'vimwiki/vimwiki',
             \'dhruvasagar/vim-table-mode',
-            \'ferrine/md-img-paste.vim',
-            \'MTDL9/vim-log-highlighting']
+            \'ferrine/md-img-paste.vim' ]
 
 
 if !has('nvim')
