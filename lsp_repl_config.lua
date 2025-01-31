@@ -34,27 +34,17 @@ local navic = require("nvim-navic")
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 
 local custom_attach = function(client, bufnr)
-  -- vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
-  -- vim.keymap.set("n", "gD", ":vsplit | lua vim.lsp.buf.definition()<CR>")
-  -- vim.keymap.set("n", "gD", function()
-  --   vim.cmd("vsplit")
-  --   require("telescope.builtin").lsp_definitions({ reuse_win = true })
-  -- end, { desc = "V_lsp_definition" })
-  -- vim.keymap.set('n','gr','<cmd>lua vim.lsp.buf.references()<CR>')
-  -- vim.keymap.set(
-  --   "n",
-  --   "gR",
-  --   require("telescope.builtin").lsp_references,
-  --   { desc = "lsp_references" }
-  -- )
   if client.name == "ruff" then
     client.server_capabilities.hoverProvider = false
   else
     navic.attach(client, bufnr)
   end
   vim.keymap.set("n", "gh", "<cmd>lua vim.lsp.buf.hover()<CR>")
+  -- vim.keymap.set("n", "gD", ":vsplit | lua vim.lsp.buf.definition()<CR>")
   vim.keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.definition()<CR>")
+  -- vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
   vim.keymap.set("n", "gd", "<CMD>Glance definitions<CR>")
+  -- vim.keymap.set('n','gr','<cmd>lua vim.lsp.buf.references()<CR>')
   vim.keymap.set("n", "gR", "<cmd>lua vim.lsp.buf.references()<CR>")
   vim.keymap.set("n", "gr", "<CMD>Glance references<CR>")
   vim.keymap.set("n", "<F2>", "<cmd>lua vim.lsp.buf.rename()<CR>")
