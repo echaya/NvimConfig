@@ -199,12 +199,7 @@ vim.cmd([[
 
 vim.o.sessionoptions = "buffers,curdir,folds,globals,help,skiprtp,tabpages"
 local mini_session = require("mini.sessions")
-mini_session.setup({
-  file = "",
-  hooks = {
-    pre = { read = SaveMiniSession },
-  },
-})
+mini_session.setup({ file = "" })
 
 -- save session functions copy from nvim-session-manager
 local function is_restorable(buffer)
@@ -250,9 +245,9 @@ end
 
 vim.keymap.set(
   "n",
-  "<leader>fs",
+  "<leader>sf",
   "<cmd>lua MiniSessions.select('read')<cr>",
-  { desc = "find_session" }
+  { desc = "session_find" }
 )
 vim.keymap.set(
   "n",
