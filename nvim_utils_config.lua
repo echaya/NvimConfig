@@ -487,3 +487,13 @@ vim.api.nvim_create_autocmd("RecordingLeave", {
   end,
   group = vim.api.nvim_create_augroup("NoiceMacroNotficationDismiss", { clear = true }),
 })
+
+require("satellite").setup({
+  handlers = {
+    cursor = {
+      enable = true,
+      symbols = { ">" },
+    },
+  },
+  excluded_filetypes = { "toggleterm", "NvimTree", "oil", "minifiles" },
+})

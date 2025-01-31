@@ -139,16 +139,6 @@ local au_opts = {
 }
 vim.api.nvim_create_autocmd("User", au_opts)
 
-require("satellite").setup({
-  handlers = {
-    cursor = {
-      enable = true,
-      symbols = { ">" },
-    },
-  },
-  excluded_filetypes = { "toggleterm", "NvimTree", "oil", "minifiles" },
-})
-
 local starter = require("mini.starter")
 starter.setup({
   evaluate_single = true,
