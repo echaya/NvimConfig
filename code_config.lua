@@ -56,7 +56,8 @@ cmp.setup({
         min_keyword_length = 0,
       },
       snippets = {
-        min_keyword_length = 2,
+        min_keyword_length = 1,
+        score_offset = 5, -- Boost/penalize the score of the items
       },
       buffer = {
         min_keyword_length = 3,
