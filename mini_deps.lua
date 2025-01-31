@@ -37,13 +37,7 @@ now(function()
   add({ source = "rebelot/kanagawa.nvim" })
   add({ source = "SmiteshP/nvim-navic" })
   add({ source = "lewis6991/satellite.nvim" })
-  add({
-    source = "folke/noice.nvim",
-    depends = {
-      "MunifTanjim/nui.nvim",
-    },
-    add({ source = "sindrets/diffview.nvim" }),
-  })
+  add({ source = "sindrets/diffview.nvim" })
   dofile(vim.g.WorkDir .. "config/nvim_now_config.lua")
 end)
 
@@ -62,6 +56,12 @@ later(function()
   dofile(vim.g.WorkDir .. "config/univ_config.lua")
   if vim.g.vscode == nil then
     add({ source = "folke/which-key.nvim" })
+    add({
+      source = "folke/noice.nvim",
+      depends = {
+        "MunifTanjim/nui.nvim",
+      },
+    })
     dofile(vim.g.WorkDir .. "config/nvim_utils_config.lua")
   end
 end)
