@@ -7,10 +7,10 @@ nnoremap <silent> ZX <Cmd>lua require('vscode').call('workbench.action.reopenClo
 " require register a-x into vscode shortcut
 nnoremap <silent> <a-,> <Cmd>lua require('vscode').call('workbench.action.moveEditorLeftInGroup')<CR>
 nnoremap <silent> <a-.> <Cmd>lua require('vscode').call('workbench.action.moveEditorRightInGroup')<CR>
-nnoremap <silent> \l <Cmd>lua require('vscode').call('jupyter.interactive.clearAllCells')<CR>
+nnoremap <silent> <a-del> <Cmd>lua require('vscode').call('jupyter.interactive.clearAllCells')<CR>
 
 " code navigation and execution
-nnoremap <silent> <leader>- <Cmd>lua require('vscode').call('workbench.view.explorer')<CR>
+nnoremap <silent> <a-e> <Cmd>lua require('vscode').call('workbench.view.explorer')<CR>
 nnoremap <silent> gD <Cmd>lua require('vscode').action('editor.action.revealDefinitionAside')<CR>
 nnoremap <silent> o <Cmd>lua require('vscode').action('editor.action.insertLineAfter')<CR>i
 nnoremap <silent> O <Cmd>lua require('vscode').action('editor.action.insertLineBefore')<CR>i
@@ -35,10 +35,9 @@ nnoremap <silent> <down> <Cmd>lua require('vscode').action('workbench.action.dec
 
 " git related
 xnoremap <silent> <leader>hs <Cmd>lua require('vscode').call('git.stageSelectedRanges')<CR><Esc>
-nnoremap <silent> <left> <Cmd>lua require('vscode').action('git.commitStaged')<CR>
-nnoremap <silent> <right> <Cmd>lua require('vscode').action('git.sync')<CR>
-nnoremap <silent> gJ <Cmd>lua require('vscode').action('editor.action.dirtydiff.next')<CR>
-nnoremap <silent> gK <Cmd>lua require('vscode').action('editor.action.dirtydiff.previous')<CR>
+:command! GC lua require('vscode').action('git.commitStaged')
+:command! GP lua require('vscode').action('git.sync')
+nnoremap <silent> <leader>hh <Cmd>lua require('vscode').action('editor.action.dirtydiff.next')<CR>
 nnoremap <silent> [c <Cmd>lua require('vscode').action('workbench.action.editor.nextChange')<CR>
 nnoremap <silent> ]c <Cmd>lua require('vscode').action('workbench.action.editor.previousChange')<CR>
 
