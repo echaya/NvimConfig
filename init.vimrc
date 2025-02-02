@@ -10,6 +10,7 @@
 "source plug.vim manually from plugged folder. It should normally sit in
 " nvim working dir autoload folder
 
+" Universal plugins
 let g:lst_plugin = [
             \'dstein64/vim-startuptime',
             \'svermeulen/vim-cutlass',
@@ -23,7 +24,6 @@ let g:lst_plugin = [
 
 
 if !has('nvim')
-    "universal plugins
     try
         let s:path_package = $HOME . '/.local/share/nvim/site/'
         exe 'source '. s:path_package.'pack/deps/vim/plug.vim'
@@ -31,29 +31,27 @@ if !has('nvim')
         let s:path_package = $HOME . '/AppData/local/nvim-data/site/'
         exe 'source '. s:path_package.'pack/deps/vim/plug.vim'
     endtry
-    call plug#begin(s:path_package.'pack/deps/opt/')
+    call plug#begin(s:path_package.'pack/deps/vim/')
+
     for plugin in g:lst_plugin
         Plug plugin
     endfor
-    call plug#end()
-    "vim specifit
-    call plug#begin(s:path_package.'pack/deps/vim/')
-    Plug 'mhinz/vim-startify' "butify the vim start up page
-    Plug 'ap/vim-buftabline' "butify the tab line
+    Plug 'mhinz/vim-startify' " Beautify the Vim startup page
+    Plug 'ap/vim-buftabline' " Beautify the tab line
     Plug 'mhinz/vim-signify'
     Plug 'itchyny/lightline.vim'
     Plug 'itchyny/vim-gitbranch'
-    Plug 'tpope/vim-commentary' "comment / uncomment code
+    Plug 'tpope/vim-commentary' " Comment/uncomment code
     Plug 'tpope/vim-speeddating'
-    Plug 'kana/vim-textobj-user' "dependent plugin
-    Plug 'Julian/vim-textobj-variable-segment' "av,iv
-    Plug 'kana/vim-textobj-indent' "ai,ii, aI, iI
-    Plug 'bps/vim-textobj-python' "ac,ic,af,if
+    Plug 'kana/vim-textobj-user' " Dependent plugin
+    Plug 'Julian/vim-textobj-variable-segment' " av, iv
+    Plug 'kana/vim-textobj-indent' " ai, ii, aI, iI
+    Plug 'bps/vim-textobj-python' " ac, ic, af, if
     Plug 'mbbill/undotree'
     Plug 'machakann/vim-sandwich'
     Plug 'tpope/vim-fugitive'
-    Plug 'godlygeek/tabular', {'for':['markdown','vimwiki']} "prerequisite for vim-markdown
-    Plug 'plasticboy/vim-markdown', {'for':['markdown','vimwiki']}
+    Plug 'godlygeek/tabular', {'for': ['markdown', 'vimwiki']} " Prerequisite for vim-markdown
+    Plug 'plasticboy/vim-markdown', {'for': ['markdown', 'vimwiki']}
     Plug 'airblade/vim-rooter'
     Plug 'bluz71/vim-nightfly-colors', { 'as': 'nightfly' }
     call plug#end()
