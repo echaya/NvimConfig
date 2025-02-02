@@ -121,6 +121,10 @@ inoremap ; ;<c-g>u
 " use <leader><Esc> to escape terminal mode
 tnoremap <leader><Esc> <C-\><C-n>
 
+" <leader>gc to comment out and copy the line
+nmap <leader>gc gccyypgcc
+xmap <leader>gc ygvgc`>p
+
 " autosave on
 let g:auto_save = 1
 let g:auto_save_silent = 1

@@ -78,6 +78,5 @@ xnoremap x d
 nnoremap xx dd
 nnoremap X D
 
-
 " quick-scope specs
 let g:qs_lazy_highlight = 0
