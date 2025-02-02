@@ -189,6 +189,7 @@ require("kanagawa").setup({
       -- SomePluginHl = { fg = colors.theme.syn.type, bold = true },
       LineNr = { fg = "#7f848e" },
       MatchParen = { bg = "#505664", underline = true },
+      ["@variable.builtin"] = { italic = false },
     }
   end,
 })
