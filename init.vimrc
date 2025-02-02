@@ -80,9 +80,9 @@ try
     colorscheme kanagawa
 catch
     try
-        colorscheme  habamax
-    catch
         colorscheme nightfly
+    catch
+        colorscheme  habamax
     endtry
 endtry
 
