@@ -1,4 +1,103 @@
 Snacks = require("snacks")
+vim.keymap.set("n", "<leader><leader>", function()
+  Snacks.picker.smart()
+end, { desc = "smart_open" })
+vim.keymap.set("n", "<leader>ff", function()
+  Snacks.picker.files()
+end, { desc = "find_file" })
+vim.keymap.set("n", "<leader>fb", function()
+  Snacks.picker.buffers()
+end, { desc = "find_buffers" })
+vim.keymap.set("n", "<leader>fr", function()
+  Snacks.picker.recent()
+end, { desc = "find_recent" })
+vim.keymap.set("n", "<leader>fe", function()
+  Snacks.picker.explorer()
+  vim.defer_fn(function()
+    vim.cmd("wincmd =")
+  end, 100)
+end, { desc = "find_file" })
+vim.keymap.set("n", "<leader>fh", function()
+  Snacks.picker.help()
+end, { desc = "find_help" })
+vim.keymap.set("n", "<leader>fp", function()
+  Snacks.picker.files({ cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "site") })
+end, { desc = "find_plugin" })
+vim.keymap.set("n", "<leader>pp", function()
+  Snacks.picker.pickers()
+end, { desc = "find_plugin" })
+vim.keymap.set("n", "<leader>fk", function()
+  Snacks.picker.keymaps()
+end, { desc = "find_keymaps" })
+vim.keymap.set("n", "<leader>fz", function()
+  Snacks.picker.zoxide()
+end, { desc = "find_zoxide" })
+vim.keymap.set("n", "<leader>fd", function()
+  Snacks.picker.diagnostics()
+end, { desc = "lsp_diagnostics" })
+vim.keymap.set("n", "<leader>fu", function()
+  Snacks.picker.undo()
+end, { desc = "find_undo" })
+vim.keymap.set("n", '<leader>"', function()
+  Snacks.picker.registers()
+end, { desc = "registers" })
+vim.keymap.set("n", "<leader>`", function()
+  Snacks.picker.marks()
+end, { desc = "marks" })
+vim.keymap.set("n", "<leader>/", function()
+  Snacks.picker.grep()
+end, { desc = "live_grep" })
+vim.keymap.set("n", "<leader>gw", function()
+  Snacks.picker.grep_word()
+end, { desc = "grep_string" })
+
+Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>ts")
+Snacks.toggle
+  .option("background", { off = "light", on = "dark", name = "Dark Background" })
+  :map("<leader>tb")
+Snacks.toggle.inlay_hints():map("<leader>th")
+
+vim.keymap.set("n", "<leader>un", function()
+  Snacks.notifier.hide()
+end, { desc = "Dismiss All Notifications" })
+
+vim.keymap.set("n", "<leader>bd", function()
+  Snacks.bufdelete()
+end, { desc = "Delete Buffer" })
+
+vim.keymap.set("n", "<leader>fn", function()
+  Snacks.notifier.show_history()
+end, { desc = "find_notification" })
+
+vim.keymap.set("n", "<leader>fm", "<cmd>messages<cr>", { desc = "find_messages" })
+
+vim.keymap.set("n", "<leader>gB", function()
+  Snacks.gitbrowse()
+end, { desc = "Git Browse" })
+
+vim.keymap.set({ "n", "t" }, "<a-.>", function()
+  Snacks.lazygit()
+end, { desc = "Lazygit" })
+
+vim.keymap.set({ "n", "t" }, "<a-`>", function()
+  Snacks.terminal()
+end, { desc = "Toggle terminal" })
+
+vim.keymap.set({ "n" }, "<leader>.", function()
+  Snacks.scratch()
+end, { desc = "Toggle Scratch Buffer" })
+
+vim.keymap.set({ "n" }, "<leader>fS", function()
+  Snacks.scratch.select()
+end, { desc = "Find Scratch" })
+
+vim.keymap.set("n", "<leader>z", function()
+  Snacks.zen()
+end, { desc = "Toggle Zen Mode" })
+vim.keymap.set("n", "<leader>Z", function()
+  Snacks.zen.zoom()
+end, { desc = "Toggle Zoom" })
+
 require("snacks").setup({
   bigfile = { enabled = true },
   notifier = {
@@ -137,8 +236,8 @@ local au_opts = {
 }
 vim.api.nvim_create_autocmd("User", au_opts)
 
-local starter = require("mini.starter")
-starter.setup({
+local MiniStarter = require("mini.starter")
+MiniStarter.setup({
   evaluate_single = true,
   items = {
     -- starter.sections.sessions(10, true),
@@ -172,8 +271,8 @@ starter.setup({
     { action = "qall!", name = "Quit neovim", section = "Builtin actions" },
   },
   content_hooks = {
-    starter.gen_hook.adding_bullet(),
-    starter.gen_hook.padding(vim.o.columns * 0.4, vim.o.lines * 0.25),
+    MiniStarter.gen_hook.adding_bullet(),
+    MiniStarter.gen_hook.padding(vim.o.columns * 0.4, vim.o.lines * 0.25),
   },
   footer = os.date(),
   header = table.concat({
