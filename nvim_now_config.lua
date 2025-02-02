@@ -87,7 +87,7 @@ vim.keymap.set({ "n" }, "<leader>.", function()
   Snacks.scratch()
 end, { desc = "Toggle Scratch Buffer" })
 
-vim.keymap.set({ "n" }, "<leader>fS", function()
+vim.keymap.set({ "n" }, "<leader>fs", function()
   Snacks.scratch.select()
 end, { desc = "Find Scratch" })
 
