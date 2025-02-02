@@ -23,7 +23,6 @@ require("snacks").setup({
     },
   },
   picker = {
-    jump = { reuse_win = false },
     win = {
       -- input window
       input = {
@@ -37,20 +36,10 @@ require("snacks").setup({
           ["<c-d>"] = { "preview_scroll_down", mode = { "i", "n" } },
           ["<c-b>"] = { "list_scroll_up", mode = { "i", "n" } },
           ["<c-f>"] = { "list_scroll_down", mode = { "i", "n" } },
-          ["<ScrollWheelDown>"] = { "list_scroll_wheel_down", mode = { "i", "n" } },
-          ["<ScrollWheelUp>"] = { "list_scroll_wheel_up", mode = { "i", "n" } },
-          ["G"] = false,
-          ["gg"] = false,
-          ["j"] = false,
-          ["k"] = false,
           ["/"] = false,
-          ["q"] = false,
-          ["?"] = false,
           ["<c-n>"] = false,
           ["<c-p>"] = false,
-        },
-        b = {
-          minipairs_disable = true,
+          ["<a-l>"] = { "toggle_focus", mode = { "i", "n" } },
         },
       },
       -- result list window
@@ -65,6 +54,15 @@ require("snacks").setup({
           ["<c-n>"] = false,
           ["<c-p>"] = false,
           ["/"] = false,
+          ["<a-l>"] = { "toggle_focus", mode = { "i", "n" } },
+        },
+      },
+      preview = {
+        keys = {
+          ["<Esc>"] = "close",
+          ["q"] = "close",
+          ["i"] = "focus_input",
+          ["<a-w>"] = "cycle_win",
         },
       },
     },
