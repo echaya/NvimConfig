@@ -166,7 +166,7 @@ vim.api.nvim_create_autocmd("CursorHold", {
   group = vim.api.nvim_create_augroup("DiagnosticFloatGroup", { clear = true }),
   pattern = "*",
   callback = function()
-    vim.diagnostic.open_float({ scope = "line" })
+    vim.diagnostic.open_float({ scope = "line", focusable = false })
   end,
 })
 vim.o.updatetime = 300
