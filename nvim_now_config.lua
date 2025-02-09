@@ -98,7 +98,7 @@ vim.keymap.set("n", "<leader>Z", function()
   Snacks.zen.zoom()
 end, { desc = "Toggle Zoom" })
 
-require("snacks").setup({
+Snacks.setup({
   bigfile = { enabled = true },
   notifier = {
     enabled = true,
@@ -165,6 +165,9 @@ require("snacks").setup({
         },
       },
     },
+  db = {
+    sqlite3_path = "c:/tools/CliTools/sqlite3.dll", ---@type string?
+  },
   },
 })
 
