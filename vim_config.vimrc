@@ -10,10 +10,9 @@ endfor
 
 
 " using vim-signify
-nnoremap gK :SignifyDiff<cr>
-nnoremap gJ :SignifyHunkDiff<cr>
+nnoremap <leader>hd :SignifyDiff<cr>
+nnoremap <leader>hh :SignifyHunkDiff<cr>
 nnoremap <leader>hr :SignifyHunkUndo<cr>
-vnoremap <leader>hr :SignifyHunkUndo<cr>
 
 "coloring and status line
 set laststatus=2
