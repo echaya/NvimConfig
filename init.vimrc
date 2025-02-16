@@ -88,29 +88,33 @@ catch
     endtry
 endtry
 
-highlight QuickScopePrimary guifg=#afff5f gui=underline ctermfg=155 cterm=underline
-highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline
+augroup color_refresh
+    autocmd!
 
-" colorschme TODO, XXX, IMP, NOTE
-highlight MiniHipatternsTodo guibg=#FF9E3B guifg=#282c34
-highlight MiniHipatternsFixme guibg=#E82424 guifg=#282c34
-highlight MiniHipatternsHack guibg=#957FB8 guifg=#282c34
-highlight MiniHipatternsNote guibg=#76946A guifg=#282c34
+    highlight QuickScopePrimary guifg=#afff5f gui=underline ctermfg=155 cterm=underline
+    highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline
 
-highlight OperatorSandwichBuns guifg=#d19a66 gui=underline
-highlight OperatorSandwichChange guifg=#edc41f gui=underline
-highlight OperatorSandwichAdd guibg=#b1fa87 gui=none
-highlight OperatorSandwichDelete guibg=#cf5963 gui=none
+    " colorschme TODO, XXX, IMP, NOTE
+    highlight MiniHipatternsTodo guibg=#FF9E3B guifg=#282c34
+    highlight MiniHipatternsFixme guibg=#E82424 guifg=#282c34
+    highlight MiniHipatternsHack guibg=#957FB8 guifg=#282c34
+    highlight MiniHipatternsNote guibg=#76946A guifg=#282c34
 
-highlight clear SpellBad
-highlight clear SpellRare
-highlight clear SpellLocal
-highlight SpellBad gui=undercurl guifg=pink
-highlight SpellRare guifg=#63D6FD
-highlight SpellLocal gui=undercurl guifg=#FFFEE2
+    highlight OperatorSandwichBuns guifg=#d19a66 gui=underline
+    highlight OperatorSandwichChange guifg=#edc41f gui=underline
+    highlight OperatorSandwichAdd guibg=#b1fa87 gui=none
+    highlight OperatorSandwichDelete guibg=#cf5963 gui=none
 
-highlight link SatelliteCursor CursorLineNr
-highlight SatelliteMark guibg=#223249 guifg=#D27E99
+    highlight clear SpellBad
+    highlight clear SpellRare
+    highlight clear SpellLocal
+    highlight SpellBad gui=undercurl guifg=pink
+    highlight SpellRare guifg=#63D6FD
+    highlight SpellLocal gui=undercurl guifg=#FFFEE2
 
-highlight TermCursor guifg=#D27E99
-highlight SnacksStatusColumnMark guibg=#16161d guifg=#D27E99
+    highlight link SatelliteCursor CursorLineNr
+    highlight SatelliteMark guibg=#223249 guifg=#D27E99
+
+    highlight TermCursor guifg=#D27E99
+    highlight SnacksStatusColumnMark guibg=#16161d guifg=#D27E99
+augroup END
