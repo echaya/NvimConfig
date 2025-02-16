@@ -80,3 +80,5 @@ nnoremap X D
 
 " quick-scope specs
 let g:qs_lazy_highlight = 0
+let g:qs_buftype_blacklist = ['nofile']
+let g:qs_filetype_blacklist = ['startify','ministarter']
