@@ -33,20 +33,20 @@ cmp.setup({
       auto_show_delay_ms = 250,
     },
   },
-  sources = {
-    default = { "lsp", "path", "snippets", "buffer" },
-    cmdline = function()
+  cmdline = {
+    sources = function()
       local type = vim.fn.getcmdtype()
-      -- Search forward and backward
       if type == "/" or type == "?" then
         return { "buffer" }
       end
-      -- Commands
-      if type == ":" then
+      if type == ":" or type == "@" then
         return { "cmdline" }
       end
       return {}
     end,
+  },
+  sources = {
+    default = { "lsp", "path", "snippets", "buffer" },
     providers = {
       lsp = {
         min_keyword_length = 1, -- Number of characters to trigger porvider
