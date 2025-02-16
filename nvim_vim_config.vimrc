@@ -148,8 +148,11 @@ nnoremap dm :execute 'delmarks '.nr2char(getchar())<cr>
 :command S split
 :command RemoveTrailingSpace %s/\s\+$//e
 :command CopySo !source ~/.config/nvim/config/copy_so.sh
-" convert # In[ ]: => ###
+" convert # In[ ]: => ### Cell
 :command ReplaceIn %s/#\s*In\[\s*\d*\s*\]\?:/###/g
+
+:command Dthis wind diffthis
+:command Doff diffoff
 
 "table-mode uses default mapping start with <leader>t
 let g:table_mode_syntax = 0
