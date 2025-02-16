@@ -34,7 +34,9 @@ if !has('nvim')
     call plug#begin(s:path_package.'pack/deps/vim/')
 
     for plugin in g:lst_plugin
-        Plug plugin
+        if stridx(plugin, "scope") == -1
+            Plug plugin
+        endif
     endfor
     Plug 'mhinz/vim-startify' " Beautify the Vim startup page
     Plug 'ap/vim-buftabline' " Beautify the tab line
