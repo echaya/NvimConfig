@@ -138,6 +138,12 @@ nnoremap [q <cmd>cp<CR>
 nnoremap ]q <cmd>cn<CR>
 :command CC cclose
 
+" centerize on page navigation
+nnoremap n nzzzv
+nnoremap N Nzzzv
+nnoremap <C-u> <C-u>zz
+nnoremap <C-d> <C-d>zz
+
 " delete mark X. dma will delete mark a, dmX will delete mark X
 nnoremap dm :execute 'delmarks '.nr2char(getchar())<cr>
 

@@ -51,7 +51,3 @@ let g:rooter_targets = '/,*'
 let g:rooter_buftypes = ['']
 let g:rooter_patterns = ['.git']
 
-nnoremap n nzzzv
-nnoremap N Nzzzv
-nnoremap <C-u> <C-u>zz
-nnoremap <C-d> <C-d>zz

@@ -285,11 +285,11 @@ vim.api.nvim_create_autocmd("FileType", {
     end, { buffer = args.buf, desc = "repl_send_tree" })
     vim.keymap.set("n", "]]", function()
       vim.cmd("call JumpCell()")
-      require("mini.animate").execute_after("scroll", "normal! zvzz")
+      vim.cmd("norm! zvzz")
     end, { buffer = args.buf, desc = "repl_jump_cell_fwd" })
     vim.keymap.set("n", "[[", function()
       vim.cmd("call JumpCellBack()")
-      require("mini.animate").execute_after("scroll", "normal! zvzz")
+      vim.cmd("norm! zvzz")
     end, { buffer = args.buf, desc = "repl_jump_cell_back" })
     vim.keymap.set(
       "n",
