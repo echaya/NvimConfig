@@ -161,6 +161,7 @@ nnoremap dm :execute 'delmarks '.nr2char(getchar())<cr>
 :command Doff diffoff
 
 nnoremap <leader>gb <CMD>execute '!start ' .. shellescape(expand('<cfile>'), v:true)<CR>
+
 "table-mode uses default mapping start with <leader>t
 let g:table_mode_syntax = 0
 
