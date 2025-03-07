@@ -288,13 +288,13 @@ vim.api.nvim_create_autocmd("FileType", {
     end, { buffer = args.buf, desc = "repl_send_until" })
     vim.keymap.set(
       "n",
-      "<localleader>,",
+      "<localleader><PageUp>",
       ":wincmd w<CR><C-u>:wincmd p<CR>",
       { buffer = args.buf, noremap = true, silent = true, desc = "repl_prev" }
     )
     vim.keymap.set(
       "n",
-      "<localleader>.",
+      "<localleader><PageDown>",
       ":wincmd w<CR><C-d>:wincmd p<CR>",
       { buffer = args.buf, noremap = true, silent = true, desc = "repl_next" }
     )
