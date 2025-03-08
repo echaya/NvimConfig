@@ -19,6 +19,7 @@ cmp.setup({
   fuzzy = {
     prebuilt_binaries = { download = vim.g.update_blink },
     -- implementation = "rust",
+    implementation = "rust",
   },
   completion = {
     list = {
