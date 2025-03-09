@@ -19,7 +19,7 @@ noremap Y y$
 nnoremap gV `[v`]
 " join lines by gj
 nnoremap gj J
-nnoremap <leader>m m
+nnoremap gm m
 nnoremap q: <nop>
 
 " " better j/k using gj and gk
