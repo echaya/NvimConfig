@@ -87,7 +87,7 @@ end
 -- deps later: programming tools
 later(function()
   if vim.g.vscode == nil then
-    vim.g.update_blink = true
+    vim.g.update_blink = false
     add({
       source = "saghen/blink.cmp",
       depends = {

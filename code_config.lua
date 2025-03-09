@@ -18,6 +18,8 @@ cmp.setup({
   },
   fuzzy = {
     prebuilt_binaries = { download = vim.g.update_blink },
+    -- implementation = "rust",
+    implementation = "rust",
   },
   completion = {
     list = {
@@ -49,14 +51,14 @@ cmp.setup({
     default = { "lsp", "path", "snippets", "buffer" },
     providers = {
       lsp = {
-        min_keyword_length = 1, -- Number of characters to trigger porvider
+        min_keyword_length = 0, -- Number of characters to trigger porvider
         score_offset = 0, -- Boost/penalize the score of the items
       },
       path = {
-        min_keyword_length = 0,
+        min_keyword_length = 1,
       },
       snippets = {
-        min_keyword_length = 1,
+        min_keyword_length = 2,
         score_offset = 5, -- Boost/penalize the score of the items
       },
       buffer = {

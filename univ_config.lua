@@ -3,11 +3,11 @@ leap.opts.case_sensitive = true
 -- leap.set_default_keymaps()
 -- Define equivalence classes for brackets and quotes, in addition to <space>
 leap.opts.equivalence_classes = { " \t\r\n", "([{", ")]}", "'\"`" }
-vim.keymap.set({ "n" }, "s", "<Plug>(leap-forward-to)")
-vim.keymap.set({ "n" }, "S", "<Plug>(leap-backward-to)")
-vim.keymap.set({ "x", "o" }, "z", "<Plug>(leap-forward-to)", { desc = "leap forward textobj" })
-vim.keymap.set({ "x", "o" }, "Z", "<Plug>(leap-backward-to)", { desc = "leap back textobj" })
-vim.keymap.set({ "n" }, "gs", "<Plug>(leap-from-window)", { desc = "leap from window" })
+vim.keymap.set({ "n" }, "m", "<Plug>(leap-forward-to)")
+vim.keymap.set({ "n" }, "M", "<Plug>(leap-backward-to)")
+vim.keymap.set({ "x", "o" }, "m", "<Plug>(leap-forward-to)", { desc = "leap forward textobj" })
+vim.keymap.set({ "x", "o" }, "M", "<Plug>(leap-backward-to)", { desc = "leap back textobj" })
+vim.keymap.set({ "n" }, "gm", "<Plug>(leap-from-window)", { desc = "leap from window" })
 leap.opts.preview_filter = function()
   return false
 end
@@ -89,23 +89,7 @@ require("mini.ai").setup({
   },
 })
 
-require("mini.surround").setup({
-  mappings = {
-      add = 'ys',
-      delete = 'ds',
-      find = '',
-      find_left = '',
-      highlight = '<leader>s',
-      replace = 'cs',
-      update_n_lines = '',
-      suffix_last = '',
-      suffix_next = '',
-  },
-  search_method = "cover_or_next",
-})
-vim.keymap.del("x", "ys")
-vim.keymap.set("x", "S", [[:<C-u>lua MiniSurround.add('visual')<CR>]], { silent = true })
-vim.keymap.set("n", "yss", "ys_", { remap = true })
+require("mini.surround").setup({ n_lines = 50, search_method = "cover_or_next" })
 
 require("mini.operators").setup({
   replace = {
