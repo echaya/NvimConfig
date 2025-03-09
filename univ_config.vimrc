@@ -19,7 +19,10 @@ noremap Y y$
 nnoremap gV `[v`]
 " join lines by gj
 nnoremap gj J
+" gm to set mark
 nnoremap gm m
+" delete mark X. dma will delete mark a, dmX will delete mark X
+nnoremap <leader>d :execute 'delmarks '.nr2char(getchar())<cr>
 nnoremap q: <nop>
 
 " " better j/k using gj and gk

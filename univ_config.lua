@@ -101,7 +101,6 @@ require("mini.operators").setup({
   },
 })
 -- g= for evaluation,
--- gm for multiplier,
 -- gp for paste from (registery),
 -- ga for alphabetical,
 -- gx for exchange

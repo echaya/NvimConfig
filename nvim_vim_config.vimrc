@@ -144,8 +144,6 @@ nnoremap N Nzzzv
 nnoremap <C-u> <C-u>zz
 nnoremap <C-d> <C-d>zz
 
-" delete mark X. dma will delete mark a, dmX will delete mark X
-nnoremap <leader>d :execute 'delmarks '.nr2char(getchar())<cr>
 
 " edit as dos, to remove ^m
 :command DOS e ++ff=dos | set ff=unix | w
