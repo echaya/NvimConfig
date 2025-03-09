@@ -96,6 +96,9 @@ require("mini.operators").setup({
     prefix = "gp",
     reindent_linewise = true,
   },
+  multiply = {
+    prefix = "",
+  },
   sort = {
     prefix = "ga",
   },
