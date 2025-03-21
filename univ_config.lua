@@ -16,7 +16,7 @@ vim.api.nvim_set_hl(0, "LeapBackdrop", { link = "Comment" })
 require("leap.user").set_repeat_keys("<enter>", "<backspace>")
 vim.keymap.set(
   { "n", "x", "o" },
-  "gT",
+  "gt",
   'V<cmd>lua require("leap.treesitter").select()<cr>',
   { desc = "select treesitter textobj" }
 )
@@ -98,6 +98,9 @@ require("mini.operators").setup({
   },
   sort = {
     prefix = "ga",
+  },
+ multiply = {
+    prefix = '',
   },
 })
 -- g= for evaluation,
