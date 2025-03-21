@@ -355,7 +355,7 @@ require("satellite").setup({
       symbols = { ">" },
     },
     marks = {
-      key = "gm",
+      key = "",
     },
   },
   excluded_filetypes = { "toggleterm", "NvimTree", "oil", "minifiles" },
