@@ -1,6 +1,5 @@
 "python config
 " g:pythonthreedll, g:pythonthreehome & g:python3_host_prog are set in init.vim
-let g:CodeFence = "###"
 
 function! IsLineIndented()
     let lineContent = getline('.')
@@ -12,11 +11,11 @@ function! IsLineIndented()
 endfunction
 
 function! IsFence()
-    return getline('.') == g:CodeFence
+    return getline('.') == b:CodeFence
 endfunction!
 
 function! BuildFence()
-    exe "normal Go".g:CodeFence
+    exe "normal Go".b:CodeFence
     if IsLineIndented()
         normal 0dt#
     endif
@@ -35,7 +34,7 @@ endfunction
 
 function! BetweenCell() abort
     let Start = line(".")
-    let End = search('^'.g:CodeFence, 'Wbs')
+    let End = search('^'.b:CodeFence, 'Wbs')
     normal +
     if Start - End == 1
         normal V
@@ -45,19 +44,19 @@ function! BetweenCell() abort
 endfunction
 
 function! JumpCell() abort
-    if search('^'.g:CodeFence, 'W') == 0
+    if search('^'.b:CodeFence, 'W') == 0
         norm G
     endif
 endfunction
 
 function! JumpCellBack() abort
-    if search('^'.g:CodeFence, 'Wb') == 0
+    if search('^'.b:CodeFence, 'Wb') == 0
         norm gg
     endif
 endfunction
 
 function! SelectVisual() abort
-    if search('^'.g:CodeFence, 'W') == 0
+    if search('^'.b:CodeFence, 'W') == 0
         call BuildFence()
         call CloseCell()
     else
@@ -110,15 +109,11 @@ augroup PythonRepl
     autocmd Filetype python inoremap <buffer> ;lr .iloc[-1].T
     "autocmd Filetype python inoremap <buffer> ;db __import__("IPython").core.debugger.set_trace()
     " REPL actions
-    "autocmd Filetype python nmap <buffer> <localleader><localleader> :call SendCell()<cr><cr>
-    " TODO to activate terminal and jump back using
-    " local current_window = vim.api.nvim_get_current_win() -- save current window
-    " vim.api.nvim_set_current_win(current_window)
     autocmd Filetype python nnoremap <buffer> <localleader>l <c-w><c-l>i<c-l><Cmd>wincmd h<CR>
+    autocmd FileType python let b:CodeFence = "###"
     autocmd Filetype python nnoremap <buffer> <localleader>v <cmd>call SelectVisual()<cr>
     autocmd Filetype python nnoremap <buffer> <localleader>db <cmd>call DebugCell()<cr>
     autocmd Filetype python nnoremap <buffer> <localleader>dd <cmd>call DebugDelete()<cr>:'<,'>g/core.debugger.set_trace/d<cr>
-"    autocmd Filetype python nnoremap <buffer> <localleader><localleader> <cmd>call JumpCell()<cr>
 augroup END
 
 tnoremap ;cb .to_clipboard()
