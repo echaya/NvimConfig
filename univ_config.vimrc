@@ -55,6 +55,7 @@ nnoremap <C-V> v
 :command! Q q
 :command! Qa qa
 :command! Bd bd
+nnoremap <leader>q <cmd>wq<cr>
 
 " execute macro at visual range, does not stop when no match
 function! ExecuteMacroOverVisualRange()
