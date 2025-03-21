@@ -235,7 +235,7 @@ require("render-markdown").setup({
 })
 vim.keymap.set("n", "<F5>", "<cmd>RenderMarkdown toggle<cr>", { desc = "Render Markdown" })
 
-vim.keymap.set("n", "<leader>q", function()
+vim.keymap.set("n", "<localleader>qf", function()
   require("quicker").toggle({ open_cmd_mods = { split = "botright" } })
 end, {
   desc = "Toggle quickfix",
