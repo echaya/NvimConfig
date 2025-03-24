@@ -165,9 +165,9 @@ Snacks.setup({
         },
       },
     },
-  db = {
-    sqlite3_path = "c:/tools/CliTools/sqlite3.dll", ---@type string?
-  },
+    db = {
+      sqlite3_path = "c:/tools/CliTools/sqlite3.dll", ---@type string?
+    },
   },
 })
 
@@ -271,6 +271,11 @@ MiniStarter.setup({
     },
     { action = "DepsUpdate", name = "Update", section = "Plugin" },
     { action = "DepsClean", name = "Clean", section = "Plugin" },
+    {
+      action = 'lua Snacks.terminal("cd d:/Workspace/SiteRepo/; ./UpdateSite.bat; exit")',
+      name = "GithubSync",
+      section = "Plugin",
+    },
     { action = "enew", name = "New buffer", section = "Builtin actions" },
     { action = "qall!", name = "Quit neovim", section = "Builtin actions" },
   },
