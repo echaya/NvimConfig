@@ -87,13 +87,13 @@ end
 -- deps later: programming tools
 later(function()
   if vim.g.vscode == nil then
-    vim.g.update_blink = false
+    vim.g.update_blink = true
     add({
       source = "saghen/blink.cmp",
       depends = {
         "echaya/friendly-snippets",
       },
-      checkout = "v0.14.1", -- check releases for latest tag
+      checkout = "v0.14.2", -- check releases for latest tag
     })
     add({ source = "stevearc/conform.nvim" })
     add({ source = "stevearc/quicker.nvim" })
