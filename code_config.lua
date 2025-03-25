@@ -45,6 +45,7 @@ cmp.setup({
       end
       return {}
     end,
+    completion = { menu = { auto_show = true } },
   },
   sources = {
     default = { "lsp", "path", "snippets", "buffer" },
