@@ -69,21 +69,17 @@ cmp.setup({
   },
 })
 -- Setup Autocomplete
-require('mini.pairs').setup({
+require("mini.pairs").setup({
   mappings = {
-    -- Opening brackets: Auto-pair if character after is not a letter
-    ['('] = { action = 'open', pair = '()', neigh_pattern = '[^\\][^%a%d]' },
-    ['['] = { action = 'open', pair = '[]', neigh_pattern = '[^\\][^%a%d]' },
-    ['{'] = { action = 'open', pair = '{}', neigh_pattern = '[^\\][^%a%d]' },
-    -- Closing brackets (unchanged, for skipping behavior)
-    [')'] = { action = 'close', pair = '()', neigh_pattern = '[^\\].' },
-    [']'] = { action = 'close', pair = '[]', neigh_pattern = '[^\\].' },
-    ['}'] = { action = 'close', pair = '{}', neigh_pattern = '[^\\].' },
-    -- Quotes: Auto-close if character before AND after is not a letter
-    ['"'] = { action = 'closeopen', pair = '""', neigh_pattern = '[^%a%d][^%a%d]', register = { cr = false } },
-    ["'"] = { action = 'closeopen', pair = "''", neigh_pattern = '[^%a%d][^%a%d]', register = { cr = false } },
-    ['`'] = { action = 'closeopen', pair = '``', neigh_pattern = '[^%a%d][^%a%d]', register = { cr = false } },
-  }
+    -- Opening brackets: Auto-pair if character after is not a letter or digit
+    ["("] = { neigh_pattern = "[^\\][^%a%d]" },
+    ["["] = { neigh_pattern = "[^\\][^%a%d]" },
+    ["{"] = { neigh_pattern = "[^\\][^%a%d]" },
+    -- Quotes: Auto-close if character before AND after is not a letter or digit
+    ['"'] = { neigh_pattern = "[^%a%d][^%a%d]" },
+    ["'"] = { neigh_pattern = "[^%a%d][^%a%d]" },
+    ["`"] = { neigh_pattern = "[^%a%d][^%a%d]" },
+  },
 })
 
 require("conform").setup({
