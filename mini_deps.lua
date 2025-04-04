@@ -93,7 +93,7 @@ later(function()
       depends = {
         "echaya/friendly-snippets",
       },
-      checkout = "v1.0.0", -- check releases for latest tag
+      checkout = "v1.1.1", -- check releases for latest tag
     })
     add({ source = "stevearc/conform.nvim" })
     add({ source = "stevearc/quicker.nvim" })
