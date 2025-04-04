@@ -21,14 +21,7 @@ cmp.setup({
     implementation = "rust",
   },
   completion = {
-    list = {
-      selection = {
-        preselect = function(ctx)
-          return ctx.mode ~= "cmdline"
-            and not require("blink.cmp").snippet_active({ direction = 1 })
-        end,
-      },
-    },
+    list = { selection = { preselect = true, auto_insert = true } },
     documentation = {
       auto_show = true,
       auto_show_delay_ms = 250,
@@ -45,7 +38,10 @@ cmp.setup({
       end
       return {}
     end,
-    completion = { menu = { auto_show = true } },
+    completion = {
+      menu = { auto_show = true },
+      list = { selection = { preselect = false, auto_insert = true } },
+    },
   },
   sources = {
     default = { "lsp", "path", "snippets", "buffer" },
