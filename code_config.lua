@@ -28,6 +28,14 @@ cmp.setup({
     },
   },
   cmdline = {
+    keymap = {
+      preset = "none",
+      ["<C-e>"] = { "show", "show_documentation", "hide_documentation" },
+      ["<Esc>"] = { "cancel", "fallback" },
+      ["<CR>"] = { "accept_and_enter", "fallback" },
+      ["<Tab>"] = { "select_next", "fallback" },
+      ["<S-Tab>"] = { "select_prev", "fallback" },
+    },
     sources = function()
       local type = vim.fn.getcmdtype()
       if type == "/" or type == "?" then
