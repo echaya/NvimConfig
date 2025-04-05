@@ -43,7 +43,6 @@ let &t_EI = "\e[2 q"
 let g:undotree_WindowLayout = 2
 nnoremap <leader>fu :UndotreeToggle<CR>
 
-runtime macros/sandwich/keymap/surround.vim
 :command! PU PlugUpdate
 
 " auto root change by vim-roooter
