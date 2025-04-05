@@ -19,9 +19,7 @@ let g:lst_plugin = [
             \'unblevable/quick-scope',
             \'907th/vim-auto-save',
             \'vimwiki/vimwiki',
-            \'dhruvasagar/vim-table-mode',
-            \'ferrine/md-img-paste.vim' ]
-
+            \'dhruvasagar/vim-table-mode']
 
 if !has('nvim')
     try
