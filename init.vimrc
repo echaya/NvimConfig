@@ -37,7 +37,6 @@ if !has('nvim')
         endif
     endfor
     Plug 'mhinz/vim-startify' " Beautify the Vim startup page
-    Plug 'ap/vim-buftabline' " Beautify the tab line
     Plug 'mhinz/vim-signify'
     Plug 'itchyny/lightline.vim'
     Plug 'itchyny/vim-gitbranch'
