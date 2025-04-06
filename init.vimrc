@@ -44,8 +44,6 @@ if !has('nvim')
     Plug 'tpope/vim-speeddating'
     Plug 'kana/vim-textobj-user' " Dependent plugin
     Plug 'Julian/vim-textobj-variable-segment' " av, iv
-    Plug 'kana/vim-textobj-indent' " ai, ii, aI, iI
-    Plug 'bps/vim-textobj-python' " ac, ic, af, if
     Plug 'mbbill/undotree'
     Plug 'machakann/vim-sandwich'
     Plug 'tpope/vim-fugitive'
