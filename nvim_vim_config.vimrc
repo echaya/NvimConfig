@@ -235,52 +235,86 @@ endfunction
 
 function! MyTabLine()
     let s = ''
-    let t = tabpagenr()
+    let current_tab = tabpagenr()
     let i = 1
-    while i <= tabpagenr('$')
 
+    " Loop through all existing tab pages
+    while i <= tabpagenr('$')
         let buflist = tabpagebuflist(i)
-        let winnr = tabpagewinnr(i)
+        let winnr_in_tab = tabpagewinnr(i)
+        if winnr_in_tab > 0 && winnr_in_tab <= len(buflist)
+            let bufnr = buflist[winnr_in_tab - 1]
+        else
+            let bufnr = -1
+        endif
         let s .= '%' . i . 'T'
-        let s .= (i == t ? '%1*' : '%2*')
-        let s .= (i == t ? '%#TabLineSel#' : '%#TabLine#')
+        if i == current_tab
+            let s .= '%#TabLineSel#'
+        else
+            let s .= '%#TabLine#'
+        endif
         let s .= ' ' . i . ' '
 
-        let bufnr = buflist[winnr - 1]
-        let file = bufname(bufnr)
+        let filename = bufname(bufnr)
         let buftype = getbufvar(bufnr, '&buftype')
-        if buftype == 'help'
-            let file = 'help:' . fnamemodify(file, ':t:r')
+        let file_display_name = ''
+        if bufnr == -1 "
+            let file_display_name = '[No Window]'
+        elseif filename == '' && buftype != 'quickfix' && buftype != 'help'
+            let file_display_name = '[No Name]'
+        elseif buftype == 'help'
+            let file_display_name = 'help:' . fnamemodify(filename, ':t:r')
         elseif buftype == 'quickfix'
-            let file = 'quickfix'
+            let file_display_name = 'quickfix'
+        elseif buftype == 'terminal'
+            let term_parts = split(filename, ':')
+            if len(term_parts) > 1 && term_parts[-1] != ''
+                let file_display_name = 'term:' . term_parts[-1]
+            else
+                let file_display_name = '[Terminal]'
+            endif
         elseif buftype == 'nofile'
-            if file =~ '\/.'
-                let file = substitute(file, '.*\/\ze.', '', '')
+            if filename =~ '\/.'
+                let file_display_name = substitute(filename, '.*\/\ze.', '', '')
+            elseif filename != ''
+                let file_display_name = filename
+            else
+                let file_display_name = '[Scratch]'
             endif
         else
-            let file = pathshorten(fnamemodify(file, ':p:~:.'))
+            if i == current_tab
+                let full_path = fnamemodify(filename, ':p')
+                if strlen(full_path) > 100
+                    let file_display_name = pathshorten(full_path)
+                else
+                    let file_display_name = full_path
+                endif
+            else
+                let file_display_name = fnamemodify(filename, ':t')
+            endif
             if getbufvar(bufnr, '&modified')
-                let file = '+' . file
+                let file_display_name = '+' . file_display_name
             endif
         endif
-        if file == ''
-            let file = '[No Name]'
+        if file_display_name == ''
+            let file_display_name = '[No Name]'
         endif
-        let s .= ' ' . file
 
+        let s .= ' ' . file_display_name
         if i < tabpagenr('$')
             let s .= ' %#TabLine#|'
         else
             let s .= ' '
         endif
 
-        let i = i + 1
-
+        let i += 1
     endwhile
 
-    let s .='%#TabLineSel#'
-    let s .= '%T%#TabLineFill#%='
-    let s .= (tabpagenr('$') > 1 ? '%999XX' : 'X')
+    let s .= '%#TabLineFill#'
+    let s .= '%='
+    if tabpagenr('$') > 1
+        let s .= '%999X' . '✕ '
+    endif
     return s
 
 endfunction
