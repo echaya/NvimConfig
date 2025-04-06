@@ -164,7 +164,7 @@ nnoremap <leader>gb <CMD>execute '!start ' .. shellescape(expand('<cfile>'), v:t
 let g:table_mode_syntax = 0
 
 "vim-fugitive or mini.git
-:command GC Git commit
+command! GC execute "Git diff --staged" | execute "Git commit"
 :command GP Git! push
 
 " add comment string for bat, autohotkey files
