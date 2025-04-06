@@ -32,7 +32,7 @@ now(function()
     if index <= vim_now_index then
       add({ source = value })
     end
-  end
+ end
   add({ source = "folke/snacks.nvim" })
   add({ source = "rebelot/kanagawa.nvim" })
   add({ source = "SmiteshP/nvim-navic" })
