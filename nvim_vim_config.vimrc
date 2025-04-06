@@ -279,11 +279,6 @@ function! MyTabLine()
     endwhile
 
     let s .='%#TabLineSel#'
-    try
-        let s .="%{%v:lua.require'nvim-navic'.get_location()%}"
-    catch
-        lst s .=""
-    endtry
     let s .= '%T%#TabLineFill#%='
     let s .= (tabpagenr('$') > 1 ? '%999XX' : 'X')
     return s
