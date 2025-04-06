@@ -95,11 +95,6 @@ augroup color_refresh
     highlight MiniHipatternsHack guibg=#957FB8 guifg=#282c34
     highlight MiniHipatternsNote guibg=#76946A guifg=#282c34
 
-    highlight OperatorSandwichBuns guifg=#d19a66 gui=underline
-    highlight OperatorSandwichChange guifg=#edc41f gui=underline
-    highlight OperatorSandwichAdd guibg=#b1fa87 gui=none
-    highlight OperatorSandwichDelete guibg=#cf5963 gui=none
-
     highlight clear SpellBad
     highlight clear SpellRare
     highlight clear SpellLocal
