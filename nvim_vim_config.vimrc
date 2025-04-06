@@ -238,7 +238,6 @@ function! MyTabLine()
     let current_tab = tabpagenr()
     let i = 1
 
-    " Loop through all existing tab pages
     while i <= tabpagenr('$')
         let buflist = tabpagebuflist(i)
         let winnr_in_tab = tabpagewinnr(i)
