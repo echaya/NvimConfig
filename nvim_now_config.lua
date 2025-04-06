@@ -208,11 +208,12 @@ local get_navic_info = function(args)
   if navic.is_available() then
     info = navic.get_location() or ""
   end
-  if string.len(info) > 0 then
-    return "󱣱  " .. info
-  else
-    return ""
-  end
+  return info
+  -- if string.len(info) > 0 then
+  --   return "󱣱  " .. info
+  -- else
+  --   return ""
+  -- end
 end
 
 local MiniStatusline = require("mini.statusline")
