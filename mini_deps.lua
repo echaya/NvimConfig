@@ -32,7 +32,7 @@ now(function()
     if index <= vim_now_index then
       add({ source = value })
     end
- end
+  end
   add({ source = "folke/snacks.nvim" })
   add({ source = "rebelot/kanagawa.nvim" })
   add({ source = "SmiteshP/nvim-navic" })
@@ -54,7 +54,6 @@ later(function()
   add({ source = "monaqa/dial.nvim" })
   dofile(vim.g.WorkDir .. "config/univ_config.lua")
   if vim.g.vscode == nil then
-    add({ source = "lewis6991/satellite.nvim" })
     add({ source = "folke/which-key.nvim" })
     add({
       source = "folke/noice.nvim",
