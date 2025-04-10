@@ -102,9 +102,6 @@ augroup color_refresh
     highlight SpellRare guifg=#63D6FD
     highlight SpellLocal gui=undercurl guifg=#FFFEE2
 
-    highlight link SatelliteCursor CursorLineNr
-    highlight SatelliteMark guibg=#223249 guifg=#D27E99
-
     highlight TermCursor guifg=#D27E99
     highlight SnacksStatusColumnMark guibg=#16161d guifg=#D27E99
 augroup END
