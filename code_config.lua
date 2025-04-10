@@ -79,8 +79,9 @@ require("mini.pairs").setup({
     ["("] = { neigh_pattern = "[^\\][^%a%d]" },
     ["["] = { neigh_pattern = "[^\\][^%a%d]" },
     ["{"] = { neigh_pattern = "[^\\][^%a%d]" },
+    -- Opening double quotation: Auto-pair if character after is not a letter or digit
+    ['"'] = { neigh_pattern = "[^\\][^%a%d]" },
     -- Quotes: Auto-close if character before AND after is not a letter or digit
-    ['"'] = { neigh_pattern = "[^%a%d][^%a%d]" },
     ["'"] = { neigh_pattern = "[^%a%d][^%a%d]" },
     ["`"] = { neigh_pattern = "[^%a%d][^%a%d]" },
   },
