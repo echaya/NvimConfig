@@ -127,6 +127,7 @@ local map_split = function(buf_id, lhs, direction)
     end)
 
     MiniFiles.set_target_window(new_target)
+    MiniFiles.go_in()
   end
 
   -- Adding `desc` will result into `show_help` entries
