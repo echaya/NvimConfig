@@ -171,6 +171,7 @@ require("better_escape").setup({
     t = { j = { k = "<C-\\><C-n>" } },
     v = { j = { k = "<Esc>" } },
     s = { j = { k = "<Esc>" } },
+    n = { j = { k = "<cmd>wincmd =<cr>k" } },
   },
 })
 
