@@ -90,6 +90,7 @@ require("mini.ai").setup({
 })
 
 require("mini.surround").setup({ n_lines = 50, search_method = "cover_or_next" })
+vim.keymap.set("n", "S", "sa_", { remap = true, desc = "surround add line" })
 
 require("mini.operators").setup({
   replace = {
