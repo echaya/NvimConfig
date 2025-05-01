@@ -239,45 +239,85 @@ vim.api.nvim_create_autocmd("FileType", {
       )
     end
     vim.keymap.set("n", "<localleader>y", function()
-      vim.cmd("norm! yiwo")
-      vim.cmd("norm! pA.to_clipboard()")
-      vim.cmd("norm! V")
+      local original_cursor_pos = vim.api.nvim_win_get_cursor(0)
+      local current_line_1_indexed = original_cursor_pos[1]
+      local var_name = vim.fn.expand("<cword>")
+      if not var_name or var_name == "" then
+        vim.notify("No word under cursor.", vim.log.levels.WARN)
+        return
+      end
+
+      local command_to_send
+
+      if vim.fn.has("unix") == 1 then
+        command_to_send =
+          string.format("import linutils.cb_helper; linutils.cb_helper.to_clipboard(%s)", var_name)
+        vim.notify("Using linutils.cb_helper.to_clipboard()", vim.log.levels.INFO)
+      else
+        command_to_send = string.format("%s.to_clipboard()", var_name)
+        vim.notify("Using default .to_clipboard()", vim.log.levels.INFO)
+      end
+      vim.api.nvim_buf_set_lines(
+        args.buf,
+        current_line_1_indexed,
+        current_line_1_indexed,
+        false,
+        { command_to_send }
+      )
+      vim.api.nvim_win_set_cursor(0, { current_line_1_indexed + 1, 0 })
+      vim.cmd("normal! V")
       iron.visual_send()
-      vim.cmd("norm! dd")
-      vim.cmd("norm! k")
-    end, { buffer = args.buf, desc = "repl_df_to_clipboard" })
-    vim.keymap.set("n", "<localleader>pp", function()
-      vim.cmd("norm! yiwoprint(")
-      vim.cmd("norm! pA)")
-      vim.cmd("norm! V")
-      iron.visual_send()
-      vim.cmd("norm! dd")
-      vim.cmd("norm! k")
-    end, { buffer = args.buf, desc = "repl_print" })
-    vim.keymap.set("n", "<localleader>pl", function()
-      vim.cmd("norm! yiwoprint(")
-      vim.cmd("norm! pA.iloc[-1].T)")
-      vim.cmd("norm! V")
-      iron.visual_send()
-      vim.cmd("norm! dd")
-      vim.cmd("norm! k")
-    end, { buffer = args.buf, desc = "repl_print_last" })
-    vim.keymap.set("n", "<localleader>pf", function()
-      vim.cmd("norm! yiwoprint(")
-      vim.cmd("norm! pA.iloc[0].T)")
-      vim.cmd("norm! V")
-      iron.visual_send()
-      vim.cmd("norm! dd")
-      vim.cmd("norm! k")
-    end, { buffer = args.buf, desc = "repl_print_first" })
-    vim.keymap.set("n", "<localleader>pi", function()
-      vim.cmd("norm! yiwoprint(")
-      vim.cmd("norm! pA.info())")
-      vim.cmd("norm! V")
-      iron.visual_send()
-      vim.cmd("norm! dd")
-      vim.cmd("norm! k")
-    end, { buffer = args.buf, desc = "repl_print_info" })
+      vim.notify(string.format("Sent to REPL: %s", command_to_send), vim.log.levels.INFO)
+      vim.api.nvim_buf_set_lines(
+        args.buf,
+        current_line_1_indexed,
+        current_line_1_indexed + 1,
+        false,
+        {}
+      )
+      vim.api.nvim_win_set_cursor(0, original_cursor_pos)
+    end, {
+      buffer = args.buf,
+      desc = "repl_df_to_clipboard (OS-aware)",
+    })
+    local function create_repl_sender(key, desc, command_format_string)
+      vim.keymap.set("n", key, function()
+        local original_cursor_pos = vim.api.nvim_win_get_cursor(0)
+        local current_line_1_indexed = original_cursor_pos[1]
+        local var_name = vim.fn.expand("<cword>")
+        if not var_name or var_name == "" then
+          vim.notify("No word under cursor", vim.log.levels.WARN)
+          return
+        end
+        local command_to_send = string.format(command_format_string, var_name)
+        vim.api.nvim_buf_set_lines(
+          args.buf,
+          current_line_1_indexed,
+          current_line_1_indexed,
+          false,
+          { command_to_send }
+        )
+        vim.api.nvim_win_set_cursor(0, { current_line_1_indexed + 1, 0 })
+        vim.cmd("normal! V")
+        iron.visual_send()
+        vim.notify(string.format("Sent: %s", command_to_send), vim.log.levels.INFO)
+        vim.api.nvim_buf_set_lines(
+          args.buf,
+          current_line_1_indexed,
+          current_line_1_indexed + 1,
+          false,
+          {}
+        )
+        vim.api.nvim_win_set_cursor(0, original_cursor_pos)
+      end, {
+        buffer = args.buf, -- Keymap is buffer-local, requires args.buf
+        desc = desc,
+      })
+    end
+    create_repl_sender("<localleader>pp", "repl_print", "print(%s)")
+    create_repl_sender("<localleader>pl", "repl_print_last", "print(%s.iloc[-1].T)")
+    create_repl_sender("<localleader>pf", "repl_print_first", "print(%s.iloc[0].T)")
+    create_repl_sender("<localleader>pi", "repl_print_info", "print(%s.info())")
     vim.keymap.set("v", "<CR>", function()
       iron.visual_send()
       vim.cmd("norm! j")
