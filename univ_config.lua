@@ -100,8 +100,8 @@ require("mini.operators").setup({
   sort = {
     prefix = "ga",
   },
- multiply = {
-    prefix = '',
+  multiply = {
+    prefix = "",
   },
 })
 -- g= for evaluation,
