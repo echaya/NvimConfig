@@ -109,6 +109,13 @@ Snacks.setup({
   words = { enabled = true },
   indent = { enabled = true },
   scope = { enabled = true },
+  scroll = {
+    enabled = true,
+    animate = {
+      duration = { step = 15, total = 150 },
+      easing = "linear",
+    },
+  },
   styles = {
     notification = {
       wo = { wrap = true }, -- Wrap notifications
