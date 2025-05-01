@@ -203,6 +203,21 @@ vim.opt.clipboard:append("unnamedplus")
 vim.opt.swapfile = false
 require("mini.git").setup()
 
+vim.api.nvim_create_user_command("GH", function()
+  -- Execute the first two commands immediately
+  vim.api.nvim_command("wq")
+  vim.api.nvim_command("tabc")
+
+  vim.defer_fn(function()
+    local ok, err = pcall(vim.api.nvim_command, "Git! push")
+    if not ok then
+      vim.notify("Error executing 'Git! push': " .. err, vim.log.levels.ERROR)
+    end
+  end, 1000) -- Delay in milliseconds
+end, {
+  desc = "Write buffer, close window & tab, then Git push after 1 sec delay",
+})
+
 -- require("mini.indentscope").setup({
 --   draw = {
 --     delay = 200,
