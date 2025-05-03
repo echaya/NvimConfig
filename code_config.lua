@@ -123,6 +123,18 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+require("mini.diff").setup({
+  view = {
+    style = "sign",
+  },
+  mappings = {
+    goto_first = "[C",
+    goto_prev = "[c",
+    goto_next = "]c",
+    goto_last = "]C",
+  },
+})
+
 vim.keymap.set(
   "n",
   "<leader>hd",
@@ -136,7 +148,11 @@ vim.keymap.set(
   { desc = "diffview: hunk_history" }
 )
 
-    -- Text object
+vim.keymap.set("n", "<leader>hy", function()
+  return require("mini.diff").operator("yank") .. "gh"
+end, { expr = true, remap = true, desc = "Yank hunk Reference" })
+vim.keymap.set("n", "<leader>ho", "<cmd>lua MiniDiff.toggle_overlay()<CR>")
+
 
 local hipatterns = require("mini.hipatterns")
 hipatterns.setup({
