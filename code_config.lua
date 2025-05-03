@@ -151,8 +151,7 @@ vim.keymap.set(
 vim.keymap.set("n", "<leader>hy", function()
   return require("mini.diff").operator("yank") .. "gh"
 end, { expr = true, remap = true, desc = "Yank hunk Reference" })
-vim.keymap.set("n", "<leader>ho", "<cmd>lua MiniDiff.toggle_overlay()<CR>")
-
+vim.keymap.set("n", "<leader>hh", "<cmd>lua MiniDiff.toggle_overlay()<CR>")
 
 local hipatterns = require("mini.hipatterns")
 hipatterns.setup({
