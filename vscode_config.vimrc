@@ -34,7 +34,7 @@ nnoremap <silent> <up> <Cmd>lua require('vscode').action('workbench.action.incre
 nnoremap <silent> <down> <Cmd>lua require('vscode').action('workbench.action.decreaseViewSize')<CR>
 
 " git related
-xnoremap <silent> <leader>hs <Cmd>lua require('vscode').call('git.stageSelectedRanges')<CR><Esc>
+xnoremap <silent> gh <Cmd>lua require('vscode').call('git.stageSelectedRanges')<CR><Esc>
 :command! GC lua require('vscode').action('git.commitStaged')
 :command! GP lua require('vscode').action('git.sync')
 nnoremap <silent> <leader>hh <Cmd>lua require('vscode').action('editor.action.dirtydiff.next')<CR>
