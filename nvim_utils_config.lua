@@ -214,19 +214,8 @@ vim.api.nvim_create_user_command("GH", function()
   if can_write_initial then
     cmd_to_run = "wq"
   end
-
-  local ok_wq_q, err_wq_q = pcall(vim.api.nvim_command, cmd_to_run)
-  if not ok_wq_q then
-    vim.notify(
-      "GH command: Error during initial ':" .. cmd_to_run .. "': " .. err_wq_q,
-      vim.log.levels.ERROR
-    )
-    return
-  end
-  local ok_tabc1, err_tabc1 = pcall(vim.api.nvim_command, "tabc")
-  if not ok_tabc1 then
-    vim.notify("GH command: Warning during first 'tabc': " .. err_tabc1, vim.log.levels.WARN)
-  end
+  pcall(vim.api.nvim_command, cmd_to_run)
+  pcall(vim.api.nvim_command, "tabc")
 
   vim.schedule(function()
     local post_tabc_bufnr = vim.api.nvim_get_current_buf()
@@ -242,15 +231,8 @@ vim.api.nvim_create_user_command("GH", function()
     then
       is_new_buf_diffview = true
     end
-
     if is_new_buf_diffview then
-      local ok_tabc2, err_tabc2 = pcall(vim.api.nvim_command, "tabc")
-      if not ok_tabc2 then
-        vim.notify(
-          "GH command: Warning during second 'tabc' (for diffview): " .. err_tabc2,
-          vim.log.levels.WARN
-        )
-      end
+      pcall(vim.api.nvim_command, "tabc")
     end
   end)
 
