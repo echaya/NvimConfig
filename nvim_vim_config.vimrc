@@ -166,7 +166,6 @@ let g:table_mode_syntax = 0
 "vim-fugitive or mini.git
 command! GC execute "Git diff --staged" | execute "Git commit"
 command GP execute "Git! push"
-command GH execute 'wq' | execute 'tabc' | execute "Git! push"
 
 " add comment string for bat, autohotkey files
 "use `:lua print(vim.bo.filetype)` to check file type of current window

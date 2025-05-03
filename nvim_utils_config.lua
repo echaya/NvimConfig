@@ -204,37 +204,66 @@ vim.opt.swapfile = false
 require("mini.git").setup()
 
 vim.api.nvim_create_user_command("GH", function()
-  -- Execute the first two commands immediately
-  vim.api.nvim_command("wq")
-  vim.api.nvim_command("tabc")
+  local initial_bufnr = vim.api.nvim_get_current_buf()
+  local initial_buftype = vim.api.nvim_get_option_value("buftype", { buf = initial_bufnr })
+  local initial_modifiable = vim.api.nvim_get_option_value("modifiable", { buf = initial_bufnr })
+  local can_write_initial = (
+    initial_modifiable and (initial_buftype == nil or initial_buftype == "")
+  )
+  local cmd_to_run = "q" -- Default to quit only
+  if can_write_initial then
+    cmd_to_run = "wq"
+  end
+
+  local ok_wq_q, err_wq_q = pcall(vim.api.nvim_command, cmd_to_run)
+  if not ok_wq_q then
+    vim.notify(
+      "GH command: Error during initial ':" .. cmd_to_run .. "': " .. err_wq_q,
+      vim.log.levels.ERROR
+    )
+    return
+  end
+  local ok_tabc1, err_tabc1 = pcall(vim.api.nvim_command, "tabc")
+  if not ok_tabc1 then
+    vim.notify("GH command: Warning during first 'tabc': " .. err_tabc1, vim.log.levels.WARN)
+  end
+
+  vim.schedule(function()
+    local post_tabc_bufnr = vim.api.nvim_get_current_buf()
+    if not vim.api.nvim_buf_is_valid(post_tabc_bufnr) then
+      return
+    end
+    local post_tabc_bufname = vim.api.nvim_buf_get_name(post_tabc_bufnr)
+    local is_new_buf_diffview = false
+    if
+      post_tabc_bufname
+      and type(post_tabc_bufname) == "string"
+      and string.lower(post_tabc_bufname):find("^diffview") == 1
+    then
+      is_new_buf_diffview = true
+    end
+
+    if is_new_buf_diffview then
+      local ok_tabc2, err_tabc2 = pcall(vim.api.nvim_command, "tabc")
+      if not ok_tabc2 then
+        vim.notify(
+          "GH command: Warning during second 'tabc' (for diffview): " .. err_tabc2,
+          vim.log.levels.WARN
+        )
+      end
+    end
+  end)
 
   vim.defer_fn(function()
-    local ok, err = pcall(vim.api.nvim_command, "Git! push")
-    if not ok then
-      vim.notify("Error executing 'Git! push': " .. err, vim.log.levels.ERROR)
+    local ok_push, err_push = pcall(vim.api.nvim_command, "Git! push")
+    if not ok_push then
+      vim.notify("GH command: Error executing 'Git! push': " .. err_push, vim.log.levels.ERROR)
     end
-  end, 1000) -- Delay in milliseconds
+  end, 1000)
 end, {
-  desc = "Write buffer, close window & tab, then Git push after 1 sec delay",
+  desc = "Write/Quit, close tab, check new tab & close if diffview, then Git push",
+  nargs = 0,
 })
-
--- require("mini.indentscope").setup({
---   draw = {
---     delay = 200,
---   },
--- })
--- local disable_indentscope = function(data)
---   vim.b[data.buf].miniindentscope_disable = true
--- end
--- vim.api.nvim_create_autocmd(
---   "TermOpen",
---   { desc = "Disable 'mini.indentscope' in terminal buffer", callback = disable_indentscope }
--- )
--- vim.api.nvim_create_autocmd("FileType", {
---   pattern = { "markdown", "vimwiki" },
---   callback = disable_indentscope,
---   desc = "Disable 'mini.indentscope' in markdown buffer",
--- })
 
 local wk = require("which-key")
 wk.setup({
