@@ -123,6 +123,18 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+vim.keymap.set(
+  "n",
+  "<leader>hd",
+  "<cmd>DiffviewFileHistory %<CR>",
+  { desc = "diffview: file_history" }
+)
+vim.keymap.set(
+  "v",
+  "<leader>hd",
+  "<cmd>'<,'>DiffviewFileHistory<CR>",
+  { desc = "diffview: hunk_history" }
+)
 
     -- Text object
 
