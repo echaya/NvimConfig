@@ -133,6 +133,9 @@ require("mini.diff").setup({
     goto_next = "]c",
     goto_last = "]C",
   },
+  options = {
+    algorithm = "patience",
+  },
 })
 
 vim.keymap.set(
