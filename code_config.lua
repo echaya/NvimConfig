@@ -147,11 +147,28 @@ vim.keymap.set(
   "<cmd>'<,'>DiffviewFileHistory<CR>",
   { desc = "diffview: hunk_history" }
 )
+vim.keymap.set("n", "<leader>ho", function()
+  local count = vim.v.count
+  if count > 0 then
+    vim.cmd("DiffviewOpen HEAD~" .. count)
+  else
+    vim.cmd("DiffviewOpen")
+  end
+end, {
+  noremap = true, -- Non-recursive mapping
+  silent = true, -- Don't echo the command being run
+  desc = "Diffview Open [HEAD~count]", -- Description for which-key or help
+})
 
 vim.keymap.set("n", "<leader>hy", function()
   return require("mini.diff").operator("yank") .. "gh"
 end, { expr = true, remap = true, desc = "Yank hunk Reference" })
-vim.keymap.set("n", "<leader>hh", "<cmd>lua MiniDiff.toggle_overlay()<CR>")
+vim.keymap.set(
+  "n",
+  "<leader>hh",
+  "<cmd>lua MiniDiff.toggle_overlay()<CR>",
+  { desc = "toggle hunk overlay" }
+)
 
 local hipatterns = require("mini.hipatterns")
 hipatterns.setup({
