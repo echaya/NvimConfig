@@ -39,8 +39,7 @@ local custom_attach = function(client, bufnr)
   else
     navic.attach(client, bufnr)
   end
-  vim.keymap.set("n", "gh", "<cmd>lua vim.lsp.buf.hover()<CR>")
-  -- vim.keymap.set("n", "gD", ":vsplit | lua vim.lsp.buf.definition()<CR>")
+  vim.keymap.set("n", "gl", "<cmd>lua vim.lsp.buf.hover()<CR>")
   vim.keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.definition()<CR>")
   -- vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
   vim.keymap.set("n", "gd", "<CMD>Glance definitions<CR>")
