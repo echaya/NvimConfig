@@ -123,77 +123,8 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
-local gitsigns = require("gitsigns")
-gitsigns.setup({
-  signs = {
-    add = { text = "" }, -- dashed / double line for unstaged
-    change = { text = "" },
-    delete = { text = "=", show_count = true },
-    topdelete = { text = "󰘣", show_count = true },
-    changedelete = { text = "󰾞", show_count = true },
-    untracked = { text = "󰇝" },
-  },
-  signs_staged = {
-    add = { text = "┃" },
-    change = { text = "┃" },
-    delete = { text = "_", show_count = true },
-    topdelete = { text = "‾", show_count = true },
-    changedelete = { text = "~", show_count = true },
-    untracked = { text = "┆" },
-  },
-  count_chars = { "₁", "₂", "₃", "₄", "₅", "₆", "₇", "₈", "₉", ["+"] = "+" },
-  on_attach = function(bufnr)
-    local function map(mode, l, r, opts)
-      opts = opts or {}
-      opts.buffer = bufnr
-      vim.keymap.set(mode, l, r, opts)
-    end
-
-    -- navigation
-    map("n", "]c", function()
-      if vim.wo.diff then
-        vim.cmd.normal({ "]c", bang = true })
-      else
-        gitsigns.nav_hunk("next")
-      end
-    end, { desc = "next_hunk" })
-
-    map("n", "[c", function()
-      if vim.wo.diff then
-        vim.cmd.normal({ "[c", bang = true })
-      else
-        gitsigns.nav_hunk("prev")
-      end
-    end, { desc = "prev_hunk" })
-
-    map("n", "]C", function()
-      gitsigns.nav_hunk("last")
-    end, { desc = "Last Hunk" })
-    map("n", "[C", function()
-      gitsigns.nav_hunk("first")
-    end, { desc = "First Hunk" })
-    -- Actions
-    map("n", "<leader>hs", gitsigns.stage_hunk, { desc = "hunk_stage" })
-    map("n", "<leader>hr", gitsigns.reset_hunk, { desc = "hunk_reset" })
-    map("n", "<leader>hu", gitsigns.undo_stage_hunk, { desc = "hunk_unstage" })
-    map("v", "<leader>hs", function()
-      gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
-    end, { desc = "hunk_stage" })
-    map("v", "<leader>hr", function()
-      gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
-    end, { desc = "hunk_reset" })
-    map("v", "<leader>hu", function()
-      gitsigns.undo_stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
-    end, { desc = "hunk_unstage" })
-    map({ "n", "v" }, "<leader>hh", gitsigns.preview_hunk, { desc = "hunk_hover" })
-    map("n", "<leader>hd", "<cmd>DiffviewFileHistory %<CR>", { desc = "diffview: file_history" })
-    map("v", "<leader>hd", ":'<,'>DiffviewFileHistory<CR>", { desc = "diffview: hunk_history" })
-    map("n", "<leader>td", gitsigns.toggle_deleted, { desc = "gitsigns: toggle_deleted" })
 
     -- Text object
-    map({ "o", "x" }, "gh", ":<C-U>Gitsigns select_hunk<CR>")
-  end,
-})
 
 local hipatterns = require("mini.hipatterns")
 hipatterns.setup({

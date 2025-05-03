@@ -96,7 +96,6 @@ later(function()
     })
     add({ source = "stevearc/conform.nvim" })
     add({ source = "stevearc/quicker.nvim" })
-    add({ source = "lewis6991/gitsigns.nvim" })
     add({ source = "MeanderingProgrammer/render-markdown.nvim" })
     dofile(vim.g.WorkDir .. "config/code_config.lua")
   else
