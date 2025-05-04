@@ -177,13 +177,15 @@ require("better_escape").setup({
 
 local notify_many_keys = function(key)
   local lhs = string.rep(key, 5)
-  local action = function() vim.notify('**Too many** repeated ' .. key) end
-  require('mini.keymap').map_combo({ 'n', 'x' }, lhs, action)
+  local action = function()
+    vim.notify("**Too many** repeated " .. key)
+  end
+  require("mini.keymap").map_combo({ "n", "x" }, lhs, action)
 end
-notify_many_keys('h')
-notify_many_keys('j')
-notify_many_keys('k')
-notify_many_keys('l')
+notify_many_keys("h")
+notify_many_keys("j")
+notify_many_keys("k")
+notify_many_keys("l")
 
 require("mini.trailspace").setup()
 
