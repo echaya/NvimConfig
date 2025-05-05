@@ -162,24 +162,27 @@ vim.api.nvim_create_autocmd("User", {
 })
 
 -- for vscode it is handled on vscode level (composite-keys)
-require("better_escape").setup({
-  timeout = 150,
-  default_mappings = false,
-  mappings = {
-    i = { j = { k = "<Esc>" } },
-    c = { j = { k = "<Esc>" } },
-    t = { j = { k = "<C-\\><C-n>" } },
-    v = { j = { k = "<Esc>" } },
-    s = { j = { k = "<Esc>" } },
-    n = { j = { k = "<cmd>wincmd =<cr>k" } },
-  },
-})
-
--- local map_combo = require("mini.keymap").map_combo
--- local mode = { "i", "c", "x", "s" }
--- map_combo(mode, "jk", "<BS><BS><Esc>", { delay = 150 })
--- map_combo("t", "jk", "<BS><BS><C-\\><C-n>", { delay = 150 })
--- map_combo("n", "jk", "<cmd>wincmd =<cr>k", { delay = 150 })
+local use_better_escape = true
+if use_better_escape then
+  require("better_escape").setup({
+    timeout = 150,
+    default_mappings = false,
+    mappings = {
+      i = { j = { k = "<Esc>" } },
+      c = { j = { k = "<Esc>" } },
+      t = { j = { k = "<C-\\><C-n>" } },
+      v = { j = { k = "<Esc>" } },
+      s = { j = { k = "<Esc>" } },
+      n = { j = { k = "<cmd>wincmd =<cr>k" } },
+    },
+  })
+else
+  local map_combo = require("mini.keymap").map_combo
+  local mode = { "i", "c", "x", "s" }
+  map_combo(mode, "jk", "<BS><BS><Esc>", { delay = 150 })
+  map_combo("t", "jk", "<BS><BS><C-\\><C-n>", { delay = 150 })
+  map_combo("n", "jk", "<cmd>wincmd =<cr>k", { delay = 150 })
+end
 
 local map_multistep = require("mini.keymap").map_multistep
 -- NOTE: this will never insert tab, press <C-v><Tab> for that
