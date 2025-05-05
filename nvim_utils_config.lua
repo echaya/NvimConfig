@@ -162,8 +162,7 @@ vim.api.nvim_create_autocmd("User", {
 })
 
 -- for vscode it is handled on vscode level (composite-keys)
-local use_better_escape = true
-if use_better_escape then
+if vim.g.use_better_escape then
   require("better_escape").setup({
     timeout = 150,
     default_mappings = false,

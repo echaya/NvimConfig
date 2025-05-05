@@ -49,6 +49,7 @@ later(function()
     end
   end
   -- nvim plugins
+  vim.g.use_better_escape = true
   add({ source = "ggandor/leap.nvim" })
   add({ source = "max397574/better-escape.nvim" })
   add({ source = "monaqa/dial.nvim" })
