@@ -11,7 +11,6 @@ cmp.setup({
     ["<Tab>"] = { "select_next", "snippet_forward", "fallback" },
     ["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
   },
-
   appearance = {
     use_nvim_cmp_as_default = true,
     nerd_font_variant = "mono",
@@ -25,6 +24,26 @@ cmp.setup({
     documentation = {
       auto_show = true,
       auto_show_delay_ms = 250,
+    },
+  },
+  sources = {
+    default = { "lsp", "path", "snippets", "buffer" },
+    providers = {
+      lsp = {
+        min_keyword_length = 0, -- Number of characters to trigger porvider
+        score_offset = 0, -- Boost/penalize the score of the items
+      },
+      path = {
+        min_keyword_length = 1,
+      },
+      snippets = {
+        min_keyword_length = 2,
+        score_offset = 5, -- Boost/penalize the score of the items
+      },
+      buffer = {
+        min_keyword_length = 2,
+        max_items = 5,
+      },
     },
   },
   cmdline = {
@@ -49,26 +68,6 @@ cmp.setup({
     completion = {
       menu = { auto_show = true },
       list = { selection = { preselect = false, auto_insert = true } },
-    },
-  },
-  sources = {
-    default = { "lsp", "path", "snippets", "buffer" },
-    providers = {
-      lsp = {
-        min_keyword_length = 0, -- Number of characters to trigger porvider
-        score_offset = 0, -- Boost/penalize the score of the items
-      },
-      path = {
-        min_keyword_length = 1,
-      },
-      snippets = {
-        min_keyword_length = 2,
-        score_offset = 5, -- Boost/penalize the score of the items
-      },
-      buffer = {
-        min_keyword_length = 2,
-        max_items = 5,
-      },
     },
   },
 })
