@@ -175,6 +175,19 @@ require("better_escape").setup({
   },
 })
 
+-- local map_combo = require("mini.keymap").map_combo
+-- local mode = { "i", "c", "x", "s" }
+-- map_combo(mode, "jk", "<BS><BS><Esc>", { delay = 150 })
+-- map_combo("t", "jk", "<BS><BS><C-\\><C-n>", { delay = 150 })
+-- map_combo("n", "jk", "<cmd>wincmd =<cr>k", { delay = 150 })
+
+local map_multistep = require("mini.keymap").map_multistep
+-- NOTE: this will never insert tab, press <C-v><Tab> for that
+local tab_steps = { "blink_next", "increase_indent", "jump_after_close" }
+map_multistep("i", "<Tab>", tab_steps)
+local shifttab_steps = { "blink_prev", "decrease_indent", "jump_before_open" }
+map_multistep("i", "<S-Tab>", shifttab_steps)
+
 local notify_many_keys = function(key)
   local lhs = string.rep(key, 5)
   local action = function()
