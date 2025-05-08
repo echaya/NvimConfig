@@ -1,18 +1,13 @@
 local leap = require("leap")
 leap.opts.case_sensitive = true
--- leap.set_default_keymaps()
 -- Define equivalence classes for brackets and quotes, in addition to <space>
 leap.opts.equivalence_classes = { " \t\r\n", "([{", ")]}", "'\"`" }
-vim.keymap.set({ "n" }, "m", "<Plug>(leap-forward-to)")
-vim.keymap.set({ "n" }, "M", "<Plug>(leap-backward-to)")
-vim.keymap.set({ "x", "o" }, "m", "<Plug>(leap-forward-to)", { desc = "leap forward textobj" })
-vim.keymap.set({ "x", "o" }, "M", "<Plug>(leap-backward-to)", { desc = "leap back textobj" })
-vim.keymap.set({ "n" }, "<leader>m", "<Plug>(leap-from-window)", { desc = "leap from window" })
-leap.opts.preview_filter = function()
-  return false
-end
--- <CR> to traverse forward, <BS> to traverse backward
 vim.api.nvim_set_hl(0, "LeapBackdrop", { link = "Comment" })
+vim.keymap.set({ "n", "x", "o" }, "m", "<Plug>(leap)")
+vim.keymap.set("n", "M", "<Plug>(leap-from-window)")
+
+require('leap').opts.preview_filter = false
+-- <CR> to traverse forward, <BS> to traverse backward
 require("leap.user").set_repeat_keys("<enter>", "<backspace>")
 vim.keymap.set(
   { "n", "x", "o" },
