@@ -215,6 +215,11 @@ vim.opt.swapfile = false
 require("mini.git").setup()
 
 vim.api.nvim_create_user_command("GH", function()
+  local current_filetype = vim.api.nvim_get_option_value("filetype", { buf = 0 })
+  if current_filetype ~= "gitcommit" then
+    vim.notify("GH command: Not a gitcommit buffer. Aborting.", vim.log.levels.INFO)
+    return
+  end
   local initial_bufnr = vim.api.nvim_get_current_buf()
   local initial_buftype = vim.api.nvim_get_option_value("buftype", { buf = initial_bufnr })
   local initial_modifiable = vim.api.nvim_get_option_value("modifiable", { buf = initial_bufnr })
