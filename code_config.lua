@@ -5,6 +5,7 @@ cmp.setup({
     preset = "none",
     ["<C-e>"] = { "show", "show_documentation", "hide_documentation" },
     ["<Esc>"] = { "cancel", "fallback" },
+    ["<C-c>"] = { "cancel", "fallback" },
     ["<CR>"] = { "accept", "fallback" },
     ["<C-u>"] = { "scroll_documentation_up", "fallback" },
     ["<C-d>"] = { "scroll_documentation_down", "fallback" },
