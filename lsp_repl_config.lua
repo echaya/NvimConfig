@@ -102,7 +102,7 @@ glance.setup({
   },
 })
 
-require("lspconfig").pylsp.setup({
+lsp.pylsp.setup({
   on_attach = custom_attach,
   capabilities = capabilities,
   settings = {
@@ -134,7 +134,7 @@ require("lspconfig").pylsp.setup({
   },
 })
 
-require("lspconfig").ruff.setup({
+lsp.ruff.setup({
   on_attach = custom_attach,
   capabilities = capabilities,
 })

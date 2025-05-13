@@ -105,7 +105,7 @@ Snacks.setup({
     timeout = 3000,
   },
   quickfile = { enabled = true },
-  statuscolumn = { enabled = true, refresh = 50 },
+  statuscolumn = { enabled = true },
   words = { enabled = true },
   indent = { enabled = true },
   scope = { enabled = true },
