@@ -49,7 +49,7 @@ later(function()
     end
   end
   -- nvim plugins
-  add({ source = "ggandor/leap.nvim" })
+  add({ source = "folke/flash.nvim" })
   add({ source = "monaqa/dial.nvim" })
   dofile(vim.g.WorkDir .. "config/univ_config.lua")
   if vim.g.vscode == nil then

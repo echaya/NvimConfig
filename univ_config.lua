@@ -1,29 +1,18 @@
-local leap = require("leap")
-leap.opts.case_sensitive = true
--- Define equivalence classes for brackets and quotes, in addition to <space>
-leap.opts.equivalence_classes = { " \t\r\n", "([{", ")]}", "'\"`" }
-vim.api.nvim_set_hl(0, "LeapBackdrop", { link = "Comment" })
-vim.keymap.set("n", "m", "<Plug>(leap)")
-vim.keymap.set("n", "M", "<Plug>(leap-from-window)")
-vim.keymap.set({ "x", "o" }, "m", "<Plug>(leap-forward-to)", { desc = "leap forward textobj" })
-vim.keymap.set({ "x", "o" }, "M", "<Plug>(leap-backward-to)", { desc = "leap back textobj" })
--- Trigger visual selection right away and visual line mode
-vim.keymap.set({ "n", "o" }, "gm", function()
-  require("leap.remote").action({ input = "v" })
-end)
-vim.keymap.set({ "n", "o" }, "gM", function()
-  require("leap.remote").action({ input = "V" })
-end)
-
-require("leap").opts.preview_filter = false
--- <CR> to traverse forward, <BS> to traverse backward
-require("leap.user").set_repeat_keys("<enter>", "<backspace>")
-vim.keymap.set(
-  { "n", "x", "o" },
-  "gt",
-  'V<cmd>lua require("leap.treesitter").select()<cr>',
-  { desc = "select treesitter textobj" }
-)
+vim.keymap.set({ "n", "x", "o" }, "m", function()
+  require("flash").jump()
+end, { desc = "Flash" })
+vim.keymap.set({ "n", "x", "o" }, "M", function()
+  require("flash").treesitter()
+end, { desc = "Flash Treesitter" })
+vim.keymap.set("o", "r", function()
+  require("flash").remote()
+end, { desc = "Remote Flash" })
+vim.keymap.set({ "o", "x" }, "R", function()
+  require("flash").treesitter_search()
+end, { desc = "Treesitter Search" })
+vim.keymap.set({ "c" }, "<c-s>", function()
+  require("flash").toggle()
+end, { desc = "Toggle Flash Search" })
 
 local augend = require("dial.augend")
 require("dial.config").augends:register_group({
