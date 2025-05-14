@@ -379,12 +379,6 @@ vim.api.nvim_create_autocmd("FileType", {
       "<cmd>IronFocus<cr>i",
       { buffer = args.buf, desc = "repl_focus" }
     )
-    vim.keymap.set({ "n" }, "<localleader>t", function()
-      vim.cmd("normal V")
-      require("leap.treesitter").select()
-      iron.visual_send()
-      vim.cmd("norm! j")
-    end, { buffer = args.buf, desc = "repl_send_tree" })
     vim.keymap.set("n", "]]", function()
       vim.cmd("call JumpCell()")
       vim.cmd("norm! zvzz")
