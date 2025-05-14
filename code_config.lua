@@ -12,6 +12,7 @@ cmp.setup({
     ["<Tab>"] = { "select_next", "snippet_forward", "fallback" },
     ["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
   },
+
   appearance = {
     use_nvim_cmp_as_default = true,
     nerd_font_variant = "mono",
@@ -70,6 +71,16 @@ cmp.setup({
     completion = {
       menu = { auto_show = true },
       list = { selection = { preselect = false, auto_insert = true } },
+    },
+  },
+  term = {
+    enabled = true,
+    keymap = { preset = "inherit" }, -- Inherits from top level `keymap` config when not set
+    sources = { "buffer" },
+    completion = {
+      list = { selection = { preselect = false, auto_insert = true } },
+      menu = { auto_show = true },
+      ghost_text = { enabled = false },
     },
   },
 })
