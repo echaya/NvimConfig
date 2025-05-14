@@ -4,6 +4,9 @@ end, { desc = "Flash Local Window" })
 vim.keymap.set("n", "M", function()
   require("flash").jump({ search = { multi_window = true } })
 end, { desc = "Flash Multiple Window" })
+vim.keymap.set("n", "<CR>", function()
+  require("flash").jump({ continue = true })
+end, { desc = "Flash Continue" })
 vim.keymap.set({ "x", "o" }, "m", function()
   require("flash").jump({
     search = { forward = true, wrap = false, multi_window = false },
