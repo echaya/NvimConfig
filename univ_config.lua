@@ -1,10 +1,10 @@
 vim.keymap.set("n", "m", function()
-  require("flash").jump({ search = { multi_window = false } })
-end, { desc = "Flash Local Window" })
-vim.keymap.set("n", "M", function()
-  require("flash").jump({ search = { multi_window = true } })
-end, { desc = "Flash Multiple Window" })
-vim.keymap.set("n", "<CR>", function()
+  require("flash").jump({
+    search = { multi_window = true },
+    jump = { autojump = true },
+  })
+end, { desc = "Flash" })
+vim.keymap.set("n", "<BS>", function()
   require("flash").jump({ continue = true })
 end, { desc = "Flash Continue" })
 vim.keymap.set({ "x", "o" }, "m", function()
@@ -19,7 +19,7 @@ vim.keymap.set({ "x", "o" }, "M", function()
     jump = { pos = "start", inclusive = true },
   })
 end, { desc = "Flash Backward (inclusive)" })
-vim.keymap.set({ "n", "x", "o" }, "T", function()
+vim.keymap.set({ "n", "x", "o" }, "M", function()
   require("flash").treesitter()
 end, { desc = "Flash Treesitter" })
 vim.keymap.set("o", "r", function()
