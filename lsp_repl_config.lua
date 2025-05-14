@@ -31,7 +31,16 @@ vim.treesitter.language.register("markdown", "vimwiki")
 -- Setup LSP
 local lsp = require("lspconfig")
 local navic = require("nvim-navic")
-local capabilities = vim.lsp.protocol.make_client_capabilities()
+local capabilities = {
+  textDocument = {
+    foldingRange = {
+      dynamicRegistration = false,
+      lineFoldingOnly = true,
+    },
+  },
+}
+
+capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
 
 local custom_attach = function(client, bufnr)
   if client.name == "ruff" then

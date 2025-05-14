@@ -67,6 +67,14 @@ end)
 if vim.g.vscode == nil then
   -- deps later: lsp, iron and treesitter
   later(function()
+    vim.g.update_blink = true
+    add({
+      source = "saghen/blink.cmp",
+      depends = {
+        "echaya/friendly-snippets",
+      },
+      checkout = "v1.2.0", -- check releases for latest tag
+    })
     add({ source = "neovim/nvim-lspconfig" })
     add({ source = "dnlhc/glance.nvim" })
     add({ source = "Vigemus/iron.nvim" })
@@ -85,14 +93,6 @@ end
 -- deps later: programming tools
 later(function()
   if vim.g.vscode == nil then
-    vim.g.update_blink = true
-    add({
-      source = "saghen/blink.cmp",
-      depends = {
-        "echaya/friendly-snippets",
-      },
-      checkout = "v1.2.0", -- check releases for latest tag
-    })
     add({ source = "stevearc/conform.nvim" })
     add({ source = "stevearc/quicker.nvim" })
     add({ source = "MeanderingProgrammer/render-markdown.nvim" })
