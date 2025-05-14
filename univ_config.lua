@@ -1,10 +1,7 @@
 vim.keymap.set("n", "m", function()
   require("flash").jump({ search = { multi_window = false } })
 end, { desc = "Flash Local Window" })
-vim.keymap.set({ "n" }, "M", function()
-  require("flash").treesitter()
-end, { desc = "Flash Treesitter" })
-vim.keymap.set("n", "gm", function()
+vim.keymap.set("n", "M", function()
   require("flash").jump({ search = { multi_window = true } })
 end, { desc = "Flash Multiple Window" })
 vim.keymap.set({ "x", "o" }, "m", function()
@@ -19,12 +16,18 @@ vim.keymap.set({ "x", "o" }, "M", function()
     jump = { pos = "start", inclusive = true },
   })
 end, { desc = "Flash Backward (inclusive)" })
+vim.keymap.set({ "n", "x", "o" }, "T", function()
+  require("flash").treesitter()
+end, { desc = "Flash Treesitter" })
 vim.keymap.set("o", "r", function()
   require("flash").remote()
 end, { desc = "Remote Flash" })
 vim.keymap.set({ "o", "x" }, "R", function()
   require("flash").treesitter_search()
 end, { desc = "Remote Flash Treesitter" })
+require("flash").setup({
+  modes = { char = { enabled = false } },
+})
 
 local augend = require("dial.augend")
 require("dial.config").augends:register_group({
