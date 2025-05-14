@@ -31,11 +31,11 @@ cmp.setup({
     default = { "lsp", "path", "snippets", "buffer" },
     providers = {
       lsp = {
-        min_keyword_length = 0, -- Number of characters to trigger porvider
+        min_keyword_length = 2, -- Number of characters to trigger porvider
         score_offset = 0, -- Boost/penalize the score of the items
       },
       path = {
-        min_keyword_length = 1,
+        min_keyword_length = 2,
       },
       snippets = {
         min_keyword_length = 2,
@@ -52,6 +52,7 @@ cmp.setup({
       preset = "none",
       ["<C-e>"] = { "show", "show_documentation", "hide_documentation" },
       ["<Esc>"] = { "cancel", "fallback" },
+      ["<C-c>"] = { "cancel", "fallback" },
       ["<CR>"] = { "accept_and_enter", "fallback" },
       ["<Tab>"] = { "select_next", "fallback" },
       ["<S-Tab>"] = { "select_prev", "fallback" },
