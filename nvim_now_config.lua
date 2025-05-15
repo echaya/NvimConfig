@@ -145,7 +145,7 @@ Snacks.setup({
           ["/"] = false,
           ["<c-n>"] = false,
           ["<c-p>"] = false,
-          ["<a-m>"] = { "flash", mode = { "n", "i" } },
+          ["<c-m>"] = { "flash", mode = { "n", "i" } },
           ["<a-l>"] = { "toggle_focus", mode = { "i", "n" } },
         },
       },
