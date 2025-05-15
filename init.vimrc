@@ -54,9 +54,13 @@ if !has('nvim')
     call plug#end()
 endif
 
-
-
 exe 'source '.g:WorkDir.'config/univ_config.vimrc'
+if has("nvim")
+    " loading neovim plugins handled by nvim
+    exe 'luafile '.g:WorkDir.'config/mini_deps.lua'
+else
+    exe 'source '.g:WorkDir.'config/vim_config.vimrc'
+endif
 
 if exists('g:vscode')
     exe 'source '.g:WorkDir.'config/vscode_config.vimrc'
@@ -64,12 +68,6 @@ else
     exe 'source '.g:WorkDir.'config/nvim_vim_config.vimrc'
     exe 'source '.g:WorkDir.'config/md.vimrc'
     exe 'source '.g:WorkDir.'config/python.vimrc'
-    if has("nvim")
-        " loading neovim plugins handled by nvim
-        exe 'luafile '.g:WorkDir.'config/mini_deps.lua'
-    else
-        exe 'source '.g:WorkDir.'config/vim_config.vimrc'
-    endif
 endif
 
 " colorscheme and highlight
