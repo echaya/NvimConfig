@@ -28,41 +28,6 @@ require("nvim-treesitter.configs").setup({
   },
 })
 vim.treesitter.language.register("markdown", "vimwiki")
--- Setup LSP
-local lsp = require("lspconfig")
-local navic = require("nvim-navic")
-local capabilities = {
-  textDocument = {
-    foldingRange = {
-      dynamicRegistration = false,
-      lineFoldingOnly = true,
-    },
-  },
-}
-
-capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
-
-local custom_attach = function(client, bufnr)
-  if client.name == "ruff" then
-    client.server_capabilities.hoverProvider = false
-  else
-    navic.attach(client, bufnr)
-  end
-  vim.keymap.set("n", "gl", "<cmd>lua vim.lsp.buf.hover()<CR>")
-  vim.keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.definition()<CR>")
-  -- vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
-  vim.keymap.set("n", "gd", "<CMD>Glance definitions<CR>")
-  -- vim.keymap.set('n','gr','<cmd>lua vim.lsp.buf.references()<CR>')
-  vim.keymap.set("n", "gR", "<cmd>lua vim.lsp.buf.references()<CR>")
-  vim.keymap.set("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>")
-  vim.keymap.set("n", "gr", "<CMD>Glance references<CR>")
-  vim.keymap.set("n", "<F2>", "<cmd>lua vim.lsp.buf.rename()<CR>")
-  -- vim.keymap.set("n", "gl", "<cmd>lua vim.diagnostic.open_float()<CR>")
-  -- ]d and [d goto next and prev diagnostic
-  vim.keymap.set("n", "]D", "<cmd>lua vim.diagnostic.goto_next({severity='error'})<CR>")
-  vim.keymap.set("n", "[D", "<cmd>lua vim.diagnostic.goto_prev({severity='error'})<CR>")
-  -- end
-end
 
 -- Lua configuration
 local glance = require("glance")
@@ -110,6 +75,41 @@ glance.setup({
     },
   },
 })
+
+-- Setup LSP
+local lsp = require("lspconfig")
+local navic = require("nvim-navic")
+local capabilities = {
+  textDocument = {
+    foldingRange = {
+      dynamicRegistration = false,
+      lineFoldingOnly = true,
+    },
+  },
+}
+capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
+
+local custom_attach = function(client, bufnr)
+  if client.name == "ruff" then
+    client.server_capabilities.hoverProvider = false
+  else
+    navic.attach(client, bufnr)
+  end
+  vim.keymap.set("n", "gl", "<cmd>lua vim.lsp.buf.hover()<CR>")
+  vim.keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.definition()<CR>")
+  -- vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
+  vim.keymap.set("n", "gd", "<CMD>Glance definitions<CR>")
+  -- vim.keymap.set('n','gr','<cmd>lua vim.lsp.buf.references()<CR>')
+  vim.keymap.set("n", "gR", "<cmd>lua vim.lsp.buf.references()<CR>")
+  vim.keymap.set("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>")
+  vim.keymap.set("n", "gr", "<CMD>Glance references<CR>")
+  vim.keymap.set("n", "<F2>", "<cmd>lua vim.lsp.buf.rename()<CR>")
+  -- vim.keymap.set("n", "gl", "<cmd>lua vim.diagnostic.open_float()<CR>")
+  -- ]d and [d goto next and prev diagnostic
+  vim.keymap.set("n", "]D", "<cmd>lua vim.diagnostic.goto_next({severity='error'})<CR>")
+  vim.keymap.set("n", "[D", "<cmd>lua vim.diagnostic.goto_prev({severity='error'})<CR>")
+  -- end
+end
 
 lsp.pylsp.setup({
   on_attach = custom_attach,
