@@ -287,7 +287,7 @@ vim.lsp.config.pylsp = {
 
 vim.lsp.config.ruff_lsp =
   { -- The server name used by nvim-lspconfig is 'ruff_lsp'. If your executable is just 'ruff', adjust cmd.
-    cmd = { "ruff" }, -- Ensure 'ruff-lsp' or the correct ruff LSP command is in your PATH
+    cmd = { "ruff-lsp" }, -- Ensure 'ruff-lsp' or the correct ruff LSP command is in your PATH
     filetypes = { "python" },
     root_markers = {
       "pyproject.toml",
