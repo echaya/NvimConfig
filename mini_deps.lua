@@ -75,9 +75,7 @@ if vim.g.vscode == nil then
       },
       checkout = "v1.3.1", -- check releases for latest tag
     })
-    add({ source = "neovim/nvim-lspconfig" })
     add({ source = "dnlhc/glance.nvim" })
-    add({ source = "Vigemus/iron.nvim" })
     add({
       source = "nvim-treesitter/nvim-treesitter",
       hooks = {
@@ -86,13 +84,14 @@ if vim.g.vscode == nil then
         end,
       },
     })
-    dofile(vim.g.WorkDir .. "config/lsp_repl_config.lua")
+    dofile(vim.g.WorkDir .. "config/lsp_config.lua")
   end)
 end
 
 -- deps later: programming tools
 later(function()
   if vim.g.vscode == nil then
+    add({ source = "Vigemus/iron.nvim" })
     add({ source = "stevearc/conform.nvim" })
     add({ source = "stevearc/quicker.nvim" })
     add({ source = "MeanderingProgrammer/render-markdown.nvim" })
