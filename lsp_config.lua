@@ -179,11 +179,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
     if ok_navic then
       if client.server_capabilities.documentSymbolProvider then -- Check if server supports document symbols
         navic.attach(client, bufnr)
-      else
-        vim.notify(
-          "nvim-navic: " .. client.name .. " does not support document symbols.",
-          vim.log.levels.INFO
-        )
       end
     else
       vim.notify("nvim-navic not found. Skipping attachment.", vim.log.levels.WARN)
