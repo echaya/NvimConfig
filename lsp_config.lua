@@ -30,7 +30,7 @@ require("nvim-treesitter.configs").setup({
 vim.treesitter.language.register("markdown", "vimwiki")
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-vim.opt.foldlevelstart = 0
+vim.opt.foldlevelstart = 99
 vim.opt.foldlevel = 3
 vim.opt.foldnestmax = 3
 vim.opt.foldtext = ""
@@ -282,6 +282,7 @@ vim.lsp.config.lua_ls = {
       },
       diagnostics = {
         globals = { "vim" },
+        disable = { "missing-fields" },
       },
       workspace = {
         -- library = vim.api.nvim_get_runtime_file("", true), -- More robust way to get runtime files
