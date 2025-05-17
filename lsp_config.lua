@@ -28,6 +28,12 @@ require("nvim-treesitter.configs").setup({
   },
 })
 vim.treesitter.language.register("markdown", "vimwiki")
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.opt.foldlevelstart = 99
+vim.opt.foldlevel = 99
+vim.opt.foldnestmax = 3
+vim.opt.foldtext = ""
 
 local glance = require("glance")
 local actions = glance.actions
