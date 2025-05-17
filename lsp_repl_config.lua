@@ -237,16 +237,14 @@ vim.api.nvim_create_autocmd("LspAttach", {
       vim.lsp.buf.rename()
     end, "LSP Rename", bufnr)
 
-    -- Diagnostic keymaps (User's preference)
-    -- The reference uses <Leader>dn and <Leader>dp, user uses ]D and [D
     keymap_set("n", "]D", function()
-      vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
+      vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR, float = true })
     end, "Next Error", bufnr)
     keymap_set("n", "[D", function()
-      vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
+      vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.ERROR, float = true })
     end, "Previous Error", bufnr)
 
-    -- Additional useful keymaps (can be adapted from reference or added)
+    -- Additional useful keymaps (can be adapted from reference or added - UPDATED)
     keymap_set("n", "K", function()
       vim.lsp.buf.hover({ border = "single" })
     end, "LSP Hover (K)", bufnr) -- Alternative hover
@@ -255,10 +253,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end, "LSP Code Action", bufnr)
     keymap_set("n", "<Leader>ld", vim.diagnostic.open_float, "Line Diagnostics", bufnr) -- Similar to user's CursorHold but manual
     keymap_set("n", "<Leader>lj", function()
-      vim.diagnostic.goto_next()
+      vim.diagnostic.jump({ count = 1, float = true })
     end, "Next Diagnostic", bufnr)
     keymap_set("n", "<Leader>lk", function()
-      vim.diagnostic.goto_prev()
+      vim.diagnostic.jump({ count = -1, float = true })
     end, "Prev Diagnostic", bufnr)
     keymap_set("n", "<Leader>lq", vim.diagnostic.setloclist, "Diagnostics to Loclist", bufnr)
 
@@ -270,7 +268,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end
   end,
 })
--- }}}
 
 -- Servers Configuration {{{
 
@@ -286,7 +283,6 @@ vim.lsp.config.pylsp = {
     "requirements.txt",
     "Pipfile",
     ".git",
-    vim.uv.cwd(),
   },
   settings = {
     pylsp = {
