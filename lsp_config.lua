@@ -30,8 +30,8 @@ require("nvim-treesitter.configs").setup({
 vim.treesitter.language.register("markdown", "vimwiki")
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-vim.opt.foldlevelstart = 99
-vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 0
+vim.opt.foldlevel = 3
 vim.opt.foldnestmax = 3
 vim.opt.foldtext = ""
 
@@ -298,7 +298,7 @@ vim.lsp.config.lua_ls = {
 
 vim.lsp.enable({ "pylsp", "ruff_lsp", "lua_ls" })
 
-vim.api.nvim_create_user_command("LspStart", function(opts)
+vim.api.nvim_create_user_command("LspStart", function(_)
   local bufnr = vim.api.nvim_get_current_buf()
   if vim.tbl_isempty(vim.lsp.get_clients({ bufnr = bufnr })) then
     vim.notify("Attempting to start LSP clients for buffer: " .. bufnr, vim.log.levels.INFO)
