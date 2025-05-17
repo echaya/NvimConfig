@@ -85,14 +85,16 @@ local diagnostic_config = {
     },
     -- ERROR = "✘", WARN = "▲", HINT = "⚑", INFO = "»"
   },
-  update_in_insert = true,
+  update_in_insert = false,
   underline = true,
   severity_sort = true,
   virtual_text = false,
   float = {
     focusable = false,
     style = "minimal",
-    border = "single",
+    border = "rounded",
+    popup_origin = "window",
+    wrap = true,
     source = "always",
     header = "",
     prefix = "",
@@ -117,7 +119,9 @@ vim.api.nvim_create_autocmd("CursorHold", {
   group = vim.api.nvim_create_augroup("DiagnosticFloatGroup", { clear = true }), -- Renamed group for clarity
   pattern = "*",
   callback = function()
-    vim.diagnostic.open_float({ scope = "line", focusable = false })
+    vim.defer_fn(function()
+      vim.diagnostic.open_float({ scope = "line", focusable = false })
+    end, 100) -- Debounce by 100ms
   end,
 })
 -- }}}
