@@ -77,8 +77,6 @@ glance.setup({
 })
 
 -- Setup LSP
--- lua/core/lsp.lua (or your preferred file path)
--- Diagnostics Configuration (Inspired by reference, merged with user's preferences) {{{
 local diagnostic_config = {
   signs = {
     text = {
@@ -119,7 +117,7 @@ vim.diagnostic.config(diagnostic_config)
 
 -- Autocommand for opening diagnostic float on CursorHold (User's preference)
 vim.api.nvim_create_autocmd("CursorHold", {
-  group = vim.api.nvim_create_augroup("RjDiagnosticFloatGroup", { clear = true }), -- Renamed group for clarity
+  group = vim.api.nvim_create_augroup("DiagnosticFloatGroup", { clear = true }), -- Renamed group for clarity
   pattern = "*",
   callback = function()
     vim.diagnostic.open_float({ scope = "line", focusable = false })
@@ -243,35 +241,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
     keymap_set("n", "[D", function()
       vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.ERROR, float = true })
     end, "Previous Error", bufnr)
-
-    -- Additional useful keymaps (can be adapted from reference or added - UPDATED)
-    keymap_set("n", "K", function()
-      vim.lsp.buf.hover({ border = "single" })
-    end, "LSP Hover (K)", bufnr) -- Alternative hover
-    keymap_set("n", "<Leader>la", function()
-      vim.lsp.buf.code_action()
-    end, "LSP Code Action", bufnr)
-    keymap_set("n", "<Leader>ld", vim.diagnostic.open_float, "Line Diagnostics", bufnr) -- Similar to user's CursorHold but manual
-    keymap_set("n", "<Leader>lj", function()
-      vim.diagnostic.jump({ count = 1, float = true })
-    end, "Next Diagnostic", bufnr)
-    keymap_set("n", "<Leader>lk", function()
-      vim.diagnostic.jump({ count = -1, float = true })
-    end, "Prev Diagnostic", bufnr)
-    keymap_set("n", "<Leader>lq", vim.diagnostic.setloclist, "Diagnostics to Loclist", bufnr)
-
-    -- If client supports formatting, you could add a formatting keymap
-    if client.server_capabilities.documentFormattingProvider then
-      keymap_set("n", "<Leader>lf", function()
-        vim.lsp.buf.format({ async = true })
-      end, "LSP Format Document", bufnr)
-    end
   end,
 })
 
--- Servers Configuration {{{
-
--- Python: pylsp {{{
 vim.lsp.config.pylsp = {
   cmd = { "pylsp" }, -- Ensure 'pylsp' is in your PATH
   filetypes = { "python" },
@@ -310,17 +282,13 @@ vim.lsp.config.pylsp = {
       },
     },
   },
-  capabilities = capabilities, -- Pass the global capabilities
-  -- on_attach is handled globally by LspAttach autocmd
+  capabilities = capabilities,
 }
--- }}}
 
--- Python: ruff (ruff_lsp) {{{
 vim.lsp.config.ruff_lsp =
   { -- The server name used by nvim-lspconfig is 'ruff_lsp'. If your executable is just 'ruff', adjust cmd.
-    cmd = { "ruff-lsp" }, -- Ensure 'ruff-lsp' or the correct ruff LSP command is in your PATH
+    cmd = { "ruff" }, -- Ensure 'ruff-lsp' or the correct ruff LSP command is in your PATH
     filetypes = { "python" },
-    -- root_dir = vim.lsp.util.root_pattern("pyproject.toml", "ruff.toml", ".git"), -- Example root pattern
     root_markers = {
       "pyproject.toml",
       "ruff.toml",
@@ -330,12 +298,8 @@ vim.lsp.config.ruff_lsp =
       ".git",
     },
     capabilities = capabilities,
-    -- on_attach is handled globally by LspAttach autocmd
-    -- No specific settings provided in user config for ruff_lsp, add if any.
   }
--- }}}
 
--- Lua: lua_ls {{{
 vim.lsp.config.lua_ls = {
   cmd = { "lua-language-server" }, -- From reference, ensure it's in PATH
   filetypes = { "lua" },
@@ -358,30 +322,20 @@ vim.lsp.config.lua_ls = {
       telemetry = {
         enable = false,
       },
-      -- Additional useful settings from reference (optional)
-      -- completion = { callSnippet = "Replace" },
-      -- hint = { enable = true },
     },
   },
   capabilities = capabilities,
-  -- on_attach is handled globally by LspAttach autocmd
 }
--- }}}
 
--- Enable the configured Language Servers
--- You can enable them individually after each config block too.
 vim.lsp.enable({ "pylsp", "ruff_lsp", "lua_ls" })
 
 vim.notify(
   "LSP configurations applied. Enabled servers: pylsp, ruff_lsp, lua_ls",
   vim.log.levels.INFO
 )
--- }}}
 
--- LSP Management Commands (from reference, optional but useful) {{{
 vim.api.nvim_create_user_command("LspStart", function(opts)
   local bufnr = vim.api.nvim_get_current_buf()
-  local clients_started = {}
   if vim.tbl_isempty(vim.lsp.get_clients({ bufnr = bufnr })) then
     vim.notify("Attempting to start LSP clients for buffer: " .. bufnr, vim.log.levels.INFO)
     -- This is a bit tricky without lspconfig's :LspStart behavior which often re-evaluates filetype.
@@ -462,7 +416,6 @@ end, {
   desc = "Open the LSP log file",
 })
 
--- LspInfo from reference (improved version)
 vim.api.nvim_create_user_command("LspInfo", function()
   local info = vim.lsp.get_clients({ bufnr = vim.api.nvim_get_current_buf() })
   if #info == 0 then
@@ -489,9 +442,6 @@ vim.api.nvim_create_user_command("LspInfo", function()
 end, {
   desc = "Show information about active LSP clients for the current buffer.",
 })
--- }}}
-
--- vim: fdm=marker:fdl=0
 vim.o.updatetime = 300
 
 -- REPL using iron
