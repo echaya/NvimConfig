@@ -351,7 +351,8 @@ vim.lsp.config.lua_ls = {
         globals = { "vim" },
       },
       workspace = {
-        library = vim.api.nvim_get_runtime_file("", true), -- More robust way to get runtime files
+        -- library = vim.api.nvim_get_runtime_file("", true), -- More robust way to get runtime files
+        library = { vim.env.VIMRUNTIME },
         checkThirdParty = false, -- Or true if you want diagnostics from third-party libs in workspace
       },
       telemetry = {
