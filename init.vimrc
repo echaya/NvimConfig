@@ -7,8 +7,6 @@
 "let g:WorkDir = '~/.config/nvim/'
 "exe 'source '.g:WorkDir.'config/init.vimrc'
 
-"source plug.vim manually from plugged folder. It should normally sit in
-" nvim working dir autoload folder
 
 " Universal plugins
 let g:lst_plugin = [
@@ -23,6 +21,8 @@ let g:lst_plugin = [
 if !has('nvim')
     try
         let s:path_package = $HOME . '/.local/share/nvim/site/'
+        "source plug.vim manually from plugged folder.
+        "It should normally sit in nvim working dir autoload folder
         exe 'source '. s:path_package.'pack/deps/vim/plug.vim'
     catch
         let s:path_package = $HOME . '/AppData/local/nvim-data/site/'
