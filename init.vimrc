@@ -58,7 +58,7 @@ exe 'source '.g:WorkDir.'config/univ_config.vimrc'
 
 if has("nvim")
     " loading neovim plugins handled by nvim
-    exe 'luafile '.g:WorkDir.'config/mini_deps.lua'
+    exe 'luafile '.g:WorkDir.'config/init.lua'
 else
     exe 'source '.g:WorkDir.'config/vim_config.vimrc'
 endif
