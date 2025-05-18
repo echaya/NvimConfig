@@ -381,56 +381,30 @@ vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost", "VimLeavePre" }, {
   callback = function(event)
     local buf = event.buf
 
-    -- 1. Basic Sanity Checks: Ensure the buffer is valid and loaded.
     if not vim.api.nvim_buf_is_valid(buf) then
       return
     end
     if not vim.api.nvim_buf_is_loaded(buf) then
       return
     end
-    -- 2. Check if the buffer is modifiable.
     if not vim.api.nvim_get_option_value("modifiable", { buf = buf }) then
       return
     end
-    -- 3. Check Buffer Name: Avoid issues with unnamed buffers early. Also, get the name for potential use in notifications below.
     local buf_name = vim.api.nvim_buf_get_name(buf)
     if not buf_name or buf_name == "" then
-      vim.notify(
-        "Auto-save skipped: Buffer is unnamed",
-        vim.log.levels.DEBUG,
-        { title = "AutoSave" }
-      )
+      -- vim.notify( "Auto-save skipped: Buffer is unnamed", vim.log.levels.DEBUG, { title = "AutoSave" })
       return
     end
-    -- 4. Check Buffer Type: Skip auto-save for certain special buffer types.
     local buftype = vim.api.nvim_get_option_value("buftype", { buf = buf })
     if buftype ~= "" and vim.tbl_contains(disabled_buftypes_for_auto_save, buftype) then
-      vim.notify(
-        "Auto-save skipped for buftype: "
-          .. buftype
-          .. " ("
-          .. vim.fn.fnamemodify(buf_name, ":.")
-          .. ")",
-        vim.log.levels.DEBUG,
-        { title = "AutoSave" }
-      )
+      -- vim.notify( "Auto-save skipped for buftype: " .. buftype .. " (" .. vim.fn.fnamemodify(buf_name, ":.") .. ")", vim.log.levels.DEBUG, { title = "AutoSave" })
       return
     end
-    -- 5. Check Filetype:
     local filetype = vim.api.nvim_get_option_value("filetype", { buf = buf })
     if filetype ~= "" and vim.tbl_contains(disabled_filetypes_for_auto_save, filetype) then
-      vim.notify(
-        "Auto-save OFF for filetype: "
-          .. filetype
-          .. " ("
-          .. vim.fn.fnamemodify(buf_name, ":.")
-          .. ")",
-        vim.log.levels.INFO,
-        { title = "AutoSave" }
-      )
+      -- vim.notify( "Auto-save OFF for filetype: " .. filetype .. " (" .. vim.fn.fnamemodify(buf_name, ":.") .. ")", vim.log.levels.INFO, { title = "AutoSave" })
       return
     end
-    -- 6. Check if the buffer is actually modified.
     if vim.api.nvim_get_option_value("modified", { buf = buf }) then
       vim.schedule(function()
         if not vim.api.nvim_buf_is_valid(buf) then
@@ -451,11 +425,7 @@ vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost", "VimLeavePre" }, {
           return
         end
 
-        -- vim.notify(
-        --   "Auto-saving: " .. vim.fn.fnamemodify(current_buf_name_scheduled, ":."),
-        --   vim.log.levels.INFO,
-        --   { title = "AutoSave" }
-        -- )
+        -- vim.notify( "Auto-saving: " .. vim.fn.fnamemodify(current_buf_name_scheduled, ":."), vim.log.levels.INFO, { title = "AutoSave" })
 
         vim.api.nvim_buf_call(buf, function()
           local success, err_msg = pcall(vim.cmd, "silent! write")
