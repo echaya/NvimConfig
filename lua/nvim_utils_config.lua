@@ -369,14 +369,106 @@ vim.api.nvim_create_autocmd("RecordingLeave", {
   group = vim.api.nvim_create_augroup("NoiceMacroNotficationDismiss", { clear = true }),
 })
 
+local auto_save_augroup_name = "UserAutoSaveOnEvents"
+vim.api.nvim_create_augroup(auto_save_augroup_name, { clear = true })
+local disabled_filetypes_for_auto_save = { "minideps-confirm", "gitcommit", "gitrebase" }
+local disabled_buftypes_for_auto_save =
+  { "nofile", "nowrite", "terminal", "prompt", "quickfix", "help" }
+
 vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost", "VimLeavePre" }, {
-  group = vim.api.nvim_create_augroup("auto-save", { clear = true }),
+  group = auto_save_augroup_name,
+  pattern = "*",
   callback = function(event)
-    -- test
-    if vim.api.nvim_get_option_value("modified", { buf = event.buf }) then
+    local buf = event.buf
+
+    -- 1. Basic Sanity Checks: Ensure the buffer is valid and loaded.
+    if not vim.api.nvim_buf_is_valid(buf) then
+      return
+    end
+    if not vim.api.nvim_buf_is_loaded(buf) then
+      return
+    end
+    -- 2. Check if the buffer is modifiable.
+    if not vim.api.nvim_get_option_value("modifiable", { buf = buf }) then
+      return
+    end
+    -- 3. Check Buffer Name: Avoid issues with unnamed buffers early. Also, get the name for potential use in notifications below.
+    local buf_name = vim.api.nvim_buf_get_name(buf)
+    if not buf_name or buf_name == "" then
+      vim.notify(
+        "Auto-save skipped: Buffer is unnamed",
+        vim.log.levels.DEBUG,
+        { title = "AutoSave" }
+      )
+      return
+    end
+    -- 4. Check Buffer Type: Skip auto-save for certain special buffer types.
+    local buftype = vim.api.nvim_get_option_value("buftype", { buf = buf })
+    if buftype ~= "" and vim.tbl_contains(disabled_buftypes_for_auto_save, buftype) then
+      vim.notify(
+        "Auto-save skipped for buftype: "
+          .. buftype
+          .. " ("
+          .. vim.fn.fnamemodify(buf_name, ":.")
+          .. ")",
+        vim.log.levels.DEBUG,
+        { title = "AutoSave" }
+      )
+      return
+    end
+    -- 5. Check Filetype:
+    local filetype = vim.api.nvim_get_option_value("filetype", { buf = buf })
+    if filetype ~= "" and vim.tbl_contains(disabled_filetypes_for_auto_save, filetype) then
+      vim.notify(
+        "Auto-save OFF for filetype: "
+          .. filetype
+          .. " ("
+          .. vim.fn.fnamemodify(buf_name, ":.")
+          .. ")",
+        vim.log.levels.INFO,
+        { title = "AutoSave" }
+      )
+      return
+    end
+    -- 6. Check if the buffer is actually modified.
+    if vim.api.nvim_get_option_value("modified", { buf = buf }) then
       vim.schedule(function()
-        vim.api.nvim_buf_call(event.buf, function()
-          vim.cmd("silent! write")
+        if not vim.api.nvim_buf_is_valid(buf) then
+          return
+        end
+        if not vim.api.nvim_buf_is_loaded(buf) then
+          return
+        end
+        if not vim.api.nvim_get_option_value("modifiable", { buf = buf }) then
+          return
+        end
+        if not vim.api.nvim_get_option_value("modified", { buf = buf }) then
+          return
+        end
+
+        local current_buf_name_scheduled = vim.api.nvim_buf_get_name(buf) -- Re-fetch name, in case it changed (e.g. :saveas)
+        if not current_buf_name_scheduled or current_buf_name_scheduled == "" then
+          return
+        end
+
+        -- vim.notify(
+        --   "Auto-saving: " .. vim.fn.fnamemodify(current_buf_name_scheduled, ":."),
+        --   vim.log.levels.INFO,
+        --   { title = "AutoSave" }
+        -- )
+
+        vim.api.nvim_buf_call(buf, function()
+          local success, err_msg = pcall(vim.cmd, "silent! write")
+          if not success then
+            vim.notify(
+              "Auto-save failed for "
+                .. vim.fn.fnamemodify(current_buf_name_scheduled, ":.")
+                .. ": "
+                .. err_msg,
+              vim.log.levels.ERROR,
+              { title = "AutoSave" }
+            )
+          end
         end)
       end)
     end
