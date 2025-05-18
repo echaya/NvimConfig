@@ -130,7 +130,7 @@ vim.api.nvim_create_autocmd("FileType", {
       -- autocmd FileType vim nnoremap == ggVG=<C-o> for vim_format
       vim.keymap.set("n", "==", "ggVG=<C-o>zz", { buffer = args.buf, desc = "vim_format" })
     else
-      vim.keymap.set("n", "==", "<cmd>Format<cr>", { desc = "conform_format" })
+      vim.keymap.set("n", "==", "<cmd>Format<cr>", { buffer = args.buf, desc = "conform_format" })
     end
   end,
 })
