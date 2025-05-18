@@ -55,21 +55,25 @@ if !has('nvim')
 endif
 
 let s:script_dir = expand('<sfile>:p:h')
-exe 'source '.s:script_dir.'/vim/univ_config.vimrc'
+let s:script_dir = substitute(s:script_dir, '\\', '/', 'g')
+if s:script_dir[-1:] !=# '/'
+    let s:script_dir = s:script_dir . '/'
+endif
+exe 'source '.s:script_dir.'vim/univ_config.vimrc'
 
 if has("nvim")
     " loading neovim plugins handled by nvim
-    exe 'luafile '.s:script_dir.'/init.lua'
+    exe 'luafile '.s:script_dir.'init.lua'
 else
-    exe 'source '.s:script_dir.'/vim/vim_config.vimrc'
+    exe 'source '.s:script_dir.'vim/vim_config.vimrc'
 endif
 
 if exists('g:vscode')
-    exe 'source '.s:script_dir.'/vim/vscode_config.vimrc'
+    exe 'source '.s:script_dir.'vim/vscode_config.vimrc'
 else
-    exe 'source '.s:script_dir.'/vim/nvim_vim_config.vimrc'
-    exe 'source '.s:script_dir.'/vim/md.vimrc'
-    exe 'source '.s:script_dir.'/vim/python.vimrc'
+    exe 'source '.s:script_dir.'vim/nvim_vim_config.vimrc'
+    exe 'source '.s:script_dir.'vim/md.vimrc'
+    exe 'source '.s:script_dir.'vim/python.vimrc'
 endif
 
 " colorscheme and highlight
