@@ -9,8 +9,16 @@ set nocompatible
 set mouse=a
 set showmatch
 set backspace=indent,eol,start
+
+let s:this_script_config_dir = expand('<sfile>:p:h')  " e.g., c:\Tools\neovim\config
+let s:project_root_dir = fnamemodify(fnamemodify(s:this_script_config_dir, ':h'),':h') " e.g., c:\Tools\neovim
+let s:project_root_dir = substitute(s:project_root_dir, '\\', '/', 'g')
+if s:project_root_dir[-1:] !=# '/'
+    let s:project_root_dir = s:project_root_dir . '/'
+endif  " Now: c:/Tools/neovim/config/
+
 if has('persistent_undo')
-    exe 'set undodir='.g:WorkDir.'undo'
+    exe 'set undodir='.s:project_root_dir.'undo'
     set undolevels=10000
     set undofile
 endif
