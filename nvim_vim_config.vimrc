@@ -64,9 +64,7 @@ if has('termguicolors')
     set termguicolors
 endif
 
-" Navigate buffers. use :bufferN to jump based on buffer number
-"noremap <silent> J :bp<CR>
-"noremap <silent> K :bn<CR>
+" reopen just closed buffer to edit
 nnoremap <silent> ZX :e #<CR>
 
 "Move to previous/next tabpage
@@ -74,10 +72,7 @@ noremap <silent> J :tabp<CR>
 noremap <silent> K :tabn<CR>
 noremap <silent> H :0tabnew<CR>
 noremap <silent> L :tabnew<CR>
-noremap <silent> <PageUp> :tabp<CR>
-noremap <silent> <PageDown> :tabn<CR>
 noremap <silent> <Del> :tabc<CR>
-noremap <silent> <Insert> :tabnew<CR>
 
 augroup CursorLine
     au!
@@ -88,8 +83,6 @@ augroup END
 
 " buffers management
 set hidden
-" noremap <silent> <s-j> :bp<CR>
-" noremap <silent> <s-k> :bn<CR>
 noremap <C-h> <C-w><C-h>
 noremap <C-j> <C-w><C-j>
 noremap <C-k> <C-w><C-k>
@@ -101,12 +94,8 @@ tnoremap <C-l> <Cmd>wincmd l<CR>
 tnoremap <localleader>[ <Cmd>wincmd p<CR>
 nnoremap <localleader>[ <Cmd>wincmd p<CR>
 nnoremap <leader>= <Cmd>wincmd =<CR>
-" noremap <silent> <C-F4> :bdelete<CR>:bn<CR>
-" noremap <silent> <C-n> :enew<CR>
 
 " adjust split window size
-" nnoremap <down> :vertical resize-5<CR>
-" nnoremap <up> :vertical resize+5<CR>
 nnoremap <up> :res +2<CR>
 nnoremap <down> :res -2<CR>
 nnoremap <left> :vertical resize-5<CR>
