@@ -114,6 +114,7 @@ capabilities.textDocument.foldingRange = {
   dynamicRegistration = false,
   lineFoldingOnly = true,
 }
+capabilities.textDocument.completion.completionItem.snippetSupport = true
 local ok_cmp_blink, blink_cmp = pcall(require, "blink.cmp")
 if ok_cmp_blink and blink_cmp.get_lsp_capabilities then
   capabilities = blink_cmp.get_lsp_capabilities(capabilities)

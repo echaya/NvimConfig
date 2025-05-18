@@ -37,7 +37,7 @@ now(function()
   add({ source = "rebelot/kanagawa.nvim" })
   add({ source = "SmiteshP/nvim-navic" })
   add({ source = "sindrets/diffview.nvim" })
-  dofile(vim.g.WorkDir .. "config/nvim_now_config.lua")
+  require("lua.nvim_now_config")
 end)
 
 -- deps later: utilities
@@ -51,7 +51,7 @@ later(function()
   -- nvim plugins
   add({ source = "folke/flash.nvim" })
   add({ source = "monaqa/dial.nvim" })
-  dofile(vim.g.WorkDir .. "config/univ_config.lua")
+  require("lua.univ_config")
   if vim.g.vscode == nil then
     add({ source = "folke/which-key.nvim" })
     add({
@@ -60,7 +60,7 @@ later(function()
         "MunifTanjim/nui.nvim",
       },
     })
-    dofile(vim.g.WorkDir .. "config/nvim_utils_config.lua")
+    require("lua.nvim_utils_config")
   end
 end)
 
@@ -84,7 +84,7 @@ if vim.g.vscode == nil then
         end,
       },
     })
-    dofile(vim.g.WorkDir .. "config/lsp_config.lua")
+    require("lua.lsp_config")
   end)
 end
 
@@ -95,8 +95,8 @@ later(function()
     add({ source = "stevearc/conform.nvim" })
     add({ source = "stevearc/quicker.nvim" })
     add({ source = "MeanderingProgrammer/render-markdown.nvim" })
-    dofile(vim.g.WorkDir .. "config/code_config.lua")
+    require("lua.code_config")
   else
-    dofile(vim.g.WorkDir .. "config/vscode_config.lua")
+    require("lua.vscode_config")
   end
 end)
