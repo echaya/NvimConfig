@@ -1,27 +1,13 @@
-local init_lua_full_path = vim.fn.expand("<sfile>:p")
-local config_dir = vim.fn.fnamemodify(init_lua_full_path, ":h")
-config_dir = config_dir:gsub("\\", "/")
-if not config_dir:match("/$") then
-  config_dir = config_dir .. "/"
-end
-
-local project_root = vim.fn.fnamemodify(config_dir, ":h")
-local project_root = vim.fn.fnamemodify(project_root, ":h")
-project_root = project_root:gsub("\\", "/")
-if not project_root:match("/$") then
-  project_root = project_root .. "/"
-end
-
 local new_package_paths = {}
 
-local path_package = project_root .. "site/"
+local path_package = vim.g.project_root_dir .. "site/"
 table.insert(new_package_paths, path_package .. "?.lua")
 table.insert(new_package_paths, path_package .. "?/init.lua")
 
-table.insert(new_package_paths, config_dir .. "?.lua")
-table.insert(new_package_paths, config_dir .. "?/init.lua")
+table.insert(new_package_paths, vim.g.config_dir .. "?.lua")
+table.insert(new_package_paths, vim.g.config_dir .. "?/init.lua")
 
-local config_modules_subdir = config_dir .. "modules/"
+local config_modules_subdir = vim.g.config_dir .. "modules/"
 table.insert(new_package_paths, config_modules_subdir .. "?.lua")
 table.insert(new_package_paths, config_modules_subdir .. "?/init.lua")
 
