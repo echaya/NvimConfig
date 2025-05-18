@@ -1,3 +1,22 @@
+local script_directory = vim.fn.expand("<sfile>:p:h")
+script_directory = script_directory:gsub("\\", "/")
+if not script_directory:match("/$") then
+  script_directory = script_directory .. "/"
+end
+if script_directory and script_directory ~= "/" then -- Basic sanity check
+  package.path = package.path
+    .. ";"
+    .. script_directory
+    .. "?.lua;"
+    .. script_directory
+    .. "?/init.lua"
+else
+  vim.notify(
+    "WARNING: Could not reliably determine script directory for init.lua. Module loading might be affected if Neovim is not started from the config directory.",
+    vim.log.levels.WARN
+  )
+end
+
 local path_package = vim.fn.stdpath("data") .. "/site/"
 local mini_path = path_package .. "pack/deps/start/mini.nvim"
 if not vim.loop.fs_stat(mini_path) then
