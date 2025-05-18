@@ -81,20 +81,19 @@ glance.setup({
 })
 
 -- Setup LSP
-local diagnostic_config = {
+vim.diagnostic.config({
   signs = {
     text = {
-      [vim.diagnostic.severity.ERROR] = "",
-      [vim.diagnostic.severity.WARN] = "",
-      [vim.diagnostic.severity.HINT] = "",
-      [vim.diagnostic.severity.INFO] = "",
+      [vim.diagnostic.severity.ERROR] = "󰅚 ",
+      [vim.diagnostic.severity.WARN] = "󰀪 ",
+      [vim.diagnostic.severity.INFO] = "󰋽 ",
+      [vim.diagnostic.severity.HINT] = "󰌶 ",
     },
-    -- ERROR = "✘", WARN = "▲", HINT = "⚑", INFO = "»"
   },
   update_in_insert = false,
-  underline = true,
+  underline = { enabled = true, severity = vim.diagnostic.severity.WARN }, -- Underline warnings and errors by default
   severity_sort = true,
-  virtual_text = false,
+  virtual_text = false, -- Keep false if you prefer
   float = {
     focusable = false,
     style = "minimal",
@@ -105,7 +104,7 @@ local diagnostic_config = {
     header = "",
     prefix = "",
     suffix = "",
-    format = function(diagnostic) -- User's custom format function
+    format = function(diagnostic)
       local message = diagnostic.message
       local source = diagnostic.source
       local code = diagnostic.code
@@ -117,8 +116,7 @@ local diagnostic_config = {
       end
     end,
   },
-}
-vim.diagnostic.config(diagnostic_config)
+})
 
 -- Autocommand for opening diagnostic float on CursorHold (User's preference)
 vim.api.nvim_create_autocmd("CursorHold", {
@@ -137,26 +135,15 @@ capabilities.textDocument.foldingRange = {
   dynamicRegistration = false,
   lineFoldingOnly = true,
 }
-capabilities.textDocument.semanticTokens.multilineTokenSupport = true
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 local ok_cmp_blink, blink_cmp = pcall(require, "blink.cmp")
 if ok_cmp_blink and blink_cmp.get_lsp_capabilities then
   capabilities = blink_cmp.get_lsp_capabilities(capabilities)
-  -- vim.notify("LSP capabilities extended by blink.cmp", vim.log.levels.INFO)
 else
   vim.notify(
     "blink.cmp not found or get_lsp_capabilities missing. Using default LSP capabilities.",
     vim.log.levels.WARN
   )
-end
-
--- Global LSP settings and on_attach through LspAttach autocmd {{{
-local function keymap_set(mode, lhs, rhs, desc, buffer)
-  local opts = { silent = true, desc = desc }
-  if buffer then
-    opts.buffer = buffer
-  end
-  vim.keymap.set(mode, lhs, rhs, opts)
 end
 
 -- The on_attach function will be handled by the LspAttach autocmd callback
@@ -189,30 +176,42 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end
 
     -- User's Keymaps
-    keymap_set("n", "gl", function()
+    vim.keymap.set("n", "gl", function()
       vim.lsp.buf.hover()
-    end, "LSP Hover", bufnr)
-    keymap_set("n", "gD", function()
+    end, { silent = true, desc = "LSP Hover", buffer = bufnr })
+    vim.keymap.set("n", "gD", function()
       vim.lsp.buf.definition()
-    end, "LSP Definition", bufnr)
-    keymap_set("n", "gd", "<CMD>Glance definitions<CR>", "Glance Definitions", bufnr)
-    keymap_set("n", "gR", function()
+    end, { silent = true, desc = "LSP Definition", buffer = bufnr })
+    vim.keymap.set(
+      "n",
+      "gd",
+      "<CMD>Glance definitions<CR>",
+      { silent = true, desc = "Glance Definitions", buffer = bufnr }
+    )
+    vim.keymap.set("n", "gR", function()
       vim.lsp.buf.references()
-    end, "LSP References", bufnr)
-    keymap_set("n", "gi", function()
-      vim.lsp.buf.implementation()
-    end, "LSP Implementation", bufnr)
-    keymap_set("n", "gr", "<CMD>Glance references<CR>", "Glance References", bufnr)
-    keymap_set("n", "<F2>", function()
+    end, { silent = true, desc = "LSP References", buffer = bufnr })
+    vim.keymap.set(
+      "n",
+      "gr",
+      "<CMD>Glance references<CR>",
+      { silent = true, desc = "Glance References", buffer = bufnr }
+    )
+    vim.keymap.set("n", "<F2>", function()
       vim.lsp.buf.rename()
-    end, "LSP Rename", bufnr)
-
-    keymap_set("n", "]D", function()
+    end, { silent = true, desc = "LSP Rename", buffer = bufnr })
+    vim.keymap.set(
+      { "n", "v" },
+      "ga",
+      vim.lsp.buf.code_action,
+      { silent = true, desc = "[G]oto Code [A]ction", buffer = bufnr }
+    )
+    vim.keymap.set("n", "]D", function()
       vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR, float = true })
-    end, "Next Error", bufnr)
-    keymap_set("n", "[D", function()
+    end, { silent = true, desc = "Next Error", buffer = bufnr })
+    vim.keymap.set("n", "[D", function()
       vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.ERROR, float = true })
-    end, "Previous Error", bufnr)
+    end, { silent = true, desc = "Previous Error", buffer = bufnr })
   end,
 })
 
@@ -257,7 +256,7 @@ vim.lsp.config.pylsp = {
 
 vim.lsp.config.ruff_lsp =
   { -- The server name used by nvim-lspconfig is 'ruff_lsp'. If your executable is just 'ruff', adjust cmd.
-    cmd = { "ruff-lsp" }, -- Ensure 'ruff-lsp' or the correct ruff LSP command is in your PATH
+    cmd = { "ruff-lsp" },
     filetypes = { "python" },
     root_markers = {
       "pyproject.toml",
