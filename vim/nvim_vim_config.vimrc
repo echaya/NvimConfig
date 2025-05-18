@@ -10,11 +10,18 @@ set mouse=a
 set showmatch
 set backspace=indent,eol,start
 
-if has('persistent_undo')
-    exe 'set undodir='.stdpath('data') . '/undo'
+try
+    if has('persistent_undo')
+        exe 'set undodir='.stdpath('data') . '/undo'
+        set undolevels=10000
+        set undofile
+    endif
+catch
+    exe 'set undodir='.$HOME. '/undo'
     set undolevels=10000
     set undofile
-endif
+endtry
+
 set updatetime=100
 set timeoutlen=500
 
