@@ -17,7 +17,6 @@ let g:lst_plugin = [
             \'MTDL9/vim-log-highlighting',
             \'tpope/vim-repeat',
             \'unblevable/quick-scope',
-            \'907th/vim-auto-save',
             \'vimwiki/vimwiki',
             \'dhruvasagar/vim-table-mode']
 
@@ -51,6 +50,7 @@ if !has('nvim')
     Plug 'plasticboy/vim-markdown', {'for': ['markdown', 'vimwiki']}
     Plug 'airblade/vim-rooter'
     Plug 'bluz71/vim-nightfly-colors', { 'as': 'nightfly' }
+    Plug '907th/vim-auto-save',
     call plug#end()
 endif
 

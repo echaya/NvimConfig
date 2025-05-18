@@ -185,7 +185,6 @@ map_multistep("i", "<Tab>", tab_steps)
 local shifttab_steps = { "blink_prev", "decrease_indent", "jump_before_open" }
 map_multistep("i", "<S-Tab>", shifttab_steps)
 
-
 require("mini.trailspace").setup()
 
 if vim.fn.has("linux") == 1 then
@@ -321,28 +320,6 @@ vim.api.nvim_create_user_command("PU", function()
   vim.cmd("DepsUpdate")
 end, { desc = "DepsUpdate" })
 
--- turn auto save off on acwrite
-local disabled_filetype = { "minideps-confirm", "gitcommit" }
-vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
-  group = vim.api.nvim_create_augroup("disable-auto-save", { clear = true }),
-  callback = function()
-    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-      local file_type = vim.api.nvim_get_option_value("filetype", { buf = buf })
-      if vim.tbl_contains(disabled_filetype, file_type) and vim.g.auto_save == 1 then
-        vim.notify("vim.g.auto_save = 0 (OFF)", 3, { title = "AutoSave" })
-        vim.g.auto_save = 0
-        return
-      elseif vim.tbl_contains(disabled_filetype, file_type) and vim.g.auto_save == 0 then
-        return
-      end
-    end
-    if vim.g.auto_save == 0 then
-      vim.notify("vim.g.auto_save = 1 (ON)", 2, { title = "AutoSave" })
-      vim.g.auto_save = 1
-    end
-  end,
-})
-
 local mini_misc = require("mini.misc")
 mini_misc.setup()
 mini_misc.setup_auto_root()
@@ -390,4 +367,18 @@ vim.api.nvim_create_autocmd("RecordingLeave", {
     })
   end,
   group = vim.api.nvim_create_augroup("NoiceMacroNotficationDismiss", { clear = true }),
+})
+
+vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost", "VimLeavePre" }, {
+  group = vim.api.nvim_create_augroup("auto-save", { clear = true }),
+  callback = function(event)
+    -- test
+    if vim.api.nvim_get_option_value("modified", { buf = event.buf }) then
+      vim.schedule(function()
+        vim.api.nvim_buf_call(event.buf, function()
+          vim.cmd("silent! write")
+        end)
+      end)
+    end
+  end,
 })
