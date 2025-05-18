@@ -29,12 +29,16 @@ let g:lst_plugin = [
             \'dhruvasagar/vim-table-mode']
 
 if !has('nvim')
-
-    let s:path_package = g:project_root_dir.'site/vim/'
-    "source plug.vim manually from plugged folder.
-    "It should normally sit in nvim working dir autoload folder
-    exe 'source '. s:path_package.'plug.vim'
-    call plug#begin(s:path_package)
+    try
+        let s:path_package = $HOME . '/.local/share/nvim/site/'
+        "source plug.vim manually from plugged folder.
+        "It should normally sit in nvim working dir autoload folder
+        exe 'source '. s:path_package.'pack/deps/vim/plug.vim'
+    catch
+        let s:path_package = $HOME . '/AppData/local/nvim-data/site/'
+        exe 'source '. s:path_package.'pack/deps/vim/plug.vim'
+    endtry
+    call plug#begin(s:path_package.'pack/deps/vim/')
 
     for plugin in g:lst_plugin
         if stridx(plugin, "scope") == -1
