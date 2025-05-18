@@ -7,6 +7,16 @@
 "let g:WorkDir = '~/.config/nvim/'
 "exe 'source '.g:WorkDir.'config/init.vimrc'
 
+let g:config_dir = expand('<sfile>:p:h')
+let g:config_dir = substitute(g:config_dir, '\\', '/', 'g')
+if g:config_dir[-1:] !=# '/'
+    let g:config_dir = g:config_dir . '/'
+endif
+let g:project_root_dir = fnamemodify(fnamemodify(g:config_dir, ':h'),':h') " e.g., c:\Tools\neovim
+let g:project_root_dir = substitute(g:project_root_dir, '\\', '/', 'g')
+if g:project_root_dir[-1:] !=# '/'
+    let g:project_root_dir = g:project_root_dir . '/'
+endif  " Now: c:/Tools/neovim/config/
 
 " Universal plugins
 let g:lst_plugin = [
@@ -19,16 +29,12 @@ let g:lst_plugin = [
             \'dhruvasagar/vim-table-mode']
 
 if !has('nvim')
-    try
-        let s:path_package = $HOME . '/.local/share/nvim/site/'
-        "source plug.vim manually from plugged folder.
-        "It should normally sit in nvim working dir autoload folder
-        exe 'source '. s:path_package.'pack/deps/vim/plug.vim'
-    catch
-        let s:path_package = $HOME . '/AppData/local/nvim-data/site/'
-        exe 'source '. s:path_package.'pack/deps/vim/plug.vim'
-    endtry
-    call plug#begin(s:path_package.'pack/deps/vim/')
+
+    let s:path_package = g:project_root_dir.'site/vim/'
+    "source plug.vim manually from plugged folder.
+    "It should normally sit in nvim working dir autoload folder
+    exe 'source '. s:path_package.'plug.vim'
+    call plug#begin(s:path_package)
 
     for plugin in g:lst_plugin
         if stridx(plugin, "scope") == -1
@@ -54,26 +60,21 @@ if !has('nvim')
     call plug#end()
 endif
 
-let s:script_dir = expand('<sfile>:p:h')
-let s:script_dir = substitute(s:script_dir, '\\', '/', 'g')
-if s:script_dir[-1:] !=# '/'
-    let s:script_dir = s:script_dir . '/'
-endif
-exe 'source '.s:script_dir.'vim/univ_config.vimrc'
+exe 'source '.g:config_dir.'vim/univ_config.vimrc'
 
 if has("nvim")
     " loading neovim plugins handled by nvim
-    exe 'luafile '.s:script_dir.'init.lua'
+    exe 'luafile '.g:config_dir.'init.lua'
 else
-    exe 'source '.s:script_dir.'vim/vim_config.vimrc'
+    exe 'source '.g:config_dir.'vim/vim_config.vimrc'
 endif
 
 if exists('g:vscode')
-    exe 'source '.s:script_dir.'vim/vscode_config.vimrc'
+    exe 'source '.g:config_dir.'vim/vscode_config.vimrc'
 else
-    exe 'source '.s:script_dir.'vim/nvim_vim_config.vimrc'
-    exe 'source '.s:script_dir.'vim/md.vimrc'
-    exe 'source '.s:script_dir.'vim/python.vimrc'
+    exe 'source '.g:config_dir.'vim/nvim_vim_config.vimrc'
+    exe 'source '.g:config_dir.'vim/md.vimrc'
+    exe 'source '.g:config_dir.'vim/python.vimrc'
 endif
 
 " colorscheme and highlight
