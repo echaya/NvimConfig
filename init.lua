@@ -1,24 +1,38 @@
-local script_directory = vim.fn.expand("<sfile>:p:h")
-script_directory = script_directory:gsub("\\", "/")
-if not script_directory:match("/$") then
-  script_directory = script_directory .. "/"
-end
-if script_directory and script_directory ~= "/" then -- Basic sanity check
-  package.path = package.path
-    .. ";"
-    .. script_directory
-    .. "?.lua;"
-    .. script_directory
-    .. "?/init.lua"
-else
-  vim.notify(
-    "WARNING: Could not reliably determine script directory for init.lua. Module loading might be affected if Neovim is not started from the config directory.",
-    vim.log.levels.WARN
-  )
+local init_lua_full_path = vim.fn.expand("<sfile>:p")
+local config_dir = vim.fn.fnamemodify(init_lua_full_path, ":h")
+config_dir = config_dir:gsub("\\", "/")
+if not config_dir:match("/$") then
+  config_dir = config_dir .. "/"
 end
 
-local path_package = vim.fn.stdpath("data") .. "/site/"
-local mini_path = path_package .. "pack/deps/start/mini.nvim"
+local project_root = vim.fn.fnamemodify(config_dir, ":h")
+local project_root = vim.fn.fnamemodify(project_root, ":h")
+project_root = project_root:gsub("\\", "/")
+if not project_root:match("/$") then
+  project_root = project_root .. "/"
+end
+
+local new_package_paths = {}
+
+local path_package = project_root .. "site/"
+table.insert(new_package_paths, path_package .. "?.lua")
+table.insert(new_package_paths, path_package .. "?/init.lua")
+
+table.insert(new_package_paths, config_dir .. "?.lua")
+table.insert(new_package_paths, config_dir .. "?/init.lua")
+
+local config_modules_subdir = config_dir .. "modules/"
+table.insert(new_package_paths, config_modules_subdir .. "?.lua")
+table.insert(new_package_paths, config_modules_subdir .. "?/init.lua")
+
+-- Append all new paths to Lua's package.path (semicolon separated)
+if #new_package_paths > 0 then
+  package.path = package.path .. ";" .. table.concat(new_package_paths, ";")
+else
+  vim.notify("No new package paths were added.", vim.log.levels.WARN, { title = "Config Loader" })
+end
+
+local mini_path = path_package .. "start/mini.nvim"
 if not vim.loop.fs_stat(mini_path) then
   vim.cmd('echo "Installing `mini.nvim`" | redraw')
   local clone_cmd = {
