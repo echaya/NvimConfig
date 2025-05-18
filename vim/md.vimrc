@@ -1,6 +1,4 @@
 "markdown config
-let g:vim_markdown_folding_disabled = 1
-"let g:vmt_auto_update_on_save = 0 " TODO is it still in use
 
 function! EditMdLink() abort
     " use Ctrl-r Ctrl-r `X` to call out macro recorded on `X`
@@ -40,6 +38,8 @@ let g:vimwiki_key_mappings =
             \ 'table_mappings': 0,
             \ 'lists': 0,
             \ }
+let g:vimwiki_folding = 'expr'
+let g:vimwiki_table_auto_fmt = 0
 " nmap <F7> <Plug>VimwikiNextLink
 " nmap <F9> <Plug>VimwikiPrevLink
 " nmap <S-Cr> <Plug>VimwikiFollowLink
