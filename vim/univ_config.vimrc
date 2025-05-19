@@ -54,6 +54,7 @@ nnoremap <C-V> v
 :command! W w
 :command! Q q
 :command! Qa qa
+:command! Wqa wqa
 :command! Bd bd
 nnoremap <leader>q <cmd>q<cr>
 nnoremap <leader>wq <cmd>wq<cr>
