@@ -311,6 +311,7 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.keymap.set({ "n", "v" }, [[<a-\>]], function()
       -- REPLStart! ipython will create an ipython REPL and attach the current buffer.
       vim.cmd("REPLStart! ipython")
+      vim.cmd("wincmd p")
       vim.cmd("wincmd =") -- Original command to resize, yarepl's wincmd handles initial size.
       -- This might still be useful if you want to enforce equalization after.
     end, { buffer = args.buf, desc = "yarepl_start_attach_ipython" })
