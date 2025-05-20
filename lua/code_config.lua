@@ -307,28 +307,26 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = "python",
   group = vim.api.nvim_create_augroup("python-repl-yarepl", { clear = true }),
   callback = function(args)
-    -- TODO: norm! gv after REPLStart or restart (user's original TODO)
-    vim.keymap.set({ "n", "v" }, [[<a-\>]], function()
-      -- REPLStart! ipython will create an ipython REPL and attach the current buffer.
+    local start_repl = function()
       vim.cmd("REPLStart! ipython")
       vim.cmd("wincmd p")
       vim.cmd("wincmd =") -- Original command to resize, yarepl's wincmd handles initial size.
-      -- This might still be useful if you want to enforce equalization after.
-    end, { buffer = args.buf, desc = "yarepl_start_attach_ipython" })
+    end
+    -- TODO: norm! gv after REPLStart or restart (user's original TODO)
+    vim.keymap.set(
+      { "n", "v" },
+      [[<a-\>]],
+      start_repl,
+      { buffer = args.buf, desc = "yarepl_start_attach_ipython" }
+    )
 
     vim.keymap.set({ "n", "v" }, "<localleader>r", function()
-      vim.cmd("REPLClose ipython")
-      vim.cmd("REPLStart! ipython") -- Restart and re-attach
-      vim.cmd("wincmd =") -- Original command
-    end, { buffer = args.buf, desc = "yarepl_restart_ipython" })
-
-    local send_magic_paste_yarepl = function()
-      vim.cmd("call SelectVisual()") -- User's custom function, keep as is
+      vim.cmd("REPLExec $ipython exit()")
+      vim.cmd("REPLClose ipython") -- Close the window
       vim.defer_fn(function()
-        vim.cmd("REPLSendVisual ipython")
-      end, 100)
-      vim.cmd("norm! j")
-    end
+        start_repl()
+      end, 500)
+    end, { buffer = args.buf, desc = "yarepl_restart_ipython" })
 
     -- Sends a carriage return to the ipython REPL
     local send_cr_to_ipython = function()
