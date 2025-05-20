@@ -352,7 +352,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
     vim.keymap.set("n", "<S-CR>", function()
       vim.cmd("call SelectVisual()") -- User's custom function
-      vim.cmd("REPLSendVisual ipython")
+      vim.cmd("REPLSourceVisual ipython")
       vim.cmd("norm! j")
     end, { buffer = args.buf, desc = "yarepl_send_cell_visual_ipython" })
 
@@ -441,14 +441,12 @@ vim.api.nvim_create_autocmd("FileType", {
     end, { buffer = args.buf, desc = "yarepl_v_send_ipython" })
 
     vim.keymap.set({ "n", "v" }, "<localleader>u", function()
-      -- iron.send_until_cursor() equivalent: visually select then send
-      local original_cursor_pos = vim.api.nvim_win_get_cursor(0) -- [line, col]
-      vim.cmd("normal! ggVG") -- Select from start of file to current line
-      -- If you only want up to cursor, not whole lines:
-      -- vim.fn.execute("normal! ggv" .. original_cursor_pos[1] .. "G" .. original_cursor_pos[2] .. "l")
-      vim.cmd("REPLSendVisual ipython")
+      local original_cursor_pos = vim.api.nvim_win_get_cursor(0) -- [line, col], line is 1-indexed
+      local select_cmd = "normal! ggV" .. original_cursor_pos[1] .. "G"
+      vim.cmd(select_cmd) -- Execute the selection command
+      vim.cmd("REPLSourceVisual ipython")
       vim.api.nvim_input("<ESC>") -- Exit visual mode
-      vim.api.nvim_win_set_cursor(0, original_cursor_pos) -- Restore cursor
+      vim.api.nvim_win_set_cursor(0, original_cursor_pos) -- Restore cursor to its original position
     end, { buffer = args.buf, desc = "yarepl_send_until_cursor_ipython" })
 
     -- REPL Window Scrolling: yarepl focuses the REPL window. Standard terminal scrolling works there.
