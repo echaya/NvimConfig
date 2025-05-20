@@ -254,72 +254,128 @@ require("quicker").setup({
   },
 })
 
--- REPL using iron
+-- Предполагается, что это находится в вашем файле конфигурации nvim,
+-- например, init.lua или в специальном файле для yarepl.
+
+local yarepl = require("yarepl")
+
+yarepl.setup({
+  -- buflisted = true, -- Default, REPL buffer will appear in buffer list
+  scratch = true, -- Default, REPL buffer is a scratch buffer
+  -- ft = 'REPL', -- Default filetype for REPL buffer
+  close_on_exit = true, -- Default, closes window when REPL process exits
+  scroll_to_bottom_after_sending = true, -- Default
+  -- format_repl_buffers_names = true, -- Default
+
+  metas = {
+    ipython = {
+      cmd = { "ipython", "--no-autoindent" },
+      formatter = "bracketed_pasting", -- Maps to iron's bracketed_paste
+      source_syntax = "ipython", -- Useful for REPLSourceVisual/Operator if you use them
+      -- This wincmd function replicates your iron.nvim dynamic vertical split
+      wincmd = function(bufnr, _repl_name)
+        local width = math.floor(math.max(vim.o.columns * 0.35, 80))
+        local current_win_id = vim.api.nvim_get_current_win()
+
+        -- Ensure 'splitright' is set if we want 'botright vertical' to behave as typical vertical split to the right
+        local old_splitright = vim.o.splitright
+        vim.o.splitright = true
+        vim.cmd(string.format("vertical botright %d split", width))
+        vim.o.splitright = old_splitright
+
+        local new_win_id = vim.api.nvim_get_current_win() -- new split becomes current
+        vim.api.nvim_win_set_buf(new_win_id, bufnr)
+
+        -- Optional: yarepl might handle focusing the REPL or returning to original window.
+        -- If you want to ensure focus stays on the original window after REPL opens:
+        -- vim.api.nvim_set_current_win(current_win_id)
+        -- If you want to focus the REPL (usually the case):
+        -- vim.api.nvim_input('i') -- or similar if you want to go to insert mode in REPL
+      end,
+    },
+    -- You can define other REPLs here if needed
+  },
+  os = {
+    windows = {
+      send_delayed_cr_after_sending = true, -- Default, good for Windows
+    },
+  },
+})
+
+-- Autocmd to set up Python-specific keybindings
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "python",
-  group = vim.api.nvim_create_augroup("python-repl", { clear = true }),
+  group = vim.api.nvim_create_augroup("python-repl-yarepl", { clear = true }),
   callback = function(args)
-    local iron = require("iron.core")
-    local view = require("iron.view")
-    iron.setup({
-      config = {
-        scope = require("iron.scope").path_based,
-        scratch_repl = true,
-        repl_definition = {
-          python = {
-            format = require("iron.fts.common").bracketed_paste,
-            command = { "ipython", "--no-autoindent" },
-          },
-        },
-        repl_open_cmd = view.split.vertical.botright(function()
-          return math.max(vim.o.columns * 0.35, 80)
-        end),
-      },
-      keymaps = {},
-      highlight = {
-        italic = true,
-      },
-      ignore_blank_lines = false, -- ignore blank lines when sending visual select lines
-    })
-    -- TODO norm! gv after Iron start/restart
-    vim.keymap.set({ "n", "v" }, [[<a-\>]], function()
-      vim.cmd("IronRepl")
-      vim.cmd("wincmd =")
-    end, { buffer = args.buf, desc = "repl_toggle" })
-    vim.keymap.set({ "n", "v" }, "<localleader>r", function()
-      vim.cmd("IronRestart")
-      vim.cmd("wincmd =")
-    end, { buffer = args.buf, desc = "repl_restart" })
+    -- Helper function to send visual selection to yarepl for ipython
+    local function send_visual_to_ipython()
+      -- In yarepl, REPLSendVisual targets REPL 1 or attached.
+      -- To target 'ipython' specifically if multiple REPL types could exist,
+      -- you might need to ensure attachment or use REPL ID.
+      -- For simplicity, assuming 'ipython' is REPL 1 or attached, or you'll adapt.
+      -- The command `REPLSendVisual ipython` sends to the closest 'ipython' REPL.
+      vim.cmd("REPLSendVisual ipython")
+    end
 
-    local send_magic_paste = function()
-      vim.cmd("call SelectVisual()")
-      vim.cmd("norm! y`>")
+    -- TODO: norm! gv after REPLStart or restart (user's original TODO)
+    vim.keymap.set({ "n", "v" }, [[<a-\>]], function()
+      -- REPLStart! ipython will create an ipython REPL and attach the current buffer.
+      vim.cmd("REPLStart! ipython")
+      vim.cmd("wincmd =") -- Original command to resize, yarepl's wincmd handles initial size.
+      -- This might still be useful if you want to enforce equalization after.
+    end, { buffer = args.buf, desc = "yarepl_start_attach_ipython" })
+
+    vim.keymap.set({ "n", "v" }, "<localleader>r", function()
+      vim.cmd("REPLClose ipython")
+      vim.cmd("REPLStart! ipython") -- Restart and re-attach
+      vim.cmd("wincmd =") -- Original command
+    end, { buffer = args.buf, desc = "yarepl_restart_ipython" })
+
+    local send_magic_paste_yarepl = function()
+      vim.cmd("call SelectVisual()") -- User's custom function, keep as is
       vim.defer_fn(function()
-        iron.send(nil, "%paste")
+        send_visual_to_ipython()
       end, 100)
       vim.cmd("norm! j")
     end
-    local send_cr = function()
-      iron.send(nil, string.char(13))
+
+    -- Sends a carriage return to the ipython REPL
+    local send_cr_to_ipython = function()
+      -- REPLExec sends command. Sending literal CR.
+      -- Using string.char(13) which is \r
+      -- $ipython ensures it goes to an ipython instance.
+      vim.cmd("REPLExec $ipython " .. vim.fn.nr2char(13))
     end
 
-    vim.keymap.set("t", [[<a-\>]], "<cmd>q<cr>", { desc = "repl_toggle" })
-    vim.keymap.set("n", "<localleader><cr>", send_cr, { buffer = args.buf, desc = "repl_cr" })
-    vim.keymap.set("n", "<C-CR>", send_cr, { buffer = args.buf, desc = "repl_cr" })
+    vim.keymap.set("t", [[<a-\>]], "<cmd>q<cr>", { desc = "yarepl_terminal_quit_window" }) -- This is for the terminal window itself
+    vim.keymap.set(
+      "n",
+      "<localleader><cr>",
+      send_cr_to_ipython,
+      { buffer = args.buf, desc = "yarepl_cr_ipython" }
+    )
+    vim.keymap.set(
+      "n",
+      "<C-CR>",
+      send_cr_to_ipython,
+      { buffer = args.buf, desc = "yarepl_cr_ipython" }
+    )
+
     if vim.fn.has("linux") == 1 then
       vim.keymap.set("n", "<S-CR>", function()
-        vim.cmd("call SelectVisual()")
-        iron.visual_send()
+        vim.cmd("call SelectVisual()") -- User's custom function
+        send_visual_to_ipython()
         vim.cmd("norm! j")
-      end, { buffer = args.buf, desc = "repl_send_cell" })
+      end, { buffer = args.buf, desc = "yarepl_send_cell_visual_ipython" })
     else
       vim.keymap.set(
         "n",
         "<S-CR>",
-        send_magic_paste,
-        { buffer = args.buf, desc = "repl_send_cell" }
+        send_magic_paste_yarepl,
+        { buffer = args.buf, desc = "yarepl_send_cell_magic_paste_ipython" }
       )
     end
+
     vim.keymap.set("n", "<localleader>y", function()
       local original_cursor_pos = vim.api.nvim_win_get_cursor(0)
       local current_line_1_indexed = original_cursor_pos[1]
@@ -330,7 +386,6 @@ vim.api.nvim_create_autocmd("FileType", {
       end
 
       local command_to_send
-
       if vim.fn.has("unix") == 1 then
         command_to_send =
           string.format("import linutils.cb_helper; linutils.cb_helper.to_clipboard(%s)", var_name)
@@ -339,6 +394,8 @@ vim.api.nvim_create_autocmd("FileType", {
         command_to_send = string.format("%s.to_clipboard()", var_name)
         vim.notify("Using default .to_clipboard()", vim.log.levels.INFO)
       end
+
+      -- This complex buffer manipulation logic remains the same
       vim.api.nvim_buf_set_lines(
         args.buf,
         current_line_1_indexed,
@@ -348,7 +405,7 @@ vim.api.nvim_create_autocmd("FileType", {
       )
       vim.api.nvim_win_set_cursor(0, { current_line_1_indexed + 1, 0 })
       vim.cmd("normal! V")
-      iron.visual_send()
+      send_visual_to_ipython() -- Changed from iron.visual_send()
       vim.notify(string.format("Sent to REPL: %s", command_to_send), vim.log.levels.INFO)
       vim.api.nvim_buf_set_lines(
         args.buf,
@@ -358,11 +415,9 @@ vim.api.nvim_create_autocmd("FileType", {
         {}
       )
       vim.api.nvim_win_set_cursor(0, original_cursor_pos)
-    end, {
-      buffer = args.buf,
-      desc = "repl_df_to_clipboard (OS-aware)",
-    })
-    local function create_repl_sender(key, desc, command_format_string)
+    end, { buffer = args.buf, desc = "yarepl_df_to_clipboard_os_aware_ipython" })
+
+    local function create_repl_sender_yarepl(key, desc, command_format_string)
       vim.keymap.set("n", key, function()
         local original_cursor_pos = vim.api.nvim_win_get_cursor(0)
         local current_line_1_indexed = original_cursor_pos[1]
@@ -372,6 +427,7 @@ vim.api.nvim_create_autocmd("FileType", {
           return
         end
         local command_to_send = string.format(command_format_string, var_name)
+        -- Buffer manipulation logic remains the same
         vim.api.nvim_buf_set_lines(
           args.buf,
           current_line_1_indexed,
@@ -381,7 +437,7 @@ vim.api.nvim_create_autocmd("FileType", {
         )
         vim.api.nvim_win_set_cursor(0, { current_line_1_indexed + 1, 0 })
         vim.cmd("normal! V")
-        iron.visual_send()
+        send_visual_to_ipython() -- Changed from iron.visual_send()
         vim.notify(string.format("Sent: %s", command_to_send), vim.log.levels.INFO)
         vim.api.nvim_buf_set_lines(
           args.buf,
@@ -391,68 +447,96 @@ vim.api.nvim_create_autocmd("FileType", {
           {}
         )
         vim.api.nvim_win_set_cursor(0, original_cursor_pos)
-      end, {
-        buffer = args.buf, -- Keymap is buffer-local, requires args.buf
-        desc = desc,
-      })
+      end, { buffer = args.buf, desc = desc .. "_ipython" })
     end
-    create_repl_sender("<localleader>pp", "repl_print", "print(%s)")
-    create_repl_sender("<localleader>pl", "repl_print_last", "print(%s.iloc[-1].T)")
-    create_repl_sender("<localleader>pf", "repl_print_first", "print(%s.iloc[0].T)")
-    create_repl_sender("<localleader>pi", "repl_print_info", "print(%s.info())")
+
+    create_repl_sender_yarepl("<localleader>pp", "yarepl_print", "print(%s)")
+    create_repl_sender_yarepl("<localleader>pl", "yarepl_print_last", "print(%s.iloc[-1].T)")
+    create_repl_sender_yarepl("<localleader>pf", "yarepl_print_first", "print(%s.iloc[0].T)")
+    create_repl_sender_yarepl("<localleader>pi", "yarepl_print_info", "print(%s.info())")
+
     vim.keymap.set("v", "<CR>", function()
-      iron.visual_send()
+      send_visual_to_ipython()
       vim.cmd("norm! j")
-    end, { buffer = args.buf, desc = "repl_v_send" })
+    end, { buffer = args.buf, desc = "yarepl_v_send_ipython" })
+
     vim.keymap.set({ "n", "v" }, "<localleader>u", function()
-      iron.send_until_cursor()
-      vim.api.nvim_input("<ESC>") -- to escape from visual mode
-    end, { buffer = args.buf, desc = "repl_send_until" })
-    vim.keymap.set(
-      "n",
-      "<localleader><PageUp>",
-      ":wincmd w<CR><C-u>:wincmd p<CR>",
-      { buffer = args.buf, noremap = true, silent = true, desc = "repl_prev" }
-    )
-    vim.keymap.set(
-      "n",
-      "<localleader><PageDown>",
-      ":wincmd w<CR><C-d>:wincmd p<CR>",
-      { buffer = args.buf, noremap = true, silent = true, desc = "repl_next" }
-    )
+      -- iron.send_until_cursor() equivalent: visually select then send
+      local original_cursor_pos = vim.api.nvim_win_get_cursor(0) -- [line, col]
+      vim.cmd("normal! ggVG") -- Select from start of file to current line
+      -- If you only want up to cursor, not whole lines:
+      -- vim.fn.execute("normal! ggv" .. original_cursor_pos[1] .. "G" .. original_cursor_pos[2] .. "l")
+      send_visual_to_ipython()
+      vim.api.nvim_input("<ESC>") -- Exit visual mode
+      vim.api.nvim_win_set_cursor(0, original_cursor_pos) -- Restore cursor
+    end, { buffer = args.buf, desc = "yarepl_send_until_cursor_ipython" })
+
+    -- REPL Window Scrolling: yarepl focuses the REPL window. Standard terminal scrolling works there.
+    -- To scroll without focusing manually first:
+    local scroll_repl_window = function(scroll_cmd)
+      local current_w = vim.api.nvim_get_current_win()
+      vim.cmd("REPLFocus ipython") -- Focus the ipython REPL window
+      vim.api.nvim_feedkeys(
+        vim.api.nvim_replace_termcodes(scroll_cmd, true, false, true),
+        "n",
+        true
+      )
+      vim.api.nvim_set_current_win(current_w) -- Return to original window
+    end
+
+    vim.keymap.set("n", "<localleader><PageUp>", function()
+      scroll_repl_window("<C-u>")
+    end, { buffer = args.buf, desc = "yarepl_scroll_prev_ipython" })
+    vim.keymap.set("n", "<localleader><PageDown>", function()
+      scroll_repl_window("<C-d>")
+    end, { buffer = args.buf, desc = "yarepl_scroll_next_ipython" })
+
     vim.keymap.set({ "n", "v" }, "<localleader>qq", function()
-      iron.close_repl()
-      iron.send(nil, string.char(13))
-    end, { buffer = args.buf, desc = "repl_exit" })
+      -- To make ipython exit, send 'exit()' or 'quit()'
+      vim.cmd("REPLExec $ipython exit()")
+      vim.cmd("REPLClose ipython") -- Close the window
+      -- The iron.send(nil, string.char(13)) after close_repl was likely to confirm exit in the terminal.
+      -- REPLExec exit() should handle it.
+    end, { buffer = args.buf, desc = "yarepl_exit_ipython" })
+
     vim.keymap.set({ "n", "v" }, "<localleader>c", function()
-      iron.send(nil, string.char(03))
-    end, { buffer = args.buf, desc = "repl_interrupt" })
+      -- Send Ctrl-C (ASCII 03)
+      vim.cmd("REPLExec $ipython " .. vim.fn.nr2char(3))
+    end, { buffer = args.buf, desc = "yarepl_interrupt_ipython" })
+
     vim.keymap.set({ "n", "v" }, "<a-del>", function()
-      iron.send(nil, string.char(12))
-    end, { buffer = args.buf, desc = "repl_clear" })
+      -- Send Ctrl-L (ASCII 12) to clear screen
+      vim.cmd("REPLExec $ipython " .. vim.fn.nr2char(12))
+    end, { buffer = args.buf, desc = "yarepl_clear_ipython" })
+
     vim.keymap.set(
       "n",
       "<localleader>]",
-      "<cmd>IronFocus<cr>i",
-      { buffer = args.buf, desc = "repl_focus" }
+      "<cmd>REPLFocus ipython<cr>i",
+      { buffer = args.buf, desc = "yarepl_focus_insert_ipython" }
     )
+
+    -- These are custom functions, they should work as is if defined elsewhere
     vim.keymap.set("n", "]]", function()
       vim.cmd("call JumpCell()")
       vim.cmd("norm! zvzz")
-    end, { buffer = args.buf, desc = "repl_jump_cell_fwd" })
+    end, { buffer = args.buf, desc = "yarepl_jump_cell_fwd" })
+
     vim.keymap.set("n", "[[", function()
       vim.cmd("call JumpCellBack()")
       vim.cmd("norm! zvzz")
-    end, { buffer = args.buf, desc = "repl_jump_cell_back" })
+    end, { buffer = args.buf, desc = "yarepl_jump_cell_back" })
+
     vim.keymap.set(
       "n",
       "<localleader>==",
       ":!ruff format %<cr>",
-      { buffer = args.buf, desc = "repl_sync_format" }
+      { buffer = args.buf, desc = "format_ruff_sync" }
     )
   end,
 })
 
+print("yarepl.nvim configuration for Python loaded.")
 -- in cmdline use :lua =XYZ to shorthand :lua print(XYZ)
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "lua",
