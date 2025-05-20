@@ -449,19 +449,20 @@ vim.api.nvim_create_autocmd("FileType", {
       vim.api.nvim_win_set_cursor(0, original_cursor_pos) -- Restore cursor to its original position
     end, { buffer = args.buf, desc = "yarepl_send_until_cursor_ipython" })
 
-    -- REPL Window Scrolling: yarepl focuses the REPL window. Standard terminal scrolling works there.
-    -- To scroll without focusing manually first:
+    -- TODO fix this
     local scroll_repl_window = function(scroll_cmd)
       local current_w = vim.api.nvim_get_current_win()
       vim.cmd("REPLFocus ipython") -- Focus the ipython REPL window
+      vim.api.nvim_input("i") -- or similar if you want to go to insert mode in REPL
       vim.api.nvim_feedkeys(
         vim.api.nvim_replace_termcodes(scroll_cmd, true, false, true),
         "n",
         true
       )
-      vim.api.nvim_set_current_win(current_w) -- Return to original window
+      vim.defer_fn(function()
+        vim.api.nvim_set_current_win(current_w) -- Return to original window
+      end, 500)
     end
-
     vim.keymap.set("n", "<localleader><PageUp>", function()
       scroll_repl_window("<C-u>")
     end, { buffer = args.buf, desc = "yarepl_scroll_prev_ipython" })
