@@ -307,16 +307,6 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = "python",
   group = vim.api.nvim_create_augroup("python-repl-yarepl", { clear = true }),
   callback = function(args)
-    -- Helper function to send visual selection to yarepl for ipython
-    local function send_visual_to_ipython()
-      -- In yarepl, REPLSendVisual targets REPL 1 or attached.
-      -- To target 'ipython' specifically if multiple REPL types could exist,
-      -- you might need to ensure attachment or use REPL ID.
-      -- For simplicity, assuming 'ipython' is REPL 1 or attached, or you'll adapt.
-      -- The command `REPLSendVisual ipython` sends to the closest 'ipython' REPL.
-      vim.cmd("REPLSendVisual ipython")
-    end
-
     -- TODO: norm! gv after REPLStart or restart (user's original TODO)
     vim.keymap.set({ "n", "v" }, [[<a-\>]], function()
       -- REPLStart! ipython will create an ipython REPL and attach the current buffer.
@@ -334,7 +324,7 @@ vim.api.nvim_create_autocmd("FileType", {
     local send_magic_paste_yarepl = function()
       vim.cmd("call SelectVisual()") -- User's custom function, keep as is
       vim.defer_fn(function()
-        send_visual_to_ipython()
+        vim.cmd("REPLSendVisual ipython")
       end, 100)
       vim.cmd("norm! j")
     end
@@ -361,20 +351,11 @@ vim.api.nvim_create_autocmd("FileType", {
       { buffer = args.buf, desc = "yarepl_cr_ipython" }
     )
 
-    if vim.fn.has("linux") == 1 then
-      vim.keymap.set("n", "<S-CR>", function()
-        vim.cmd("call SelectVisual()") -- User's custom function
-        send_visual_to_ipython()
-        vim.cmd("norm! j")
-      end, { buffer = args.buf, desc = "yarepl_send_cell_visual_ipython" })
-    else
-      vim.keymap.set(
-        "n",
-        "<S-CR>",
-        send_magic_paste_yarepl,
-        { buffer = args.buf, desc = "yarepl_send_cell_magic_paste_ipython" }
-      )
-    end
+    vim.keymap.set("n", "<S-CR>", function()
+      vim.cmd("call SelectVisual()") -- User's custom function
+      vim.cmd("REPLSendVisual ipython")
+      vim.cmd("norm! j")
+    end, { buffer = args.buf, desc = "yarepl_send_cell_visual_ipython" })
 
     vim.keymap.set("n", "<localleader>y", function()
       local original_cursor_pos = vim.api.nvim_win_get_cursor(0)
@@ -405,7 +386,7 @@ vim.api.nvim_create_autocmd("FileType", {
       )
       vim.api.nvim_win_set_cursor(0, { current_line_1_indexed + 1, 0 })
       vim.cmd("normal! V")
-      send_visual_to_ipython() -- Changed from iron.visual_send()
+      vim.cmd("REPLSendVisual ipython")
       vim.notify(string.format("Sent to REPL: %s", command_to_send), vim.log.levels.INFO)
       vim.api.nvim_buf_set_lines(
         args.buf,
@@ -437,7 +418,7 @@ vim.api.nvim_create_autocmd("FileType", {
         )
         vim.api.nvim_win_set_cursor(0, { current_line_1_indexed + 1, 0 })
         vim.cmd("normal! V")
-        send_visual_to_ipython() -- Changed from iron.visual_send()
+        vim.cmd("REPLSendVisual ipython")
         vim.notify(string.format("Sent: %s", command_to_send), vim.log.levels.INFO)
         vim.api.nvim_buf_set_lines(
           args.buf,
@@ -456,7 +437,7 @@ vim.api.nvim_create_autocmd("FileType", {
     create_repl_sender_yarepl("<localleader>pi", "yarepl_print_info", "print(%s.info())")
 
     vim.keymap.set("v", "<CR>", function()
-      send_visual_to_ipython()
+      vim.cmd("REPLSendVisual ipython")
       vim.cmd("norm! j")
     end, { buffer = args.buf, desc = "yarepl_v_send_ipython" })
 
@@ -466,7 +447,7 @@ vim.api.nvim_create_autocmd("FileType", {
       vim.cmd("normal! ggVG") -- Select from start of file to current line
       -- If you only want up to cursor, not whole lines:
       -- vim.fn.execute("normal! ggv" .. original_cursor_pos[1] .. "G" .. original_cursor_pos[2] .. "l")
-      send_visual_to_ipython()
+      vim.cmd("REPLSendVisual ipython")
       vim.api.nvim_input("<ESC>") -- Exit visual mode
       vim.api.nvim_win_set_cursor(0, original_cursor_pos) -- Restore cursor
     end, { buffer = args.buf, desc = "yarepl_send_until_cursor_ipython" })
