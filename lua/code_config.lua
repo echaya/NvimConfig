@@ -515,7 +515,6 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
-print("yarepl.nvim configuration for Python loaded.")
 -- in cmdline use :lua =XYZ to shorthand :lua print(XYZ)
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "lua",
