@@ -523,17 +523,17 @@ vim.api.nvim_create_autocmd("FileType", {
     end, { buffer = args.buf, desc = "yarepl_send_until_cursor_ipython" })
 
     local scroll_repl_window = function(scroll_cmd)
+      local target_id = vim.v.count1 -- vim.v.count1 is 1 if no count, otherwise it's the count.
       local current_w = vim.api.nvim_get_current_win()
-      vim.cmd("REPLFocus ipython") -- Focus the ipython REPL window
-      vim.api.nvim_input("i") -- or similar if you want to go to insert mode in REPL
+      vim.cmd(string.format("%dREPLFocus ipython", target_id))
       vim.api.nvim_feedkeys(
         vim.api.nvim_replace_termcodes(scroll_cmd, true, false, true),
         "n",
-        true
+        false
       )
       vim.defer_fn(function()
         vim.api.nvim_set_current_win(current_w) -- Return to original window
-      end, 500)
+      end, 100)
     end
     vim.keymap.set("n", "<localleader><PageUp>", function()
       scroll_repl_window("<C-u>")
