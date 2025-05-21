@@ -97,7 +97,6 @@ end
 -- deps later: programming tools
 later(function()
   if vim.g.vscode == nil then
-    -- add({ source = "Vigemus/iron.nvim" })
     add({ source = "milanglacier/yarepl.nvim" })
     add({ source = "stevearc/conform.nvim" })
     add({ source = "stevearc/quicker.nvim" })
