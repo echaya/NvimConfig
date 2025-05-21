@@ -307,56 +307,126 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = "python",
   group = vim.api.nvim_create_augroup("python-repl-yarepl", { clear = true }),
   callback = function(args)
-    local start_repl = function()
-      vim.cmd("REPLStart! ipython")
-      vim.cmd("wincmd p")
-      vim.cmd("wincmd =") -- Original command to resize, yarepl's wincmd handles initial size.
+    local function get_yarepl_module()
+      local status_ok, yarepl = pcall(require, "yarepl")
+      if not status_ok then
+        vim.notify(
+          "yarepl.nvim plugin is not available or not yet loaded.",
+          vim.log.levels.ERROR,
+          { title = "REPL Control" }
+        )
+        return nil
+      end
+      return yarepl
     end
+
+    local is_ipython_repl_active_by_id = function(target_id)
+      local yarepl = get_yarepl_module()
+      if not yarepl or not yarepl._repls then
+        return false
+      end
+
+      local api = vim.api
+      local repl_obj = yarepl._repls[target_id]
+
+      if repl_obj and repl_obj.name == "ipython" then
+        if repl_obj.bufnr and api.nvim_buf_is_loaded(repl_obj.bufnr) then
+          return true
+        end
+      end
+      return false
+    end
+
+    local start_ipython_repl_by_id = function(target_id)
+      vim.notify(
+        string.format("YAREPL: Starting ipython REPL #%d...", target_id),
+        vim.log.levels.INFO,
+        { title = "REPL Control" }
+      )
+      vim.cmd(string.format("%dREPLStart! ipython", target_id))
+      vim.cmd("wincmd p")
+      -- vim.defer_fn(function()
+      --   vim.cmd("wincmd =")
+      -- end, 50)
+    end
+
+    local toggle_ipython_repl_visibility_by_id = function(target_id)
+      vim.notify(
+        string.format("YAREPL: Toggling ipython REPL #%d visibility/focus...", target_id),
+        vim.log.levels.INFO,
+        { title = "REPL Control" }
+      )
+      vim.cmd(string.format("%dREPLHideOrFocus ipython", target_id))
+      vim.cmd("wincmd p")
+      -- vim.defer_fn(function()
+      --   vim.cmd("wincmd =")
+      -- end, 50)
+    end
+
+    local smart_toggle_ipython_repl_entrypoint = function()
+      local target_id = vim.v.count1 -- vim.v.count1 is 1 if no count, otherwise it's the count.
+
+      if is_ipython_repl_active_by_id(target_id) then
+        toggle_ipython_repl_visibility_by_id(target_id)
+      else
+        start_ipython_repl_by_id(target_id)
+      end
+    end
+
+    local restart_ipython_repl_entrypoint = function()
+      local target_id = vim.v.count1 -- Get the count, defaults to 1 if no count is given
+
+      vim.notify(
+        string.format("YAREPL: Restarting ipython REPL #%d...", target_id),
+        vim.log.levels.INFO,
+        { title = "REPL Control" }
+      )
+
+      vim.cmd(string.format("%dREPLExec $ipython exit()", target_id))
+      vim.cmd(string.format("%dREPLClose ipython", target_id))
+      vim.defer_fn(function()
+        start_ipython_repl_by_id(target_id)
+      end, 500)
+    end
+
     -- TODO: norm! gv after REPLStart or restart (user's original TODO)
     vim.keymap.set(
-      { "n", "v" },
+      "n",
       [[<a-\>]],
-      start_repl,
+      smart_toggle_ipython_repl_entrypoint,
       { buffer = args.buf, desc = "yarepl_start_attach_ipython" }
     )
 
-    vim.keymap.set({ "n", "v" }, "<localleader>r", function()
-      vim.cmd("REPLExec $ipython exit()")
-      vim.cmd("REPLClose ipython") -- Close the window
-      vim.defer_fn(function()
-        start_repl()
-      end, 500)
-    end, { buffer = args.buf, desc = "yarepl_restart_ipython" })
-
-    -- Sends a carriage return to the ipython REPL
-    local send_cr_to_ipython = function()
-      -- REPLExec sends command. Sending literal CR.
-      -- Using string.char(13) which is \r
-      -- $ipython ensures it goes to an ipython instance.
-      vim.cmd("REPLExec $ipython " .. vim.fn.nr2char(13))
-    end
+    vim.keymap.set(
+      "n",
+      "<localleader>r",
+      restart_ipython_repl_entrypoint,
+      { buffer = args.buf, desc = "yarepl_restart_ipython" }
+    )
 
     vim.keymap.set("t", [[<a-\>]], "<cmd>q<cr>", { desc = "yarepl_terminal_quit_window" }) -- This is for the terminal window itself
-    vim.keymap.set(
-      "n",
-      "<localleader><cr>",
-      send_cr_to_ipython,
-      { buffer = args.buf, desc = "yarepl_cr_ipython" }
-    )
-    vim.keymap.set(
-      "n",
-      "<C-CR>",
-      send_cr_to_ipython,
-      { buffer = args.buf, desc = "yarepl_cr_ipython" }
-    )
+
+    vim.keymap.set("n", "<localleader><cr>", function()
+      local target_id = vim.v.count1 -- vim.v.count1 is 1 if no count, otherwise it's the count.
+      vim.cmd(string.format("%dREPLExec $ipython " .. vim.fn.nr2char(13), target_id))
+    end, { buffer = args.buf, desc = "yarepl_cr_ipython" })
+
+    vim.keymap.set("n", "<C-CR>", function()
+      local target_id = vim.v.count1 -- vim.v.count1 is 1 if no count, otherwise it's the count.
+      vim.cmd("call SelectVisual()") -- User's custom function
+      vim.cmd(string.format("%dREPLSendVisual ipython", target_id))
+      vim.cmd("norm! j")
+    end, { buffer = args.buf, desc = "yarepl_cr_ipython" })
 
     vim.keymap.set("n", "<S-CR>", function()
+      local target_id = vim.v.count1 -- vim.v.count1 is 1 if no count, otherwise it's the count.
       vim.cmd("call SelectVisual()") -- User's custom function
-      vim.cmd("REPLSourceVisual ipython")
+      vim.cmd(string.format("%dREPLSourceVisual ipython", target_id))
       vim.cmd("norm! j")
     end, { buffer = args.buf, desc = "yarepl_send_cell_visual_ipython" })
 
     vim.keymap.set("n", "<localleader>y", function()
+      local target_id = vim.v.count1 -- vim.v.count1 is 1 if no count, otherwise it's the count.
       local original_cursor_pos = vim.api.nvim_win_get_cursor(0)
       local current_line_1_indexed = original_cursor_pos[1]
       local var_name = vim.fn.expand("<cword>")
@@ -385,7 +455,7 @@ vim.api.nvim_create_autocmd("FileType", {
       )
       vim.api.nvim_win_set_cursor(0, { current_line_1_indexed + 1, 0 })
       vim.cmd("normal! V")
-      vim.cmd("REPLSendVisual ipython")
+      vim.cmd(string.format("%dREPLSendVisual ipython", target_id))
       vim.notify(string.format("Sent to REPL: %s", command_to_send), vim.log.levels.INFO)
       vim.api.nvim_buf_set_lines(
         args.buf,
@@ -399,6 +469,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
     local function create_repl_sender_yarepl(key, desc, command_format_string)
       vim.keymap.set("n", key, function()
+        local target_id = vim.v.count1 -- vim.v.count1 is 1 if no count, otherwise it's the count.
         local original_cursor_pos = vim.api.nvim_win_get_cursor(0)
         local current_line_1_indexed = original_cursor_pos[1]
         local var_name = vim.fn.expand("<cword>")
@@ -417,7 +488,7 @@ vim.api.nvim_create_autocmd("FileType", {
         )
         vim.api.nvim_win_set_cursor(0, { current_line_1_indexed + 1, 0 })
         vim.cmd("normal! V")
-        vim.cmd("REPLSendVisual ipython")
+        vim.cmd(string.format("%dREPLSendVisual ipython", target_id))
         vim.notify(string.format("Sent: %s", command_to_send), vim.log.levels.INFO)
         vim.api.nvim_buf_set_lines(
           args.buf,
@@ -436,20 +507,21 @@ vim.api.nvim_create_autocmd("FileType", {
     create_repl_sender_yarepl("<localleader>pi", "yarepl_print_info", "print(%s.info())")
 
     vim.keymap.set("v", "<CR>", function()
-      vim.cmd("REPLSendVisual ipython")
+      local target_id = vim.v.count1 -- vim.v.count1 is 1 if no count, otherwise it's the count.
+      vim.cmd(string.format("%dREPLSendVisual ipython", target_id))
       vim.cmd("norm! j")
     end, { buffer = args.buf, desc = "yarepl_v_send_ipython" })
 
     vim.keymap.set({ "n", "v" }, "<localleader>u", function()
+      local target_id = vim.v.count1 -- vim.v.count1 is 1 if no count, otherwise it's the count.
       local original_cursor_pos = vim.api.nvim_win_get_cursor(0) -- [line, col], line is 1-indexed
       local select_cmd = "normal! ggV" .. original_cursor_pos[1] .. "G"
       vim.cmd(select_cmd) -- Execute the selection command
-      vim.cmd("REPLSourceVisual ipython")
+      vim.cmd(string.format("%dREPLSourceVisual ipython", target_id))
       vim.api.nvim_input("<ESC>") -- Exit visual mode
       vim.api.nvim_win_set_cursor(0, original_cursor_pos) -- Restore cursor to its original position
     end, { buffer = args.buf, desc = "yarepl_send_until_cursor_ipython" })
 
-    -- TODO fix this
     local scroll_repl_window = function(scroll_cmd)
       local current_w = vim.api.nvim_get_current_win()
       vim.cmd("REPLFocus ipython") -- Focus the ipython REPL window
@@ -472,28 +544,29 @@ vim.api.nvim_create_autocmd("FileType", {
 
     vim.keymap.set({ "n", "v" }, "<localleader>qq", function()
       -- To make ipython exit, send 'exit()' or 'quit()'
-      vim.cmd("REPLExec $ipython exit()")
-      vim.cmd("REPLClose ipython") -- Close the window
+      local target_id = vim.v.count1 -- vim.v.count1 is 1 if no count, otherwise it's the count.
+      vim.cmd(string.format("%dREPLExec $ipython exit()", target_id))
+      vim.cmd(string.format("%dREPLClose ipython", target_id))
       -- The iron.send(nil, string.char(13)) after close_repl was likely to confirm exit in the terminal.
       -- REPLExec exit() should handle it.
     end, { buffer = args.buf, desc = "yarepl_exit_ipython" })
 
     vim.keymap.set({ "n", "v" }, "<localleader>c", function()
       -- Send Ctrl-C (ASCII 03)
-      vim.cmd("REPLExec $ipython " .. vim.fn.nr2char(3))
+      local target_id = vim.v.count1 -- vim.v.count1 is 1 if no count, otherwise it's the count.
+      vim.cmd(string.format("%dREPLExec $ipython " .. vim.fn.nr2char(3), target_id))
     end, { buffer = args.buf, desc = "yarepl_interrupt_ipython" })
 
     vim.keymap.set({ "n", "v" }, "<a-del>", function()
-      -- Send Ctrl-L (ASCII 12) to clear screen
-      vim.cmd("REPLExec $ipython " .. vim.fn.nr2char(12))
+      local target_id = vim.v.count1 -- vim.v.count1 is 1 if no count, otherwise it's the count.
+      vim.cmd(string.format("%dREPLExec $ipython " .. vim.fn.nr2char(12), target_id))
     end, { buffer = args.buf, desc = "yarepl_clear_ipython" })
 
-    vim.keymap.set(
-      "n",
-      "<localleader>]",
-      "<cmd>REPLFocus ipython<cr>i",
-      { buffer = args.buf, desc = "yarepl_focus_insert_ipython" }
-    )
+    vim.keymap.set("n", "<localleader>]", function()
+      local target_id = vim.v.count1 -- vim.v.count1 is 1 if no count, otherwise it's the count.
+      vim.cmd(string.format("%dREPLFocus ipython", target_id))
+      vim.cmd("norm! i")
+    end, { buffer = args.buf, desc = "yarepl_focus_insert_ipython" })
 
     -- These are custom functions, they should work as is if defined elsewhere
     vim.keymap.set("n", "]]", function()
