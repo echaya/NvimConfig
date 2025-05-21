@@ -55,6 +55,7 @@ if !has('nvim')
     Plug 'Julian/vim-textobj-variable-segment' " av, iv
     Plug 'mbbill/undotree'
     Plug 'machakann/vim-sandwich'
+    Plug 'echaya/quick-scope'
     Plug 'tpope/vim-fugitive'
     Plug 'godlygeek/tabular', {'for': ['markdown', 'vimwiki']} " Prerequisite for vim-markdown
     Plug 'plasticboy/vim-markdown', {'for': ['markdown', 'vimwiki']}
