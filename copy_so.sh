@@ -4,3 +4,4 @@
 # rm /mnt/c/tools/neovim/plugged/linux-treesitter/parser/.gitignore
 # rm /mnt/c/tools/neovim/plugged/linux-treesitter/parser-info/.gitignore
 cp /home/z/.local/share/nvim/site/pack/deps/opt/blink.cmp/target/release/libblink_cmp_fuzzy.so /mnt/c/Users/echay/AppData/Local/nvim-data/site/pack/deps/opt/blink.cmp/target/release/
+cp /home/z/.local/share/nvim/site/pack/deps/opt/nvim-treesitter/ /mnt/c/Users/echay/AppData/Local/nvim-data/site/LinTs
