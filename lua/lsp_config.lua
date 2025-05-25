@@ -10,6 +10,7 @@ require("nvim-treesitter.configs").setup({
     "vim",
     "vimdoc",
     "bash",
+    "powershell",
     "regex",
   },
   sync_install = false,
