@@ -11,10 +11,11 @@ require("nvim-treesitter.configs").setup({
     "vimdoc",
     "bash",
     "powershell",
+    "gitcommit",
     "regex",
   },
   sync_install = false,
-  auto_install = false,
+  auto_install = true,
   ignore_install = { "javascript" },
   highlight = {
     enable = true,
