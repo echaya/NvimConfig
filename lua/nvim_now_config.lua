@@ -418,18 +418,3 @@ require("diffview").setup({
     },
   },
 })
-
-require("nvim-treesitter").setup({
-  install_dir = vim.fn.stdpath("data") .. "/site/pack/deps/opt/nvim-treesitter",
-})
-require("nvim-treesitter").install({
-  "lua",
-  "markdown",
-  "markdown_inline",
-  "python",
-  "query",
-  "vim",
-  "vimdoc",
-  "bash",
-  "regex",
-})
