@@ -1,32 +1,4 @@
 -- Setup treesitter
-require("nvim-treesitter").setup({
-  -- A list of parser names, or "all" (the listed parsers MUST always be installed)
-  ensure_installed = {
-    "lua",
-    "markdown",
-    "markdown_inline",
-    "python",
-    "query",
-    "vim",
-    "vimdoc",
-    "bash",
-    "regex",
-  },
-  sync_install = false,
-  auto_install = false,
-  ignore_install = { "javascript" },
-  highlight = {
-    enable = true,
-    disable = function(_, buf)
-      local max_filesize = 10 * 1024 * 1024 -- 100 KB
-      local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-      if ok and stats and stats.size > max_filesize then
-        return true
-      end
-    end,
-    additional_vim_regex_highlighting = false,
-  },
-})
 vim.treesitter.language.register("markdown", "vimwiki")
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
@@ -49,13 +21,13 @@ glance.setup({
 
   mappings = {
     list = {
-      ['<Down>'] = false, -- disable a mapping
-      ['<Up>'] = false, -- disable a mapping
+      ["<Down>"] = false, -- disable a mapping
+      ["<Up>"] = false, -- disable a mapping
       ["<c-h>"] = actions.enter_win("preview"), -- Focus preview window
       ["<C-q>"] = actions.quickfix,
     },
     preview = {
-        ["<c-l>"] = actions.enter_win("list"), -- Focus list window
+      ["<c-l>"] = actions.enter_win("list"), -- Focus list window
     },
   },
 })

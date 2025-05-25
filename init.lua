@@ -43,6 +43,15 @@ now(function()
   add({ source = "rebelot/kanagawa.nvim" })
   add({ source = "SmiteshP/nvim-navic" })
   add({ source = "sindrets/diffview.nvim" })
+  add({
+    source = "nvim-treesitter/nvim-treesitter",
+    checkout = "main",
+    hooks = {
+      post_checkout = function()
+        vim.cmd("TSUpdate")
+      end,
+    },
+  })
   require("lua.nvim_now_config")
 end)
 
@@ -82,15 +91,6 @@ if vim.g.vscode == nil then
       checkout = "v1.3.1", -- check releases for latest tag
     })
     add({ source = "dnlhc/glance.nvim" })
-    add({
-      source = "nvim-treesitter/nvim-treesitter",
-      checkout = "main",
-      hooks = {
-        post_checkout = function()
-          vim.cmd("TSUpdate")
-        end,
-      },
-    })
     require("lua.lsp_config")
   end)
 end
