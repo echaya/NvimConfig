@@ -2,15 +2,17 @@ require("nvim-treesitter").setup({
   install_dir = vim.fn.stdpath("data") .. "/site/pack/deps/opt/nvim-treesitter",
 })
 require("nvim-treesitter").install({
-  "lua",
-  "markdown",
-  "markdown_inline",
-  "python",
-  "query",
-  "vim",
-  "vimdoc",
-  "bash",
-  "regex",
+    "bash",
+    "gitcommit",
+    "lua",
+    "markdown",
+    "markdown_inline",
+    "powershell",
+    "python",
+    "query",
+    "regex",
+    "vim",
+    "vimdoc",
 })
 -- Setup treesitter
 vim.treesitter.language.register("markdown", "vimwiki")
