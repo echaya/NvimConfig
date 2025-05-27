@@ -32,7 +32,7 @@ cmp.setup({
     default = { "lsp", "path", "snippets", "buffer" },
     providers = {
       lsp = {
-        min_keyword_length = 2, -- Number of characters to trigger porvider
+        min_keyword_length = 1, -- Number of characters to trigger porvider
         score_offset = 0, -- Boost/penalize the score of the items
       },
       path = {
@@ -43,7 +43,7 @@ cmp.setup({
         score_offset = 5, -- Boost/penalize the score of the items
       },
       buffer = {
-        min_keyword_length = 1,
+        min_keyword_length = 0,
         max_items = 5,
       },
     },
@@ -79,7 +79,7 @@ cmp.setup({
     sources = { "buffer" },
     completion = {
       list = { selection = { preselect = false, auto_insert = true } },
-      menu = { auto_show = true },
+      menu = { auto_show = false },
       ghost_text = { enabled = false },
     },
   },
@@ -261,7 +261,7 @@ local yarepl = require("yarepl")
 
 yarepl.setup({
   -- buflisted = true, -- Default, REPL buffer will appear in buffer list
-  scratch = true, -- Default, REPL buffer is a scratch buffer
+  scratch = false, -- Default true, REPL buffer is a scratch buffer
   -- ft = 'REPL', -- Default filetype for REPL buffer
   close_on_exit = true, -- Default, closes window when REPL process exits
   scroll_to_bottom_after_sending = true, -- Default
@@ -272,12 +272,8 @@ yarepl.setup({
       cmd = { "ipython", "--no-autoindent" },
       formatter = "bracketed_pasting", -- Maps to iron's bracketed_paste
       source_syntax = "ipython", -- Useful for REPLSourceVisual/Operator if you use them
-      -- This wincmd function replicates your iron.nvim dynamic vertical split
       wincmd = function(bufnr, _repl_name)
         local width = math.floor(math.max(vim.o.columns * 0.35, 80))
-        local current_win_id = vim.api.nvim_get_current_win()
-
-        -- Ensure 'splitright' is set if we want 'botright vertical' to behave as typical vertical split to the right
         local old_splitright = vim.o.splitright
         vim.o.splitright = true
         vim.cmd(string.format("vertical botright %d split", width))
@@ -285,15 +281,8 @@ yarepl.setup({
 
         local new_win_id = vim.api.nvim_get_current_win() -- new split becomes current
         vim.api.nvim_win_set_buf(new_win_id, bufnr)
-
-        -- Optional: yarepl might handle focusing the REPL or returning to original window.
-        -- If you want to ensure focus stays on the original window after REPL opens:
-        -- vim.api.nvim_set_current_win(current_win_id)
-        -- If you want to focus the REPL (usually the case):
-        -- vim.api.nvim_input('i') -- or similar if you want to go to insert mode in REPL
       end,
     },
-    -- You can define other REPLs here if needed
   },
   os = {
     windows = {
@@ -345,9 +334,9 @@ vim.api.nvim_create_autocmd("FileType", {
       )
       vim.cmd(string.format("%dREPLStart! ipython", target_id))
       vim.cmd("wincmd p")
-      -- vim.defer_fn(function()
-      --   vim.cmd("wincmd =")
-      -- end, 50)
+      vim.defer_fn(function()
+        vim.cmd("wincmd =")
+      end, 50)
     end
 
     local toggle_ipython_repl_visibility_by_id = function(target_id)
@@ -358,9 +347,9 @@ vim.api.nvim_create_autocmd("FileType", {
       )
       vim.cmd(string.format("%dREPLHideOrFocus ipython", target_id))
       vim.cmd("wincmd p")
-      -- vim.defer_fn(function()
-      --   vim.cmd("wincmd =")
-      -- end, 50)
+      vim.defer_fn(function()
+        vim.cmd("wincmd =")
+      end, 50)
     end
 
     local smart_toggle_ipython_repl_entrypoint = function()
@@ -415,15 +404,41 @@ vim.api.nvim_create_autocmd("FileType", {
       local target_id = vim.v.count1 -- vim.v.count1 is 1 if no count, otherwise it's the count.
       vim.cmd("call SelectVisual()") -- User's custom function
       vim.cmd(string.format("%dREPLSendVisual ipython", target_id))
+      vim.api.nvim_input("<esc>")
       vim.cmd("norm! j")
-    end, { buffer = args.buf, desc = "yarepl_cr_ipython" })
+    end, { buffer = args.buf, desc = "yarepl_send_cell_visual_ipython" })
 
     vim.keymap.set("n", "<S-CR>", function()
       local target_id = vim.v.count1 -- vim.v.count1 is 1 if no count, otherwise it's the count.
-      vim.cmd("call SelectVisual()") -- User's custom function
+      vim.cmd("call SelectVisual()")
       vim.cmd(string.format("%dREPLSourceVisual ipython", target_id))
-      vim.cmd("norm! j")
-    end, { buffer = args.buf, desc = "yarepl_send_cell_visual_ipython" })
+      local start_line_num = vim.fn.line("'<") -- Start of visual selection (1-indexed)
+      local end_line_num = vim.fn.line("'>") -- End of visual selection (1-indexed)
+      local first_non_empty_line_for_comment = nil
+      if start_line_num > 0 and end_line_num > 0 and start_line_num <= end_line_num then
+        local selected_lines =
+          vim.api.nvim_buf_get_lines(0, start_line_num - 1, end_line_num, false)
+        for _, line in ipairs(selected_lines) do
+          local trimmed_line = vim.fn.trim(line) -- Remove leading/trailing whitespace
+          if #trimmed_line > 0 then
+            first_non_empty_line_for_comment = trimmed_line
+            break
+          end
+        end
+      end
+      if first_non_empty_line_for_comment then
+        local comment_to_send_to_repl = "# SRC: " .. first_non_empty_line_for_comment
+        vim.cmd(string.format("%dREPLExec $ipython ", target_id) .. comment_to_send_to_repl)
+      elseif not (start_line_num > 0 and end_line_num > 0 and start_line_num <= end_line_num) then
+        vim.notify(
+          "YAREPL: No visual selection found by SelectVisual() for <S-CR>. The '# SRC:' line will not be sent to REPL.",
+          vim.log.levels.WARN,
+          { title = "REPL Control" }
+        )
+      end
+      vim.api.nvim_input("<esc>")
+      vim.cmd("norm! j") -- Original behavior: move cursor down one line
+    end, { buffer = args.buf, desc = "yarepl_source_cell_visual_ipython" })
 
     vim.keymap.set("n", "<localleader>y", function()
       local target_id = vim.v.count1 -- vim.v.count1 is 1 if no count, otherwise it's the count.
@@ -456,6 +471,7 @@ vim.api.nvim_create_autocmd("FileType", {
       vim.api.nvim_win_set_cursor(0, { current_line_1_indexed + 1, 0 })
       vim.cmd("normal! V")
       vim.cmd(string.format("%dREPLSendVisual ipython", target_id))
+      vim.api.nvim_input("<esc>")
       vim.notify(string.format("Sent to REPL: %s", command_to_send), vim.log.levels.INFO)
       vim.api.nvim_buf_set_lines(
         args.buf,
@@ -489,6 +505,7 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.api.nvim_win_set_cursor(0, { current_line_1_indexed + 1, 0 })
         vim.cmd("normal! V")
         vim.cmd(string.format("%dREPLSendVisual ipython", target_id))
+        vim.api.nvim_input("<esc>")
         vim.notify(string.format("Sent: %s", command_to_send), vim.log.levels.INFO)
         vim.api.nvim_buf_set_lines(
           args.buf,
@@ -509,6 +526,7 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.keymap.set("v", "<CR>", function()
       local target_id = vim.v.count1 -- vim.v.count1 is 1 if no count, otherwise it's the count.
       vim.cmd(string.format("%dREPLSendVisual ipython", target_id))
+      vim.api.nvim_input("<esc>")
       vim.cmd("norm! j")
     end, { buffer = args.buf, desc = "yarepl_v_send_ipython" })
 
@@ -518,6 +536,7 @@ vim.api.nvim_create_autocmd("FileType", {
       local select_cmd = "normal! ggV" .. original_cursor_pos[1] .. "G"
       vim.cmd(select_cmd) -- Execute the selection command
       vim.cmd(string.format("%dREPLSourceVisual ipython", target_id))
+      vim.api.nvim_input("<esc>")
       vim.api.nvim_input("<ESC>") -- Exit visual mode
       vim.api.nvim_win_set_cursor(0, original_cursor_pos) -- Restore cursor to its original position
     end, { buffer = args.buf, desc = "yarepl_send_until_cursor_ipython" })
