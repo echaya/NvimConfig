@@ -16,7 +16,7 @@ require("nvim-treesitter.configs").setup({
     "vimdoc",
   },
   sync_install = false,
-  auto_install = true,
+  auto_install = false,
   ignore_install = { "javascript" },
   highlight = {
     enable = true,
@@ -52,13 +52,13 @@ glance.setup({
 
   mappings = {
     list = {
-      ['<Down>'] = false, -- disable a mapping
-      ['<Up>'] = false, -- disable a mapping
+      ["<Down>"] = false, -- disable a mapping
+      ["<Up>"] = false, -- disable a mapping
       ["<c-h>"] = actions.enter_win("preview"), -- Focus preview window
       ["<C-q>"] = actions.quickfix,
     },
     preview = {
-        ["<c-l>"] = actions.enter_win("list"), -- Focus list window
+      ["<c-l>"] = actions.enter_win("list"), -- Focus list window
     },
   },
 })
