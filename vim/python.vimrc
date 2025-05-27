@@ -101,12 +101,12 @@ endfunction
 augroup PythonRepl
     autocmd!
     " code snippet
-    autocmd Filetype python inoremap <buffer> ;f ###<CR><Esc>
     autocmd Filetype python inoremap <buffer> ;cb .to_clipboard()
     autocmd Filetype python inoremap <buffer> ;ct .copy(True)
+    autocmd Filetype python inoremap <buffer> ;f ###<CR><Esc>
+    autocmd Filetype python inoremap <buffer> ;hr .iloc[0].T
     autocmd Filetype python inoremap <buffer> ;it inplace=True
-    autocmd Filetype python inoremap <buffer> ;fr .iloc[0].T
-    autocmd Filetype python inoremap <buffer> ;lr .iloc[-1].T
+    autocmd Filetype python inoremap <buffer> ;tr .iloc[-1].T
     "autocmd Filetype python inoremap <buffer> ;db __import__("IPython").core.debugger.set_trace()
     " REPL actions
     autocmd Filetype python nnoremap <buffer> <localleader>l <c-w><c-l>i<c-l><Cmd>wincmd h<CR>
