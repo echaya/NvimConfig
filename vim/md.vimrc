@@ -11,7 +11,7 @@ augroup mdgroup
     autocmd!
     autocmd FileType markdown set conceallevel=0
     autocmd FileType markdown normal zR
-
+    autocmd FileType vimwiki normal zR
     "edit link
     autocmd Filetype markdown nnoremap <buffer> <localleader>md :call EditMdLink()<cr>
     " vimwiki checkbox toggle
