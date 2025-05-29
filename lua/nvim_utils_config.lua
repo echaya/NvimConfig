@@ -117,7 +117,7 @@ local open_file = function(_)
   MiniFiles.close()
 end
 
-local map_split = function(buf_id, lhs, direction)
+local map_split = function(buf_id, lhs, direction, close)
   local rhs = function()
     -- Make new window and set it as target
     local cur_target = MiniFiles.get_explorer_state().target_window
@@ -128,6 +128,9 @@ local map_split = function(buf_id, lhs, direction)
 
     MiniFiles.set_target_window(new_target)
     MiniFiles.go_in()
+    if close then
+        MiniFiles.close()
+    end
   end
 
   -- Adding `desc` will result into `show_help` entries
@@ -156,8 +159,10 @@ vim.api.nvim_create_autocmd("User", {
     vim.keymap.set("n", "gx", open_file, { buffer = buf_id, desc = "Open Externally" })
     vim.keymap.set("n", "g`", files_set_cwd, { buffer = args.data.buf_id, desc = "Set dir" })
     vim.keymap.set("n", "<esc>", require("mini.files").close, { buffer = buf_id, desc = "Close" })
-    map_split(buf_id, "gs", "belowright horizontal")
-    map_split(buf_id, "gv", "belowright vertical")
+    map_split(buf_id, "gs", "belowright horizontal", false)
+    map_split(buf_id, "gv", "belowright vertical", false)
+    map_split(buf_id, "<C-s>", "belowright horizontal", true)
+    map_split(buf_id, "<C-v>", "belowright vertical", true)
   end,
 })
 
