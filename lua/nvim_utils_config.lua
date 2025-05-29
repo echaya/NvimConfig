@@ -163,6 +163,7 @@ vim.api.nvim_create_autocmd("User", {
     map_split(buf_id, "gv", "belowright vertical", false)
     map_split(buf_id, "<C-s>", "belowright horizontal", true)
     map_split(buf_id, "<C-v>", "belowright vertical", true)
+    vim.keymap.set("n", "<a-h>", toggle_dotfiles, { buffer = buf_id, desc = "Toggle dot files" })
   end,
 })
 
