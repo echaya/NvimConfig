@@ -129,7 +129,7 @@ local map_split = function(buf_id, lhs, direction, close)
     MiniFiles.set_target_window(new_target)
     MiniFiles.go_in()
     if close then
-        MiniFiles.close()
+      MiniFiles.close()
     end
   end
 
