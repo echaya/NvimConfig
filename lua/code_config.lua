@@ -78,7 +78,7 @@ cmp.setup({
     keymap = { preset = "inherit" }, -- Inherits from top level `keymap` config when not set
     sources = { "buffer" },
     completion = {
-      list = { selection = { preselect = false, auto_insert = true } },
+      list = { selection = { preselect = true, auto_insert = true } },
       menu = { auto_show = false },
       ghost_text = { enabled = false },
     },
@@ -284,11 +284,7 @@ yarepl.setup({
       end,
     },
   },
-  os = {
-    windows = {
-      send_delayed_cr_after_sending = true, -- Default, good for Windows
-    },
-  },
+  print_1st_line_on_source = true, -- If true, sends the first non-empty line of sourced content as a comment
 })
 
 -- Autocmd to set up Python-specific keybindings
@@ -375,7 +371,7 @@ vim.api.nvim_create_autocmd("FileType", {
       vim.cmd(string.format("%dREPLClose ipython", target_id))
       vim.defer_fn(function()
         start_ipython_repl_by_id(target_id)
-      end, 500)
+      end, 1000)
     end
 
     -- TODO: norm! gv after REPLStart or restart (user's original TODO)
@@ -409,33 +405,9 @@ vim.api.nvim_create_autocmd("FileType", {
     end, { buffer = args.buf, desc = "yarepl_send_cell_visual_ipython" })
 
     vim.keymap.set("n", "<S-CR>", function()
-      local target_id = vim.v.count1 -- vim.v.count1 is 1 if no count, otherwise it's the count.
+      local target_id = vim.v.count1
       vim.cmd("call SelectVisual()")
       vim.cmd(string.format("%dREPLSourceVisual ipython", target_id))
-      local start_line_num = vim.fn.line("'<") -- Start of visual selection (1-indexed)
-      local end_line_num = vim.fn.line("'>") -- End of visual selection (1-indexed)
-      local first_non_empty_line_for_comment = nil
-      if start_line_num > 0 and end_line_num > 0 and start_line_num <= end_line_num then
-        local selected_lines =
-          vim.api.nvim_buf_get_lines(0, start_line_num - 1, end_line_num, false)
-        for _, line in ipairs(selected_lines) do
-          local trimmed_line = vim.fn.trim(line) -- Remove leading/trailing whitespace
-          if #trimmed_line > 0 then
-            first_non_empty_line_for_comment = trimmed_line
-            break
-          end
-        end
-      end
-      if first_non_empty_line_for_comment then
-        local comment_to_send_to_repl = "# SRC: " .. first_non_empty_line_for_comment
-        vim.cmd(string.format("%dREPLExec $ipython ", target_id) .. comment_to_send_to_repl)
-      elseif not (start_line_num > 0 and end_line_num > 0 and start_line_num <= end_line_num) then
-        vim.notify(
-          "YAREPL: No visual selection found by SelectVisual() for <S-CR>. The '# SRC:' line will not be sent to REPL.",
-          vim.log.levels.WARN,
-          { title = "REPL Control" }
-        )
-      end
       vim.api.nvim_input("<esc>")
       vim.cmd("norm! j") -- Original behavior: move cursor down one line
     end, { buffer = args.buf, desc = "yarepl_source_cell_visual_ipython" })
