@@ -284,7 +284,7 @@ yarepl.setup({
       end,
     },
   },
-  print_1st_line_on_source = true, -- If true, sends the first non-empty line of sourced content as a comment
+  virtual_text_when_source_content = { enabled_default = true, hl_group_default = "Comment" },
 })
 
 -- Autocmd to set up Python-specific keybindings
@@ -576,6 +576,9 @@ vim.api.nvim_create_autocmd("FileType", {
       ":!ruff format %<cr>",
       { buffer = args.buf, desc = "format_ruff_sync" }
     )
+    vim.keymap.set("n", "<Leader>fy", function()
+      require("yarepl.extensions.snacks").repl_show()
+    end)
   end,
 })
 
