@@ -4,7 +4,7 @@ vim.keymap.set("n", "m", function()
     jump = { autojump = true },
   })
 end, { desc = "Flash" })
-vim.keymap.set("n", "<BS>", function()
+vim.keymap.set("n", "?", function()
   require("flash").jump({ continue = true })
 end, { desc = "Flash Continue" })
 vim.keymap.set({ "x", "o" }, "m", function()
