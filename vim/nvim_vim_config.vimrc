@@ -78,8 +78,7 @@ nnoremap <silent> ZX :e #<CR>
 "Move to previous/next tabpage
 noremap <silent> J :tabp<CR>
 noremap <silent> K :tabn<CR>
-noremap <silent> H :0tabnew<CR>
-noremap <silent> L :tabnew<CR>
+noremap <silent> T :tabnew<CR>
 noremap <silent> <Del> :tabc<CR>
 
 augroup CursorLine
