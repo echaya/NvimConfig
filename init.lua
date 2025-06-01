@@ -97,7 +97,7 @@ end
 -- deps later: programming tools
 later(function()
   if vim.g.vscode == nil then
-    add({ source = "echaya/yarepl.nvim" })
+    add({ source = "echaya/yarepl.nvim", checkout = "on_line-listener" })
     add({ source = "stevearc/conform.nvim" })
     add({ source = "stevearc/quicker.nvim" })
     add({ source = "MeanderingProgrammer/render-markdown.nvim" })
