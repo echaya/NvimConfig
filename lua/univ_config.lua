@@ -109,13 +109,13 @@ require("mini.operators").setup({
     reindent_linewise = true,
   },
   sort = {
-    prefix = "ga",
+    prefix = "gs",
   },
   multiply = {
     prefix = "",
   },
+  evaluate = {
+    prefix = "",
+  },
 })
--- g= for evaluation,
--- gp for paste from (registery),
--- ga for alphabetical,
 -- gx for exchange
