@@ -254,9 +254,6 @@ require("quicker").setup({
   },
 })
 
--- Предполагается, что это находится в вашем файле конфигурации nvim,
--- например, init.lua или в специальном файле для yarepl.
-
 local yarepl = require("yarepl")
 
 yarepl.setup({
@@ -272,7 +269,7 @@ yarepl.setup({
       cmd = { "ipython", "--no-autoindent" },
       formatter = "bracketed_pasting", -- Maps to iron's bracketed_paste
       source_syntax = "ipython", -- Useful for REPLSourceVisual/Operator if you use them
-      wincmd = function(bufnr, _repl_name)
+      wincmd = function(bufnr, _)
         local width = math.floor(math.max(vim.o.columns * 0.35, 80))
         local old_splitright = vim.o.splitright
         vim.o.splitright = true
@@ -284,7 +281,7 @@ yarepl.setup({
       end,
     },
   },
-  virtual_text_when_source_content = { enabled_default = true, hl_group_default = "Comment" },
+  print_1st_line_on_source = true,
 })
 
 -- Autocmd to set up Python-specific keybindings
