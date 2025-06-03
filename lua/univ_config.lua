@@ -105,17 +105,24 @@ vim.keymap.set("n", "S", "sa_", { remap = true, desc = "surround add line" })
 
 require("mini.operators").setup({
   replace = {
+    -- go paste
     prefix = "gp",
     reindent_linewise = true,
   },
   sort = {
+    -- go sort
     prefix = "gs",
   },
   multiply = {
     prefix = "",
   },
   evaluate = {
-    prefix = "",
+    -- go =
+    prefix = "g=",
+  },
+  exchange = {
+    -- go exchange
+    prefix = "gx",
+    reindent_linewise = true,
   },
 })
--- gx for exchange
