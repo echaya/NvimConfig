@@ -104,9 +104,9 @@ augroup PythonRepl
     autocmd Filetype python inoremap <buffer> ;cb .to_clipboard()
     autocmd Filetype python inoremap <buffer> ;ct .copy(True)
     autocmd Filetype python inoremap <buffer> ;f ###<CR><Esc>
-    autocmd Filetype python inoremap <buffer> ;hr .iloc[0].T
+    autocmd Filetype python inoremap <buffer> ;pf .iloc[0].T
     autocmd Filetype python inoremap <buffer> ;it inplace=True
-    autocmd Filetype python inoremap <buffer> ;tr .iloc[-1].T
+    autocmd Filetype python inoremap <buffer> ;pl .iloc[-1].T
     "autocmd Filetype python inoremap <buffer> ;db __import__("IPython").core.debugger.set_trace()
     " REPL actions
     autocmd Filetype python nnoremap <buffer> <localleader>l <c-w><c-l>i<c-l><Cmd>wincmd h<CR>
@@ -117,8 +117,8 @@ augroup PythonRepl
 augroup END
 
 tnoremap ;cb .to_clipboard()
-tnoremap ;fr .iloc[0].T
-tnoremap ;lr .iloc[-1].T
+tnoremap ;pf .iloc[0].T
+tnoremap ;pl .iloc[-1].T
 
 " diagnostic box open by cursor
 "autocmd CursorHold * lua vim.diagnostic.open_float()
