@@ -1,15 +1,3 @@
-" system
-set tabstop=4 softtabstop=0 expandtab shiftwidth=4 smarttab
-set noswapfile
-set nobackup
-set nowritebackup
-set backupcopy=yes "to work with Joplin
-set autoread "to autoload from Joplin / disk when the file opened is changed
-set nocompatible
-set mouse=a
-set showmatch
-set backspace=indent,eol,start
-
 try
     if has('persistent_undo')
         exe 'set undodir='.stdpath('data') . '/undo'
@@ -90,10 +78,6 @@ augroup END
 
 " buffers management
 set hidden
-noremap <C-h> <C-w><C-h>
-noremap <C-j> <C-w><C-j>
-noremap <C-k> <C-w><C-k>
-noremap <C-l> <C-w><C-l>
 tnoremap <C-h> <Cmd>wincmd h<CR>
 tnoremap <C-j> <Cmd>wincmd j<CR>
 tnoremap <C-k> <Cmd>wincmd k<CR>
@@ -102,11 +86,6 @@ tnoremap <localleader>[ <Cmd>wincmd p<CR>
 nnoremap <localleader>[ <Cmd>wincmd p<CR>
 nnoremap <leader>= <Cmd>wincmd =<CR>
 
-" adjust split window size
-nnoremap <up> :res +2<CR>
-nnoremap <down> :res -2<CR>
-nnoremap <left> :vertical resize-5<CR>
-nnoremap <right> :vertical resize+5<CR>
 
 " to overcome accidental c-u/w to delete the word/line
 inoremap <c-u> <c-g>u<c-u>
@@ -115,16 +94,11 @@ inoremap , ,<c-g>u
 inoremap . .<c-g>u
 inoremap ; ;<c-g>u
 
-" use <leader><Esc> to escape terminal mode
-tnoremap <leader><Esc> <C-\><C-n>
 
 " <leader>gc to comment out and copy the line
 nmap <leader>gc gccyypgcc
 xmap <leader>gc ygvgc`>p
 
-" autosave on
-let g:auto_save = 1
-let g:auto_save_silent = 1
 
 " load and reload vimrc
 :command! LV source $MYVIMRC

@@ -1,7 +1,6 @@
 "universal settings
 "change <leader> to SPACE
 nnoremap <SPACE> <Nop>
-let mapleader=" "
 let maplocalleader="\\"
 
 "seaerch

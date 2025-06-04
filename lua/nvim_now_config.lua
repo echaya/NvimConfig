@@ -1,3 +1,9 @@
+require("mini.basics").setup({
+  options = { extra_ui = true },
+  mappings = { windows = true,
+option_toggle_prefix = "|" },
+})
+
 Snacks = require("snacks")
 vim.keymap.set("n", "<leader><leader>", function()
   Snacks.picker.smart()

@@ -1,6 +1,29 @@
- "adding more character objectives
+" system
+set tabstop=4 softtabstop=0 expandtab shiftwidth=4 smarttab
+set noswapfile
+set nobackup
+set nowritebackup
+set nocompatible
+set mouse=a
+set showmatch
+set backspace=indent,eol,start
+let mapleader=" "
 set clipboard=unnamedplus
 
+noremap <C-h> <C-w><C-h>
+noremap <C-j> <C-w><C-j>
+noremap <C-k> <C-w><C-k>
+noremap <C-l> <C-w><C-l>
+
+" adjust split window size
+nnoremap <c-up> :res +2<CR>
+nnoremap <c-down> :res -2<CR>
+nnoremap <c-left> :vertical resize-5<CR>
+nnoremap <c-right> :vertical resize+5<CR>
+
+" use <leader><Esc> to escape terminal mode
+tnoremap <leader><Esc> <C-\><C-n>
+ "adding more character objectives
 for s:char in [',','/', '*', '%', '_', '`', '!','.']
     execute 'xnoremap i' . s:char . ' :<C-u>normal! T' . s:char . 'vt' . s:char . '<CR>'
     execute 'onoremap i' . s:char . ' :normal vi' . s:char . '<CR>'

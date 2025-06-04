@@ -65,7 +65,6 @@ if !has('nvim')
     call plug#end()
 endif
 
-exe 'source '.g:config_dir.'vim/univ_config.vimrc'
 
 if has("nvim")
     " loading neovim plugins handled by nvim
@@ -81,6 +80,8 @@ else
     exe 'source '.g:config_dir.'vim/md.vimrc'
     exe 'source '.g:config_dir.'vim/python.vimrc'
 endif
+
+exe 'source '.g:config_dir.'vim/univ_config.vimrc'
 
 " colorscheme and highlight
 try
