@@ -71,8 +71,11 @@ vim.keymap.set("v", "<C-x>", function()
   require("dial.map").manipulate("decrement", "visual")
 end)
 
+local gen_ai_spec = require("mini.extra").gen_ai_spec
 require("mini.ai").setup({
   custom_textobjects = {
+    B = gen_ai_spec.buffer(),
+    N = gen_ai_spec.number(),
     V = {
       {
         "%u[%l%d]+%f[^%l%d]",
