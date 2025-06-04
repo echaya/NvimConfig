@@ -185,24 +185,14 @@ vim.keymap.set(
   { desc = "toggle hunk overlay" }
 )
 
+local hi_words = require("mini.extra").gen_highlighter.words
 local hipatterns = require("mini.hipatterns")
 hipatterns.setup({
   highlighters = {
-    -- Highlight standalone 'XXX', 'IMP', 'TODO', 'NOTE'
-    fixme = {
-      pattern = "%f[%w]()XXX()%f[%W]",
-      group = "MiniHipatternsFixme",
-    },
-    hack = { pattern = "%f[%w]()IMP()%f[%W]", group = "MiniHipatternsHack" },
-    todo = {
-      pattern = "%f[%w]()TODO()%f[%W]",
-      group = "MiniHipatternsTodo",
-    },
-    note = {
-      pattern = "%f[%w]()NOTE()%f[%W]",
-      group = "MiniHipatternsNote",
-    },
-
+    hack = hi_words({ "IMP", "Hack" }, "MiniHipatternsHack"),
+    fixme = hi_words({ "XXX", "FIXME" }, "MiniHipatternsFixme"),
+    todo = hi_words({ "TODO" , "Todo"}, "MiniHipatternsTodo"),
+    note = hi_words({ "NOTE", "Note" }, "MiniHipatternsNote"),
     -- Highlight hex color strings (`#rrggbb`) using that color
     hex_color = hipatterns.gen_highlighter.hex_color(),
   },
