@@ -143,7 +143,7 @@ nnoremap <C-d> <C-d>zz
 
 
 " edit as dos, to remove ^m
-:command DOS e ++ff=dos | set ff=unix | w
+:command M e ++ff=dos | set ff=unix | w
 " duplicate current window in Vertical
 :command V vsplit
 :command S split
