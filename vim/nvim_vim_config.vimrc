@@ -69,12 +69,6 @@ noremap <silent> K :tabn<CR>
 noremap <silent> T :tabnew<CR>
 noremap <silent> <Del> :tabc<CR>
 
-augroup CursorLine
-    au!
-    au InsertLeave,WinEnter * set cursorline
-    au InsertEnter,WinLeave * set nocursorline
-augroup END
-
 
 " buffers management
 set hidden
@@ -126,6 +120,37 @@ let g:table_mode_syntax = 0
 "vim-fugitive or mini.git
 command! GC execute "Git diff --staged" | execute "Git commit"
 command GP execute "Git! push"
+
+if !exists('g:snacks_vertical_cursor_enabled')
+  let g:snacks_vertical_cursor_enabled = 0
+endif
+
+function! ApplyVerticalCursorVisualSetting() abort
+  if &cursorline " Is horizontal cursorline active?
+    if get(g:, 'snacks_vertical_cursor_enabled', 0)
+      set cursorcolumn
+    else
+      set nocursorcolumn
+    endif
+  else " If horizontal cursorline is off, vertical should also be off
+    set nocursorcolumn
+  endif
+endfunction
+
+augroup CursorLineManagementSnacks | au!
+	" Clear existing autocommands in this group
+  au InsertLeave,WinEnter *
+        \ set cursorline |
+        \ call ApplyVerticalCursorVisualSetting()
+
+  au InsertEnter,WinLeave *
+        \ set nocursorline |
+        \ call ApplyVerticalCursorVisualSetting()
+augroup END
+
+if mode() !=# 'i' && bufname('%') !=# ''
+  call ApplyVerticalCursorVisualSetting()
+endif
 
 " add comment string for bat, autohotkey files
 "use `:lua print(vim.bo.filetype)` to check file type of current window

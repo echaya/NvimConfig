@@ -77,6 +77,18 @@ Snacks.toggle({
   end,
 }):map("|t")
 
+Snacks.toggle({
+  name = "VerticalCursor",
+  get = function()
+    return vim.g.snacks_vertical_cursor_enabled == true
+  end,
+
+  set = function(desired_state)
+    vim.g.snacks_vertical_cursor_enabled = desired_state
+    apply_vertical_cursor_visual_setting()
+  end,
+}):map("|C")
+
 vim.keymap.set("n", "<leader>un", function()
   Snacks.notifier.hide()
 end, { desc = "Dismiss All Notifications" })
