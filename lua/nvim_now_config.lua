@@ -211,7 +211,7 @@ require("kanagawa").setup({
     theme = {
       all = {
         ui = {
-          bg_gutter = "#16161d",
+          bg_gutter = "",
         },
       },
     },
