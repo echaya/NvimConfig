@@ -1,6 +1,3 @@
-"python config
-" g:pythonthreedll, g:pythonthreehome & g:python3_host_prog are set in init.vim
-
 function! IsLineIndented()
     let lineContent = getline('.')
     if match(lineContent, ' ') == 0
@@ -12,18 +9,13 @@ endfunction
 
 function! IsFence()
     return getline('.') == b:CodeFence
-endfunction!
+endfunction
 
 function! BuildFence()
     exe "normal Go".b:CodeFence
     if IsLineIndented()
         normal 0dt#
     endif
-endfunction
-
-function! OpenCell() abort
-    let cmd = 'normal *kV``jo'
-    execute cmd
 endfunction
 
 function! CloseCell() abort
