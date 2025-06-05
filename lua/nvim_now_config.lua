@@ -64,6 +64,18 @@ Snacks.toggle.inlay_hints():map("|H")
 Snacks.toggle.animate():map("|a")
 Snacks.toggle.diagnostics():map("|d")
 Snacks.toggle.line_number():map("|n")
+Snacks.toggle({
+  name = "TableMode",
+  get = function()
+    return vim.b.table_mode_enabled == 1
+  end,
+  set = function(desired_state)
+    local current_state_is_active = (vim.b.table_mode_enabled == 1)
+    if desired_state ~= current_state_is_active then
+      vim.cmd("TableModeToggle")
+    end
+  end,
+}):map("|t")
 
 vim.keymap.set("n", "<leader>un", function()
   Snacks.notifier.hide()
