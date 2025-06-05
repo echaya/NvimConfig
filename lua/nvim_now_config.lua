@@ -61,6 +61,10 @@ Snacks.toggle
   .option("background", { off = "light", on = "dark", name = "Dark Background" })
   :map("|b")
 Snacks.toggle.inlay_hints():map("|H")
+Snacks.toggle.animate():map("|a")
+Snacks.toggle.diagnostics():map("|d")
+Snacks.toggle.line_number():map("|n")
+
 vim.keymap.set("n", "<leader>un", function()
   Snacks.notifier.hide()
 end, { desc = "Dismiss All Notifications" })
