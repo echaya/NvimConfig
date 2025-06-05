@@ -1,7 +1,6 @@
 require("mini.basics").setup({
   options = { extra_ui = true },
-  mappings = { windows = true,
-option_toggle_prefix = "|" },
+  mappings = { windows = true, option_toggle_prefix = "|" },
 })
 
 Snacks = require("snacks")
@@ -57,12 +56,11 @@ vim.keymap.set("n", "<leader>gw", function()
   Snacks.picker.grep_word()
 end, { desc = "grep_string" })
 
-Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>ts")
+Snacks.toggle.option("spell", { name = "Spelling" }):map("|s")
 Snacks.toggle
   .option("background", { off = "light", on = "dark", name = "Dark Background" })
-  :map("<leader>tb")
-Snacks.toggle.inlay_hints():map("<leader>th")
-
+  :map("|b")
+Snacks.toggle.inlay_hints():map("|H")
 vim.keymap.set("n", "<leader>un", function()
   Snacks.notifier.hide()
 end, { desc = "Dismiss All Notifications" })
