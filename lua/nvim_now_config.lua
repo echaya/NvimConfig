@@ -85,9 +85,21 @@ Snacks.toggle({
 
   set = function(desired_state)
     vim.g.snacks_vertical_cursor_enabled = desired_state
-    apply_vertical_cursor_visual_setting()
+    vim.fn.call("ApplyCursorLine", {})
   end,
 }):map("|C")
+Snacks.toggle({
+  name = "CursorLine",
+
+  get = function()
+    return vim.g.snacks_main_cursorline_enabled == 1
+  end,
+
+  set = function(desired_state)
+    vim.g.snacks_main_cursorline_enabled = desired_state and 1 or 0
+    vim.fn.call("ApplyCursorLine", {})
+  end,
+}):map("|c")
 
 vim.keymap.set("n", "<leader>un", function()
   Snacks.notifier.hide()
