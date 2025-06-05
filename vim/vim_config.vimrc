@@ -7,8 +7,17 @@ set nocompatible
 set mouse=a
 set showmatch
 set backspace=indent,eol,start
+
+"change <leader> to SPACE
+nnoremap <SPACE> <Nop>
 let mapleader=" "
 set clipboard=unnamedplus
+
+"seaerch
+set incsearch
+set hlsearch
+set ignorecase
+set smartcase
 
 noremap <C-h> <C-w><C-h>
 noremap <C-j> <C-w><C-j>
@@ -20,6 +29,21 @@ nnoremap <c-up> :res +2<CR>
 nnoremap <c-down> :res -2<CR>
 nnoremap <c-left> :vertical resize-5<CR>
 nnoremap <c-right> :vertical resize+5<CR>
+
+" change default Y behavior to match with D, C, etc
+noremap Y y$
+" reselect just pasted block
+nnoremap gV `[v`]
+
+" " better j/k using gj and gk
+nnoremap <expr> j v:count == 0 ? 'gj' : 'j'
+xnoremap <expr> j v:count == 0 ? 'gj' : 'j'
+nnoremap <expr> k v:count == 0 ? 'gk' : 'k'
+xnoremap <expr> k v:count == 0 ? 'gk' : 'k'
+
+" insert lines without entering insert mode (allow count)
+noremap <silent> go :<C-u>call append(line("."),   repeat([""], v:count1))<CR>
+nnoremap <silent> gO :<C-u>call append(line(".")-1, repeat([""], v:count1))<CR>
 
 " use <leader><Esc> to escape terminal mode
 tnoremap <leader><Esc> <C-\><C-n>

@@ -1,21 +1,11 @@
-"universal settings
-"change <leader> to SPACE
-nnoremap <SPACE> <Nop>
+"universal settings and keymaps
 let maplocalleader="\\"
 
-"seaerch
-set incsearch
-set hlsearch
-set ignorecase
-set smartcase
 nnoremap <silent><C-c> :noh<CR><Esc>
 
-"copy paste
+"formatted paste
 inoremap <silent> <c-s-v> <Esc>:set paste<Cr>a<c-r>+<Esc>:set nopaste<Cr>a
-" change default Y behavior to match with D, C, etc
-noremap Y y$
-" reselect just pasted block
-nnoremap gV `[v`]
+
 " join lines by gj
 nnoremap gj J
 " <leader>m to set mark
@@ -23,16 +13,6 @@ nnoremap <leader>m m
 " delete mark X. dma will delete mark a, dmX will delete mark X
 nnoremap <leader>d :execute 'delmarks '.nr2char(getchar())<cr>
 nnoremap q: <nop>
-
-" " better j/k using gj and gk
-nnoremap <expr> j v:count == 0 ? 'gj' : 'j'
-xnoremap <expr> j v:count == 0 ? 'gj' : 'j'
-nnoremap <expr> k v:count == 0 ? 'gk' : 'k'
-xnoremap <expr> k v:count == 0 ? 'gk' : 'k'
-
-" insert lines without entering insert mode (allow count)
-noremap <silent> go :<C-u>call append(line("."),   repeat([""], v:count1))<CR>
-nnoremap <silent> gO :<C-u>call append(line(".")-1, repeat([""], v:count1))<CR>
 
 " use Alt+j/k to swap lines (allow count)
 nnoremap <A-j> :<c-u>execute 'move +'. v:count1<cr>
@@ -55,6 +35,16 @@ nnoremap <C-V> v
 :command! Qa qa
 :command! Wqa wqa
 :command! Bd bd
+" edit as dos, to remove ^m
+:command M e ++ff=dos | set ff=unix | w
+" duplicate current window in Vertical
+:command V vsplit
+:command S split
+:command RemoveTrailingSpace %s/\s\+$//e
+" convert # In[ ]: => ### Cell
+:command ReplaceIn %s/#\s*In\[\s*\d*\s*\]\?:/###/g
+:command Dthis wind diffthis
+:command Doff diffoff
 nnoremap <leader>q <cmd>q<cr>
 nnoremap <leader>wq <cmd>wq<cr>
 

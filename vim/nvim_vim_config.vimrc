@@ -115,19 +115,8 @@ nnoremap N Nzzzv
 nnoremap <C-u> <C-u>zz
 nnoremap <C-d> <C-d>zz
 
-
-" edit as dos, to remove ^m
-:command M e ++ff=dos | set ff=unix | w
-" duplicate current window in Vertical
-:command V vsplit
-:command S split
-:command RemoveTrailingSpace %s/\s\+$//e
+" copy so to windows from WSL
 :command CopySo !source ~/.config/nvim/config/copy_so.sh
-" convert # In[ ]: => ### Cell
-:command ReplaceIn %s/#\s*In\[\s*\d*\s*\]\?:/###/g
-
-:command Dthis wind diffthis
-:command Doff diffoff
 
 nnoremap <leader>gb <CMD>execute '!start ' .. shellescape(expand('<cfile>'), v:true)<CR>
 
