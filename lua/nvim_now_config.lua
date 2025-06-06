@@ -57,22 +57,30 @@ vim.keymap.set("n", "<leader>gw", function()
 end, { desc = "grep_string" })
 
 Snacks.toggle.option("spell", { name = "Spelling" }):map("|s")
+Snacks.toggle.option("wrap", { name = "Wrap" }):map("|w")
+Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("|r")
+Snacks.toggle.option("number", { name = "Number" }):map("|n")
+Snacks.toggle.option("hlsearch", { name = "Highlight search" }):map("|h")
+Snacks.toggle.option("ignorecase", { name = "Ignorecase" }):map("|i")
 Snacks.toggle
   .option("background", { off = "light", on = "dark", name = "Dark Background" })
   :map("|b")
 Snacks.toggle.inlay_hints():map("|H")
 Snacks.toggle.animate():map("|a")
 Snacks.toggle.diagnostics():map("|d")
-Snacks.toggle.line_number():map("|n")
+Snacks.toggle
+  .option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 })
+  :map("|l")
 Snacks.toggle({
   name = "TableMode",
   get = function()
-    return vim.b.table_mode_enabled == 1
+    return vim.b.table_mode_enabled == true
   end,
-  set = function(desired_state)
-    local current_state_is_active = (vim.b.table_mode_enabled == 1)
-    if desired_state ~= current_state_is_active then
+  set = function(state)
+    local current_state_is_active = vim.b.table_mode_enabled
+    if state ~= current_state_is_active then
       vim.cmd("TableModeToggle")
+      vim.b.table_mode_enabled = state and true or false
     end
   end,
 }):map("|t")
