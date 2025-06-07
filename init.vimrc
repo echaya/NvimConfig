@@ -74,9 +74,7 @@ else
     exe 'source '.g:config_dir.'vim/vim_config.vimrc'
 endif
 
-if exists('g:vscode')
-    exe 'source '.g:config_dir.'vim/vscode_config.vimrc'
-else
+if !exists('g:vscode')
     exe 'source '.g:config_dir.'vim/nvim_vim_config.vimrc'
     exe 'source '.g:config_dir.'vim/md.vimrc'
     exe 'source '.g:config_dir.'vim/python.vimrc'
