@@ -112,7 +112,7 @@ nnoremap <C-d> <C-d>zz
 " copy so to windows from WSL
 :command CopySo !source ~/.config/nvim/config/copy_so.sh
 
-nnoremap <leader>gb <CMD>execute '!start ' .. shellescape(expand('<cfile>'), v:true)<CR>
+nnoremap <localleader>ww <CMD>execute '!start ' .. shellescape(expand('<cfile>'), v:true)<CR>
 
 "table-mode uses default mapping start with <leader>t
 let g:table_mode_syntax = 0

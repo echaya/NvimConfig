@@ -3,7 +3,7 @@ let maplocalleader="\\"
 
 nnoremap <silent><C-c> :noh<CR><Esc>
 
-"formatted paste
+" formatted paste
 inoremap <silent> <c-s-v> <Esc>:set paste<Cr>a<c-r>+<Esc>:set nopaste<Cr>a
 
 " join lines by gj

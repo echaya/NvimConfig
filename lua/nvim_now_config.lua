@@ -123,6 +123,9 @@ end, { desc = "notification_history" })
 
 vim.keymap.set("n", "<leader>fm", "<cmd>messages<cr>", { desc = "find_messages" })
 
+vim.keymap.set("n", "<leader>gb", function()
+  Snacks.git.blame_line()
+end, { desc = "Git Browse" })
 vim.keymap.set("n", "<leader>gB", function()
   Snacks.gitbrowse()
 end, { desc = "Git Browse" })
