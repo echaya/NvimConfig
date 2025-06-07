@@ -14,6 +14,7 @@ set updatetime=100
 set timeoutlen=500
 
 " encoding
+set tabstop=4 softtabstop=0 expandtab shiftwidth=4 smarttab
 set fileencodings=ucs-bom,utf-8,utf-16,gbk,big5,gb18030,latin1
 set enc=utf-8
 " color, display, theme

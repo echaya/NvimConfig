@@ -20,25 +20,26 @@ endif  " Now: c:/Tools/neovim/config/
 
 " Universal plugins
 let g:lst_plugin = [
-            \'dstein64/vim-startuptime',
-            \'svermeulen/vim-cutlass',
-            \'MTDL9/vim-log-highlighting',
-            \'tpope/vim-repeat',
-            \'unblevable/quick-scope',
-            \'vimwiki/vimwiki',
-            \'dhruvasagar/vim-table-mode']
+	\'dstein64/vim-startuptime',
+	\'svermeulen/vim-cutlass',
+	\'MTDL9/vim-log-highlighting',
+	\'tpope/vim-repeat',
+	\'unblevable/quick-scope',
+	\'vimwiki/vimwiki',
+	\'dhruvasagar/vim-table-mode'
+	\]
 
 if !has('nvim')
-    try
-        let s:path_package = $HOME . '/.local/share/nvim/site/'
-        "source plug.vim manually from plugged folder.
-        "It should normally sit in nvim working dir autoload folder
-        exe 'source '. s:path_package.'pack/deps/vim/plug.vim'
-    catch
-        let s:path_package = $HOME . '/AppData/local/nvim-data/site/'
-        exe 'source '. s:path_package.'pack/deps/vim/plug.vim'
-    endtry
-    call plug#begin(s:path_package.'pack/deps/vim/')
+	try
+		let s:path_package = $HOME . '/.local/share/nvim/site/'
+		"source plug.vim manually from plugged folder.
+		"It should normally sit in nvim working dir autoload folder
+		exe 'source '. s:path_package.'pack/deps/vim/plug.vim'
+	catch
+		let s:path_package = $HOME . '/AppData/local/nvim-data/site/'
+		exe 'source '. s:path_package.'pack/deps/vim/plug.vim'
+	endtry
+	call plug#begin(s:path_package.'pack/deps/vim/')
 
     for plugin in g:lst_plugin
         if stridx(plugin, "scope") == -1
