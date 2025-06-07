@@ -1,11 +1,9 @@
 "universal settings and keymaps
 let maplocalleader="\\"
 
-nnoremap <silent><C-c> :noh<CR><Esc>
-
-" formatted paste
-inoremap <silent> <c-s-v> <Esc>:set paste<Cr>a<c-r>+<Esc>:set nopaste<Cr>a
-
+" <leader>gc to comment out and copy the line
+nmap <leader>gc gccyypgcc
+xmap <leader>gc ygvgc`>p
 " join lines by gj
 nnoremap gj J
 " <leader>m to set mark
@@ -43,8 +41,7 @@ nnoremap <C-V> v
 :command RemoveTrailingSpace %s/\s\+$//e
 " convert # In[ ]: => ### Cell
 :command ReplaceIn %s/#\s*In\[\s*\d*\s*\]\?:/###/g
-:command Dthis wind diffthis
-:command Doff diffoff
+
 nnoremap <leader>q <cmd>q<cr>
 nnoremap <leader>wq <cmd>wq<cr>
 

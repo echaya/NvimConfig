@@ -88,11 +88,15 @@ inoremap , ,<c-g>u
 inoremap . .<c-g>u
 inoremap ; ;<c-g>u
 
+" remove noh
+nnoremap <silent><C-c> :noh<CR><Esc>
 
-" <leader>gc to comment out and copy the line
-nmap <leader>gc gccyypgcc
-xmap <leader>gc ygvgc`>p
+" formatted paste
+inoremap <silent> <c-s-v> <Esc>:set paste<Cr>a<c-r>+<Esc>:set nopaste<Cr>a
 
+" diff windows
+:command Dthis wind diffthis
+:command Doff diffoff
 
 " load and reload vimrc
 :command! LV source $MYVIMRC
@@ -112,7 +116,6 @@ nnoremap <C-d> <C-d>zz
 " copy so to windows from WSL
 :command CopySo !source ~/.config/nvim/config/copy_so.sh
 
-nnoremap <localleader>ww <CMD>execute '!start ' .. shellescape(expand('<cfile>'), v:true)<CR>
 
 "table-mode uses default mapping start with <leader>t
 let g:table_mode_syntax = 0
