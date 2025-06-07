@@ -13,27 +13,15 @@ endtry
 set updatetime=100
 set timeoutlen=500
 
-set splitbelow
-set splitright
-filetype plugin indent on
 " encoding
 set fileencodings=ucs-bom,utf-8,utf-16,gbk,big5,gb18030,latin1
 set enc=utf-8
 " color, display, theme
-syntax on
 set number relativenumber
 set scrolloff=5
-set splitright
-set splitbelow
-set wrap
-set linebreak
 set showcmd
-set noshowmode
-set ruler
 set shellslash
 set showtabline=2
-set fillchars = "eob: "
-set signcolumn=yes
 
 if !has('unix')
     let &shell = 'pwsh -nologo -noexit'
@@ -56,9 +44,6 @@ if has('gui_running')
     noremap <C--> :call AdjustFontSize(-1)<CR>
 endif
 
-if has('termguicolors')
-    set termguicolors
-endif
 
 " reopen just closed buffer to edit
 nnoremap <silent> ZX :e #<CR>

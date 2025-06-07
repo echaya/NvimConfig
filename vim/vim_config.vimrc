@@ -19,6 +19,22 @@ set hlsearch
 set ignorecase
 set smartcase
 
+" color, display, theme
+syntax on
+filetype plugin indent on
+set linebreak
+set noshowmode
+set ruler
+set wrap
+set fillchars = "eob: "
+set signcolumn=yes
+set splitbelow
+set splitright
+
+if has('termguicolors')
+    set termguicolors
+endif
+
 noremap <C-h> <C-w><C-h>
 noremap <C-j> <C-w><C-j>
 noremap <C-k> <C-w><C-k>
