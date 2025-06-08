@@ -144,51 +144,6 @@ augroup END
 
 let g:temp_cb_name = "temp_cb"
 
-
-function! PowerClose(strong)
-
-    let buffer_count = 0
-    for i in range(0, bufnr("$"))
-        if buflisted(i)
-            let buffer_count += 1
-        endif
-    endfor
-
-    let window_counter = 0
-    windo let window_counter = window_counter + 1
-
-    if (window_counter > 1 || stridx(expand('%'), "ipython.EXE") > 0)
-        let l:cmd = "q"
-    else
-        if buffer_count <= 1
-            let l:cmd = "wq"
-        else
-            let l:cmd = "bd"
-        endif
-    endif
-
-    if a:strong != 0
-        let l:cmd .= "!"
-    endif
-
-    if expand('%') == g:temp_cb_name
-        let l:cmd = "call delete('".g:temp_cb_name."') | bd!"
-    endif
-
-    if (&buftype == 'terminal' && window_counter == 1)
-        normal i
-    else
-        "echo "powercloser: ".cmd."| bc=".buffer_count."|; wc=".window_counter
-        execute cmd
-    endif
-endfunction
-
-if has("nvim")
-    nnoremap <silent> ZZ <cmd>Noice dismiss<cr> <cmd>lua Snacks.bufdelete()<cr>
-else
-    nnoremap <silent> ZZ <cmd>call PowerClose(0)<cr>
-endif
-
 function! ChooseBuffer(buffername)
     let bnr = bufwinnr(a:buffername)
     if bnr > 0
