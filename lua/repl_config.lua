@@ -134,10 +134,6 @@ vim.api.nvim_create_autocmd("FileType", {
 
     vim.keymap.set("t", [[<a-\>]], "<cmd>q<cr>", { desc = "yarepl_terminal_quit_window" }) -- This is for the terminal window itself
 
-    vim.keymap.set("n", "<localleader>v", function()
-      repl.select_visual()
-    end, { buffer = args.buf, desc = "Select visual" })
-
     vim.keymap.set("n", "<localleader><cr>", function()
       local target_id = vim.v.count1 -- vim.v.count1 is 1 if no count, otherwise it's the count.
       vim.cmd(string.format("%dREPLExec $ipython " .. vim.fn.nr2char(13), target_id))
@@ -348,10 +344,11 @@ vim.api.nvim_create_autocmd("FileType", {
       { buffer = args.buf, desc = "execute lua line" }
     )
     vim.keymap.set("v", "<CR>", ":lua<cr>", { buffer = args.buf, desc = "execute lua line" })
-    vim.keymap.set("n", "<localleader>v", function()
-      repl.select_visual()
-    end, { buffer = args.buf, desc = "Select visual" })
   end,
 })
 
 --#
+
+vim.keymap.set("n", "<localleader>v", function()
+  repl.select_visual()
+end, { desc = "Select visual" })
