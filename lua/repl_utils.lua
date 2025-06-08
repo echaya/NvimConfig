@@ -80,19 +80,59 @@ function M.jump_cell_back()
 end
 
 --- Main function to visually select the current "cell".
--- If in the last cell, it creates a new one below.
--- Otherwise, it selects the content of the current cell.
+-- Handles the corner case where the cursor is on the last fence line.
 function M.select_visual()
-  -- If a forward search for the fence fails, we are in the last cell.
-  if vim.fn.search("^" .. get_code_fence(), "W") == 0 then
-    M.build_fence()
-    M.close_cell()
+  -- Check if a code fence exists after the current cursor position.
+  -- If fn.search returns 0, no fence is found, meaning we are in the last cell.
+  if vim.fn.search('^' .. get_code_fence(), 'W') == 0 then
+    -- We are in the last cell. Only build a new fence if this cell has content.
+
+    -- 1. Correctly determine the top boundary of the last cell.
+    local prev_fence_line
+    if M.is_fence() then
+      -- FIX: If the cursor is currently ON a fence line, that line itself is our boundary.
+      -- This is the key to solving the corner case.
+      prev_fence_line = vim.api.nvim_win_get_cursor(0)[1]
+    else
+      -- Otherwise, if the cursor is within the cell's content, search backwards
+      -- for the fence that defines the top of the current cell.
+      prev_fence_line = vim.fn.search('^' .. get_code_fence(), 'bW')
+    end
+
+    -- 2. Define the line range of the last cell's content.
+    -- It starts on the line after the determined fence (or line 1 if no previous fence exists).
+    local cell_start_line = (prev_fence_line == 0) and 1 or (prev_fence_line + 1)
+    local file_last_line = vim.api.nvim_buf_line_count(0)
+
+    -- If the cell's calculated start is beyond the file's end, there's nothing to do.
+    if cell_start_line > file_last_line then
+      vim.notify("Last cell is empty.", vim.log.levels.INFO, { title = "Cell Logic" })
+      return
+    end
+
+    -- 3. Get all lines within the last cell's potential content range.
+    local cell_lines = vim.api.nvim_buf_get_lines(0, cell_start_line - 1, file_last_line, false)
+
+    -- 4. Iterate through the lines to find any non-blank content.
+    local has_content = false
+    for _, line in ipairs(cell_lines) do
+      if line:match("%S") then
+        has_content = true
+        break
+      end
+    end
+
+    -- 5. Conditionally build the new fence.
+    if has_content then
+      M.build_fence()
+      M.close_cell()
+    else
+      vim.notify("Last cell is empty, not creating new fence.", vim.log.levels.INFO, { title = "Cell Logic" })
+    end
   else
-    -- Move cursor up one line. This helps correctly position the cursor
-    -- for the selection logic that follows.
+    -- This is the original logic for when the cursor is not in the last cell.
     vim.cmd("normal! -")
     M.between_cell()
   end
 end
-
 return M
