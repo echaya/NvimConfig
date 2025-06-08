@@ -102,6 +102,7 @@ later(function()
     add({ source = "stevearc/quicker.nvim" })
     add({ source = "MeanderingProgrammer/render-markdown.nvim" })
     require("lua.code_config")
+    require("lua.repl_config")
   else
     require("lua.vscode_config")
   end

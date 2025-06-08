@@ -76,8 +76,7 @@ endif
 
 if !exists('g:vscode')
     exe 'source '.g:config_dir.'vim/nvim_vim_config.vimrc'
-    exe 'source '.g:config_dir.'vim/md.vimrc'
-    exe 'source '.g:config_dir.'vim/python.vimrc'
+    "exe 'source '.g:config_dir.'vim/md.vimrc'
 endif
 
 exe 'source '.g:config_dir.'vim/univ_config.vimrc'
