@@ -115,4 +115,3 @@ tnoremap ;pl .iloc[-1].T
 " diagnostic box open by cursor
 "autocmd CursorHold * lua vim.diagnostic.open_float()
 
-

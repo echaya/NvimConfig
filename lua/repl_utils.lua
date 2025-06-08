@@ -84,19 +84,18 @@ end
 function M.select_visual()
   -- Check if a code fence exists after the current cursor position.
   -- If fn.search returns 0, no fence is found, meaning we are in the last cell.
-  if vim.fn.search('^' .. get_code_fence(), 'W') == 0 then
+  if vim.fn.search("^" .. get_code_fence(), "W") == 0 then
     -- We are in the last cell. Only build a new fence if this cell has content.
 
     -- 1. Correctly determine the top boundary of the last cell.
     local prev_fence_line
     if M.is_fence() then
-      -- FIX: If the cursor is currently ON a fence line, that line itself is our boundary.
       -- This is the key to solving the corner case.
       prev_fence_line = vim.api.nvim_win_get_cursor(0)[1]
     else
       -- Otherwise, if the cursor is within the cell's content, search backwards
       -- for the fence that defines the top of the current cell.
-      prev_fence_line = vim.fn.search('^' .. get_code_fence(), 'bW')
+      prev_fence_line = vim.fn.search("^" .. get_code_fence(), "bW")
     end
 
     -- 2. Define the line range of the last cell's content.
@@ -127,12 +126,59 @@ function M.select_visual()
       M.build_fence()
       M.close_cell()
     else
-      vim.notify("Last cell is empty, not creating new fence.", vim.log.levels.INFO, { title = "Cell Logic" })
+      vim.notify(
+        "Last cell is empty, not creating new fence.",
+        vim.log.levels.INFO,
+        { title = "Cell Logic" }
+      )
     end
   else
     -- This is the original logic for when the cursor is not in the last cell.
     vim.cmd("normal! -")
     M.between_cell()
   end
+end
+--- Wraps the selected cell in a "DebugCell" function for isolated testing.
+-- This version is designed to work with the normal-mode-based select_visual.
+local debug_func = "repl_debug_cell"
+function M.debug_cell()
+  -- First, use your existing logic to select a cell.
+  M.select_visual()
+
+  -- Ensure that a visual selection was actually made before proceeding.
+  if not (vim.fn.mode() == "V" or vim.fn.mode() == "v") then
+    vim.notify("Visual selection failed, cannot create debug cell.", vim.log.levels.WARN)
+    return
+  end
+
+  -- This sequence is a direct translation of the original Vimscript's state changes.
+  -- It is designed to work correctly after your select_visual leaves Neovim in visual mode.
+  vim.cmd("normal! >O") -- Indent selection, then open a line above in insert mode.
+  vim.cmd("normal! Idef " .. debug_func .. "():") -- Leave insert, move to BOL, re-enter, type, and leave.
+  vim.cmd("normal! `>o") -- Jump to the end-of-selection mark, open a line below.
+  vim.cmd("normal! I" .. debug_func .. "()") -- Leave insert, move to BOL, re-enter, type, and leave.
+
+  vim.notify("Debug cell created.", vim.log.levels.INFO)
+end
+--- Finds and removes the "DebugCell" wrapper, un-indenting the code.
+--- Finds and removes the "DebugCell" wrapper by locating and deleting the specific wrapper lines.
+--- Finds "def DebugCell" and then attempts to unwrap it using a sequence of normal commands.
+-- This is a direct translation of the original Vimscript logic.
+function M.debug_delete()
+  -- 1. Search for the "def DebugCell" string and move the cursor there.
+  --    This mimics the behavior of the Vimscript `search()` function.
+  if vim.fn.search("^" .. debug_func, "wc") == 0 then
+    vim.notify("Debug Cell is not found!", vim.log.levels.WARN)
+    return
+  end
+
+  -- 2. Call the select_visual function. The rest of the logic depends on
+  --    the specific visual selection this function makes from this position.
+  M.select_visual()
+  vim.cmd("normal! <")
+  vim.cmd("normal! '<dd")
+  vim.cmd("normal! `>dd")
+  vim.cmd("silent! '<,'>g/core.debugger.set_trace/d")
+  vim.notify("Debug delete sequence executed.", vim.log.levels.INFO)
 end
 return M

@@ -352,3 +352,40 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.keymap.set("n", "<localleader>v", function()
   repl.select_visual()
 end, { desc = "Select visual" })
+
+-- Define the autocmd group, ensuring it's cleared on each reload
+local python_repl_group = vim.api.nvim_create_augroup("PythonRepl", { clear = true })
+
+-- Create an autocmd that triggers for Python files
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "python",
+  group = python_repl_group,
+  desc = "Set up Python-specific settings and REPL keymaps",
+  callback = function()
+    -- Set a buffer-local variable, equivalent to `let b:CodeFence = "###"`
+
+    -- Buffer-local insert mode mappings (snippets)
+    vim.keymap.set(
+      "i",
+      ";cb",
+      ".to_clipboard()",
+      { buffer = true, desc = "Insert: .to_clipboard()" }
+    )
+    vim.keymap.set("i", ";ct", ".copy(True)", { buffer = true, desc = "Insert: .copy(True)" })
+    vim.keymap.set("i", ";f", "###<CR><Esc>", { buffer = true, desc = "Insert: New cell fence" })
+    vim.keymap.set("i", ";pf", ".iloc[0].T", { buffer = true, desc = "Insert:.iloc[0].T" })
+    vim.keymap.set("i", ";it", "inplace=True", { buffer = true, desc = "Insert: inplace=True" })
+    vim.keymap.set("i", ";pl", ".iloc[-1].T", { buffer = true, desc = "Insert: .iloc[-1].T" })
+    vim.keymap.set("n", "<localleader>db", function()
+      repl.debug_cell()
+    end, { buffer = true, desc = "Create debug cell" })
+    vim.keymap.set("n", "<localleader>dd", function()
+      repl.debug_delete()
+    end, { buffer = true, desc = "Delete debug cell and traces" })
+  end,
+})
+
+-- Global terminal mode mappings (not tied to any filetype)
+vim.keymap.set("t", ";cb", ".to_clipboard()", { desc = "Terminal: Insert .to_clipboard()" })
+vim.keymap.set("t", ";pf", ".iloc[0].T", { desc = "Terminal: Insert .iloc[0].T" })
+vim.keymap.set("t", ";pl", ".iloc[-1].T", { desc = "Terminal: Insert .iloc[-1].T" })
