@@ -25,7 +25,6 @@ filetype plugin indent on
 set linebreak
 set noshowmode
 set ruler
-set wrap
 set fillchars = "eob: "
 set signcolumn=yes
 set splitbelow

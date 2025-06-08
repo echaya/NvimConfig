@@ -23,6 +23,7 @@ set scrolloff=5
 set showcmd
 set shellslash
 set showtabline=2
+set wrap
 
 if !has('unix')
     let &shell = 'pwsh -nologo -noexit'
