@@ -27,6 +27,10 @@ yarepl.setup({
     },
   },
   print_1st_line_on_source = true,
+  source_command_hint = {
+    enabled = true,
+    hl_group = "DiffText",
+  },
 })
 
 -- Autocmd to set up Python-specific keybindings
