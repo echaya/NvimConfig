@@ -74,7 +74,6 @@ endfor
 " using vim-signify
 nnoremap <leader>hd :SignifyDiff<cr>
 nnoremap <leader>hh :SignifyHunkDiff<cr>
-nnoremap <leader>hr :SignifyHunkUndo<cr>
 
 "coloring and status line
 set laststatus=2
