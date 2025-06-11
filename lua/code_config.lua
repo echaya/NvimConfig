@@ -54,7 +54,7 @@ cmp.setup({
       preset = "none",
       ["<C-e>"] = { "show", "show_documentation", "hide_documentation" },
       ["<Esc>"] = { "cancel", "fallback" },
-      ["<C-c>"] = { "cancel", "fallback" },
+      ["<C-;>"] = { "cancel", "fallback" },
       ["<CR>"] = { "accept_and_enter", "fallback" },
       ["<Tab>"] = { "select_next", "fallback" },
       ["<S-Tab>"] = { "select_prev", "fallback" },
