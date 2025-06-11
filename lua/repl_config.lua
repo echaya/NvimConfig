@@ -121,7 +121,6 @@ vim.api.nvim_create_autocmd("FileType", {
       end, 1000)
     end
 
-    -- TODO: norm! gv after REPLStart or restart (user's original TODO)
     vim.keymap.set(
       "n",
       [[<a-\>]],
@@ -324,7 +323,10 @@ vim.api.nvim_create_autocmd("FileType", {
     )
     vim.keymap.set("n", "<Leader>fy", function()
       require("yarepl.extensions.snacks").repl_show()
-    end)
+    end, { buffer = args.buf, desc = "yarepl_list_repls" })
+    vim.keymap.set("n", "<LocalLeader>qh", function()
+      vim.cmd("REPLClearHints")
+    end, { buffer = args.buf, desc = "yarepl_clear_hints" })
   end,
 })
 
