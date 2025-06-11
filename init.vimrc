@@ -18,35 +18,38 @@ if g:project_root_dir[-1:] !=# '/'
     let g:project_root_dir = g:project_root_dir . '/'
 endif  " Now: c:/Tools/neovim/config/
 
+
 " Universal plugins
 let g:lst_plugin = [
-	\'dstein64/vim-startuptime',
-	\'svermeulen/vim-cutlass',
-	\'MTDL9/vim-log-highlighting',
-	\'tpope/vim-repeat',
-	\'unblevable/quick-scope',
-	\'vimwiki/vimwiki',
-	\'dhruvasagar/vim-table-mode'
-	\]
+            \'dstein64/vim-startuptime',
+            \'svermeulen/vim-cutlass',
+            \'MTDL9/vim-log-highlighting',
+            \'tpope/vim-repeat',
+            \'unblevable/quick-scope',
+            \'vimwiki/vimwiki',
+            \'dhruvasagar/vim-table-mode'
+            \]
 
-if !has('nvim')
-	try
-		let s:path_package = $HOME . '/.local/share/nvim/site/'
-		"source plug.vim manually from plugged folder.
-		"It should normally sit in nvim working dir autoload folder
-		exe 'source '. s:path_package.'pack/deps/vim/plug.vim'
-	catch
-		let s:path_package = $HOME . '/AppData/local/nvim-data/site/'
-		exe 'source '. s:path_package.'pack/deps/vim/plug.vim'
-	endtry
-	call plug#begin(s:path_package.'pack/deps/vim/')
+if has("nvim")
+    " loading neovim plugins handled by nvim
+    exe 'luafile '.g:config_dir.'init.lua'
+else
+    try
+        let s:path_package = $HOME . '/.local/share/nvim/site/'
+        "source plug.vim manually from plugged folder.
+        "It should normally sit in nvim working dir autoload folder
+        exe 'source '. s:path_package.'pack/deps/vim/plug.vim'
+    catch
+        let s:path_package = $HOME . '/AppData/local/nvim-data/site/'
+        exe 'source '. s:path_package.'pack/deps/vim/plug.vim'
+    endtry
+    call plug#begin(s:path_package.'pack/deps/vim/')
 
     for plugin in g:lst_plugin
         if stridx(plugin, "scope") == -1
             Plug plugin
         endif
     endfor
-    Plug 'mhinz/vim-startify' " Beautify the Vim startup page
     Plug 'mhinz/vim-signify'
     Plug 'itchyny/lightline.vim'
     Plug 'itchyny/vim-gitbranch'
@@ -58,19 +61,10 @@ if !has('nvim')
     Plug 'machakann/vim-sandwich'
     Plug 'echaya/quick-scope'
     Plug 'tpope/vim-fugitive'
-    Plug 'godlygeek/tabular', {'for': ['markdown', 'vimwiki']} " Prerequisite for vim-markdown
-    Plug 'plasticboy/vim-markdown', {'for': ['markdown', 'vimwiki']}
     Plug 'airblade/vim-rooter'
     Plug 'bluz71/vim-nightfly-colors', { 'as': 'nightfly' }
     Plug '907th/vim-auto-save',
     call plug#end()
-endif
-
-
-if has("nvim")
-    " loading neovim plugins handled by nvim
-    exe 'luafile '.g:config_dir.'init.lua'
-else
     exe 'source '.g:config_dir.'vim/vim_config.vimrc'
 endif
 
