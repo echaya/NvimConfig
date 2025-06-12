@@ -63,7 +63,6 @@ else
     Plug 'tpope/vim-fugitive'
     Plug 'airblade/vim-rooter'
     Plug 'bluz71/vim-nightfly-colors', { 'as': 'nightfly' }
-    Plug '907th/vim-auto-save',
     call plug#end()
     exe 'source '.g:config_dir.'vim/vim_config.vimrc'
 endif
