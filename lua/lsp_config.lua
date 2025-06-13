@@ -30,7 +30,6 @@ require("nvim-treesitter.configs").setup({
     additional_vim_regex_highlighting = false,
   },
 })
-vim.treesitter.language.register("markdown", "vimwiki")
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt.foldlevelstart = 99

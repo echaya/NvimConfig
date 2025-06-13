@@ -200,7 +200,7 @@ hipatterns.setup({
 })
 
 require("render-markdown").setup({
-  file_types = { "markdown", "vimwiki" },
+  file_types = { "markdown" },
   enabled = true,
   code = {
     sign = false,
@@ -245,3 +245,14 @@ require("quicker").setup({
   },
 })
 
+require("kiwi").setup({
+  {
+    name = "wiki",
+    path = vim.g.MDir,
+  },
+})
+
+local kiwi = require("kiwi")
+-- Necessary keybindings
+vim.keymap.set("n", "<leader>ww", kiwi.open_wiki_index, { desc = "wiki" })
+vim.keymap.set("n", "<leader>wt", kiwi.todo.toggle, { desc = "toggle todo" })

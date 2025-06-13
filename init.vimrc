@@ -26,7 +26,6 @@ let g:lst_plugin = [
             \'MTDL9/vim-log-highlighting',
             \'tpope/vim-repeat',
             \'unblevable/quick-scope',
-            \'vimwiki/vimwiki',
             \'dhruvasagar/vim-table-mode'
             \]
 
