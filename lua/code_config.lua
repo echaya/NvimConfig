@@ -255,4 +255,4 @@ require("kiwi").setup({
 local kiwi = require("kiwi")
 -- Necessary keybindings
 vim.keymap.set("n", "<leader>ww", kiwi.open_wiki_index, { desc = "wiki" })
-vim.keymap.set("n", "<leader>wt", kiwi.todo.toggle, { desc = "toggle todo" })
+vim.keymap.set("n", "<leader>tt", kiwi.todo.toggle, { desc = "toggle todo" })
