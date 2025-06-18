@@ -245,14 +245,20 @@ require("quicker").setup({
   },
 })
 
-require("kiwi").setup({
-  {
-    name = "wiki",
-    path = vim.g.MDir,
+require("neowiki").setup({
+  wiki_dirs = {
+    { name = "wiki", path = vim.g.MDir },
+    { name = "todo", path = "todo" },
+  },
+  keymaps = {
+     toggle_task = "<leader>tt",
+  },
+  todo = {
+    show_todo_progress = true,
+    todo_progress_hl_group = "DiffText",
   },
 })
 
-local kiwi = require("kiwi")
 -- Necessary keybindings
-vim.keymap.set("n", "<leader>ww", kiwi.open_wiki_index, { desc = "wiki" })
-vim.keymap.set("n", "<leader>tt", kiwi.todo.toggle, { desc = "toggle todo" })
+vim.keymap.set("n", "<leader>ww", require("neowiki").open_wiki, {})
+vim.keymap.set("n", "<leader>wt", require("neowiki").open_wiki_in_new_tab, {})
