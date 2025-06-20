@@ -79,7 +79,7 @@ if vim.g.vscode == nil then
       depends = {
         "echaya/friendly-snippets",
       },
-      checkout = "v1.4.0", -- check releases for latest tag
+      checkout = "v1.4.1", -- check releases for latest tag
     })
     add({ source = "dnlhc/glance.nvim" })
     add({
@@ -100,7 +100,7 @@ later(function()
     add({ source = "echaya/yarepl.nvim", checkout = "main" })
     add({ source = "stevearc/conform.nvim" })
     add({ source = "stevearc/quicker.nvim" })
-    add({ source = "echaya/kiwi.nvim", checkout = "zhe" })
+    add({ source = "echaya/neowiki.nvim" })
     add({ source = "MeanderingProgrammer/render-markdown.nvim" })
     require("lua.code_config")
     require("lua.repl_config")

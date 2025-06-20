@@ -248,10 +248,10 @@ require("quicker").setup({
 require("neowiki").setup({
   wiki_dirs = {
     { name = "wiki", path = vim.g.MDir },
-    { name = "todo", path = "todo" },
+    { name = "todo", path = "todo/haha" },
   },
   keymaps = {
-     toggle_task = "<leader>tt",
+    toggle_task = "<leader>tt",
   },
   todo = {
     show_todo_progress = true,
@@ -259,6 +259,10 @@ require("neowiki").setup({
   },
 })
 
--- Necessary keybindings
-vim.keymap.set("n", "<leader>ww", require("neowiki").open_wiki, {})
-vim.keymap.set("n", "<leader>wt", require("neowiki").open_wiki_in_new_tab, {})
+vim.keymap.set("n", "<leader>ww", require("neowiki").open_wiki, { desc = "open wiki" })
+vim.keymap.set(
+  "n",
+  "<leader>wt",
+  require("neowiki").open_wiki_new_tab,
+  { desc = "open wiki in new tab" }
+)
