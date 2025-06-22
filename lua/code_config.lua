@@ -257,9 +257,18 @@ require("neowiki").setup({
     show_todo_progress = true,
     todo_progress_hl_group = "DiffText",
   },
+  floating_wiki = {
+    style = { winblend = 0 },
+  },
 })
 
 vim.keymap.set("n", "<leader>ww", require("neowiki").open_wiki, { desc = "open wiki" })
+vim.keymap.set(
+  "n",
+  "<leader>wW",
+  require("neowiki").open_wiki_floating,
+  { desc = "open wiki floating" }
+)
 vim.keymap.set(
   "n",
   "<leader>wt",
