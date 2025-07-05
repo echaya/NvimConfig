@@ -248,10 +248,12 @@ require("quicker").setup({
 require("neowiki").setup({
   wiki_dirs = {
     { name = "wiki", path = vim.g.MDir },
-    { name = "todo", path = "todo/haha" },
+    { name = "todo", path = "todo" },
+    { name = "demo", path = "demo" },
   },
   keymaps = {
     toggle_task = "<leader>tt",
+    rename_page = "<f2>",
   },
   todo = {
     show_todo_progress = true,
