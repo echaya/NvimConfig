@@ -73,7 +73,6 @@ end)
 if vim.g.vscode == nil then
   -- deps later: lsp, iron and treesitter
   later(function()
-    vim.g.update_blink = true
     add({
       source = "saghen/blink.cmp",
       depends = {

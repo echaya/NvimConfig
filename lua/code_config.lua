@@ -19,7 +19,7 @@ cmp.setup({
     nerd_font_variant = "mono",
   },
   fuzzy = {
-    prebuilt_binaries = { download = vim.g.update_blink },
+    prebuilt_binaries = { download = true },
     implementation = "rust",
   },
   completion = {
