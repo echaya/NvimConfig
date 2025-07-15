@@ -78,7 +78,7 @@ if vim.g.vscode == nil then
       depends = {
         "echaya/friendly-snippets",
       },
-      checkout = "v1.4.1", -- check releases for latest tag
+      checkout = "v1.5.0", -- check releases for latest tag
     })
     add({ source = "dnlhc/glance.nvim" })
     add({
