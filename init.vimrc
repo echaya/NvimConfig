@@ -45,9 +45,7 @@ else
     call plug#begin(s:path_package.'pack/deps/vim/')
 
     for plugin in g:lst_plugin
-        if stridx(plugin, "scope") == -1
-            Plug plugin
-        endif
+        Plug plugin
     endfor
     Plug 'mhinz/vim-signify'
     Plug 'itchyny/lightline.vim'
@@ -58,7 +56,6 @@ else
     Plug 'Julian/vim-textobj-variable-segment' " av, iv
     Plug 'mbbill/undotree'
     Plug 'machakann/vim-sandwich'
-    Plug 'echaya/quick-scope'
     Plug 'tpope/vim-fugitive'
     Plug 'airblade/vim-rooter'
     Plug 'bluz71/vim-nightfly-colors', { 'as': 'nightfly' }
