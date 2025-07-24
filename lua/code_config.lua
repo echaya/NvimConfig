@@ -248,8 +248,6 @@ require("quicker").setup({
 require("neowiki").setup({
   wiki_dirs = {
     { name = "wiki", path = vim.g.MDir },
-    { name = "todo", path = "todo" },
-    { name = "demo", path = "demo" },
   },
   discover_nested_roots = true,
   keymaps = {
@@ -265,10 +263,10 @@ require("neowiki").setup({
   },
 })
 
-vim.keymap.set("n", "<leader>ww", require("neowiki").open_wiki, { desc = "open wiki" })
+vim.keymap.set("n", "<leader>wW", require("neowiki").open_wiki, { desc = "open wiki" })
 vim.keymap.set(
   "n",
-  "<leader>wW",
+  "<leader>ww",
   require("neowiki").open_wiki_floating,
   { desc = "open wiki floating" }
 )
