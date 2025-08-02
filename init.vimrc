@@ -37,12 +37,12 @@ else
         let s:path_package = $HOME . '/.local/share/nvim/site/'
         "source plug.vim manually from plugged folder.
         "It should normally sit in nvim working dir autoload folder
-        exe 'source '. s:path_package.'pack/deps/vim/plug.vim'
+        exe 'source '. s:path_package.'pack/deps/opt/plug.vim'
     catch
         let s:path_package = $HOME . '/AppData/local/nvim-data/site/'
-        exe 'source '. s:path_package.'pack/deps/vim/plug.vim'
+        exe 'source '. s:path_package.'pack/deps/opt/plug.vim'
     endtry
-    call plug#begin(s:path_package.'pack/deps/vim/')
+    call plug#begin(s:path_package.'pack/deps/opt/')
 
     for plugin in g:lst_plugin
         Plug plugin
