@@ -57,7 +57,7 @@ nnoremap <expr> k v:count == 0 ? 'gk' : 'k'
 xnoremap <expr> k v:count == 0 ? 'gk' : 'k'
 
 " insert lines without entering insert mode (allow count)
-noremap <silent> go :<C-u>call append(line("."),   repeat([""], v:count1))<CR>
+nnoremap  <silent> go :<C-u>call append(line("."),   repeat([""], v:count1))<CR>
 nnoremap <silent> gO :<C-u>call append(line(".")-1, repeat([""], v:count1))<CR>
 
 " use <leader><Esc> to escape terminal mode
