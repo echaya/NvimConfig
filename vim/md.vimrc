@@ -13,6 +13,7 @@ augroup mdgroup
     autocmd FileType markdown normal zR
     "edit link
     autocmd Filetype markdown nnoremap <buffer> <localleader>md :call EditMdLink()<cr>
+    autocmd Filetype markdown nnoremap <silent> <buffer> gO :<C-u>call append(line(".")-1, repeat([""], v:count1))<CR>
 augroup END
 
 " spell check
