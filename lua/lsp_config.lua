@@ -142,16 +142,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
       return
     end
 
-    -- vim.notify("LSP attached: " .. client.name .. " to buffer " .. bufnr, vim.log.levels.INFO)
-    local ok_navic, navic = pcall(require, "nvim-navic")
-    if ok_navic then
-      if client.server_capabilities.documentSymbolProvider then -- Check if server supports document symbols
-        navic.attach(client, bufnr)
-      end
-    else
-      vim.notify("nvim-navic not found. Skipping attachment.", vim.log.levels.WARN)
-    end
-
     if client.name == "ruff_lsp" or client.name == "ruff" then -- Check both common names
       client.server_capabilities.hoverProvider = false
     end
