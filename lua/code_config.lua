@@ -171,9 +171,9 @@ vim.keymap.set("n", "<leader>ho", function()
     vim.cmd("DiffviewOpen")
   end
 end, {
-  noremap = true, -- Non-recursive mapping
-  silent = true, -- Don't echo the command being run
-  desc = "Diffview Open [HEAD~count]", -- Description for which-key or help
+  noremap = true,
+  silent = true,
+  desc = "Diffview Open [HEAD~count]",
 })
 
 local function get_default_branch_name()
@@ -185,15 +185,16 @@ end
 
 vim.keymap.set("n", "<leader>hm", function()
   vim.cmd("DiffviewOpen " .. get_default_branch_name())
-end, { desc = "Diff against master" })
+end, { desc = "Diff against local master" })
 
 vim.keymap.set("n", "<leader>hM", function()
   vim.cmd("DiffviewOpen HEAD..origin/" .. get_default_branch_name())
-end, { desc = "Diff against origin/master" })
+end, { desc = "Diff against (remote) origin/master" })
 
 vim.keymap.set("n", "<leader>hy", function()
   return require("mini.diff").operator("yank") .. "gh"
 end, { expr = true, remap = true, desc = "Yank hunk Reference" })
+
 vim.keymap.set(
   "n",
   "<leader>hh",
