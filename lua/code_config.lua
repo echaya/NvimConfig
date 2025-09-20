@@ -176,6 +176,21 @@ end, {
   desc = "Diffview Open [HEAD~count]", -- Description for which-key or help
 })
 
+local function get_default_branch_name()
+  local res = vim
+    .system({ "git", "rev-parse", "--verify", "main" }, { capture_output = true })
+    :wait()
+  return res.code == 0 and "main" or "master"
+end
+
+vim.keymap.set("n", "<leader>hm", function()
+  vim.cmd("DiffviewOpen " .. get_default_branch_name())
+end, { desc = "Diff against master" })
+
+vim.keymap.set("n", "<leader>hM", function()
+  vim.cmd("DiffviewOpen HEAD..origin/" .. get_default_branch_name())
+end, { desc = "Diff against origin/master" })
+
 vim.keymap.set("n", "<leader>hy", function()
   return require("mini.diff").operator("yank") .. "gh"
 end, { expr = true, remap = true, desc = "Yank hunk Reference" })
