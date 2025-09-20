@@ -286,8 +286,11 @@ vim.keymap.set(
 require("aerial").setup({
   -- optionally use on_attach to set keymaps when aerial has attached to a buffer
   layout = {
-      default_direction = "prefer_left"
+    default_direction = "prefer_left",
+    min_width = 20,
+    preserve_equality = true,
   },
+  close_automatic_events = { "unfocus", "switch_buffer" },
   on_attach = function(bufnr)
     -- Jump forwards/backwards with '{' and '}'
     vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { buffer = bufnr })
