@@ -36,7 +36,7 @@ endif
 if has('gui_running')
     set guioptions-=e
     let g:MyFont = "Iosevka_NF"
-    let g:FontSize = 10
+    let g:FontSize = 9
     exe "set guifont=".MyFont.":h".FontSize
     function! AdjustFontSize(amount)
         let g:FontSize = g:FontSize+a:amount
