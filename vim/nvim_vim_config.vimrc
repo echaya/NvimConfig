@@ -1,12 +1,12 @@
 try
     if has('persistent_undo')
         exe 'set undodir='.stdpath('data') . '/undo'
-        set undolevels=10000
+        set undolevels=1000
         set undofile
     endif
 catch
     exe 'set undodir='.$HOME. '/undo'
-    set undolevels=10000
+    set undolevels=1000
     set undofile
 endtry
 
