@@ -1,6 +1,24 @@
 local yarepl = require("yarepl")
 local repl = require("lua.repl_utils")
 
+local ip_formatter = function(str)
+  local first_non_blank_line
+
+  for line in str:gmatch("[^\r\n]+") do
+    -- str_pre_formating.match with '%S' checks if the line contains any non-whitespace character
+    if line:match("%S") then
+      first_non_blank_line = line
+      break
+    end
+  end
+
+  if first_non_blank_line then
+    first_non_blank_line = "# " .. first_non_blank_line
+  end
+
+  return (first_non_blank_line or "") .. "\n" .. yarepl.source_syntaxes.ipython(str)
+end
+
 yarepl.setup({
   -- buflisted = true, -- Default, REPL buffer will appear in buffer list
   scratch = false, -- Default true, REPL buffer is a scratch buffer
@@ -13,7 +31,7 @@ yarepl.setup({
     ipython = {
       cmd = { "ipython", "--no-autoindent" },
       formatter = "bracketed_pasting", -- Maps to iron's bracketed_paste
-      source_syntax = "ipython", -- Useful for REPLSourceVisual/Operator if you use them
+      source_syntax = ip_formatter, -- Useful for REPLSourceVisual/Operator if you use them
       wincmd = function(bufnr, _)
         local width = math.floor(math.max(vim.o.columns * 0.35, 80))
         local old_splitright = vim.o.splitright
@@ -25,11 +43,6 @@ yarepl.setup({
         vim.api.nvim_win_set_buf(new_win_id, bufnr)
       end,
     },
-  },
-  print_1st_line_on_source = true,
-  source_command_hint = {
-    enabled = true,
-    hl_group = "DiffText",
   },
 })
 
