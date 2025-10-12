@@ -119,8 +119,8 @@ require("mini.surround").setup({
   search_method = "cover_or_next",
 })
 vim.keymap.del("x", "ys")
-vim.keymap.set("n", "yS", "ma$", { remap = true, desc = "surround add til end" })
-vim.keymap.set("n", "yss", "ma_", { remap = true, desc = "surround add line" })
+vim.keymap.set("n", "yS", "ys$", { remap = true, desc = "surround add til end" })
+vim.keymap.set("n", "yss", "ys_", { remap = true, desc = "surround add line" })
 
 require("mini.operators").setup({
   replace = {
