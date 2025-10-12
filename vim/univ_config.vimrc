@@ -7,9 +7,9 @@ xmap <leader>gc ygvgc`>p
 " join lines by gj
 nnoremap gj J
 " <leader>m to set mark
-nnoremap <leader>m m
+"nnoremap <leader>m m
 " delete mark X. dma will delete mark a, dmX will delete mark X
-nnoremap <leader>d :execute 'delmarks '.nr2char(getchar())<cr>
+nnoremap dm :execute 'delmarks '.nr2char(getchar())<cr>
 nnoremap q: <nop>
 
 " use Alt+j/k to swap lines (allow count)
