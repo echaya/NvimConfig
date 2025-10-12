@@ -1,8 +1,7 @@
 vim.keymap.set("n", "<localleader>x", function()
   vim.cmd("!start " .. vim.fn.shellescape(vim.fn.expand("<cfile>"), true))
-end, { noremap = true, silent = true, desc = "Open file under cursor in default program" }
-)
-vim.keymap.set("n", "m", function()
+end, { noremap = true, silent = true, desc = "Open file under cursor in default program" })
+vim.keymap.set("n", "s", function()
   require("flash").jump({
     search = { multi_window = true },
     jump = { autojump = true },
@@ -11,19 +10,19 @@ end, { desc = "Flash" })
 vim.keymap.set("n", "<localleader><localleader>", function()
   require("flash").jump({ continue = true })
 end, { desc = "Flash Continue" })
-vim.keymap.set({ "x", "o" }, "m", function()
+vim.keymap.set({ "x", "o" }, "s", function()
   require("flash").jump({
     search = { forward = true, wrap = false, multi_window = false },
     jump = { pos = "end" },
   })
 end, { desc = "Flash Forward (inclusive)" })
-vim.keymap.set({ "x", "o" }, "M", function()
+vim.keymap.set({ "x", "o" }, "S", function()
   require("flash").jump({
     search = { forward = false, wrap = false, multi_window = false },
     jump = { pos = "start", inclusive = true },
   })
 end, { desc = "Flash Backward (inclusive)" })
-vim.keymap.set({ "n", "x", "o" }, "M", function()
+vim.keymap.set({ "n", "x", "o" }, "S", function()
   require("flash").treesitter()
 end, { desc = "Flash Treesitter" })
 vim.keymap.set("o", "r", function()
@@ -107,9 +106,21 @@ require("mini.ai").setup({
   },
 })
 
-require("mini.surround").setup({ n_lines = 50, search_method = "cover_or_next" })
-vim.keymap.set("n", "S", "sa$", { remap = true, desc = "surround add til end" })
-vim.keymap.set("n", "ss", "sa_", { remap = true, desc = "surround add line" })
+require("mini.surround").setup({
+  mappings = {
+    add = "ys", -- Add surrounding in Normal and Visual modes
+    delete = "ds", -- Delete surrounding
+    find = "", -- Find surrounding (to the right)
+    find_left = "", -- Find surrounding (to the left)
+    highlight = "", -- Highlight surrounding
+    replace = "cs", -- Replace surrounding
+  },
+  n_lines = 50,
+  search_method = "cover_or_next",
+})
+vim.keymap.del("x", "ys")
+vim.keymap.set("n", "yS", "ma$", { remap = true, desc = "surround add til end" })
+vim.keymap.set("n", "yss", "ma_", { remap = true, desc = "surround add line" })
 
 require("mini.operators").setup({
   replace = {
