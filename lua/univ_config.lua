@@ -10,13 +10,13 @@ end, { desc = "Flash" })
 vim.keymap.set("n", "<localleader><localleader>", function()
   require("flash").jump({ continue = true })
 end, { desc = "Flash Continue" })
-vim.keymap.set({ "x", "o" }, "s", function()
+vim.keymap.set({ "x", "o" }, "z", function()
   require("flash").jump({
     search = { forward = true, wrap = false, multi_window = false },
     jump = { pos = "end" },
   })
 end, { desc = "Flash Forward (inclusive)" })
-vim.keymap.set({ "x", "o" }, "S", function()
+vim.keymap.set({ "x", "o" }, "Z", function()
   require("flash").jump({
     search = { forward = false, wrap = false, multi_window = false },
     jump = { pos = "start", inclusive = true },
@@ -119,7 +119,6 @@ require("mini.surround").setup({
   search_method = "cover_or_next",
 })
 vim.keymap.del("x", "ys")
-vim.keymap.set("n", "yS", "ys$", { remap = true, desc = "surround add til end" })
 vim.keymap.set("n", "yss", "ys_", { remap = true, desc = "surround add line" })
 
 require("mini.operators").setup({
