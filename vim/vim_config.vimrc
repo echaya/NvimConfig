@@ -111,3 +111,4 @@ let g:rooter_targets = '/,*'
 let g:rooter_buftypes = ['']
 let g:rooter_patterns = ['.git']
 
+runtime macros/sandwich/keymap/surround.vim

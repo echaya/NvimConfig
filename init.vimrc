@@ -101,5 +101,5 @@ augroup color_refresh
     highlight SpellLocal gui=undercurl guifg=#FFFEE2
 
     highlight TermCursor guifg=#D27E99
-    highlight SnacksStatusColumnMark guibg=#16161d guifg=#D27E99
+    highlight SnacksStatusColumnMark guibg=#1f1f28 guifg=#D27E99
 augroup END

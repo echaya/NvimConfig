@@ -1,5 +1,4 @@
 --#
--- Set up nvim-cmp.
 local cmp = require("blink.cmp")
 cmp.setup({
   keymap = {
@@ -285,17 +284,25 @@ vim.keymap.set(
 
 require("aerial").setup({
   -- optionally use on_attach to set keymaps when aerial has attached to a buffer
+  attach_mode = "global",
+  show_guides = true,
+  backends = { "lsp", "treesitter", "markdown", "man" },
   layout = {
     default_direction = "prefer_left",
     min_width = 20,
     preserve_equality = true,
+    resize_to_content = false,
+    win_opts = {
+        winhl = "Normal:NormalFloat,FloatBorder:NormalFloat,SignColumn:SignColumnSB",
+        signcolumn = "yes",
+        statuscolumn = " ",
+    },
   },
-  close_automatic_events = { "unfocus", "switch_buffer" },
+  close_automatic_events = { "switch_buffer" },
   on_attach = function(bufnr)
     -- Jump forwards/backwards with '{' and '}'
     vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { buffer = bufnr })
     vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { buffer = bufnr })
   end,
 })
--- You probably also want to set a keymap to toggle aerial
 vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<CR>")

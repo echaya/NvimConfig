@@ -9,8 +9,8 @@ nnoremap gj J
 " <leader>m to set mark
 "nnoremap <leader>m m
 " delete mark X. dma will delete mark a, dmX will delete mark X
-nnoremap dm <cmd>execute 'delmarks '.nr2char(getchar())<cr>
-nnoremap dM <cmd>delmarks!<cr>
+nnoremap dm :execute 'delmarks '.nr2char(getchar())<cr>
+nnoremap dM :delmarks!
 nnoremap q: <nop>
 
 " use Alt+j/k to swap lines (allow count)
