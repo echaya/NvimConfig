@@ -90,17 +90,17 @@ require("mini.ai").setup({
     },
     v = {
       {
-        -- a*aa_bbb "[test_abc_def
-        { "[^%w]()()[%w]+()_()" },
-        -- a*aa_bb at the start of the line
-        { "^()()[%w]+()_()" },
-        -- aaa_bbb*_ccc
-        { "_()()[%w]+()_()" },
-        -- bbb_cc*cc p/dmmp/df_mom_v2.pickle"
-        { "()_()[%w]+()()%f[%W]" },
-        -- bbb_cc*c at the end of the line
-        -- df_univ = pd.read_pickle("./data/df_mom.pickle")
-        { "()_()[%w]+()()$" },
+        -- Use [%a%d] to only match letters and numbers, not the underscore
+        -- 1. Middle word (most common case)
+        "()_()[%a%d]+()_()",
+        -- 2. Last word (at end of line)
+        "()_()[%a%d]+()()$",
+        -- 3. Last word (followed by non-word/non-underscore char)
+        "()_()[%a%d]+()()%f[^(%a%d)]", -- Match boundary that ISN'T letter/number
+        -- 4. First word (at start of line)
+        "^()()[%a%d]+()_()",
+        -- 5. First word (after non-word/non-underscore char, like '(')
+        "[^%a%d_]()()[%a%d]+()_()", -- Match boundary that ISN'T letter/number/underscore
       },
     },
   },
