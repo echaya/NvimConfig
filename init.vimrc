@@ -20,13 +20,27 @@ endif  " Now: c:/Tools/neovim/config/
 
 
 " Universal plugins
-let g:lst_plugin = [
+let g:share_plugin = [
             \'dstein64/vim-startuptime',
             \'svermeulen/vim-cutlass',
             \'MTDL9/vim-log-highlighting',
             \'tpope/vim-repeat',
             \'unblevable/quick-scope',
             \'dhruvasagar/vim-table-mode'
+            \]
+let g:vim_plugin = [
+            \ 'mhinz/vim-signify',
+            \ 'itchyny/lightline.vim',
+            \ 'itchyny/vim-gitbranch',
+            \ 'tpope/vim-commentary',
+            \ 'tpope/vim-speeddating',
+            \ 'kana/vim-textobj-user',
+            \ 'Julian/vim-textobj-variable-segment',
+            \ 'mbbill/undotree',
+            \ 'machakann/vim-sandwich',
+            \ 'tpope/vim-fugitive',
+            \ 'airblade/vim-rooter',
+            \ ['bluz71/vim-nightfly-colors',"nightfly"]
             \]
 
 if has("nvim")
@@ -44,21 +58,16 @@ else
     endtry
     call plug#begin(s:path_package.'pack/deps/opt/')
 
-    for plugin in g:lst_plugin
+    for plugin in g:share_plugin
         Plug plugin
     endfor
-    Plug 'mhinz/vim-signify'
-    Plug 'itchyny/lightline.vim'
-    Plug 'itchyny/vim-gitbranch'
-    Plug 'tpope/vim-commentary' " Comment/uncomment code
-    Plug 'tpope/vim-speeddating'
-    Plug 'kana/vim-textobj-user' " Dependent plugin
-    Plug 'Julian/vim-textobj-variable-segment' " av, iv
-    Plug 'mbbill/undotree'
-    Plug 'machakann/vim-sandwich'
-    Plug 'tpope/vim-fugitive'
-    Plug 'airblade/vim-rooter'
-    Plug 'bluz71/vim-nightfly-colors', { 'as': 'nightfly' }
+    for plugin in g:vim_plugin
+        if type(plugin) == type([])
+            Plug plugin[0], {'as': plugin[1]}
+        else
+            Plug plugin
+        endif
+    endfor
     call plug#end()
     exe 'source '.g:config_dir.'vim/vim_config.vimrc'
 endif

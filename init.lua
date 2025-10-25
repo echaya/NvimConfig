@@ -34,7 +34,7 @@ local vim_now_index = 3
 -- deps now: UI & early utilities
 now(function()
   -- vim plugins, StartupTime
-  for index, value in ipairs(vim.g.lst_plugin) do
+  for index, value in ipairs(vim.g.share_plugin) do
     if index <= vim_now_index then
       add({ source = value })
     end
@@ -48,7 +48,7 @@ end)
 -- deps later: utilities
 later(function()
   -- vim plugins
-  for index, value in ipairs(vim.g.lst_plugin) do
+  for index, value in ipairs(vim.g.share_plugin) do
     if index > vim_now_index then
       add({ source = value })
     end
