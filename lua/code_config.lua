@@ -1,4 +1,4 @@
---#
+-- Setup Autocomplete
 local cmp = require("blink.cmp")
 cmp.setup({
   keymap = {
