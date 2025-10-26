@@ -152,22 +152,27 @@ require("mini.diff").setup({
 
 vim.keymap.set(
   "n",
-  "<leader>hd",
+  "<leader>hv",
   "<cmd>DiffviewFileHistory %<CR>",
   { desc = "diffview: file_history" }
 )
 vim.keymap.set(
-  "v",
-  "<leader>hd",
-  "<cmd>'<,'>DiffviewFileHistory<CR>",
-  { desc = "diffview: hunk_history" }
+  "n",
+  "<leader>hV",
+  "<cmd>DiffviewFileHistory<CR>",
+  { desc = "diffview: log_history" }
 )
-vim.keymap.set("n", "<leader>ho", function()
+
+vim.keymap.set("n", "<leader>v", function()
   local count = vim.v.count
-  if count > 0 then
-    vim.cmd("DiffviewOpen HEAD~" .. count)
+  if next(require("diffview.lib").views) == nil then
+    if count > 0 then
+      vim.cmd("DiffviewOpen HEAD~" .. count)
+    else
+      vim.cmd("DiffviewOpen")
+    end
   else
-    vim.cmd("DiffviewOpen")
+    vim.cmd("DiffviewClose")
   end
 end, {
   noremap = true,
