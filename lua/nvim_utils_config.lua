@@ -372,10 +372,14 @@ vim.api.nvim_create_autocmd("RecordingEnter", {
 vim.api.nvim_create_autocmd("RecordingLeave", {
   callback = function()
     _MACRO_RECORDING_STATUS = false
-    vim.notify("Success!", vim.log.levels.INFO, {
-      title = "Macro Recording End",
-      timeout = 2000,
-    })
+    vim.notify(
+      string.format("Register: %s", vim.fn.reg_recording()),
+      vim.log.levels.INFO,
+      {
+        title = "Macro Recording End",
+        timeout = 2000,
+      }
+    )
   end,
   group = vim.api.nvim_create_augroup("NoiceMacroNotficationDismiss", { clear = true }),
 })
