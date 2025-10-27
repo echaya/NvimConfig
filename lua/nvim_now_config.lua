@@ -73,14 +73,15 @@ Snacks.toggle
   :map("|l")
 Snacks.toggle({
   name = "TableMode",
+  notify = false,
   get = function()
-    return vim.b.table_mode_enabled == true
+    return vim.b.table_mode_enabled or false
   end,
   set = function(state)
-    local current_state_is_active = vim.b.table_mode_enabled
-    if state ~= current_state_is_active then
+    local current_state = vim.b.table_mode_enabled or false
+    if state ~= current_state then
       vim.cmd("TableModeToggle")
-      vim.b.table_mode_enabled = state and true or false
+      vim.b.table_mode_enabled = state
     end
   end,
 }):map("|t")
@@ -109,6 +110,24 @@ Snacks.toggle({
   end,
 }):map("|c")
 
+Snacks.toggle({
+  name = "TSContext",
+  get = function()
+    if vim.b.ts_context_enabled == nil then
+      vim.b.ts_context_enabled = true
+    end
+    return vim.b.ts_context_enabled
+  end,
+  set = function(state)
+    if state then
+      vim.cmd("TSContext enable")
+    else
+      vim.cmd("TSContext disable")
+    end
+    vim.b.ts_context_enabled = state
+  end,
+}):map("|T")
+
 vim.keymap.set("n", "<leader>un", function()
   Snacks.notifier.hide()
 end, { desc = "Dismiss All Notifications" })
@@ -125,7 +144,7 @@ vim.keymap.set("n", "<leader>fm", "<cmd>messages<cr>", { desc = "find_messages" 
 
 vim.keymap.set("n", "<leader>gb", function()
   Snacks.git.blame_line()
-end, { desc = "Git Browse" })
+end, { desc = "Git Blame" })
 vim.keymap.set("n", "<leader>gB", function()
   Snacks.gitbrowse()
 end, { desc = "Git Browse" })

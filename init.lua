@@ -98,6 +98,7 @@ if vim.g.vscode == nil then
         end,
       },
     })
+    add({ source = "nvim-treesitter/nvim-treesitter-context" })
     require("lua.lsp_config")
   end)
 end
@@ -105,9 +106,8 @@ end
 -- deps later: programming tools
 later(function()
   if vim.g.vscode == nil then
-    add({ source = "milanglacier/yarepl.nvim"})
+    add({ source = "milanglacier/yarepl.nvim" })
     add({ source = "stevearc/conform.nvim" })
-    add({ source = "stevearc/aerial.nvim" })
     add({ source = "echaya/neowiki.nvim", checkout = "dev" })
     -- add({ source = "NStefan002/screenkey.nvim" })
     add({ source = "MeanderingProgrammer/render-markdown.nvim" })
