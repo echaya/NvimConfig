@@ -30,11 +30,13 @@ package.path = package.path
   .. vim.g.config_dir
   .. "?/init.lua"
 -- control how many vim plugins to be loaded now
-local refresh_vim = false
+if LoadVimPlugin == nil then
+  LoadVimPlugin = false
+end
 local vim_now_index = 3
 -- deps now: UI & early utilities
 now(function()
-  if refresh_vim then
+  if LoadVimPlugin then
     for _, value in ipairs(vim.g.vim_plugin) do
       if type(value) == "table" then
         add({ source = value[1], name = value[2] })
