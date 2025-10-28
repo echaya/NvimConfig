@@ -34,7 +34,7 @@ vim.keymap.set({ "n" }, "<leader>fs", function()
       python = {
         "Class",
         "Function",
-        "Module", -- Catches file-level scope
+        "Constant",
       },
     },
   })
