@@ -22,6 +22,58 @@ vim.keymap.set("n", "<leader>e", function()
     vim.cmd("wincmd =")
   end, 100)
 end, { desc = "find_file" })
+
+vim.keymap.set({ "n" }, "<leader>fs", function()
+  Snacks.picker.lsp_symbols({
+    filter = {
+      lua = {
+        "Class",
+        "Function",
+        "Module",
+      },
+      python = {
+        "Class",
+        "Function",
+        "Module", -- Catches file-level scope
+      },
+    },
+  })
+end, { desc = "Find Symbols" })
+vim.keymap.set({ "n" }, "<leader>fS", function()
+  Snacks.picker.lsp_symbols({
+    filter = {
+      lua = {
+        "Class",
+        "Constructor",
+        "Enum",
+        "Field",
+        "Function",
+        "Interface",
+        "Method",
+        "Module",
+        "Namespace",
+        -- "Package" is commented out, as the docs note luals uses it for control flow
+        "Property",
+        "Struct",
+        "Trait",
+        "Variable", -- Include module-level variables
+      },
+      python = {
+        "Class",
+        "Constructor", -- Catches __init__
+        "Method",
+        "Function",
+        "Module", -- Catches file-level scope
+        "Variable", -- Shows module/class-level variables
+        "Constant",
+        "Field", -- Shows class attributes
+        "Property",
+        "Enum",
+      },
+    },
+  })
+end, { desc = "Find More Symbols" })
+
 vim.keymap.set("n", "<leader>fh", function()
   Snacks.picker.help()
 end, { desc = "find_help" })
@@ -161,7 +213,7 @@ vim.keymap.set({ "n" }, "<leader>.", function()
   Snacks.scratch()
 end, { desc = "Toggle Scratch Buffer" })
 
-vim.keymap.set({ "n" }, "<leader>fs", function()
+vim.keymap.set({ "n" }, "<leader>f.", function()
   Snacks.scratch.select()
 end, { desc = "Find Scratch" })
 
@@ -183,6 +235,7 @@ Snacks.setup({
   words = { enabled = true },
   indent = { enabled = true },
   scope = { enabled = true },
+  explorer = { enabled = true },
   scroll = {
     enabled = true,
     animate = {
