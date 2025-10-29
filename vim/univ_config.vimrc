@@ -1,4 +1,5 @@
 "universal settings and keymaps
+set noswapfile
 let maplocalleader="\\"
 
 " <leader>gc to comment out and copy the line

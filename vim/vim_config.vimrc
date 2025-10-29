@@ -1,6 +1,5 @@
 " system
 filetype plugin indent on
-set noswapfile
 set nobackup
 set nowritebackup
 set nocompatible
