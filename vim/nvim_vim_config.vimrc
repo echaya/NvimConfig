@@ -253,7 +253,6 @@ function! MyTabLine()
 
         " Add a per-tab close button
         if tabpagenr('$') > 1
-            " --- MODIFIED BLOCK ---
             " 1. Set highlight based on tab status
             if i == current_tab
                 let s .= '%#TabLineCloseActive#'
@@ -270,7 +269,6 @@ function! MyTabLine()
             endif
             " 4. Add a trailing space for separation
             let s .= ' '
-            " --- END MODIFIED BLOCK ---
         else
             let s .= '  ' " Add padding
         endif
