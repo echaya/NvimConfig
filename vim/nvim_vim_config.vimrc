@@ -144,88 +144,17 @@ augroup MyGroup | au!
 augroup END
 
 " ============================================================================
-"  Powerline Tabline Configuration
-" ============================================================================
-" Define the Nerd Font characters you want to use for separators.
-"  = U+E0B0,  = U+E0B2
-let g:pl_sep = ''
-let g:pl_sep_left = ''
-"  = U+E0B1,  = U+E0B3 (thin variants)
-let g:pl_sep_thin = ''
-let g:pl_sep_thin_left = ''
-
-
-" ============================================================================
-"  Highlight Setup
-" ============================================================================
-" This function reads the colors from the active colorscheme and creates
-" the "bridging" highlight groups for the powerline separators.
-function! s:SetupPowerlineHighlights()
-    " Helper to get colors, with a fallback.
-    function! s:GetColor(group, attr, mode, fallback)
-        let id = hlID(a:group)
-        if id == 0
-            return a:fallback
-        endif
-        " The correct syntax is synIDattr(id, 'fg'/'bg', 'gui'/'cterm')
-        let color = synIDattr(id, a:attr, a:mode)
-        return (color == '' || color == -1) ? a:fallback : color
-    endfunction
-
-    " --- Get GUI Colors ---
-    let s:bg_sel = s:GetColor('TabLineSel', 'bg', 'gui', 'Gray')
-    let s:bg_norm = s:GetColor('TabLine', 'bg', 'gui', 'DarkGray')
-    let s:bg_fill = s:GetColor('TabLineFill', 'bg', 'gui', 'LightGray')
-    let s:fg_sel = s:GetColor('TabLineSel', 'fg', 'gui', 'Black')
-    let s:fg_norm = s:GetColor('TabLine', 'fg', 'gui', 'White')
-
-    " --- Create GUI highlight groups ---
-    execute 'hi HlSelToNorm guifg=' . s:bg_sel . ' guibg=' . s:bg_norm
-    execute 'hi HlNormToSel guifg=' . s:bg_norm . ' guibg=' . s:bg_sel
-    execute 'hi HlNormToNorm guifg=' . s:fg_norm . ' guibg=' . s:bg_norm
-    execute 'hi HlSelToFill guifg=' . s:bg_sel . ' guibg=' . s:bg_fill
-    execute 'hi HlNormToFill guifg=' . s:bg_norm . ' guibg=' . s:bg_fill
-    execute 'hi HlCloseBtn guifg=Red guibg=' . s:bg_sel
-    execute 'hi HlCloseBtnInactive guifg=Gray guibg=' . s:bg_norm
-
-    " --- Get CTerm Colors ---
-    " Provide sensible numeric fallbacks for cterm
-    let s:cbg_sel = s:GetColor('TabLineSel', 'bg', 'cterm', '238')
-    let s:cbg_norm = s:GetColor('TabLine', 'bg', 'cterm', '235')
-    let s:cbg_fill = s:GetColor('TabLineFill', 'bg', 'cterm', '234')
-    let s:cfg_norm = s:GetColor('TabLine', 'fg', 'cterm', '252')
-    let s:c_red = '196' " cterm for 'Red'
-    let s:c_gray = '245' " cterm for 'Gray'
-    let s:c_darkgray = '240' " cterm for 'DarkGray'
-
-    " --- Create CTerm highlight groups ---
-    execute 'hi HlSelToNorm ctermfg=' . s:cbg_sel . ' ctermbg=' . s:cbg_norm
-    execute 'hi HlNormToSel ctermfg=' . s:cbg_norm . ' ctermbg=' . s:cbg_sel
-    execute 'hi HlNormToNorm ctermfg=' . s:cfg_norm . ' ctermbg=' . s:cbg_norm
-    execute 'hi HlSelToFill ctermfg=' . s:cbg_sel . ' ctermbg=' . s:cbg_fill
-    execute 'hi HlNormToFill ctermfg=' . s:cbg_norm . ' ctermbg=' . s:cbg_fill
-    execute 'hi HlCloseBtn ctermfg=' . s:c_red . ' ctermbg=' . s:cbg_sel
-    execute 'hi HlCloseBtnInactive ctermfg=' . s:c_darkgray . ' ctermbg=' . s:cbg_norm
-endfunction
-
-
-" ============================================================================
-"  Helper Function: Get Display Name (Updated)
+"  Helper Function: Get Display Name (Unchanged)
 " ============================================================================
 function! s:GetTabDisplayName(tabnr, bufnr)
     let current_tab = tabpagenr()
     let is_current = (a:tabnr == current_tab)
     let display_name = ''
-
-    " Handle edge case of no buffer (e.g., empty tab)
     if a:bufnr == -1
         return '[No Window]'
     endif
-
     let filename = bufname(a:bufnr)
     let buftype = getbufvar(a:bufnr, '&buftype')
-
-    " Handle special buffer types first
     if filename == '' && buftype != 'quickfix' && buftype != 'help'
         let display_name = '[No Name]'
     elseif buftype == 'help'
@@ -248,10 +177,8 @@ function! s:GetTabDisplayName(tabnr, bufnr)
             let display_name = '[Scratch]'
         endif
     else
-        " This is a regular file buffer
         if is_current
             let full_path = fnamemodify(filename, ':p')
-            " Shorten path if it's too long
             if strlen(full_path) > 100
                 let display_name = pathshorten(full_path)
             else
@@ -261,97 +188,111 @@ function! s:GetTabDisplayName(tabnr, bufnr)
             let display_name = fnamemodify(filename, ':t')
         endif
     endif
-
-    " Final fallback check
     if display_name == ''
         let display_name = '[No Name]'
     endif
-
-    " Prepend modified flag
     if getbufvar(a:bufnr, '&modified')
         let display_name = '+' . display_name
     endif
-
     return display_name
+endfunction
+
+" Creates dynamic highlight groups for the close button
+function! s:SetupTabLineHighlights()
+    " --- Get Colors ---
+    " Get Error FG
+    let err_fg_gui = synIDattr(hlID('Error'), 'fg', 'gui')
+    let err_fg_cterm = synIDattr(hlID('Error'), 'fg', 'cterm')
+    if err_fg_gui == '' | let err_fg_gui = 'Red' | endif
+    if err_fg_cterm == '' | let err_fg_cterm = 'Red' | endif
+
+    " Get TabLineSel BG
+    let sel_bg_gui = synIDattr(hlID('TabLineSel'), 'bg', 'gui')
+    let sel_bg_cterm = synIDattr(hlID('TabLineSel'), 'bg', 'cterm')
+    if sel_bg_gui == '' | let sel_bg_gui = 'NONE' | endif
+    if sel_bg_cterm == '' | let sel_bg_cterm = 'NONE' | endif
+
+    " Get TabLine BG
+    let norm_bg_gui = synIDattr(hlID('TabLine'), 'bg', 'gui')
+    let norm_bg_cterm = synIDattr(hlID('TabLine'), 'bg', 'cterm')
+    if norm_bg_gui == '' | let norm_bg_gui = 'NONE' | endif
+    if norm_bg_cterm == '' | let norm_bg_cterm = 'NONE' | endif
+
+    " --- Define Highlights ---
+    " Active close button: Error FG, TabLineSel BG
+    execute 'hi TabLineCloseActive'
+    \   ' guifg=' . err_fg_gui . ' guibg=' . sel_bg_gui
+    \   ' ctermfg=' . err_fg_cterm . ' ctermbg=' . sel_bg_cterm
+
+    " Inactive close button: Error FG, TabLine BG
+    execute 'hi TabLineCloseInactive'
+    \   ' guifg=' . err_fg_gui . ' guibg=' . norm_bg_gui
+    \   ' ctermfg=' . err_fg_cterm . ' ctermbg=' . norm_bg_cterm
 endfunction
 
 function! MyTabLine()
     let s = ''
     let current_tab = tabpagenr()
-    let last_tab = tabpagenr('$')
     let i = 1
-
-    " Loop through all existing tab pages
-    while i <= last_tab
-        " Get the buffer number of the currently active window in tab 'i'
+    while i <= tabpagenr('$')
         let buflist = tabpagebuflist(i)
         let winnr_in_tab = tabpagewinnr(i)
         let bufnr = (winnr_in_tab > 0 && winnr_in_tab <= len(buflist)) ? buflist[winnr_in_tab - 1] : -1
 
-        let is_current = (i == current_tab)
-        let is_next_current = (i + 1 == current_tab)
-
-        " --- 1. Draw Tab Label ---
         " Set main highlight
-        let s .= (is_current ? '%#TabLineSel#' : '%#TabLine#')
-        " Set clickable region to switch to tab
         let s .= '%' . i . 'T'
+        if i == current_tab
+            let s .= '%#TabLineSel#'
+        else
+            let s .= '%#TabLine#'
+        endif
 
-        " Build label content
+        " Get display name
         let file_display_name = s:GetTabDisplayName(i, bufnr)
         let s .= ' ' . i . ':' . file_display_name . ' '
 
-        " Add close button
-        if last_tab > 1
-            " Use a different highlight for the close button
-            let s .= (is_current ? '%#HlCloseBtn#' : '%#HlCloseBtnInactive#')
-            " Set clickable region to close tab
+        " Add a per-tab close button
+        if tabpagenr('$') > 1
+            " --- MODIFIED BLOCK ---
+            " 1. Set highlight based on tab status
+            if i == current_tab
+                let s .= '%#TabLineCloseActive#'
+            else
+                let s .= '%#TabLineCloseInactive#'
+            endif
+            " 2. Add clickable close button
             let s .= '%' . i . 'X' . '✕ '
-        else
-            let s .= ' ' " Add padding
-        endif
-
-        " --- 2. Draw Separator ---
-        if is_current
-            if i == last_tab
-                " Current tab is the last tab, bridge to Fill
-                let s .= '%#HlSelToFill#' . g:pl_sep
+            " 3. Restore highlight group to the tab's main group
+            if i == current_tab
+                let s .= '%#TabLineSel#'
             else
-                " Current tab, bridge to next Normal tab
-                let s .= '%#HlSelToNorm#' . g:pl_sep
+                let s .= '%#TabLine#'
             endif
+            " 4. Add a trailing space for separation
+            let s .= ' '
+            " --- END MODIFIED BLOCK ---
         else
-            if is_next_current
-                " This is a Normal tab, bridge to next Selected tab
-                let s .= '%#HlNormToSel#' . g:pl_sep
-            elseif i == last_tab
-                " This is the last Normal tab, bridge to Fill
-                let s .= '%#HlNormToFill#' . g:pl_sep
-            else
-                " Normal tab, bridge to next Normal tab (use thin separator)
-                let s .= '%#HlNormToNorm#' . g:pl_sep_thin . '%#TabLine#'
-            endif
+            let s .= '  ' " Add padding
         endif
 
         let i += 1
     endwhile
 
-    " Fill the rest of the line and align right
+    " Fill the rest of the line
     let s .= '%#TabLineFill#'
     let s .= '%='
 
     return s
 endfunction
 
-" Set the tabline to use our custom function
 set tabline=%!MyTabLine()
 
 " Use an augroup to prevent duplicate autocmds
 augroup MyTabLineConfig
     autocmd!
     " Redraw highlights whenever the colorscheme changes
-    autocmd ColorScheme * call s:SetupPowerlineHighlights()
+    autocmd ColorScheme * call s:SetupTabLineHighlights()
 augroup END
 
 " Run setup once on load
-call s:SetupPowerlineHighlights()
+call s:SetupTabLineHighlights()
