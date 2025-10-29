@@ -143,19 +143,6 @@ augroup MyGroup | au!
     autocmd FileType autohotkey setlocal commentstring=;\ %s
 augroup END
 
-let g:temp_cb_name = "temp_cb"
-
-function! ChooseBuffer(buffername)
-    let bnr = bufwinnr(a:buffername)
-    if bnr > 0
-        execute bnr . "wincmd w"
-    else
-        " echom a:buffername . ' is not existent'
-        silent execute 'vsplit ' . a:buffername
-    endif
-endfunction
-
-"noremap <silent><leader>y :call ChooseBuffer(g:temp_cb_name)<cr>Go<esc>p
 
 function! MyTabLine()
     let s = ''
