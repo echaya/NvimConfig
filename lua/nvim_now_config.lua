@@ -378,6 +378,13 @@ local au_opts = {
 }
 vim.api.nvim_create_autocmd("User", au_opts)
 
+vim.api.nvim_create_user_command("GithubSync", function()
+  vim.cmd('lua Snacks.terminal("cd d:/Workspace/SiteRepo/; ./UpdateSite.bat; exit")')
+end, {
+  desc = "Sync Site Repo to Github via snacks.terminal() call",
+  nargs = 0,
+})
+
 local MiniStarter = require("mini.starter")
 MiniStarter.setup({
   evaluate_single = true,
@@ -410,7 +417,7 @@ MiniStarter.setup({
     { action = "DepsUpdate", name = "Update", section = "Plugin" },
     { action = "DepsClean", name = "Clean", section = "Plugin" },
     {
-      action = 'lua Snacks.terminal("cd d:/Workspace/SiteRepo/; ./UpdateSite.bat; exit")',
+      action = 'GithubSync',
       name = "GithubSync",
       section = "Plugin",
     },
