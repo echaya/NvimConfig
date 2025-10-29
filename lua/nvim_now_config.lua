@@ -77,6 +77,9 @@ end, { desc = "Find More Symbols" })
 vim.keymap.set("n", "<leader>fh", function()
   Snacks.picker.help()
 end, { desc = "find_help" })
+vim.keymap.set("n", "<leader>fc", function()
+  Snacks.picker.colorschemes()
+end, { desc = "find_colorscheme" })
 vim.keymap.set("n", "<leader>fp", function()
   Snacks.picker.files({ cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "site") })
 end, { desc = "find_plugin" })
@@ -370,6 +373,7 @@ MiniStatusline.setup({
     end,
   },
 })
+
 local format_summary = function(data)
   local summary = vim.b[data.buf].minigit_summary
   vim.b[data.buf].minigit_summary_string = summary.head_name or ""
