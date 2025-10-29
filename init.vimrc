@@ -90,9 +90,8 @@ catch
     endtry
 endtry
 
-augroup color_refresh
-    autocmd!
-
+function! s:ApplyCustomHighlights()
+    " QuickScope
     highlight QuickScopePrimary guifg=#afff5f gui=underline ctermfg=155 cterm=underline
     highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline
 
@@ -102,13 +101,24 @@ augroup color_refresh
     highlight MiniHipatternsHack guibg=#957FB8 guifg=#282c34
     highlight MiniHipatternsNote guibg=#76946A guifg=#282c34
 
+    " Spelling
     highlight clear SpellBad
     highlight clear SpellRare
     highlight clear SpellLocal
     highlight SpellBad gui=undercurl guifg=pink
-    highlight SpellRare guifg=#63D6FD
+    highlight SpellRare guifg=#E5C07B
     highlight SpellLocal gui=undercurl guifg=#FFFEE2
 
-    highlight TermCursor guifg=#D27E99
-    highlight SnacksStatusColumnMark guibg=#1f1f28 guifg=#D27E99
+    " Snacks
+    highlight SnacksStatusColumnMark guibg=NONE guifg=#D27E99
+endfunction
+
+" 2. Create the autocmd group to re-apply highlights after a colorscheme changes.
+augroup color_refresh
+    autocmd!
+    " Call your function using <SID> (which refers to the local script ID)
+    autocmd ColorScheme * call s:ApplyCustomHighlights()
 augroup END
+
+" 3. Call the function once on startup to apply highlights immediately.
+call s:ApplyCustomHighlights()
