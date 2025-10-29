@@ -421,7 +421,7 @@ MiniStarter.setup({
     { action = "DepsUpdate", name = "Update", section = "Plugin" },
     { action = "DepsClean", name = "Clean", section = "Plugin" },
     {
-      action = 'GithubSync',
+      action = "GithubSync",
       name = "GithubSync",
       section = "Plugin",
     },
