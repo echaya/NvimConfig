@@ -33,22 +33,27 @@ package.path = package.path
 if LoadVimPlugin == nil then
   LoadVimPlugin = false
 end
+
+local add_vim_plugin = function(value)
+  if type(value) == "table" then
+    add({ source = value[1], name = value[2] })
+  else
+    add({ source = value })
+  end
+end
+
 local vim_now_index = 3
 -- deps now: UI & early utilities
 now(function()
   if LoadVimPlugin then
     for _, value in ipairs(vim.g.vim_plugin) do
-      if type(value) == "table" then
-        add({ source = value[1], name = value[2] })
-      else
-        add({ source = value })
-      end
+      add_vim_plugin(value)
     end
   end
   -- vim plugins, StartupTime
   for index, value in ipairs(vim.g.share_plugin) do
     if index <= vim_now_index then
-      add({ source = value })
+      add_vim_plugin(value)
     end
   end
   add({ source = "folke/snacks.nvim" })
@@ -62,7 +67,7 @@ later(function()
   -- vim plugins
   for index, value in ipairs(vim.g.share_plugin) do
     if index > vim_now_index then
-      add({ source = value })
+      add_vim_plugin(value)
     end
   end
   -- nvim plugins
