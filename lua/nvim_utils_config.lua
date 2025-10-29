@@ -214,6 +214,7 @@ if vim.fn.has("linux") == 1 then
   }
 end
 vim.opt.clipboard:append("unnamedplus")
+vim.opt.shada:append("'500")
 
 require("mini.git").setup()
 
