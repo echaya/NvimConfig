@@ -135,6 +135,36 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+local actions = require("diffview.actions")
+require("diffview").setup({
+  view = {
+    merge_tool = {
+      layout = "diff3_mixed",
+      disable_diagnostics = true,
+    },
+  },
+  keymaps = {
+    disable_defaults = false, -- Disable the default keymaps
+    file_panel = {
+      {
+        "n",
+        "<leader>",
+        actions.toggle_stage_entry,
+        { desc = "Stage / unstage the selected entry" },
+      },
+      {
+        "n",
+        "a",
+        actions.stage_all,
+        { desc = "Stage all entries" },
+      },
+      ["s"] = false,
+      ["S"] = false,
+      ["-"] = false,
+    },
+  },
+})
+
 require("mini.diff").setup({
   view = {
     style = "sign",

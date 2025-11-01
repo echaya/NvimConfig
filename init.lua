@@ -58,7 +58,6 @@ now(function()
   end
   add({ source = "folke/snacks.nvim" })
   add({ source = "rebelot/kanagawa.nvim" })
-  add({ source = "sindrets/diffview.nvim" })
   require("lua.nvim_now_config")
 end)
 
@@ -113,9 +112,10 @@ end
 -- deps later: programming tools
 later(function()
   if vim.g.vscode == nil then
+    add({ source = "sindrets/diffview.nvim" })
     add({ source = "milanglacier/yarepl.nvim" })
     add({ source = "rose-pine/neovim", name = "rose-pine" })
-    add({source = "folke/tokyonight.nvim"})
+    add({ source = "folke/tokyonight.nvim" })
     add({ source = "stevearc/conform.nvim" })
     add({ source = "echaya/neowiki.nvim", checkout = "dev" })
     -- add({ source = "NStefan002/screenkey.nvim" })
