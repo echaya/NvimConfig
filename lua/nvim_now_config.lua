@@ -331,17 +331,33 @@ require("kanagawa").setup({
       },
     },
   },
-  overrides = function(_)
+  overrides = function(colors)
     return {
       -- Assign a static color to strings
-      -- String = { fg = colors.palette.carpYellow, italic = true },
-      -- theme colors will update dynamically when you change theme!
-      -- SomePluginHl = { fg = colors.theme.syn.type, bold = true },
+      BlinkCmpMenuBorder = { fg = "", bg = "" },
+      BlinkCmpMenu = { bg = colors.palette.dragonBlack3 },
+      BlinkCmpLabelDetail = { bg = colors.palette.dragonBlack3 },
+      BlinkCmpMenuSelection = { bg = colors.palette.waveBlue1 },
       LineNr = { fg = "#7f848e" },
       MatchParen = { bg = "#505664", underline = true },
       ["@variable.builtin"] = { italic = false },
     }
   end,
+})
+
+require("rose-pine").setup({
+  variant = "main", -- auto, main, moon, or dawn
+  dark_variant = "main", -- main, moon, or dawn
+  dim_inactive_windows = true,
+  extend_background_behind_borders = true,
+
+  styles = {
+    italic = false,
+  },
+})
+
+require("tokyonight").setup({
+  style = "moon",
 })
 
 local icon = require("mini.icons")
