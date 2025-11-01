@@ -96,7 +96,7 @@ require("mini.ai").setup({
         -- 2. Last word (at end of line)
         "()_()[%a%d]+()()$",
         -- 3. Last word (followed by non-word/non-underscore char)
-        "()_()[%a%d]+()()%f[^(%a%d)]", -- Match boundary that ISN'T letter/number
+        "()_()[%a%d]+()()%f[%W]",
         -- 4. First word (at start of line)
         "^()()[%a%d]+()_()",
         -- 5. First word (after non-word/non-underscore char, like '(')
