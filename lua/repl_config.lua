@@ -272,26 +272,6 @@ vim.api.nvim_create_autocmd("FileType", {
       vim.api.nvim_win_set_cursor(0, original_cursor_pos) -- Restore cursor to its original position
     end, { buffer = args.buf, desc = "yarepl_send_until_cursor_ipython" })
 
-    local scroll_repl_window = function(scroll_cmd)
-      local target_id = vim.v.count1 -- vim.v.count1 is 1 if no count, otherwise it's the count.
-      local current_w = vim.api.nvim_get_current_win()
-      vim.cmd(string.format("%dREPLFocus ipython", target_id))
-      vim.api.nvim_feedkeys(
-        vim.api.nvim_replace_termcodes(scroll_cmd, true, false, true),
-        "n",
-        false
-      )
-      vim.defer_fn(function()
-        vim.api.nvim_set_current_win(current_w) -- Return to original window
-      end, 100)
-    end
-    vim.keymap.set("n", "<localleader><PageUp>", function()
-      scroll_repl_window("<C-u>")
-    end, { buffer = args.buf, desc = "yarepl_scroll_prev_ipython" })
-    vim.keymap.set("n", "<localleader><PageDown>", function()
-      scroll_repl_window("<C-d>")
-    end, { buffer = args.buf, desc = "yarepl_scroll_next_ipython" })
-
     vim.keymap.set({ "n", "v" }, "<localleader>qq", function()
       -- To make ipython exit, send 'exit()' or 'quit()'
       local target_id = vim.v.count1 -- vim.v.count1 is 1 if no count, otherwise it's the count.
@@ -337,9 +317,6 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.keymap.set("n", "<Leader>fy", function()
       require("yarepl.extensions.snacks").repl_show()
     end, { buffer = args.buf, desc = "yarepl_list_repls" })
-    vim.keymap.set("n", "<LocalLeader>qh", function()
-      vim.cmd("REPLClearHints")
-    end, { buffer = args.buf, desc = "yarepl_clear_hints" })
   end,
 })
 
