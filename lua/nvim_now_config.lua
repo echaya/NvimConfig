@@ -355,6 +355,8 @@ require("tokyonight").setup({
     hl.LineNrBelow = {
       fg = commentColor,
     }
+    hl.TabLine = {fg = commentColor}
+    hl.TabLineSel = {bg = colors.bg_visual}
   end,
 })
 
