@@ -88,7 +88,6 @@ vim.keymap.set("n", "<a-e>", function()
 end)
 
 local show_dotfiles = true
-
 local filter_show = function(_)
   return true
 end
@@ -101,6 +100,17 @@ local toggle_dotfiles = function()
   show_dotfiles = not show_dotfiles
   local new_filter = show_dotfiles and filter_show or filter_hide
   require("mini.files").refresh({ content = { filter = new_filter } })
+end
+
+local show_preview = true
+local toggle_preview = function()
+  show_preview = not show_preview
+  -- Refresh the mini.files window with the new preview setting
+  require("mini.files").refresh({
+    windows = {
+      preview = show_preview,
+    },
+  })
 end
 
 local open_totalcmd = function(_)
@@ -157,6 +167,7 @@ vim.api.nvim_create_autocmd("User", {
     vim.keymap.set("n", "g,", toggle_details, { buffer = buf_id, desc = "Toggle file details" })
     vim.keymap.set("n", "gt", open_totalcmd, { buffer = buf_id, desc = "Open in TotalCmd" })
     vim.keymap.set("n", "gx", open_file, { buffer = buf_id, desc = "Open Externally" })
+    vim.keymap.set("n", "gp", toggle_preview, { buffer = buf_id, desc = "Toggle preview" })
     vim.keymap.set("n", "g`", files_set_cwd, { buffer = args.data.buf_id, desc = "Set dir" })
     vim.keymap.set("n", "<esc>", require("mini.files").close, { buffer = buf_id, desc = "Close" })
     map_split(buf_id, "gs", "belowright horizontal", false)
@@ -371,14 +382,10 @@ vim.api.nvim_create_autocmd("RecordingEnter", {
 vim.api.nvim_create_autocmd("RecordingLeave", {
   callback = function()
     _MACRO_RECORDING_STATUS = false
-    vim.notify(
-      string.format("Register: %s", vim.fn.reg_recording()),
-      vim.log.levels.INFO,
-      {
-        title = "Macro Recording End",
-        timeout = 2000,
-      }
-    )
+    vim.notify(string.format("Register: %s", vim.fn.reg_recording()), vim.log.levels.INFO, {
+      title = "Macro Recording End",
+      timeout = 2000,
+    })
   end,
   group = vim.api.nvim_create_augroup("NoiceMacroNotficationDismiss", { clear = true }),
 })

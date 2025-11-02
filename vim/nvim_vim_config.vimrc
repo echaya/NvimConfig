@@ -104,7 +104,7 @@ nnoremap <C-d> <C-d>zz
 :command CopySo !source ~/.config/nvim/config/copy_so.sh
 
 
-"table-mode uses default mapping start with <leader>t
+"table-mode uses |t
 let g:table_mode_syntax = 0
 
 "vim-fugitive or mini.git
