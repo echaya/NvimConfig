@@ -347,7 +347,7 @@ require("kanagawa").setup({
 
 require("tokyonight").setup({
   -- available options: moon, storm, night
-  style = "night",
+  -- style = "night",
   dim_inactive = true, -- dims inactive windows
   styles = {
     keywords = { italic = false },
