@@ -112,7 +112,6 @@ endfunction
 " 2. Create the autocmd group to re-apply highlights after a colorscheme changes.
 augroup HighlightGroupRefresher
     autocmd!
-    " Call your function using <SID> (which refers to the local script ID)
     autocmd ColorScheme * call s:ApplyCustomHighlights()
 augroup END
 

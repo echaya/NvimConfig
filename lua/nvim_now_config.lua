@@ -321,6 +321,7 @@ Snacks.setup({
 -- vim.highlight.priorities.semantic_tokens = 95 -- Or any number lower than 100, treesitter's priority level
 require("kanagawa").setup({
   keywordStyle = { italic = false },
+  dimInactive = true,
   transparent = false,
   colors = {
     theme = {
@@ -344,8 +345,6 @@ require("kanagawa").setup({
     }
   end,
 })
-
-
 
 local icon = require("mini.icons")
 icon.setup()
