@@ -34,6 +34,7 @@ nnoremap <C-V> v
 :command! Q q
 :command! Qa qa
 :command! Wqa wqa
+:command! WQa wqa
 :command! Bd bd
 " edit as dos, to remove ^m
 :command M e ++ff=dos | set ff=unix | w
