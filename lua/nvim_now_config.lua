@@ -285,6 +285,7 @@ Snacks.setup({
           ["<c-n>"] = false,
           ["<c-p>"] = false,
           ["<a-l>"] = { "toggle_focus", mode = { "i", "n" } },
+          ["<Del>"] = { "bufdelete", mode = { "n", "i" } },
         },
       },
       list = {
