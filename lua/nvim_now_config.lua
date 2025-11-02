@@ -346,10 +346,17 @@ require("kanagawa").setup({
 })
 
 require("tokyonight").setup({
+  -- available options: moon, storm, night
+  style = "night",
   dim_inactive = true, -- dims inactive windows
   styles = {
     keywords = { italic = false },
   },
+  on_colors = function(colors)
+    colors.git.add = colors.green
+    colors.git.change = colors.blue
+    colors.git.delete = colors.red
+  end,
   on_highlights = function(hl, colors)
     local commentColor = colors.comment
     hl.LineNrAbove = {
