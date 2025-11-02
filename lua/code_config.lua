@@ -23,15 +23,6 @@ cmp.setup({
   },
   completion = {
     list = { selection = { preselect = true, auto_insert = true } },
-    menu = {
-      draw = {
-        columns = {
-          { "kind_icon" },
-          { "label", "label_description", gap = 1 },
-          { "source_name" },
-        },
-      },
-    },
     documentation = {
       auto_show = true,
       auto_show_delay_ms = 250,
