@@ -12,11 +12,6 @@ let g:config_dir = substitute(g:config_dir, '\\', '/', 'g')
 if g:config_dir[-1:] !=# '/'
     let g:config_dir = g:config_dir . '/'
 endif
-let g:project_root_dir = fnamemodify(fnamemodify(g:config_dir, ':h'),':h') " e.g., c:\Tools\neovim
-let g:project_root_dir = substitute(g:project_root_dir, '\\', '/', 'g')
-if g:project_root_dir[-1:] !=# '/'
-    let g:project_root_dir = g:project_root_dir . '/'
-endif  " Now: c:/Tools/neovim/config/
 
 
 " Universal plugins
@@ -28,6 +23,7 @@ let g:share_plugin = [
             \'unblevable/quick-scope',
             \'dhruvasagar/vim-table-mode'
             \]
+" Vim specific plugins
 let g:vim_plugin = [
             \ 'mhinz/vim-signify',
             \ 'itchyny/lightline.vim',
