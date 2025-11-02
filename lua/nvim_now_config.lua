@@ -347,6 +347,9 @@ require("kanagawa").setup({
 
 require("tokyonight").setup({
   dim_inactive = true, -- dims inactive windows
+  styles = {
+    keywords = { italic = false },
+  },
   on_highlights = function(hl, colors)
     local commentColor = colors.comment
     hl.LineNrAbove = {
