@@ -270,7 +270,6 @@ Snacks.setup({
   },
   picker = {
     win = {
-      -- input window
       input = {
         keys = {
           ["<C-/>"] = { "toggle_help", mode = { "n", "i" } },
@@ -288,7 +287,6 @@ Snacks.setup({
           ["<a-l>"] = { "toggle_focus", mode = { "i", "n" } },
         },
       },
-      -- result list window
       list = {
         keys = {
           ["<c-b>"] = "list_scroll_up",
@@ -335,13 +333,20 @@ require("kanagawa").setup({
   overrides = function(colors)
     return {
       -- Assign a static color to strings
-      BlinkCmpMenuBorder = { fg = "", bg = "" },
       BlinkCmpMenu = { bg = colors.palette.dragonBlack3 },
       BlinkCmpLabelDetail = { bg = colors.palette.dragonBlack3 },
       BlinkCmpMenuSelection = { bg = colors.palette.waveBlue1 },
+
+      NormalFloat = { bg = "none" },
+      FloatBorder = { bg = "none" },
+      FloatTitle = { bg = "none" },
       LineNr = { fg = "#7f848e" },
       MatchParen = { bg = "#505664", underline = true },
+
       ["@variable.builtin"] = { italic = false },
+      ["@diff.minus"] = { bg = colors.palette.winterRed },
+      ["@diff.plus"] = { bg = colors.palette.winterGreen },
+      ["@diff.delta"] = { bg = colors.palette.winterYellow },
     }
   end,
 })
