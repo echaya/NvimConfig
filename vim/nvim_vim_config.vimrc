@@ -143,9 +143,6 @@ augroup MyGroup | au!
     autocmd FileType autohotkey setlocal commentstring=;\ %s
 augroup END
 
-" ============================================================================
-"  Helper Function: Get Display Name (Unchanged)
-" ============================================================================
 function! s:GetTabDisplayName(tabnr, bufnr)
     let current_tab = tabpagenr()
     let is_current = (a:tabnr == current_tab)
@@ -179,7 +176,7 @@ function! s:GetTabDisplayName(tabnr, bufnr)
     else
         if is_current
             let full_path = fnamemodify(filename, ':p')
-            if strlen(full_path) > 100
+            if strlen(full_path) > 200
                 let display_name = pathshorten(full_path)
             else
                 let display_name = full_path
