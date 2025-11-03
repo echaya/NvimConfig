@@ -317,41 +317,6 @@ Snacks.setup({
   },
 })
 
--- vim.highlight.priorities.semantic_tokens = 95 -- Or any number lower than 100, treesitter's priority level
-require("kanagawa").setup({
-  keywordStyle = { italic = false },
-  dimInactive = true,
-  transparent = false,
-  colors = {
-    theme = {
-      all = {
-        ui = {
-          bg_gutter = "",
-        },
-      },
-    },
-  },
-  overrides = function(colors)
-    return {
-      -- Assign a static color to strings
-      BlinkCmpMenu = { bg = colors.palette.dragonBlack3 },
-      BlinkCmpLabelDetail = { bg = colors.palette.dragonBlack3 },
-      BlinkCmpMenuSelection = { bg = colors.palette.waveBlue1 },
-
-      NormalFloat = { bg = "none" },
-      FloatBorder = { bg = "none" },
-      FloatTitle = { bg = "none" },
-      LineNr = { fg = "#7f848e" },
-      MatchParen = { bg = "#505664", underline = true },
-
-      ["@variable.builtin"] = { italic = false },
-      ["@diff.minus"] = { bg = colors.palette.winterRed },
-      ["@diff.plus"] = { bg = colors.palette.winterGreen },
-      ["@diff.delta"] = { bg = colors.palette.winterYellow },
-    }
-  end,
-})
-
 require("kanagawa-paper").setup({
   dim_inactive = true,
   cache = true,
