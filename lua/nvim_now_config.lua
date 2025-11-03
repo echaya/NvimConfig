@@ -352,6 +352,23 @@ require("kanagawa").setup({
   end,
 })
 
+require("kanagawa-paper").setup({
+  dim_inactive = true,
+  cache = true,
+  overrides = function(colors)
+    return {
+      NormalFloat = { bg = "none" },
+      FloatBorder = { bg = "none" },
+      FloatTitle = { bg = "none" },
+      LineNr = { fg = "#7f848e" },
+      MatchParen = { bg = "#505664", underline = true },
+
+      ["@diff.minus"] = { bg = colors.palette.winterRed },
+      ["@diff.plus"] = { bg = colors.palette.winterGreen },
+      ["@diff.delta"] = { bg = colors.palette.winterYellow },
+    }
+  end,
+})
 local icon = require("mini.icons")
 icon.setup()
 icon.mock_nvim_web_devicons()
