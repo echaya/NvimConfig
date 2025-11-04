@@ -316,6 +316,11 @@ Snacks.setup({
     db = {
       sqlite3_path = "c:/tools/CliTools/sqlite3.dll",
     },
+    sources = {
+      zoxide = {
+        confirm = { "tcd", "picker_files", "close" },
+      },
+    },
   },
 })
 
