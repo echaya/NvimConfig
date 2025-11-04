@@ -165,6 +165,109 @@ require("diffview").setup({
   },
 })
 
+local mini_git = require("mini.git")
+mini_git.setup()
+
+vim.api.nvim_create_user_command("GC", function()
+  local git_data = mini_git.get_buf_data(0)
+
+  if not git_data or not git_data.root then
+    vim.notify("GC command: Could not find Git repository root. Aborting.", vim.log.levels.ERROR)
+    return
+  end
+
+  vim.g.minigit_last_repo_root = git_data.root
+  vim.g.minigit_last_tabpage_nr = vim.api.nvim_get_current_tabpage()
+
+  vim.cmd("Git diff --staged")
+  vim.cmd("Git commit")
+end, {
+  bang = true,
+  desc = "Run Git diff --staged, save root path, and Git commit",
+})
+
+vim.api.nvim_create_user_command("GP", function()
+  local repo_root_path = vim.g.minigit_last_repo_root
+  if not repo_root_path or repo_root_path == "" then
+    vim.notify(
+      "GP command: Could not find saved Git root path. Did you run GC first?",
+      vim.log.levels.ERROR
+    )
+    return
+  end
+
+  vim.g.minigit_last_repo_root = nil
+  local escaped_repo_root = vim.fn.fnameescape(repo_root_path)
+
+  local push_cmd = string.format("Git! -C %s push", escaped_repo_root)
+  local ok_push, err_push = pcall(vim.api.nvim_command, push_cmd)
+
+  if not ok_push then
+    vim.notify(
+      "GP command: Error executing '" .. push_cmd .. "': " .. err_push,
+      vim.log.levels.ERROR
+    )
+  end
+end, {
+  desc = "Git push the last repository captured by GC",
+  bang = true,
+})
+
+vim.api.nvim_create_user_command("GH", function()
+  local current_filetype = vim.api.nvim_get_option_value("filetype", { buf = 0 })
+  if current_filetype ~= "gitcommit" then
+    vim.notify("GH command: Not a gitcommit buffer. Aborting.", vim.log.levels.INFO)
+    return
+  end
+
+  local repo_root_path = vim.g.minigit_last_repo_root
+  local original_tab_nr = vim.g.minigit_last_tabpage_nr
+
+  if not repo_root_path or repo_root_path == "" then
+    vim.notify(
+      "GH command: Could not find saved Git root path. Did you run GC?",
+      vim.log.levels.ERROR
+    )
+    return
+  end
+
+  vim.g.minigit_last_repo_root = nil
+  vim.g.minigit_last_tabpage_nr = nil
+  local escaped_repo_root = vim.fn.fnameescape(repo_root_path)
+
+  local initial_bufnr = vim.api.nvim_get_current_buf()
+  local initial_buftype = vim.api.nvim_get_option_value("buftype", { buf = initial_bufnr })
+  local initial_modifiable = vim.api.nvim_get_option_value("modifiable", { buf = initial_bufnr })
+  local can_write_initial = (
+    initial_modifiable and (initial_buftype == nil or initial_buftype == "")
+  )
+  local cmd_to_run = "q"
+  if can_write_initial then
+    cmd_to_run = "wq"
+  end
+  pcall(vim.api.nvim_command, cmd_to_run)
+  pcall(vim.api.nvim_command, "tabc")
+
+  vim.schedule(function()
+    if original_tab_nr and vim.api.nvim_tabpage_is_valid(original_tab_nr) then
+      pcall(vim.api.nvim_set_current_tabpage, original_tab_nr)
+    end
+
+    local push_cmd = string.format("Git! -C %s push", escaped_repo_root)
+    local ok_push, err_push = pcall(vim.api.nvim_command, push_cmd)
+
+    if not ok_push then
+      vim.notify(
+        "GH command: Error executing '" .. push_cmd .. "': " .. err_push,
+        vim.log.levels.ERROR
+      )
+    end
+  end)
+end, {
+  desc = "Write/Quit, close tab, check new tab & close if diffview, then Git push",
+  nargs = 0,
+})
+
 require("mini.diff").setup({
   view = {
     style = "sign",

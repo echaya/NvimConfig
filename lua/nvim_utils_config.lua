@@ -225,58 +225,6 @@ if vim.fn.has("linux") == 1 then
   }
 end
 vim.opt.clipboard:append("unnamedplus")
-vim.opt.shada:append("'500")
-
-require("mini.git").setup()
-
-vim.api.nvim_create_user_command("GH", function()
-  local current_filetype = vim.api.nvim_get_option_value("filetype", { buf = 0 })
-  if current_filetype ~= "gitcommit" then
-    vim.notify("GH command: Not a gitcommit buffer. Aborting.", vim.log.levels.INFO)
-    return
-  end
-  local initial_bufnr = vim.api.nvim_get_current_buf()
-  local initial_buftype = vim.api.nvim_get_option_value("buftype", { buf = initial_bufnr })
-  local initial_modifiable = vim.api.nvim_get_option_value("modifiable", { buf = initial_bufnr })
-  local can_write_initial = (
-    initial_modifiable and (initial_buftype == nil or initial_buftype == "")
-  )
-  local cmd_to_run = "q" -- Default to quit only
-  if can_write_initial then
-    cmd_to_run = "wq"
-  end
-  pcall(vim.api.nvim_command, cmd_to_run)
-  pcall(vim.api.nvim_command, "tabc")
-
-  vim.schedule(function()
-    local post_tabc_bufnr = vim.api.nvim_get_current_buf()
-    if not vim.api.nvim_buf_is_valid(post_tabc_bufnr) then
-      return
-    end
-    local post_tabc_bufname = vim.api.nvim_buf_get_name(post_tabc_bufnr)
-    local is_new_buf_diffview = false
-    if
-      post_tabc_bufname
-      and type(post_tabc_bufname) == "string"
-      and string.lower(post_tabc_bufname):find("^diffview") == 1
-    then
-      is_new_buf_diffview = true
-    end
-    if is_new_buf_diffview then
-      pcall(vim.api.nvim_command, "tabc")
-    end
-  end)
-
-  vim.defer_fn(function()
-    local ok_push, err_push = pcall(vim.api.nvim_command, "Git! push")
-    if not ok_push then
-      vim.notify("GH command: Error executing 'Git! push': " .. err_push, vim.log.levels.ERROR)
-    end
-  end, 1000)
-end, {
-  desc = "Write/Quit, close tab, check new tab & close if diffview, then Git push",
-  nargs = 0,
-})
 
 local wk = require("which-key")
 wk.setup({
