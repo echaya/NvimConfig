@@ -112,8 +112,8 @@ vim.keymap.set("n", "<leader>gw", function()
 end, { desc = "grep_string" })
 vim.keymap.set("n", "<leader>T", function()
   local current_tab = vim.api.nvim_get_current_tabpage()
-  pcall(vim.api.nvim_command, "tabn")
   vim.g.prev_tab_nr = current_tab
+  vim.cmd("tabnew")
   Snacks.picker.zoxide()
 end, { desc = "open recent project in new tab" })
 
