@@ -33,9 +33,9 @@ local my_pre_prefix = function(fs_stat)
   return pre_prefix
 end
 
-local MiniFiles = require("mini.files")
+local mini_files = require("mini.files")
 local my_prefix = function(fs_entry)
-  local prefix, hl = MiniFiles.default_prefix(fs_entry)
+  local prefix, hl = mini_files.default_prefix(fs_entry)
   local fs_stat = vim.loop.fs_stat(fs_entry.path) or {}
   local pre_prefix = my_pre_prefix(fs_stat)
   return pre_prefix .. " " .. prefix, hl
@@ -45,23 +45,23 @@ local show_details = true
 local toggle_details = function()
   show_details = not show_details
   if show_details then
-    MiniFiles.refresh({
+    mini_files.refresh({
       windows = {
         width_nofocus = 30,
       },
       content = { prefix = my_prefix },
     })
   else
-    MiniFiles.refresh({
+    mini_files.refresh({
       windows = {
         width_nofocus = 15,
       },
-      content = { prefix = MiniFiles.default_prefix },
+      content = { prefix = mini_files.default_prefix },
     })
   end
 end
 
-MiniFiles.setup({
+mini_files.setup({
   mappings = {
     go_in_plus = "<CR>",
     trim_left = ">",
@@ -82,8 +82,8 @@ MiniFiles.setup({
 })
 
 vim.keymap.set("n", "<a-e>", function()
-  if not MiniFiles.close() then
-    MiniFiles.open()
+  if not mini_files.close() then
+    mini_files.open()
   end
 end)
 
@@ -114,32 +114,32 @@ local toggle_preview = function()
 end
 
 local open_totalcmd = function(_)
-  local cur_entry_path = MiniFiles.get_fs_entry().path
+  local cur_entry_path = mini_files.get_fs_entry().path
   -- local cur_directory = vim.fs.dirname(cur_entry_path)
   -- vim.fn.system(string.format("gio open '%s'", cur_entry_path))
   vim.api.nvim_command(string.format("!%s /O /T /L='%s'", vim.g.total_cmd_exe, cur_entry_path))
-  MiniFiles.close()
+  mini_files.close()
 end
 
 local open_file = function(_)
-  local cur_entry_path = MiniFiles.get_fs_entry().path
+  local cur_entry_path = mini_files.get_fs_entry().path
   vim.ui.open(cur_entry_path)
-  MiniFiles.close()
+  mini_files.close()
 end
 
 local map_split = function(buf_id, lhs, direction, close)
   local rhs = function()
     -- Make new window and set it as target
-    local cur_target = MiniFiles.get_explorer_state().target_window
+    local cur_target = mini_files.get_explorer_state().target_window
     local new_target = vim.api.nvim_win_call(cur_target, function()
       vim.cmd(direction .. " split")
       return vim.api.nvim_get_current_win()
     end)
 
-    MiniFiles.set_target_window(new_target)
-    MiniFiles.go_in()
+    mini_files.set_target_window(new_target)
+    mini_files.go_in()
     if close then
-      MiniFiles.close()
+      mini_files.close()
     end
   end
 
@@ -151,7 +151,7 @@ end
 local files_set_cwd = function(_)
   -- Works only if cursor is on the valid file system entry
   -- Does not work with have vim-rooter is on
-  local cur_entry_path = MiniFiles.get_fs_entry().path
+  local cur_entry_path = mini_files.get_fs_entry().path
   local cur_directory = vim.fs.dirname(cur_entry_path)
   vim.fn.chdir(cur_directory)
   vim.notify(vim.inspect(cur_directory))
