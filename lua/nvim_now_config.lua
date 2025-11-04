@@ -324,6 +324,7 @@ Snacks.setup({
   },
 })
 
+-- vim.highlight.priorities.semantic_tokens = 95 -- Or any number lower than 100, treesitter's priority level
 require("kanagawa-paper").setup({
   dim_inactive = true,
   cache = true,
@@ -332,12 +333,13 @@ require("kanagawa-paper").setup({
       NormalFloat = { bg = "none" },
       FloatBorder = { bg = "none" },
       FloatTitle = { bg = "none" },
-      LineNr = { fg = "#7f848e" },
-      MatchParen = { bg = "#505664", underline = true },
-
-      ["@diff.minus"] = { bg = colors.palette.winterRed },
-      ["@diff.plus"] = { bg = colors.palette.winterGreen },
-      ["@diff.delta"] = { bg = colors.palette.winterYellow },
+      LineNr = { fg = colors.palette.dragonGray3 },
+      MatchParen = { bg = colors.palette.sumiInk6, bold = true },
+      FlashLabel = { fg = colors.palette.carpYellow, bg = colors.palette.sumiInk5, bold = true },
+      TabLine = { fg = colors.palette.lotusViolet2 },
+      ["@diff.minus"] = { bg = colors.palette.winterRed, fg = colors.palette.lotusWhite0 },
+      ["@diff.plus"] = { bg = colors.palette.winterGreen, fg = colors.palette.lotusWhite0 },
+      ["@diff.delta"] = { bg = colors.palette.winterYellow, fg = colors.palette.lotusWhite0 },
     }
   end,
 })
