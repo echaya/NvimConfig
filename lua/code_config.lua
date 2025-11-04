@@ -300,6 +300,7 @@ vim.keymap.set(
 vim.keymap.set("n", "<leader>v", function()
   local count = vim.v.count
   if next(require("diffview.lib").views) == nil then
+    vim.g.prev_tab_nr = vim.api.nvim_get_current_tabpage()
     if count > 0 then
       vim.cmd("DiffviewOpen HEAD~" .. count)
     else
@@ -420,3 +421,36 @@ vim.keymap.set(
   require("neowiki").open_wiki_new_tab,
   { desc = "open wiki in new tab" }
 )
+
+vim.keymap.set("n", "J", function()
+  local current_tab = vim.api.nvim_get_current_tabpage()
+  pcall(vim.api.nvim_command, "tabp")
+  vim.g.prev_tab_nr = current_tab
+end, { noremap = true, silent = true, desc = "Go to previous tab" })
+
+vim.keymap.set("n", "K", function()
+  local current_tab = vim.api.nvim_get_current_tabpage()
+  pcall(vim.api.nvim_command, "tabn")
+  vim.g.prev_tab_nr = current_tab
+end, { noremap = true, silent = true, desc = "Go to next tab" })
+
+vim.keymap.set("n", "T", function()
+  local current_tab = vim.api.nvim_get_current_tabpage()
+  pcall(vim.api.nvim_command, "tabnew")
+  vim.g.prev_tab_nr = current_tab
+end, { noremap = true, silent = true, desc = "Create new tab" })
+
+vim.keymap.set("n", "<Del>", function()
+  pcall(vim.api.nvim_command, "tabc")
+  local prev_tab = vim.g.prev_tab_nr
+  if prev_tab then
+    vim.g.prev_tab_nr = nil
+    if vim.api.nvim_tabpage_is_valid(prev_tab) then
+      pcall(vim.api.nvim_set_current_tabpage, prev_tab)
+    end
+  end
+end, {
+  noremap = true,
+  silent = true,
+  desc = "Close tab and return to Diffview opener",
+})

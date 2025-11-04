@@ -50,12 +50,6 @@ endif
 " reopen just closed buffer to edit
 nnoremap <silent> ZX :e #<CR>
 
-"Move to previous/next tabpage
-noremap <silent> J :tabp<CR>
-noremap <silent> K :tabn<CR>
-noremap <silent> T :tabnew<CR>
-noremap <silent> <Del> :tabc<CR>
-
 
 " buffers management
 set hidden
@@ -107,9 +101,6 @@ nnoremap <C-d> <C-d>zz
 "table-mode uses |t
 let g:table_mode_syntax = 0
 
-"vim-fugitive or mini.git
-command! GC execute "Git diff --staged" | execute "Git commit"
-command GP execute "Git! push"
 
 if !exists('g:snacks_main_cursorline_enabled')
   let g:snacks_main_cursorline_enabled = 1

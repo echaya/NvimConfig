@@ -38,6 +38,12 @@ noremap <C-j> <C-w><C-j>
 noremap <C-k> <C-w><C-k>
 noremap <C-l> <C-w><C-l>
 
+"Move to previous/next tabpage
+noremap <silent> J :tabp<CR>
+noremap <silent> K :tabn<CR>
+noremap <silent> T :tabnew<CR>
+noremap <silent> <Del> :tabc<CR>
+
 " adjust split window size
 nnoremap <c-up> :res +2<CR>
 nnoremap <c-down> :res -2<CR>
@@ -106,5 +112,9 @@ nnoremap <leader>fu :UndotreeToggle<CR>
 let g:rooter_targets = '/,*'
 let g:rooter_buftypes = ['']
 let g:rooter_patterns = ['.git']
+
+"vim-fugitive or mini.git
+command! GC execute "Git diff --staged" | execute "Git commit"
+command GP execute "Git! push"
 
 runtime macros/sandwich/keymap/surround.vim

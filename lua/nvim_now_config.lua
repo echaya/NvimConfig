@@ -111,8 +111,10 @@ vim.keymap.set("n", "<leader>gw", function()
   Snacks.picker.grep_word()
 end, { desc = "grep_string" })
 vim.keymap.set("n", "<leader>T", function()
-  vim.cmd("tabnew")
-  Snacks.picker.projects()
+  local current_tab = vim.api.nvim_get_current_tabpage()
+  pcall(vim.api.nvim_command, "tabn")
+  vim.g.prev_tab_nr = current_tab
+  Snacks.picker.zoxide()
 end, { desc = "open recent project in new tab" })
 
 Snacks.toggle.option("spell", { name = "Spelling" }):map("|s")
