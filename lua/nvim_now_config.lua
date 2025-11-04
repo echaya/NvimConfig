@@ -343,6 +343,7 @@ require("kanagawa-paper").setup({
     }
   end,
 })
+
 local icon = require("mini.icons")
 icon.setup()
 icon.mock_nvim_web_devicons()
@@ -496,9 +497,29 @@ end
 
 SaveMiniSession = function()
   clean_up_buffer()
-  local cwd = vim.fn.getcwd()
-  cwd = cwd:gsub("[:/\\]$", ""):gsub(":", ""):gsub("[/\\]", "_")
-  mini_session.write(cwd)
+
+  local question = "Save session relative to which directory?"
+  local choices = "&Project (getcwd)\n&File (current buffer)"
+  local ok, choice_index = pcall(vim.fn.confirm, question, choices, 1)
+  if not ok or choice_index == 0 then
+    vim.notify("Session save cancelled.", vim.log.levels.INFO)
+    return -- Abort the function
+  end
+
+  local base_path
+  if choice_index == 1 then
+    base_path = vim.fn.getcwd()
+  elseif choice_index == 2 then
+    base_path = vim.fn.expand("%:p:h")
+    if base_path == "" or base_path == nil then
+      vim.notify("Error: Current buffer has no file path. Session not saved.", vim.log.levels.ERROR)
+      return
+    end
+  end
+
+  local session_name = base_path:gsub("[:/\\]$", ""):gsub(":", ""):gsub("[/\\]", "_")
+  mini_session.write(session_name)
+  vim.notify("Session saved as: " .. session_name, vim.log.levels.INFO)
 end
 
 vim.keymap.set(
