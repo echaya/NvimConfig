@@ -337,9 +337,42 @@ require("kanagawa-paper").setup({
       MatchParen = { bg = colors.palette.sumiInk6, bold = true },
       FlashLabel = { fg = colors.palette.carpYellow, bg = colors.palette.sumiInk5, bold = true },
       TabLine = { fg = colors.palette.lotusViolet2 },
-      ["@diff.minus"] = { bg = colors.palette.winterRed, fg = colors.palette.lotusWhite0 },
-      ["@diff.plus"] = { bg = colors.palette.winterGreen, fg = colors.palette.lotusWhite0 },
-      ["@diff.delta"] = { bg = colors.palette.winterYellow, fg = colors.palette.lotusWhite0 },
+      ["@diff.minus"] = { bg = colors.palette.winterRed },
+      ["@diff.plus"] = { bg = colors.palette.winterGreen },
+      ["@diff.delta"] = { bg = colors.palette.winterYellow },
+    }
+  end,
+})
+
+require("kanagawa").setup({
+  keywordStyle = { italic = false },
+  dimInactive = true,
+  transparent = false,
+  colors = {
+    theme = {
+      all = {
+        ui = {
+          bg_gutter = "",
+        },
+      },
+    },
+  },
+  overrides = function(colors)
+    return {
+      -- Assign a static color to strings
+      BlinkCmpMenu = { bg = colors.palette.dragonBlack3 },
+      BlinkCmpLabelDetail = { bg = colors.palette.dragonBlack3 },
+      BlinkCmpMenuSelection = { bg = colors.palette.waveBlue1 },
+      NormalFloat = { bg = "none" },
+      FloatBorder = { bg = "none" },
+      FloatTitle = { bg = "none" },
+      LineNr = { fg = colors.palette.dragonGray3 },
+      MatchParen = { bg = colors.palette.sumiInk6, bold = true },
+      FlashLabel = { fg = colors.palette.carpYellow, bg = colors.palette.sumiInk5, bold = true },
+      TabLine = { fg = colors.palette.lotusViolet2 },
+      ["@diff.minus"] = { bg = colors.palette.winterRed },
+      ["@diff.plus"] = { bg = colors.palette.winterGreen },
+      ["@diff.delta"] = { bg = colors.palette.winterYellow },
     }
   end,
 })
