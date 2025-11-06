@@ -123,9 +123,6 @@ Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("|r")
 Snacks.toggle.option("number", { name = "Number" }):map("|n")
 Snacks.toggle.option("hlsearch", { name = "Highlight search" }):map("|h")
 Snacks.toggle.option("ignorecase", { name = "Ignorecase" }):map("|i")
-Snacks.toggle
-  .option("background", { off = "light", on = "dark", name = "Dark Background" })
-  :map("|b")
 Snacks.toggle.inlay_hints():map("|H")
 Snacks.toggle.animate():map("|a")
 Snacks.toggle.diagnostics():map("|d")
@@ -188,6 +185,24 @@ Snacks.toggle({
     vim.b.ts_context_enabled = state
   end,
 }):map("|T")
+
+local colorscheme_A = "kanagawa"
+local colorscheme_B = "kanagawa-paper"
+Snacks.toggle({
+  name = "",
+  notify = false,
+  get = function()
+    return vim.g.colors_name == colorscheme_A
+  end,
+  set = function(state)
+    local new_scheme = state and colorscheme_A or colorscheme_B
+    vim.cmd("colorscheme " .. new_scheme)
+  end,
+  wk_desc = {
+    enabled = "Switch to " .. colorscheme_B,
+    disabled = "Switch to " .. colorscheme_A,
+  },
+}):map("|b")
 
 vim.keymap.set("n", "<leader>un", function()
   Snacks.notifier.hide()
@@ -345,6 +360,7 @@ require("kanagawa-paper").setup({
 })
 
 require("kanagawa").setup({
+  compile = true,
   keywordStyle = { italic = false },
   dimInactive = true,
   transparent = false,
@@ -359,7 +375,6 @@ require("kanagawa").setup({
   },
   overrides = function(colors)
     return {
-      -- Assign a static color to strings
       BlinkCmpMenu = { bg = colors.palette.dragonBlack3 },
       BlinkCmpLabelDetail = { bg = colors.palette.dragonBlack3 },
       BlinkCmpMenuSelection = { bg = colors.palette.waveBlue1 },
