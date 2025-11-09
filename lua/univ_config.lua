@@ -1,39 +1,66 @@
 vim.keymap.set("n", "<localleader>x", function()
   vim.cmd("!start " .. vim.fn.shellescape(vim.fn.expand("<cfile>"), true))
 end, { noremap = true, silent = true, desc = "Open file under cursor in default program" })
-vim.keymap.set("n", "s", function()
-  require("flash").jump({
-    search = { multi_window = true },
-    jump = { autojump = true },
-  })
-end, { desc = "Flash" })
-vim.keymap.set("n", "<localleader><localleader>", function()
-  require("flash").jump({ continue = true })
-end, { desc = "Flash Continue" })
-vim.keymap.set({ "x", "o" }, "z", function()
-  require("flash").jump({
-    search = { forward = true, wrap = false, multi_window = false },
-    jump = { pos = "end" },
-  })
-end, { desc = "Flash Forward (inclusive)" })
-vim.keymap.set({ "x", "o" }, "Z", function()
-  require("flash").jump({
-    search = { forward = false, wrap = false, multi_window = false },
-    jump = { pos = "start", inclusive = true },
-  })
-end, { desc = "Flash Backward (inclusive)" })
-vim.keymap.set({ "n", "x", "o" }, "S", function()
-  require("flash").treesitter()
-end, { desc = "Flash Treesitter" })
-vim.keymap.set("o", "r", function()
-  require("flash").remote()
-end, { desc = "Remote Flash" })
-vim.keymap.set({ "o", "x" }, "R", function()
-  require("flash").treesitter_search()
-end, { desc = "Remote Flash Treesitter" })
-require("flash").setup({
-  modes = { char = { enabled = false } },
-})
+
+-- vim.keymap.set("n", "s", function()
+--   require("flash").jump({
+--     search = { multi_window = true },
+--     jump = { autojump = true },
+--   })
+-- end, { desc = "Flash" })
+-- vim.keymap.set("n", "<localleader><localleader>", function()
+--   require("flash").jump({ continue = true })
+-- end, { desc = "Flash Continue" })
+-- vim.keymap.set({ "x", "o" }, "z", function()
+--   require("flash").jump({
+--     search = { forward = true, wrap = false, multi_window = false },
+--     jump = { pos = "end" },
+--   })
+-- end, { desc = "Flash Forward (inclusive)" })
+-- vim.keymap.set({ "x", "o" }, "Z", function()
+--   require("flash").jump({
+--     search = { forward = false, wrap = false, multi_window = false },
+--     jump = { pos = "start", inclusive = true },
+--   })
+-- end, { desc = "Flash Backward (inclusive)" })
+-- vim.keymap.set({ "n", "x", "o" }, "S", function()
+--   require("flash").treesitter()
+-- end, { desc = "Flash Treesitter" })
+-- vim.keymap.set("o", "r", function()
+--   require("flash").remote()
+-- end, { desc = "Remote Flash" })
+-- vim.keymap.set({ "o", "x" }, "R", function()
+--   require("flash").treesitter_search()
+-- end, { desc = "Remote Flash Treesitter" })
+-- require("flash").setup({
+--   modes = { char = { enabled = false } },
+-- })
+
+local leap = require("leap")
+leap.opts.case_sensitive = true
+require("leap").opts.preview = function(ch0, ch1, ch2)
+  return not (ch1:match("%s") or (ch0:match("%a") and ch1:match("%a") and ch2:match("%a")))
+end
+-- Define equivalence classes for brackets and quotes, in addition to <space>
+leap.opts.equivalence_classes = { " \t\r\n", "([{", ")]}", "'\"`" }
+vim.api.nvim_set_hl(0, "LeapBackdrop", { link = "Comment" })
+vim.keymap.set("n", "s", "<Plug>(leap)")
+vim.keymap.set("n", "gs", "<Plug>(leap-from-window)")
+vim.keymap.set({ "x", "o" }, "z", "<Plug>(leap-forward)", { desc = "leap forward textobj" })
+vim.keymap.set({ "x", "o" }, "Z", "<Plug>(leap-backward-till)", { desc = "leap back textobj" })
+-- Trigger visual selection right away and visual line mode
+vim.keymap.set({ "o" }, "gs", function()
+  require("leap.remote").action()
+end)
+vim.keymap.set({ "o" }, "gS", function()
+  require("leap.remote").action({ input = "V" })
+end)
+require("leap").opts.preview_filter = false
+-- <CR> to traverse forward, <BS> to traverse backward
+require("leap.user").set_repeat_keys("<enter>", "<backspace>")
+vim.keymap.set({ "n" }, "S", function()
+  require("leap.treesitter").select()
+end)
 
 local augend = require("dial.augend")
 require("dial.config").augends:register_group({
@@ -129,7 +156,7 @@ require("mini.operators").setup({
   },
   sort = {
     -- go sort
-    prefix = "gs",
+    prefix = "ga",
   },
   multiply = {
     prefix = "",

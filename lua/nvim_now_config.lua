@@ -186,24 +186,6 @@ Snacks.toggle({
   end,
 }):map("|T")
 
-local colorscheme_A = "kanagawa"
-local colorscheme_B = "kanagawa-paper"
-Snacks.toggle({
-  name = "",
-  notify = false,
-  get = function()
-    return vim.g.colors_name == colorscheme_A
-  end,
-  set = function(state)
-    local new_scheme = state and colorscheme_A or colorscheme_B
-    vim.cmd("colorscheme " .. new_scheme)
-  end,
-  wk_desc = {
-    enabled = "Switch to " .. colorscheme_B,
-    disabled = "Switch to " .. colorscheme_A,
-  },
-}):map("|b")
-
 vim.keymap.set("n", "<leader>un", function()
   Snacks.notifier.hide()
 end, { desc = "Dismiss All Notifications" })
@@ -338,6 +320,24 @@ Snacks.setup({
     },
   },
 })
+
+local colorscheme_A = "kanagawa"
+local colorscheme_B = "kanagawa-paper"
+Snacks.toggle({
+  name = "",
+  notify = false,
+  get = function()
+    return vim.g.colors_name == colorscheme_A
+  end,
+  set = function(state)
+    local new_scheme = state and colorscheme_A or colorscheme_B
+    vim.cmd("colorscheme " .. new_scheme)
+  end,
+  wk_desc = {
+    enabled = "Switch to " .. colorscheme_B,
+    disabled = "Switch to " .. colorscheme_A,
+  },
+}):map("|b")
 
 -- vim.highlight.priorities.semantic_tokens = 95 -- Or any number lower than 100, treesitter's priority level
 require("kanagawa-paper").setup({
