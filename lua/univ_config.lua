@@ -49,10 +49,10 @@ vim.keymap.set("n", "gs", "<Plug>(leap-from-window)")
 vim.keymap.set({ "x", "o" }, "z", "<Plug>(leap-forward)", { desc = "leap forward textobj" })
 vim.keymap.set({ "x", "o" }, "Z", "<Plug>(leap-backward-till)", { desc = "leap back textobj" })
 -- Trigger visual selection right away and visual line mode
-vim.keymap.set({ "o" }, "gs", function()
+vim.keymap.set({ "o" }, "r", function()
   require("leap.remote").action()
 end)
-vim.keymap.set({ "o" }, "gS", function()
+vim.keymap.set({ "o" }, "R", function()
   require("leap.remote").action({ input = "V" })
 end)
 require("leap").opts.preview_filter = false
