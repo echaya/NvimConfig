@@ -201,9 +201,9 @@ vim.lsp.config.pyrefly = {
   capabilities = capabilities,
 }
 
-vim.lsp.config.ruff_lsp =
+vim.lsp.config.ruff =
   { -- The server name used by nvim-lspconfig is 'ruff_lsp'. If your executable is just 'ruff', adjust cmd.
-    cmd = { "ruff-lsp" },
+    cmd = { "ruff","server" },
     filetypes = { "python" },
     root_markers = {
       "pyproject.toml",
@@ -243,7 +243,7 @@ vim.lsp.config.lua_ls = {
   capabilities = capabilities,
 }
 
-vim.lsp.enable({ "pyrefly", "ruff_lsp", "lua_ls" })
+vim.lsp.enable({ "pyrefly", "ruff", "lua_ls" })
 
 vim.api.nvim_create_user_command("LspStart", function(_)
   local bufnr = vim.api.nvim_get_current_buf()

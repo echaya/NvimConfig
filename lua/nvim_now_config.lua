@@ -242,6 +242,7 @@ Snacks.setup({
   indent = { enabled = true },
   scope = { enabled = true },
   explorer = { enabled = true },
+  --test
   scroll = {
     enabled = true,
     animate = {

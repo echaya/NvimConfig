@@ -58,7 +58,7 @@ end)
 require("leap").opts.preview_filter = false
 -- <CR> to traverse forward, <BS> to traverse backward
 require("leap.user").set_repeat_keys("<enter>", "<backspace>")
-vim.keymap.set({ "n" }, "S", function()
+vim.keymap.set({ "n", "x", "o" }, "S", function()
   require("leap.treesitter").select()
 end)
 
