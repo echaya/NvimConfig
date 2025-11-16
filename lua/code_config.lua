@@ -104,7 +104,37 @@ require("conform").setup({
     lua = { "stylua" },
     python = { "isort", "ruff_format" },
   },
+  format_on_save = function()
+    if vim.g.disable_autoformat then
+      return
+    end
+    return { timeout_ms = 500, lsp_format = "fallback" }
+  end,
 })
+
+Snacks.toggle({
+  name = "AutoFormat on Save",
+  get = function()
+    return not (vim.g.disable_autoformat or false)
+  end,
+  set = function(state)
+    if state == true then
+      vim.g.disable_autoformat = false
+      local conform_ok, conform = pcall(require, "conform")
+      if conform_ok then
+        conform.format({
+          timeout_ms = 500,
+          lsp_format = "fallback",
+          async = true,
+        })
+      else
+        vim.notify("conform plugin not found", vim.log.levels.ERROR)
+      end
+    else
+      vim.g.disable_autoformat = true
+    end
+  end,
+}):map("|f")
 
 vim.api.nvim_create_user_command("Format", function(args)
   local range = nil
