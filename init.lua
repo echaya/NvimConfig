@@ -71,7 +71,6 @@ later(function()
     end
   end
   -- nvim plugins
-  -- add({ source = "folke/flash.nvim" })
   add({ source = "ggandor/leap.nvim" })
   add({ source = "monaqa/dial.nvim" })
   require("lua.univ_config")
