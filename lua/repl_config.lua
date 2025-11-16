@@ -131,7 +131,7 @@ vim.api.nvim_create_autocmd("FileType", {
       vim.cmd(string.format("%dREPLClose ipython", target_id))
       vim.defer_fn(function()
         start_ipython_repl_by_id(target_id)
-      end, 1000)
+      end, 2500)
     end
 
     vim.keymap.set(
