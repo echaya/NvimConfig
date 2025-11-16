@@ -186,8 +186,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
-vim.lsp.config.pyrefly = {
-  cmd = { "pyrefly", "lsp" },
+vim.lsp.config.pylsp = {
+  cmd = { "pylsp" }, -- Ensure 'pylsp' is in your PATH
   filetypes = { "python" },
   root_markers = {
     "pyproject.toml",
@@ -197,7 +197,31 @@ vim.lsp.config.pyrefly = {
     "Pipfile",
     ".git",
   },
-  settings = {},
+  settings = {
+    pylsp = {
+      plugins = {
+        flake8 = { enabled = false },
+        mypy = { enabled = false },
+        pycodestyle = { enabled = false },
+        pyflakes = { enabled = false },
+        mccabe = { enabled = false },
+        pydocstyle = { enabled = false },
+        autopep8 = { enabled = false },
+        yapf = { enabled = false },
+        pylint = { enabled = false },
+        rope_completion = { enabled = false },
+        jedi_completion = { enabled = true },
+        jedi_definition = { enabled = true },
+        jedi_hover = { enabled = true },
+        jedi_references = { enabled = true },
+        jedi_signature_help = { enabled = true },
+        jedi_symbols = { enabled = true },
+        jedi = {
+          auto_import_modules = { "numpy", "pandas" },
+        },
+      },
+    },
+  },
   capabilities = capabilities,
 }
 
@@ -243,7 +267,7 @@ vim.lsp.config.lua_ls = {
   capabilities = capabilities,
 }
 
-vim.lsp.enable({ "pyrefly", "ruff", "lua_ls" })
+vim.lsp.enable({ "pylsp", "ruff", "lua_ls" })
 
 vim.api.nvim_create_user_command("LspStart", function(_)
   local bufnr = vim.api.nvim_get_current_buf()
