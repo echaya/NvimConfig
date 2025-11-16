@@ -110,12 +110,6 @@ end, { desc = "live_grep" })
 vim.keymap.set("n", "<leader>gw", function()
   Snacks.picker.grep_word()
 end, { desc = "grep_string" })
-vim.keymap.set("n", "<leader>T", function()
-  local current_tab = vim.api.nvim_get_current_tabpage()
-  vim.g.prev_tab_nr = current_tab
-  vim.cmd("tabnew")
-  Snacks.picker.zoxide()
-end, { desc = "open recent project in new tab" })
 
 Snacks.toggle.option("spell", { name = "Spelling" }):map("|s")
 Snacks.toggle.option("wrap", { name = "Wrap" }):map("|w")
@@ -242,7 +236,6 @@ Snacks.setup({
   indent = { enabled = true },
   scope = { enabled = true },
   explorer = { enabled = true },
-  --test
   scroll = {
     enabled = true,
     animate = {
@@ -339,7 +332,6 @@ Snacks.toggle({
     disabled = "Switch to " .. colorscheme_A,
   },
 }):map("|b")
-
 -- vim.highlight.priorities.semantic_tokens = 95 -- Or any number lower than 100, treesitter's priority level
 require("kanagawa-paper").setup({
   dim_inactive = true,
