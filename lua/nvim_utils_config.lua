@@ -228,11 +228,14 @@ vim.opt.clipboard:append("unnamedplus")
 
 local miniclue = require("mini.clue")
 miniclue.setup({
+  window = {
+    delay = 100,
+  },
   triggers = {
     -- Leader triggers
     { mode = "n", keys = "<Leader>" },
-    { mode = "n", keys = "<LocalLeader>" },
     { mode = "x", keys = "<Leader>" },
+    { mode = "n", keys = "<LocalLeader>" },
 
     -- Built-in completion
     { mode = "i", keys = "<C-x>" },
