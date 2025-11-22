@@ -113,7 +113,7 @@ require("conform").setup({
 })
 
 Snacks.toggle({
-  name = "AutoFormat on Save",
+  name = "Format-on-Save",
   get = function()
     return not (vim.g.disable_autoformat or false)
   end,
