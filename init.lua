@@ -75,7 +75,6 @@ later(function()
   add({ source = "monaqa/dial.nvim" })
   require("lua.univ_config")
   if vim.g.vscode == nil then
-    add({ source = "folke/which-key.nvim" })
     add({
       source = "folke/noice.nvim",
       depends = {

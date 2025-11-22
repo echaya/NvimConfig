@@ -226,32 +226,49 @@ if vim.fn.has("linux") == 1 then
 end
 vim.opt.clipboard:append("unnamedplus")
 
-local wk = require("which-key")
-wk.setup({
-  present = "modern",
+local miniclue = require("mini.clue")
+miniclue.setup({
   triggers = {
-    { "<auto>", mode = "nixsoc" },
-    -- { "<leader>", mode = {"n","v","t"}},
+    -- Leader triggers
+    { mode = "n", keys = "<Leader>" },
+    { mode = "n", keys = "<LocalLeader>" },
+    { mode = "x", keys = "<Leader>" },
+
+    -- Built-in completion
+    { mode = "i", keys = "<C-x>" },
+
+    -- `g` key
+    { mode = "n", keys = "g" },
+    { mode = "x", keys = "g" },
+
+    -- Marks
+    { mode = "n", keys = "'" },
+    { mode = "n", keys = "`" },
+    { mode = "x", keys = "'" },
+    { mode = "x", keys = "`" },
+
+    -- Registers
+    { mode = "n", keys = '"' },
+    { mode = "x", keys = '"' },
+    { mode = "i", keys = "<C-r>" },
+    { mode = "c", keys = "<C-r>" },
+
+    -- Window commands
+    { mode = "n", keys = "<C-w>" },
+
+    -- `z` key
+    { mode = "n", keys = "z" },
+    { mode = "x", keys = "z" },
   },
-  delay = function(ctx)
-    return ctx.plugin and 0 or 150
-  end,
-  defer = function(ctx)
-    return ctx.mode == "V" or ctx.mode == "<C-V>" or ctx.mode == "v"
-  end,
-  debug = false,
-  win = {
-    padding = { 0, 2 },
-    wo = {
-      winblend = 20, -- value between 0-100 0 for fully opaque and 100 for fully transparent
-    },
-  },
-  layout = {
-    spacing = 2, -- spacing between columns
-  },
-  disable = {
-    ft = { "toggleterm", "NvimTree", "oil", "minifiles" },
-    bt = {},
+
+  clues = {
+    -- Enhance this by adding descriptions for <Leader> mapping groups
+    miniclue.gen_clues.builtin_completion(),
+    miniclue.gen_clues.g(),
+    miniclue.gen_clues.marks(),
+    miniclue.gen_clues.registers(),
+    miniclue.gen_clues.windows(),
+    miniclue.gen_clues.z(),
   },
 })
 
