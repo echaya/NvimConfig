@@ -119,6 +119,7 @@ later(function()
     add({ source = "echaya/neowiki.nvim", checkout = "dev" })
     -- add({ source = "NStefan002/screenkey.nvim" })
     add({ source = "MeanderingProgrammer/render-markdown.nvim" })
+    add({ source = "esmuellert/vscode-diff.nvim" })
     require("lua.code_config")
     require("lua.repl_config")
   else
