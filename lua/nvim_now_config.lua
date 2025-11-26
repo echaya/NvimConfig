@@ -315,7 +315,7 @@ Snacks.setup({
   },
 })
 
-local colorscheme_A = "kanagawa"
+local colorscheme_A = "tokyonight-night"
 local colorscheme_B = "kanagawa-paper"
 Snacks.toggle({
   name = "",
@@ -352,36 +352,32 @@ require("kanagawa-paper").setup({
   end,
 })
 
-require("kanagawa").setup({
-  compile = true,
-  keywordStyle = { italic = false },
-  dimInactive = true,
-  transparent = false,
-  colors = {
-    theme = {
-      all = {
-        ui = {
-          bg_gutter = "",
-        },
-      },
-    },
+require("tokyonight").setup({
+  -- available options: moon, storm, night
+  style = "night",
+  dim_inactive = true, -- dims inactive windows
+  styles = {
+    keywords = { italic = false },
   },
-  overrides = function(colors)
-    return {
-      BlinkCmpMenu = { bg = colors.palette.dragonBlack3 },
-      BlinkCmpLabelDetail = { bg = colors.palette.dragonBlack3 },
-      BlinkCmpMenuSelection = { bg = colors.palette.waveBlue1 },
-      NormalFloat = { bg = "none" },
-      FloatBorder = { bg = "none" },
-      FloatTitle = { bg = "none" },
-      LineNr = { fg = colors.palette.dragonGray3 },
-      MatchParen = { bg = colors.palette.sumiInk6, bold = true },
-      FlashLabel = { fg = colors.palette.carpYellow, bg = colors.palette.sumiInk5, bold = true },
-      TabLine = { fg = colors.palette.lotusViolet2 },
-      ["@diff.minus"] = { bg = colors.palette.winterRed },
-      ["@diff.plus"] = { bg = colors.palette.winterGreen },
-      ["@diff.delta"] = { bg = colors.palette.winterYellow },
+  on_colors = function(colors)
+    colors.git.add = colors.green
+    colors.git.change = colors.blue
+    colors.git.delete = colors.red
+  end,
+  on_highlights = function(hl, colors)
+    local commentColor = colors.comment
+    hl.LineNrAbove = {
+      fg = commentColor,
     }
+    hl.LineNrBelow = {
+      fg = commentColor,
+    }
+    hl.MatchParen = { bg = "#505664", underline = true }
+    hl.LineNr = {
+      fg = commentColor,
+    }
+    hl.TabLine = { fg = commentColor }
+    hl.TabLineSel = { bg = colors.bg_visual }
   end,
 })
 
