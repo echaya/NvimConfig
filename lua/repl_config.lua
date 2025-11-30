@@ -52,21 +52,8 @@ vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("python-repl-yarepl", { clear = true }),
   callback = function(args)
     vim.b.CodeFence = "###"
-    local function get_yarepl_module()
-      local status_ok, yarepl = pcall(require, "yarepl")
-      if not status_ok then
-        vim.notify(
-          "yarepl.nvim plugin is not available or not yet loaded.",
-          vim.log.levels.ERROR,
-          { title = "REPL Control" }
-        )
-        return nil
-      end
-      return yarepl
-    end
 
     local is_ipython_repl_active_by_id = function(target_id)
-      local yarepl = get_yarepl_module()
       if not yarepl or not yarepl._repls then
         return false
       end
