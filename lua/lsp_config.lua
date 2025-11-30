@@ -356,27 +356,3 @@ vim.api.nvim_create_user_command("LspInfo", function()
 end, {
   desc = "Show information about active LSP clients for the current buffer.",
 })
-
--- require("mini.cursorword").setup({ delay = 200 }) -- use default config
--- vim.api.nvim_set_hl(0, "MiniCursorwordCurrent", { bg = "#363646" })
--- vim.api.nvim_set_hl(0, "MiniCursorword", { bg = "#363646" })
---
--- if vim.g.minicursorword_disable == nil then
---   vim.g.minicursorword_disable = false
--- end
--- require("snacks")
---   .toggle({
---     name = "MiniCursorWord",
---     notify = true,
---     get = function()
---       return vim.g.minicursorword_disable
---     end,
---     set = function(state)
---       vim.g.minicursorword_disable = state
---     end,
---     wk_desc = {
---       enabled = "Enable MiniCursorWord",
---       disabled = "Disable MiniCursorWord",
---     },
---   })
---   :map("|k")
