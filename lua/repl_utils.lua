@@ -36,13 +36,19 @@ end
 
 --- Checks if the current line is indented.
 function M.is_line_indented()
-  local line_content = vim.api.nvim_get_current_line()
-  return line_content:match("^%s") ~= nil
+  return vim.api.nvim_get_current_line():match("^%s") ~= nil
 end
 
 --- Checks if the current line is a code fence.
 function M.is_fence()
-  return vim.api.nvim_get_current_line() == get_code_fence()
+  local line = vim.api.nvim_get_current_line()
+  local fence = get_code_fence()
+  if line == fence then
+    return true
+  end
+  if vim.startswith(line, fence) then
+    return true
+  end
 end
 
 --- Builds a new code fence at the end of the file.
@@ -58,12 +64,19 @@ local function buffer_has_content(start_line, end_line)
   if start_line > end_line then
     return false
   end
-  local lines = vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false)
-  for _, line in ipairs(lines) do
-    if line:match("%S") then
-      return true
+  local chunk_size = 1000 -- Check in chunks to avoid massive memory alloc
+  local current = start_line
+  while current <= end_line do
+    local limit = math.min(current + chunk_size, end_line)
+    local lines = vim.api.nvim_buf_get_lines(0, current - 1, limit, false)
+    for _, line in ipairs(lines) do
+      if line:match("%S") then
+        return true
+      end
     end
+    current = limit + 1
   end
+
   return false
 end
 
@@ -87,11 +100,36 @@ end
 local function select_from_fence_down(cursor_line, fence_pattern)
   local next_fence_line = vim.fn.search(fence_pattern, "nW")
 
+  if next_fence_line == cursor_line then
+    local current_pos = vim.api.nvim_win_get_cursor(0)
+    local last_line = vim.api.nvim_buf_line_count(0)
+
+    if current_pos[1] < last_line then
+      local old_eventignore = vim.o.eventignore
+      vim.o.eventignore = "all"
+
+      vim.api.nvim_win_set_cursor(0, { current_pos[1] + 1, 0 })
+      next_fence_line = vim.fn.search(fence_pattern, "cnW")
+      vim.api.nvim_win_set_cursor(0, current_pos)
+
+      vim.o.eventignore = old_eventignore
+    else
+      next_fence_line = 0
+    end
+  end
+
   if next_fence_line == 0 then
     return process_last_cell(cursor_line + 1)
   else
     local start_line = cursor_line + 1
-    local end_line = math.max(start_line, next_fence_line - 1)
+    local end_line = next_fence_line - 1
+
+    if end_line < start_line or not buffer_has_content(start_line, end_line) then
+      vim.notify("Cell is empty.", vim.log.levels.INFO)
+      exit_visual_mode()
+      return false
+    end
+
     set_visual_selection(start_line, end_line)
     return true
   end
@@ -113,13 +151,20 @@ local function select_surrounding_cell(fence_pattern)
   if next_fence_line == 0 then
     return process_last_cell(start_line)
   else
-    local end_line = math.max(start_line, next_fence_line - 1)
+    local end_line = next_fence_line - 1
+
+    if end_line < start_line or not buffer_has_content(start_line, end_line) then
+      vim.notify("Cell is empty.", vim.log.levels.INFO)
+      exit_visual_mode()
+      return false
+    end
+
     set_visual_selection(start_line, end_line)
     return true
   end
 end
 
---- Selects the content block between two fences (Manual navigation helper).
+--- Selects the content block between two fences.
 function M.between_cell()
   local cursor_line = get_cursor_row()
   local fence_pattern = "^" .. get_code_fence()
@@ -229,17 +274,12 @@ function M.debug_delete()
     return
   end
 
-  table.remove(lines, #lines)
-  table.remove(lines, 1)
-
-  local indent = get_indent_str()
-  local indent_pattern = "^" .. vim.pesc(indent)
-  for i, line in ipairs(lines) do
-    lines[i] = line:gsub(indent_pattern, "")
-  end
-
   local filtered_lines = {}
-  for _, line in ipairs(lines) do
+  local indent_pattern = "^" .. vim.pesc(get_indent_str())
+
+  -- Iterate from 2 to N-1 (skipping the first and last wrapper lines)
+  for i = 2, #lines - 1 do
+    local line = lines[i]:gsub(indent_pattern, "")
     if not line:match("core%.debugger%.set_trace") then
       table.insert(filtered_lines, line)
     end
