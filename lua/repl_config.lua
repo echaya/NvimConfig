@@ -250,6 +250,7 @@ vim.api.nvim_create_autocmd("FileType", {
     end
 
     create_repl_sender_yarepl("<localleader>pp", "yarepl_print", "print(%s)")
+    create_repl_sender_yarepl("<localleader>pL", "yarepl_print_length", "print(len(%s))")
     create_repl_sender_yarepl("<localleader>pl", "yarepl_print_last", "print(%s.iloc[-1].T)")
     create_repl_sender_yarepl("<localleader>pf", "yarepl_print_first", "print(%s.iloc[0].T)")
     create_repl_sender_yarepl("<localleader>pi", "yarepl_print_info", "print(%s.info())")

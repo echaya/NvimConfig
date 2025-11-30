@@ -99,6 +99,18 @@ vim.diagnostic.config({
   },
 })
 
+vim.keymap.set("n", "<leader>lr", function()
+  vim.cmd("LspRestart")
+end, { silent = true, desc = "LSP Restart" })
+
+vim.keymap.set("n", "<leader>ls", function()
+  vim.cmd("LspStart")
+end, { silent = true, desc = "LSP Start" })
+
+vim.keymap.set("n", "<leader>lS", function()
+  vim.cmd("LspStop")
+end, { silent = true, desc = "LSP Stop" })
+
 -- Autocommand for opening diagnostic float on CursorHold (User's preference)
 vim.api.nvim_create_autocmd("CursorHold", {
   group = vim.api.nvim_create_augroup("DiagnosticFloatGroup", { clear = true }), -- Renamed group for clarity
@@ -109,7 +121,6 @@ vim.api.nvim_create_autocmd("CursorHold", {
     end, 100) -- Debounce by 100ms
   end,
 })
--- }}}
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.foldingRange = {
@@ -186,8 +197,14 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
-vim.lsp.config.pylsp = {
-  cmd = { "pylsp" }, -- Ensure 'pylsp' is in your PATH
+vim.lsp.config.ty = {
+  cmd = { "ty", "server" },
+  filetypes = { "python" },
+  root_dir = vim.fs.root(0, { ".git/", "pyproject.toml" }),
+}
+
+vim.lsp.config.pyrefly = {
+  cmd = { "pyrefly", "lsp" },
   filetypes = { "python" },
   root_markers = {
     "pyproject.toml",
@@ -197,48 +214,23 @@ vim.lsp.config.pylsp = {
     "Pipfile",
     ".git",
   },
-  settings = {
-    pylsp = {
-      plugins = {
-        flake8 = { enabled = false },
-        mypy = { enabled = false },
-        pycodestyle = { enabled = false },
-        pyflakes = { enabled = false },
-        mccabe = { enabled = false },
-        pydocstyle = { enabled = false },
-        autopep8 = { enabled = false },
-        yapf = { enabled = false },
-        pylint = { enabled = false },
-        rope_completion = { enabled = false },
-        jedi_completion = { enabled = true },
-        jedi_definition = { enabled = true },
-        jedi_hover = { enabled = true },
-        jedi_references = { enabled = true },
-        jedi_signature_help = { enabled = true },
-        jedi_symbols = { enabled = true },
-        jedi = {
-          auto_import_modules = { "numpy", "pandas" },
-        },
-      },
-    },
-  },
+  settings = {},
   capabilities = capabilities,
 }
 
-vim.lsp.config.ruff =
-  { -- The server name used by nvim-lspconfig is 'ruff_lsp'. If your executable is just 'ruff', adjust cmd.
-    cmd = { "ruff","server" },
-    filetypes = { "python" },
-    root_markers = {
-      "pyproject.toml",
-      "ruff.toml",
-      "ruff.toml.beta",
-      ".ruff.toml",
-      ".ruff.toml.beta",
-      ".git",
-    },
-    capabilities = capabilities,
-  }
+vim.lsp.config.ruff = {
+  cmd = { "ruff", "server" },
+  filetypes = { "python" },
+  root_markers = {
+    "pyproject.toml",
+    "ruff.toml",
+    "ruff.toml.beta",
+    ".ruff.toml",
+    ".ruff.toml.beta",
+    ".git",
+  },
+  capabilities = capabilities,
+}
 
 vim.lsp.config.lua_ls = {
   cmd = { "lua-language-server" },
@@ -267,7 +259,8 @@ vim.lsp.config.lua_ls = {
   capabilities = capabilities,
 }
 
-vim.lsp.enable({ "pylsp", "ruff", "lua_ls" })
+vim.lsp.enable({ "pyrefly", "ruff", "lua_ls" })
+-- vim.lsp.enable({ "ty", "ruff", "lua_ls" })
 
 vim.api.nvim_create_user_command("LspStart", function(_)
   local bufnr = vim.api.nvim_get_current_buf()
@@ -363,3 +356,27 @@ vim.api.nvim_create_user_command("LspInfo", function()
 end, {
   desc = "Show information about active LSP clients for the current buffer.",
 })
+
+-- require("mini.cursorword").setup({ delay = 200 }) -- use default config
+-- vim.api.nvim_set_hl(0, "MiniCursorwordCurrent", { bg = "#363646" })
+-- vim.api.nvim_set_hl(0, "MiniCursorword", { bg = "#363646" })
+--
+-- if vim.g.minicursorword_disable == nil then
+--   vim.g.minicursorword_disable = false
+-- end
+-- require("snacks")
+--   .toggle({
+--     name = "MiniCursorWord",
+--     notify = true,
+--     get = function()
+--       return vim.g.minicursorword_disable
+--     end,
+--     set = function(state)
+--       vim.g.minicursorword_disable = state
+--     end,
+--     wk_desc = {
+--       enabled = "Enable MiniCursorWord",
+--       disabled = "Disable MiniCursorWord",
+--     },
+--   })
+--   :map("|k")

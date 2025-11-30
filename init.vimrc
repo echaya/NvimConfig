@@ -77,8 +77,7 @@ exe 'source '.g:config_dir.'vim/univ_config.vimrc'
 
 " colorscheme and highlight
 try
-    colorscheme tokyonight-night
-    "colorscheme kanagawa-paper
+    colorscheme tokyonight
 catch
     try
         colorscheme nightfly

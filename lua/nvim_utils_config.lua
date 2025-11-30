@@ -156,6 +156,23 @@ local files_set_cwd = function(_)
   vim.fn.chdir(cur_directory)
   vim.notify(vim.inspect(cur_directory))
 end
+-- Function to generate SCP command and copy to clipboard via OSC 52
+local yank_scp_command = function()
+  local entry = mini_files.get_fs_entry()
+  if not entry then
+    return
+  end
+  local path = entry.path
+  local hostname = vim.loop.os_gethostname() -- e.g., "dev_web-01.example.com"
+  local short_host = hostname:match("_(.*)") or hostname
+  short_host = short_host:match("^([^%.]+)") or short_host
+  local scp_cmd = string.format("scp -P 8080 %s.spaces:%s .", short_host, path)
+  local b64 = vim.fn.system(string.format("echo -n '%s' | base64 | tr -d '\n'", scp_cmd))
+  local osc52 = string.format("\27]52;c;%s\7", b64)
+  vim.loop.fs_write(1, osc52, -1)
+  vim.notify("📋 Copied to Clipboard:\n" .. scp_cmd, vim.log.levels.INFO)
+  mini_files.close()
+end
 
 vim.api.nvim_create_autocmd("User", {
   pattern = "MiniFilesBufferCreate",
@@ -167,6 +184,7 @@ vim.api.nvim_create_autocmd("User", {
     vim.keymap.set("n", "g,", toggle_details, { buffer = buf_id, desc = "Toggle file details" })
     vim.keymap.set("n", "gt", open_totalcmd, { buffer = buf_id, desc = "Open in TotalCmd" })
     vim.keymap.set("n", "gx", open_file, { buffer = buf_id, desc = "Open Externally" })
+    vim.keymap.set("n", "gy", yank_scp_command, { buffer = buf_id, desc = "Create scp comand" })
     vim.keymap.set("n", "gp", toggle_preview, { buffer = buf_id, desc = "Toggle preview" })
     vim.keymap.set("n", "g`", files_set_cwd, { buffer = args.data.buf_id, desc = "Set dir" })
     vim.keymap.set("n", "<esc>", require("mini.files").close, { buffer = buf_id, desc = "Close" })

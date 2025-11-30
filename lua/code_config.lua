@@ -113,7 +113,7 @@ require("conform").setup({
 })
 
 Snacks.toggle({
-  name = "Format-on-Save",
+  name = "Format on Save",
   get = function()
     return not (vim.g.disable_autoformat or false)
   end,
@@ -326,8 +326,7 @@ vim.keymap.set(
   "<cmd>DiffviewFileHistory<CR>",
   { desc = "diffview: log_history" }
 )
-
-vim.keymap.set("n", "<leader>v", function()
+vim.keymap.set("n", "<leader>hd", function()
   local count = vim.v.count
   if next(require("diffview.lib").views) == nil then
     vim.g.prev_tab_nr = vim.api.nvim_get_current_tabpage()
@@ -345,6 +344,34 @@ end, {
   desc = "Diffview Open [HEAD~count]",
 })
 
+require("vscode-diff").setup({
+  keymaps = {
+    view = {
+      quit = false,
+      toggle_explorer = "<leader>e", -- Toggle explorer visibility (explorer mode only)
+      next_hunk = "]v",
+      prev_hunk = "[v",
+    },
+  },
+})
+
+vim.keymap.set("n", "<leader>v", function()
+  local count = vim.v.count
+  vim.g.prev_tab_nr = vim.api.nvim_get_current_tabpage()
+  local cmd
+  if count > 0 then
+    cmd = "CodeDiff HEAD~" .. (count - 1)
+  else
+    cmd = "CodeDiff"
+  end
+  vim.notify(cmd, vim.log.levels.INFO)
+  vim.cmd(cmd)
+end, {
+  noremap = true,
+  silent = true,
+  desc = "CodeDiff [HEAD~(count-1)]",
+})
+
 local function get_default_branch_name()
   local res = vim
     .system({ "git", "rev-parse", "--verify", "main" }, { capture_output = true })
@@ -353,11 +380,15 @@ local function get_default_branch_name()
 end
 
 vim.keymap.set("n", "<leader>hm", function()
-  vim.cmd("DiffviewOpen " .. get_default_branch_name())
+  local cmd = "CodeDiff " .. get_default_branch_name()
+  vim.notify(cmd, vim.log.levels.INFO)
+  vim.cmd(cmd)
 end, { desc = "Diff against local master" })
 
 vim.keymap.set("n", "<leader>hM", function()
-  vim.cmd("DiffviewOpen HEAD..origin/" .. get_default_branch_name())
+  local cmd = "DiffviewOpen HEAD..origin/" .. get_default_branch_name()
+  vim.notify(cmd, vim.log.levels.INFO)
+  vim.cmd(cmd)
 end, { desc = "Diff against (remote) origin/master" })
 
 vim.keymap.set("n", "<leader>hy", function()
