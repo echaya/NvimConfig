@@ -11,7 +11,7 @@ end
 leap.opts.equivalence_classes = { " \t\r\n", "([{", ")]}", "'\"`" }
 vim.api.nvim_set_hl(0, "LeapBackdrop", { link = "Comment" })
 vim.keymap.set("n", "s", "<Plug>(leap)")
-vim.keymap.set("n", "gs", "<Plug>(leap-from-window)")
+vim.keymap.set("n", "<leader>s", "<Plug>(leap-from-window)")
 vim.keymap.set({ "x", "o" }, "z", function()
   leap.leap({ inclusive = true, offset = 1 })
 end, { desc = "leap forward textobj" })
@@ -125,7 +125,7 @@ require("mini.operators").setup({
   },
   sort = {
     -- go sort
-    prefix = "ga",
+    prefix = "gs",
   },
   multiply = {
     prefix = "",
