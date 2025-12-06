@@ -99,26 +99,18 @@ vim.diagnostic.config({
   },
 })
 
-vim.keymap.set("n", "<leader>lr", function()
-  vim.cmd("LspRestart")
-end, { silent = true, desc = "LSP Restart" })
-
-vim.keymap.set("n", "<leader>ls", function()
-  vim.cmd("LspStart")
-end, { silent = true, desc = "LSP Start" })
-
-vim.keymap.set("n", "<leader>lS", function()
-  vim.cmd("LspStop")
-end, { silent = true, desc = "LSP Stop" })
-
 -- Autocommand for opening diagnostic float on CursorHold (User's preference)
 vim.api.nvim_create_autocmd("CursorHold", {
   group = vim.api.nvim_create_augroup("DiagnosticFloatGroup", { clear = true }), -- Renamed group for clarity
   pattern = "*",
   callback = function()
     vim.defer_fn(function()
-      vim.diagnostic.open_float({ scope = "line", focusable = false })
-    end, 100) -- Debounce by 100ms
+      vim.diagnostic.open_float({
+        scope = "line",
+        focusable = false,
+        close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost", "WinLeave" },
+      })
+    end, 250)
   end,
 })
 
@@ -154,9 +146,37 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end
 
     if client.name == "ruff_lsp" or client.name == "ruff" then -- Check both common names
+      client.server_capabilities.documentFormattingProvider = true
       client.server_capabilities.hoverProvider = false
     end
 
+    if client.name == "pyrefly" then
+      -- Disable features provided by other LSPs (like Pylsp or Ruff)
+      client.server_capabilities.documentFormattingProvider = false
+      client.server_capabilities.hoverProvider = true
+      client.server_capabilities.renameProvider = false
+      client.server_capabilities.definitionProvider = false
+      client.server_capabilities.referencesProvider = false
+      -- Note: completionProvider and diagnosticProvider are kept enabled
+    end
+    -- if client.name == "ty" then
+    --   -- Disable features provided by other LSPs (like Pylsp or Ruff)
+    --   client.server_capabilities.documentFormattingProvider = false
+    --   client.server_capabilities.hoverProvider = false
+    --   client.server_capabilities.renameProvider = true
+    --   client.server_capabilities.definitionProvider = true
+    --   client.server_capabilities.referencesProvider = true
+    --   client.server_capabilities.completionProvider = false
+    --   client.server_capabilities.diagnosticProvider = false
+    -- end
+    if client.name == "pylsp" then
+      -- Disable features provided by other LSPs (like Pylsp or Ruff)
+      client.server_capabilities.documentFormattingProvider = false
+      client.server_capabilities.hoverProvider = false
+      client.server_capabilities.renameProvider = true
+      client.server_capabilities.definitionProvider = true
+      client.server_capabilities.referencesProvider = true
+    end
     -- User's Keymaps
     vim.keymap.set("n", "gl", function()
       vim.lsp.buf.hover()
@@ -197,10 +217,65 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
+local function get_python_sys_path()
+  local cmd = 'python -c "import sys, os; print(os.pathsep.join(sys.path))"'
+  local path_str = vim.trim(vim.fn.system(cmd))
+  return path_str
+end
+
 vim.lsp.config.ty = {
   cmd = { "ty", "server" },
+  cmd_env = {
+    PYTHONPATH = get_python_sys_path(),
+  },
   filetypes = { "python" },
+  settings = {
+    ty = {
+      experimental = {
+        rename = true,
+      },
+    },
+  },
   root_dir = vim.fs.root(0, { ".git/", "pyproject.toml" }),
+}
+
+vim.lsp.config.pylsp = {
+  cmd = { "pylsp" }, -- Ensure 'pylsp' is in your PATH
+  filetypes = { "python" },
+  root_markers = {
+    "pyproject.toml",
+    "setup.py",
+    "setup.cfg",
+    "requirements.txt",
+    "Pipfile",
+    ".git",
+  },
+  settings = {
+    pylsp = {
+      plugins = {
+        flake8 = { enabled = false },
+        mypy = { enabled = false },
+        pycodestyle = { enabled = false },
+        pyflakes = { enabled = false },
+        mccabe = { enabled = false },
+        pydocstyle = { enabled = false },
+        autopep8 = { enabled = false },
+        yapf = { enabled = false },
+        pylint = { enabled = false },
+        rope_completion = { enabled = false },
+        jedi_completion = { enabled = false },
+        jedi_definition = { enabled = true },
+        jedi_hover = { enabled = false },
+        jedi_references = { enabled = true },
+        jedi_signature_help = { enabled = true },
+        jedi_symbols = { enabled = true },
+        jedi = {
+          auto_import_modules = { "numpy", "pandas" },
+        },
+      },
+    },
+  },
+  capabilities = capabilities,
 }
 
 vim.lsp.config.pyrefly = {
@@ -259,8 +334,8 @@ vim.lsp.config.lua_ls = {
   capabilities = capabilities,
 }
 
-vim.lsp.enable({ "pyrefly", "ruff", "lua_ls" })
--- vim.lsp.enable({ "ty", "ruff", "lua_ls" })
+vim.lsp.enable({ "ty", "ruff", "lua_ls" })
+-- vim.lsp.enable({ "ruff", "lua_ls", "pyrefly", "pylsp" })
 
 vim.api.nvim_create_user_command("LspStart", function(_)
   local bufnr = vim.api.nvim_get_current_buf()
@@ -356,3 +431,15 @@ vim.api.nvim_create_user_command("LspInfo", function()
 end, {
   desc = "Show information about active LSP clients for the current buffer.",
 })
+
+vim.keymap.set("n", "<leader>lr", function()
+  vim.cmd("LspRestart")
+end, { silent = true, desc = "LSP Restart" })
+
+vim.keymap.set("n", "<leader>ls", function()
+  vim.cmd("LspStart")
+end, { silent = true, desc = "LSP Start" })
+
+vim.keymap.set("n", "<leader>lS", function()
+  vim.cmd("LspStop")
+end, { silent = true, desc = "LSP Stop" })
