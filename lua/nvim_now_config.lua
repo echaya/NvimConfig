@@ -341,9 +341,15 @@ Snacks.toggle({
   },
 }):map("|b")
 -- vim.highlight.priorities.semantic_tokens = 95 -- Or any number lower than 100, treesitter's priority level
+local palette = require("kanagawa-paper.colors").palette
 require("kanagawa-paper").setup({
   dim_inactive = true,
   cache = true,
+  colors = {
+    theme = {
+      ink = { ui = { bg = palette.sumiInk0, bg_dim = palette.sumiInkn1 } },
+    },
+  },
   overrides = function(colors)
     return {
       NormalFloat = { bg = "none" },
