@@ -71,7 +71,7 @@ later(function()
     end
   end
   -- nvim plugins
-  add({ source = "ggandor/leap.nvim" })
+  add({ source = "https://codeberg.org/andyg/leap.nvim" })
   add({ source = "monaqa/dial.nvim" })
   require("lua.univ_config")
   if vim.g.vscode == nil then
