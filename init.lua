@@ -96,7 +96,6 @@ if vim.g.vscode == nil then
       },
       checkout = "v1.8.0", -- check releases for latest tag
     })
-    add({ source = "dnlhc/glance.nvim" })
     add({
       source = "nvim-treesitter/nvim-treesitter",
       hooks = {

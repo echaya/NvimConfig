@@ -37,32 +37,6 @@ vim.opt.foldlevel = 3
 vim.opt.foldnestmax = 3
 vim.opt.foldtext = ""
 
-local glance = require("glance")
-local actions = glance.actions
-
-glance.setup({
-  height = 25, -- Height of the window
-  zindex = 45,
-  border = {
-    enable = true, -- Show window borders. Only horizontal borders allowed
-    top_char = "─",
-    bottom_char = "─",
-  },
-
-  mappings = {
-    list = {
-      ["<Down>"] = false, -- disable a mapping
-      ["<Up>"] = false, -- disable a mapping
-      ["<c-h>"] = actions.enter_win("preview"), -- Focus preview window
-      ["<C-q>"] = actions.quickfix,
-    },
-    preview = {
-      ["<c-l>"] = actions.enter_win("list"), -- Focus list window
-    },
-  },
-})
-
--- Setup LSP
 vim.diagnostic.config({
   signs = {
     text = {
@@ -187,8 +161,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
     vim.keymap.set(
       "n",
       "gd",
-      "<CMD>Glance definitions<CR>",
-      { silent = true, desc = "Glance Definitions", buffer = bufnr }
+      Snacks.picker.lsp_definitions,
+      { silent = true, desc = "Snacks Definitions", buffer = bufnr }
     )
     vim.keymap.set("n", "gR", function()
       vim.lsp.buf.references()
@@ -196,8 +170,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
     vim.keymap.set(
       "n",
       "gr",
-      "<CMD>Glance references<CR>",
-      { silent = true, desc = "Glance References", buffer = bufnr }
+      Snacks.picker.lsp_references,
+      { silent = true, desc = "Snacks References", buffer = bufnr }
     )
     vim.keymap.set("n", "<F2>", function()
       vim.lsp.buf.rename()
