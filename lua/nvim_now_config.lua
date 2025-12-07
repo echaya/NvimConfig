@@ -561,17 +561,17 @@ end
 
 vim.keymap.set(
   "n",
-  "<leader>ss",
+  "<localleader>ss",
   "<cmd>lua MiniSessions.select('read')<cr>",
   { desc = "session_load" }
 )
 vim.keymap.set(
   "n",
-  "<leader>sd",
+  "<localleader>sd",
   "<cmd>lua MiniSessions.select('delete')<cr>",
   { desc = "session_delete" }
 )
-vim.keymap.set("n", "<leader>sS", function()
+vim.keymap.set("n", "<localleader>sS", function()
   SaveMiniSession()
 end, { desc = "session_save" })
 
