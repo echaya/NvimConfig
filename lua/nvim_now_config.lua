@@ -120,9 +120,6 @@ Snacks.toggle.option("ignorecase", { name = "Ignorecase" }):map("|i")
 Snacks.toggle.inlay_hints():map("|H")
 Snacks.toggle.animate():map("|a")
 Snacks.toggle.diagnostics():map("|d")
-Snacks.toggle
-  .option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 })
-  :map("|l")
 Snacks.toggle({
   name = "TableMode",
   notify = false,
@@ -275,7 +272,7 @@ Snacks.setup({
         keys = {
           ["<C-/>"] = { "toggle_help", mode = { "n", "i" } },
           ["<Esc>"] = { "close", mode = { "n", "i" } },
-          ["<C-c>"] = { "close", mode = { "n", "i" } },
+          ["<c-c>"] = { "close", mode = { "n", "i" } },
           ["<Up>"] = { "history_back", mode = { "i", "n" } },
           ["<Down>"] = { "history_forward", mode = { "i", "n" } },
           ["<c-u>"] = { "preview_scroll_up", mode = { "i", "n" } },
@@ -285,6 +282,7 @@ Snacks.setup({
           ["/"] = false,
           ["<c-n>"] = false,
           ["<c-p>"] = false,
+          ["<c-l>"] = { "focus_preview", mode = { "i", "n" } },
           ["<a-l>"] = { "toggle_focus", mode = { "i", "n" } },
           ["<Del>"] = { "bufdelete", mode = { "n", "i" } },
         },
@@ -295,20 +293,26 @@ Snacks.setup({
           ["<c-f>"] = "list_scroll_down",
           ["<c-d>"] = "preview_scroll_down",
           ["<c-u>"] = "preview_scroll_up",
+          ["<Esc>"] = "close",
+          ["v"] = "edit_vsplit",
+          ["s"] = "edit_split",
+          ["q"] = "close",
+          ["<c-c>"] = "close",
           ["<Down>"] = false,
           ["<Up>"] = false,
           ["<c-n>"] = false,
           ["<c-p>"] = false,
           ["/"] = false,
-          ["<a-l>"] = { "toggle_focus", mode = { "i", "n" } },
+          ["<c-l>"] = "focus_preview",
+          ["<a-l>"] = { "toggle_focus" },
         },
       },
       preview = {
         keys = {
           ["<Esc>"] = "close",
           ["q"] = "close",
-          ["i"] = "focus_input",
-          ["<a-w>"] = "cycle_win",
+          ["<c-c>"] = "close",
+          ["<c-h>"] = "focus_list",
         },
       },
     },
@@ -318,6 +322,14 @@ Snacks.setup({
     sources = {
       zoxide = {
         confirm = { "tcd", "picker_files", "close" },
+      },
+      lsp_definitions = {
+        focus = "list",
+        auto_confirm = false,
+      },
+      lsp_references = {
+        focus = "list",
+        auto_confirm = false,
       },
     },
   },
@@ -340,6 +352,7 @@ Snacks.toggle({
     disabled = "Switch to " .. colorscheme_A,
   },
 }):map("|b")
+
 -- vim.highlight.priorities.semantic_tokens = 95 -- Or any number lower than 100, treesitter's priority level
 local palette = require("kanagawa-paper.colors").palette
 require("kanagawa-paper").setup({
