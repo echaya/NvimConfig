@@ -37,6 +37,7 @@ vim.opt.foldlevel = 3
 vim.opt.foldnestmax = 3
 vim.opt.foldtext = ""
 
+-- Setup LSP
 vim.diagnostic.config({
   signs = {
     text = {
@@ -119,38 +120,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
       return
     end
 
-    if client.name == "ruff_lsp" or client.name == "ruff" then -- Check both common names
+    if client.name == "ruff" then -- Check both common names
       client.server_capabilities.documentFormattingProvider = true
       client.server_capabilities.hoverProvider = false
     end
 
-    if client.name == "pyrefly" then
-      -- Disable features provided by other LSPs (like Pylsp or Ruff)
-      client.server_capabilities.documentFormattingProvider = false
-      client.server_capabilities.hoverProvider = true
-      client.server_capabilities.renameProvider = false
-      client.server_capabilities.definitionProvider = false
-      client.server_capabilities.referencesProvider = false
-      -- Note: completionProvider and diagnosticProvider are kept enabled
-    end
-    -- if client.name == "ty" then
-    --   -- Disable features provided by other LSPs (like Pylsp or Ruff)
-    --   client.server_capabilities.documentFormattingProvider = false
-    --   client.server_capabilities.hoverProvider = false
-    --   client.server_capabilities.renameProvider = true
-    --   client.server_capabilities.definitionProvider = true
-    --   client.server_capabilities.referencesProvider = true
-    --   client.server_capabilities.completionProvider = false
-    --   client.server_capabilities.diagnosticProvider = false
-    -- end
-    if client.name == "pylsp" then
-      -- Disable features provided by other LSPs (like Pylsp or Ruff)
-      client.server_capabilities.documentFormattingProvider = false
-      client.server_capabilities.hoverProvider = false
-      client.server_capabilities.renameProvider = true
-      client.server_capabilities.definitionProvider = true
-      client.server_capabilities.referencesProvider = true
-    end
     -- User's Keymaps
     vim.keymap.set("n", "gl", function()
       vim.lsp.buf.hover()
@@ -417,3 +391,40 @@ end, { silent = true, desc = "LSP Start" })
 vim.keymap.set("n", "<leader>lS", function()
   vim.cmd("LspStop")
 end, { silent = true, desc = "LSP Stop" })
+
+Snacks.toggle({
+  notify = false,
+  name = "Python LSP (Ty)", -- The toggle is "On" when Ty is active
+  get = function()
+    local ty_active = #vim.lsp.get_clients({ bufnr = 0, name = "ty" }) > 0
+    local pyrefly_active = #vim.lsp.get_clients({ bufnr = 0, name = "pyrefly" }) > 0
+
+    if ty_active then
+      return true
+    end
+    if pyrefly_active then
+      return false
+    end
+
+    return vim.g.use_pyrefly_lsp ~= true
+  end,
+  set = function(state)
+    local enable_name = state and "ty" or "pyrefly"
+    local disable_name = state and "pyrefly" or "ty"
+
+    vim.g.use_pyrefly_lsp = not state
+    vim.lsp.enable(disable_name, false)
+    vim.lsp.enable(enable_name, true)
+    vim.notify("LSP Switching: " .. disable_name .. " => " .. enable_name, vim.log.levels.INFO)
+    local clients = vim.lsp.get_clients({ name = disable_name })
+    for _, client in ipairs(clients) do
+      client:stop()
+    end
+
+    if vim.bo.filetype == "python" then
+      vim.defer_fn(function()
+        vim.cmd("edit") -- Reloads buffer, triggering LspAttach for the new enabled server
+      end, 50)
+    end
+  end,
+}):map("|l")
