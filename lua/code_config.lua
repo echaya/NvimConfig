@@ -108,7 +108,7 @@ require("conform").setup({
     if vim.g.disable_autoformat then
       return
     end
-    return { timeout_ms = 500, lsp_format = "fallback" }
+    return { timeout_ms = 2000, lsp_format = "fallback" }
   end,
 })
 
