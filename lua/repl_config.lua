@@ -143,6 +143,14 @@ vim.api.nvim_create_autocmd("FileType", {
       end
     end, { buffer = args.buf, desc = "yarepl_source_cell_visual_ipython" })
 
+    vim.keymap.set("n", "<localleader><localleader>", function()
+      local target_id = (vim.v.count == 0) and vim.fn.tabpagenr() or vim.v.count
+      vim.cmd(string.format("%dREPLSendOperator ipython", target_id))
+    end, {
+      buffer = args.buf,
+      desc = "yarepl_send_operator",
+    })
+
     local function create_repl_sender_yarepl(key, desc, command_format_string)
       vim.keymap.set("n", key, function()
         local target_id = (vim.v.count == 0) and vim.fn.tabpagenr() or vim.v.count
