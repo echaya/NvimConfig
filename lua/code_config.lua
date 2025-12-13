@@ -483,35 +483,24 @@ vim.keymap.set(
   { desc = "open wiki in new tab" }
 )
 
-vim.keymap.set("n", "J", function()
-  local current_tab = vim.api.nvim_get_current_tabpage()
-  pcall(vim.api.nvim_command, "tabp")
-  vim.g.prev_tab_nr = current_tab
-end, { noremap = true, silent = true, desc = "Go to previous tab" })
+vim.api.nvim_create_autocmd("TabLeave", {
+  callback = function()
+    local current_tab = vim.api.nvim_get_current_tabpage()
+    vim.g.last_active_tab = current_tab
+  end,
+})
 
-vim.keymap.set("n", "K", function()
-  local current_tab = vim.api.nvim_get_current_tabpage()
-  pcall(vim.api.nvim_command, "tabn")
-  vim.g.prev_tab_nr = current_tab
-end, { noremap = true, silent = true, desc = "Go to next tab" })
-
-vim.keymap.set("n", "T", function()
-  local current_tab = vim.api.nvim_get_current_tabpage()
-  pcall(vim.api.nvim_command, "tabnew")
-  vim.g.prev_tab_nr = current_tab
-end, { noremap = true, silent = true, desc = "Create new tab" })
+vim.keymap.set("n", "J", "<cmd>tabp<cr>", { noremap = true, silent = true, desc = "Previous Tab" })
+vim.keymap.set("n", "K", "<cmd>tabn<cr>", { noremap = true, silent = true, desc = "Next Tab" })
+vim.keymap.set("n", "T", "<cmd>tabnew<cr>", { noremap = true, silent = true, desc = "New Tab" })
 
 vim.keymap.set("n", "<Del>", function()
+  local target_tab = vim.g.last_active_tab
+  local current_tab = vim.api.nvim_get_current_tabpage()
+
   pcall(vim.api.nvim_command, "tabc")
-  local prev_tab = vim.g.prev_tab_nr
-  if prev_tab then
-    vim.g.prev_tab_nr = nil
-    if vim.api.nvim_tabpage_is_valid(prev_tab) then
-      pcall(vim.api.nvim_set_current_tabpage, prev_tab)
-    end
+
+  if target_tab and target_tab ~= current_tab and vim.api.nvim_tabpage_is_valid(target_tab) then
+    pcall(vim.api.nvim_set_current_tabpage, target_tab)
   end
-end, {
-  noremap = true,
-  silent = true,
-  desc = "Close tab and return to Diffview opener",
-})
+end, { noremap = true, silent = true, desc = "Close and return to last used" })
