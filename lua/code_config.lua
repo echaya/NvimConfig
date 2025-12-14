@@ -291,6 +291,70 @@ vim.keymap.set({ "n", "t" }, "<leader>fL", function()
   Snacks.picker.git_log()
 end, { desc = "find_git_log" })
 
+local function git_pickaxe(opts)
+  opts = opts or {}
+  local is_global = opts.global or false
+  local current_file = vim.api.nvim_buf_get_name(0)
+
+  -- Force global if current buffer is invalid
+  if not is_global and (current_file == "" or current_file == nil) then
+    vim.notify("Buffer is not a file, switching to global search", vim.log.levels.WARN)
+    is_global = true
+  end
+
+  local title_scope = is_global and "Global" or vim.fn.fnamemodify(current_file, ":t")
+  vim.ui.input({ prompt = "Git Search (-G) in " .. title_scope .. ": " }, function(query)
+    if not query or query == "" then
+      return
+    end
+
+    local args = {
+      "log",
+      "-G" .. query,
+      "-i",
+      "--pretty=format:%C(yellow)%h%Creset %s %C(green)(%cr)%Creset %C(blue)<%an>%Creset",
+      "--abbrev-commit",
+      "--date=short",
+    }
+
+    if not is_global then
+      table.insert(args, "--")
+      table.insert(args, current_file)
+    end
+
+    Snacks.picker({
+      title = 'Git Log: "' .. query .. '" (' .. title_scope .. ")",
+      finder = "proc",
+      cmd = "git",
+      args = args,
+
+      transform = function(item)
+        local clean_text = item.text:gsub("\27%[[0-9;]*m", "")
+        local hash = clean_text:match("^%S+")
+        if hash then
+          item.commit = hash
+          if not is_global then
+            item.file = current_file
+          end
+        end
+        return item
+      end,
+
+      preview = "git_show",
+      confirm = "git_checkout",
+      format = "text",
+    })
+  end)
+end
+
+-- Keymaps
+vim.keymap.set("n", "<leader>hs", function()
+  git_pickaxe({ global = false })
+end, { desc = "Git Search (Buffer)" })
+vim.keymap.set("n", "<leader>hS", function()
+  git_pickaxe({ global = true })
+end, { desc = "Git Search (Global)" })
+
 require("vscode-diff").setup({
   keymaps = {
     view = {
