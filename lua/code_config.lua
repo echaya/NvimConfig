@@ -283,12 +283,24 @@ require("mini.diff").setup({
   },
 })
 
-vim.keymap.set({ "n", "t" }, "<leader>fl", function()
-  Snacks.picker.git_log_file()
+local function copy_commit(picker, item)
+  picker:close()
+  if item.commit then
+    vim.fn.setreg("+", item.commit)
+    vim.notify("Copied commit hash: " .. item.commit)
+  end
+end
+
+vim.keymap.set({ "n", "t" }, "<leader>hl", function()
+  Snacks.picker.git_log_file({
+    confirm = copy_commit,
+  })
 end, { desc = "find_git_log_file" })
 
-vim.keymap.set({ "n", "t" }, "<leader>fL", function()
-  Snacks.picker.git_log()
+vim.keymap.set({ "n", "t" }, "<leader>hL", function()
+  Snacks.picker.git_log({
+    confirm = copy_commit,
+  })
 end, { desc = "find_git_log" })
 
 local function git_pickaxe(opts)
@@ -341,7 +353,7 @@ local function git_pickaxe(opts)
       end,
 
       preview = "git_show",
-      confirm = "git_checkout",
+      confirm = copy_commit,
       format = "text",
     })
   end)
