@@ -165,36 +165,6 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
-local actions = require("diffview.actions")
-require("diffview").setup({
-  view = {
-    merge_tool = {
-      layout = "diff3_mixed",
-      disable_diagnostics = true,
-    },
-  },
-  keymaps = {
-    disable_defaults = false, -- Disable the default keymaps
-    file_panel = {
-      {
-        "n",
-        "<leader>",
-        actions.toggle_stage_entry,
-        { desc = "Stage / unstage the selected entry" },
-      },
-      {
-        "n",
-        "a",
-        actions.stage_all,
-        { desc = "Stage all entries" },
-      },
-      ["s"] = false,
-      ["S"] = false,
-      ["-"] = false,
-    },
-  },
-})
-
 local mini_git = require("mini.git")
 mini_git.setup()
 
@@ -313,36 +283,13 @@ require("mini.diff").setup({
   },
 })
 
-vim.keymap.set(
-  "n",
-  "<leader>hv",
-  "<cmd>DiffviewFileHistory %<CR>",
-  { desc = "diffview: file_history" }
-)
+vim.keymap.set({ "n", "t" }, "<leader>fl", function()
+  Snacks.picker.git_log_file()
+end, { desc = "find_git_log_file" })
 
-vim.keymap.set(
-  "n",
-  "<leader>hV",
-  "<cmd>DiffviewFileHistory<CR>",
-  { desc = "diffview: log_history" }
-)
-vim.keymap.set("n", "<leader>hd", function()
-  local count = vim.v.count
-  if next(require("diffview.lib").views) == nil then
-    vim.g.prev_tab_nr = vim.api.nvim_get_current_tabpage()
-    if count > 0 then
-      vim.cmd("DiffviewOpen HEAD~" .. count)
-    else
-      vim.cmd("DiffviewOpen")
-    end
-  else
-    vim.cmd("DiffviewClose")
-  end
-end, {
-  noremap = true,
-  silent = true,
-  desc = "Diffview Open [HEAD~count]",
-})
+vim.keymap.set({ "n", "t" }, "<leader>fL", function()
+  Snacks.picker.git_log()
+end, { desc = "find_git_log" })
 
 require("vscode-diff").setup({
   keymaps = {
@@ -384,12 +331,6 @@ vim.keymap.set("n", "<leader>hm", function()
   vim.notify(cmd, vim.log.levels.INFO)
   vim.cmd(cmd)
 end, { desc = "Diff against local master" })
-
-vim.keymap.set("n", "<leader>hM", function()
-  local cmd = "DiffviewOpen HEAD..origin/" .. get_default_branch_name()
-  vim.notify(cmd, vim.log.levels.INFO)
-  vim.cmd(cmd)
-end, { desc = "Diff against (remote) origin/master" })
 
 vim.keymap.set("n", "<leader>hy", function()
   return require("mini.diff").operator("yank") .. "gh"
