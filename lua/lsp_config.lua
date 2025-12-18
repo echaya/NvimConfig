@@ -380,15 +380,15 @@ end, {
   desc = "Show information about active LSP clients for the current buffer.",
 })
 
-vim.keymap.set("n", "<leader>lr", function()
+vim.keymap.set("n", "<localleader>lr", function()
   vim.cmd("LspRestart")
 end, { silent = true, desc = "LSP Restart" })
 
-vim.keymap.set("n", "<leader>ls", function()
+vim.keymap.set("n", "<localleader>ls", function()
   vim.cmd("LspStart")
 end, { silent = true, desc = "LSP Start" })
 
-vim.keymap.set("n", "<leader>lS", function()
+vim.keymap.set("n", "<localleader>lS", function()
   vim.cmd("LspStop")
 end, { silent = true, desc = "LSP Stop" })
 

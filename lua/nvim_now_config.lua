@@ -206,14 +206,6 @@ vim.keymap.set({ "n", "t" }, "<a-.>", function()
   Snacks.lazygit()
 end, { desc = "Lazygit" })
 
-vim.keymap.set({ "n", "t" }, "<leader>fl", function()
-  Snacks.picker.git_log_file()
-end, { desc = "find_g_Tlog_file" })
-
-vim.keymap.set({ "n", "t" }, "<leader>fL", function()
-  Snacks.picker.log_file()
-end, { desc = "find_git_log" })
-
 vim.keymap.set({ "n", "t" }, "<a-`>", function()
   Snacks.terminal()
 end, { desc = "Toggle terminal" })

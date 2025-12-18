@@ -113,7 +113,6 @@ end
 -- deps later: programming tools
 later(function()
   if vim.g.vscode == nil then
-    add({ source = "sindrets/diffview.nvim" })
     add({ source = "milanglacier/yarepl.nvim" })
     add({ source = "stevearc/conform.nvim" })
     add({ source = "echaya/neowiki.nvim", checkout = "dev" })

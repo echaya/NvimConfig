@@ -264,7 +264,7 @@ vim.api.nvim_create_user_command("GH", function()
     end
   end)
 end, {
-  desc = "Write/Quit, close tab, check new tab & close if diffview, then Git push",
+  desc = "Write/Quit, close tab then Git push",
   nargs = 0,
 })
 
@@ -288,6 +288,8 @@ local function copy_commit(picker, item)
   if item.commit then
     vim.fn.setreg("+", item.commit)
     vim.notify("Copied commit hash: " .. item.commit)
+    local cmd = "CodeDiff " .. item.commit
+    vim.cmd(cmd)
   end
 end
 
