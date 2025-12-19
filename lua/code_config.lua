@@ -421,6 +421,42 @@ vim.keymap.set("n", "<Del>", function()
   end
 end, { noremap = true, silent = true, desc = "Close and return to last used" })
 
+local function silent_async_push(root_path)
+  -- 1. Resolve Git Root
+  -- If a specific path is provided (from GH), use it.
+  -- Otherwise (for GP), try to detect it from the current buffer.
+  local git_root = root_path
+  if not git_root or git_root == "" then
+    -- pcall protects against errors if run in a non-git buffer
+    local ok, result = pcall(vim.fn.FugitiveWorkTree)
+    if ok and result and result ~= "" then
+      git_root = result
+    end
+  end
+
+  -- 2. Validation
+  if not git_root then
+    vim.notify("Git Push: Aborted. Could not find git repository root.", vim.log.levels.ERROR)
+    return
+  end
+
+  -- 3. Notify Start
+  vim.notify("Git Push: Pushing...", vim.log.levels.INFO)
+
+  -- 4. Execute Async Push
+  vim.fn.jobstart({ "git", "push" }, {
+    cwd = git_root,
+    on_exit = function(_, code)
+      if code == 0 then
+        vim.notify("Git Push: Success", vim.log.levels.INFO)
+      else
+        vim.notify("Git Push: Failed! (Check :messages for details)", vim.log.levels.ERROR)
+      end
+    end,
+  })
+end
+
+-- 1. GC: Split Layout (Commit Left | Diff Right)
 vim.api.nvim_create_user_command("GC", function()
   vim.cmd("tab Git commit")
   vim.cmd("vertical Git diff --staged")
@@ -429,39 +465,25 @@ end, {
   desc = "Git Commit: Open commit window in new tab",
 })
 
-local function silent_async_push()
-  -- 1. Ask Fugitive for the correct git root of the current buffer
-  -- This ensures we push the right repo, even if your CWD is different.
-  local git_root = vim.fn.FugitiveWorkTree()
-
-  -- 2. Run the push command using Neovim's native job system
-  vim.fn.jobstart({ "git", "push" }, {
-    cwd = git_root, -- Force command to run in the Fugitive-detected root
-    on_exit = function(_, code)
-      if code == 0 then
-        vim.notify("Git: Pushed successfully", vim.log.levels.INFO)
-      else
-        vim.notify("Git: Push failed! Check :messages", vim.log.levels.ERROR)
-      end
-    end,
-  })
-end
-
+-- 2. GP: Trigger Push from Current Buffer
 vim.api.nvim_create_user_command("GP", function()
-  local ok, err = pcall(silent_async_push)
-  if ok then
-    vim.notify("GH: Commit finalized. Pushing...", vim.log.levels.INFO)
-  else
-    vim.notify("GH Error: " .. tostring(err), vim.log.levels.ERROR)
-  end
+  -- We just call the function. It handles its own errors and notifications.
+  silent_async_push()
 end, {
   desc = "Git Push: Push from current buffer's repo",
 })
 
+-- 3. GH: Save, Close, and Trigger Push with Saved Context
 vim.api.nvim_create_user_command("GH", function()
-  -- Ensure we are in the commit buffer
   if vim.bo.filetype ~= "gitcommit" then
     vim.notify("GH: Not a gitcommit buffer.", vim.log.levels.WARN)
+    return
+  end
+
+  -- Capture root BEFORE closing the tab
+  local ok, current_repo_root = pcall(vim.fn.FugitiveWorkTree)
+  if not ok then
+    vim.notify("GH: Could not detect git root in commit buffer.", vim.log.levels.ERROR)
     return
   end
 
@@ -469,12 +491,7 @@ vim.api.nvim_create_user_command("GH", function()
   vim.cmd("tabclose")
 
   vim.defer_fn(function()
-    local ok, err = pcall(silent_async_push)
-    if ok then
-      vim.notify("GH: Commit finalized. Pushing...", vim.log.levels.INFO)
-    else
-      vim.notify("GH Error: " .. tostring(err), vim.log.levels.ERROR)
-    end
+    silent_async_push(current_repo_root)
   end, 200)
 end, {
   desc = "Git Hack: Save commit, close tab, and push",
