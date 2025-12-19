@@ -420,3 +420,132 @@ vim.keymap.set("n", "<Del>", function()
     pcall(vim.api.nvim_set_current_tabpage, target_tab)
   end
 end, { noremap = true, silent = true, desc = "Close and return to last used" })
+
+-- Helper function to safely get the current buffer's git root using Fugitive
+local function get_fugitive_git_root()
+  -- FugitiveWorkTree returns the root of the current repo
+  -- It may throw an error if not in a git repo, so we wrap it
+  local ok, root = pcall(vim.fn.FugitiveWorkTree)
+  if ok and root and root ~= "" then
+    return root
+  end
+  return nil
+end
+
+vim.api.nvim_create_user_command("GC", function()
+  local git_root = get_fugitive_git_root()
+
+  if not git_root then
+    vim.notify("GC command: Could not find Git repository root. Aborting.", vim.log.levels.ERROR)
+    return
+  end
+
+  -- Save state
+  vim.g.fugitive_last_repo_root = git_root
+  vim.g.fugitive_last_tabpage_nr = vim.api.nvim_get_current_tabpage()
+
+  -- Open new tab with Git commit -v
+  -- -v shows the diff inside the commit buffer
+  vim.cmd("tab Git commit -v")
+end, {
+  bang = true,
+  desc = "Save root, open new tab, and run Git commit -v",
+})
+
+vim.api.nvim_create_user_command("GP", function()
+  -- Validation: Ensure we are still in the expected repo context
+  local current_root = get_fugitive_git_root()
+  local saved_root = vim.g.fugitive_last_repo_root
+
+  if not saved_root then
+    vim.notify("GP command: No saved Git root found. Run GC first?", vim.log.levels.ERROR)
+    return
+  end
+
+  -- Warn if the user switched to a buffer in a different repo
+  if current_root ~= saved_root then
+    vim.notify(
+      string.format(
+        "GP Warning: Current buffer is in '%s', but GC was run in '%s'. Pushing anyway...",
+        current_root or "nil",
+        saved_root
+      ),
+      vim.log.levels.WARN
+    )
+    -- If you strictly need to push the SAVED root regardless of current buffer,
+    -- you must use raw system command, bypassing Fugitive:
+    -- vim.fn.system("git -C " .. vim.fn.fnameescape(saved_root) .. " push")
+    -- return
+  end
+
+  -- Run async push using Fugitive
+  -- We rely on the current buffer context, which is the standard Fugitive way.
+  vim.cmd("Git! push")
+
+  -- Clear saved root after successful push command initiation
+  vim.g.fugitive_last_repo_root = nil
+end, {
+  desc = "Git push the current repository (context verified against GC)",
+  bang = true,
+})
+
+vim.api.nvim_create_user_command("GH", function()
+  if vim.bo.filetype ~= "gitcommit" then
+    vim.notify("GH command: Not a gitcommit buffer. Aborting.", vim.log.levels.INFO)
+    return
+  end
+
+  local original_tab_nr = vim.g.fugitive_last_tabpage_nr
+  local saved_root = vim.g.fugitive_last_repo_root
+
+  if not saved_root then
+    vim.notify("GH command: No saved Git root. Did you run GC?", vim.log.levels.ERROR)
+    return
+  end
+
+  -- 1. Close the commit buffer (Save & Quit or just Quit)
+  local initial_bufnr = vim.api.nvim_get_current_buf()
+  local initial_buftype = vim.api.nvim_get_option_value("buftype", { buf = initial_bufnr })
+  local initial_modifiable = vim.api.nvim_get_option_value("modifiable", { buf = initial_bufnr })
+
+  local can_write = (initial_modifiable and (initial_buftype == nil or initial_buftype == ""))
+  local quit_cmd = can_write and "wq" or "q"
+
+  pcall(vim.cmd, quit_cmd)
+
+  -- 2. Close the tab (GC opened a new tab, so we close it to return to previous state)
+  pcall(vim.cmd, "tabc")
+
+  -- 3. Restore context and Push
+  vim.schedule(function()
+    -- Clear globals
+    vim.g.fugitive_last_repo_root = nil
+    vim.g.fugitive_last_tabpage_nr = nil
+
+    -- Restore the original tab
+    if original_tab_nr and vim.api.nvim_tabpage_is_valid(original_tab_nr) then
+      pcall(vim.api.nvim_set_current_tabpage, original_tab_nr)
+    end
+
+    -- Verify context matches (Sanity check)
+    local current_root = get_fugitive_git_root()
+    if current_root ~= saved_root then
+      vim.notify(
+        "GH Warning: Restored tab is not in the expected repo. Pushing active buffer.",
+        vim.log.levels.WARN
+      )
+    end
+
+    -- Execute Push
+    -- Since we restored the tab, we are back in the original buffer/repo.
+    -- Fugitive will use this context.
+    local ok_push, err_push = pcall(vim.cmd, "Git! push")
+
+    if not ok_push then
+      vim.notify("GH command: Error executing push: " .. tostring(err_push), vim.log.levels.ERROR)
+    end
+  end)
+end, {
+  desc = "Write/Quit, close tab then Git push",
+  nargs = 0,
+})
