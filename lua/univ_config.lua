@@ -4,6 +4,13 @@ end, { noremap = true, silent = true, desc = "Open file under cursor in default 
 
 local leap = require("leap")
 leap.opts.case_sensitive = true
+require("leap").opts.on_beacons = function(targets, _, _)
+  for _, t in ipairs(targets) do
+    if t.label and t.beacon then
+      t.beacon[1] = 0
+    end
+  end
+end
 require("leap").opts.preview = function(ch0, ch1, ch2)
   return not (ch1:match("%s") or (ch0:match("%a") and ch1:match("%a") and ch2:match("%a")))
 end
