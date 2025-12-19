@@ -18,7 +18,6 @@ if vim.loader then
   vim.loader.enable()
 end
 
--- Set up 'mini.deps' (customize to your liking)
 MiniDeps = require("mini.deps")
 MiniDeps.setup({ path = { package = path_package } })
 local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later

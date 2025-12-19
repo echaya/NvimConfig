@@ -453,9 +453,10 @@ local function silent_async_push(root_path)
       local output = table.concat(clean_lines, "\n")
 
       if code == 0 then
-        vim.notify("Git Push: Success", vim.log.levels.INFO)
         if output and output ~= "" then
-          vim.notify(output, vim.log.levels.INFO)
+          vim.notify("Git Push Success:\n" .. output, vim.log.levels.INFO)
+        else
+          vim.notify("Git Push Success", vim.log.levels.INFO)
         end
       else
         if output and output ~= "" then
