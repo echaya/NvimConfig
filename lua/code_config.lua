@@ -425,10 +425,6 @@ vim.api.nvim_create_user_command("GC", "tab Git commit -v", {
   desc = "Git Commit: Open commit window in new tab",
 })
 
-vim.api.nvim_create_user_command("GP", "Git! push", {
-  desc = "Git Push: Push from current buffer's repo",
-})
-
 local function silent_async_push()
   -- 1. Ask Fugitive for the correct git root of the current buffer
   -- This ensures we push the right repo, even if your CWD is different.
@@ -446,6 +442,18 @@ local function silent_async_push()
     end,
   })
 end
+
+vim.api.nvim_create_user_command("GP", function()
+  local ok, err = pcall(silent_async_push)
+  if ok then
+    vim.notify("GH: Commit finalized. Pushing...", vim.log.levels.INFO)
+  else
+    vim.notify("GH Error: " .. tostring(err), vim.log.levels.ERROR)
+  end
+end, {
+  desc = "Git Push: Push from current buffer's repo",
+})
+
 vim.api.nvim_create_user_command("GH", function()
   -- Ensure we are in the commit buffer
   if vim.bo.filetype ~= "gitcommit" then
