@@ -422,35 +422,41 @@ vim.keymap.set("n", "<Del>", function()
 end, { noremap = true, silent = true, desc = "Close and return to last used" })
 
 local function silent_async_push(root_path)
-  -- 1. Resolve Git Root
-  -- If a specific path is provided (from GH), use it.
-  -- Otherwise (for GP), try to detect it from the current buffer.
   local git_root = root_path
   if not git_root or git_root == "" then
-    -- pcall protects against errors if run in a non-git buffer
     local ok, result = pcall(vim.fn.FugitiveWorkTree)
     if ok and result and result ~= "" then
       git_root = result
     end
   end
-
-  -- 2. Validation
   if not git_root then
-    vim.notify("Git Push: Aborted. Could not find git repository root.", vim.log.levels.ERROR)
+    vim.notify("Git Push: Aborted. No git root found.", vim.log.levels.ERROR)
     return
   end
-
-  -- 3. Notify Start
   vim.notify("Git Push: Pushing...", vim.log.levels.INFO)
 
-  -- 4. Execute Async Push
+  local stderr_chunks = {}
   vim.fn.jobstart({ "git", "push" }, {
     cwd = git_root,
+    on_stderr = function(_, data)
+      if data then
+        vim.list_extend(stderr_chunks, data)
+      end
+    end,
     on_exit = function(_, code)
+      local output = table.concat(stderr_chunks, "\n")
+
       if code == 0 then
         vim.notify("Git Push: Success", vim.log.levels.INFO)
+        if output and output ~= "" then
+          vim.notify(output, vim.log.levels.INFO)
+        end
       else
-        vim.notify("Git Push: Failed! (Check :messages for details)", vim.log.levels.ERROR)
+        if output and output ~= "" then
+          vim.notify("Git Push Failed:\n" .. output, vim.log.levels.ERROR)
+        else
+          vim.notify("Git Push Failed with exit code " .. code, vim.log.levels.ERROR)
+        end
       end
     end,
   })
