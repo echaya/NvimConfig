@@ -429,6 +429,23 @@ vim.api.nvim_create_user_command("GP", "Git! push", {
   desc = "Git Push: Push from current buffer's repo",
 })
 
+local function silent_async_push()
+  -- 1. Ask Fugitive for the correct git root of the current buffer
+  -- This ensures we push the right repo, even if your CWD is different.
+  local git_root = vim.fn.FugitiveWorkTree()
+
+  -- 2. Run the push command using Neovim's native job system
+  vim.fn.jobstart({ "git", "push" }, {
+    cwd = git_root, -- Force command to run in the Fugitive-detected root
+    on_exit = function(_, code)
+      if code == 0 then
+        vim.notify("Git: Pushed successfully", vim.log.levels.INFO)
+      else
+        vim.notify("Git: Push failed! Check :messages", vim.log.levels.ERROR)
+      end
+    end,
+  })
+end
 vim.api.nvim_create_user_command("GH", function()
   -- Ensure we are in the commit buffer
   if vim.bo.filetype ~= "gitcommit" then
@@ -440,7 +457,7 @@ vim.api.nvim_create_user_command("GH", function()
   vim.cmd("tabclose")
 
   vim.defer_fn(function()
-    local ok, err = pcall(vim.cmd, "Git! push --quiet")
+    local ok, err = pcall(silent_async_push)
     if ok then
       vim.notify("GH: Commit finalized. Pushing...", vim.log.levels.INFO)
     else
