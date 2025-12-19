@@ -470,9 +470,8 @@ local function silent_async_push(root_path)
 end
 
 vim.api.nvim_create_user_command("GC", function()
-  vim.cmd("tab Git commit")
-  vim.cmd("vertical Git diff --staged")
-  vim.cmd("wincmd p")
+  vim.cmd("tab Git diff --staged")
+  vim.cmd("vertical Git commit")
 end, {
   desc = "Git Commit: Open commit window in new tab",
 })
@@ -496,7 +495,12 @@ vim.api.nvim_create_user_command("GH", function()
   end
 
   vim.cmd("write")
+  local target_tab = vim.g.last_active_tab
+  local current_tab = vim.api.nvim_get_current_tabpage()
   vim.cmd("tabclose")
+  if target_tab and target_tab ~= current_tab and vim.api.nvim_tabpage_is_valid(target_tab) then
+    pcall(vim.api.nvim_set_current_tabpage, target_tab)
+  end
 
   vim.defer_fn(function()
     silent_async_push(current_repo_root)
