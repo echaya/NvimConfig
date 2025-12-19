@@ -444,7 +444,13 @@ local function silent_async_push(root_path)
       end
     end,
     on_exit = function(_, code)
-      local output = table.concat(stderr_chunks, "\n")
+      local clean_lines = {}
+      for _, line in ipairs(stderr_chunks) do
+        if line:match("%S") then -- Checks for at least one non-whitespace character
+          table.insert(clean_lines, line)
+        end
+      end
+      local output = table.concat(clean_lines, "\n")
 
       if code == 0 then
         vim.notify("Git Push: Success", vim.log.levels.INFO)
