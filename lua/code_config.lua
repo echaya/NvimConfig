@@ -461,7 +461,7 @@ vim.api.nvim_create_user_command("GH", function()
     else
       vim.notify("GH Error: " .. tostring(err), vim.log.levels.ERROR)
     end
-  end, 100)
+  end, 200)
 end, {
   desc = "Git Hack: Save commit, close tab, and push",
 })
