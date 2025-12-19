@@ -421,21 +421,14 @@ vim.keymap.set("n", "<Del>", function()
   end
 end, { noremap = true, silent = true, desc = "Close and return to last used" })
 
--- 1. GC: Open Git Commit in a new tab
--- 'tab': Opens the command in a new tab
--- 'Git commit -v': Opens commit buffer with inline diff
 vim.api.nvim_create_user_command("GC", "tab Git commit -v", {
   desc = "Git Commit: Open commit window in new tab",
 })
 
--- 2. GP: Git Push (Async)
--- Uses the current buffer to determine the repo
--- 'Git!' with a bang runs asynchronously so it doesn't block Neovim
 vim.api.nvim_create_user_command("GP", "Git! push", {
   desc = "Git Push: Push from current buffer's repo",
 })
 
--- 3. GH: Git "Hack" (Write, Close, Push)
 vim.api.nvim_create_user_command("GH", function()
   -- Ensure we are in the commit buffer
   if vim.bo.filetype ~= "gitcommit" then
@@ -443,17 +436,9 @@ vim.api.nvim_create_user_command("GH", function()
     return
   end
 
-  -- Step 1: Write the commit message file
-  -- This saves the file to disk so Git can read it.
   vim.cmd("write")
-
-  -- Step 2: Close the tab
-  -- This destroys the commit window (and the diff window if present).
-  -- Neovim will automatically return focus to the previous tab (your code).
   vim.cmd("tabclose")
 
-  -- Step 3: Push
-  -- We are now back in the original tab. Fugitive will use *this* buffer's
   vim.defer_fn(function()
     local ok, err = pcall(vim.cmd, "Git! push")
     if ok then
