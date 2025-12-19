@@ -421,19 +421,18 @@ vim.keymap.set("n", "<Del>", function()
   end
 end, { noremap = true, silent = true, desc = "Close and return to last used" })
 
-vim.api.nvim_create_user_command("GC", function()
-  vim.cmd("w")
-  vim.cmd("tab Git commit -v")
-end, {
-  bang = true,
-  desc = "Save root, open new tab, and run Git commit -v",
+-- 1. GC: Open Git Commit in a new tab
+-- 'tab': Opens the command in a new tab
+-- 'Git commit -v': Opens commit buffer with inline diff
+vim.api.nvim_create_user_command("GC", "tab Git commit -v", {
+  desc = "Git Commit: Open commit window in new tab",
 })
 
-vim.api.nvim_create_user_command("GP", function()
-  vim.cmd("Git! push")
-end, {
-  desc = "Git push the current repository (context verified against GC)",
-  bang = true,
+-- 2. GP: Git Push (Async)
+-- Uses the current buffer to determine the repo
+-- 'Git!' with a bang runs asynchronously so it doesn't block Neovim
+vim.api.nvim_create_user_command("GP", "Git! push", {
+  desc = "Git Push: Push from current buffer's repo",
 })
 
 vim.api.nvim_create_user_command("GH", function()
