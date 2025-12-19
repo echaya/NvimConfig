@@ -440,7 +440,7 @@ vim.api.nvim_create_user_command("GH", function()
   vim.cmd("tabclose")
 
   vim.defer_fn(function()
-    local ok, err = pcall(vim.cmd, "Git! push")
+    local ok, err = pcall(vim.cmd, "Git! push --quiet")
     if ok then
       vim.notify("GH: Commit finalized. Pushing...", vim.log.levels.INFO)
     else
