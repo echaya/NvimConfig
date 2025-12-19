@@ -430,37 +430,7 @@ end, {
 })
 
 vim.api.nvim_create_user_command("GP", function()
-  -- Validation: Ensure we are still in the expected repo context
-  local current_root = get_fugitive_git_root()
-  local saved_root = vim.g.fugitive_last_repo_root
-
-  if not saved_root then
-    vim.notify("GP command: No saved Git root found. Run GC first?", vim.log.levels.ERROR)
-    return
-  end
-
-  -- Warn if the user switched to a buffer in a different repo
-  if current_root ~= saved_root then
-    vim.notify(
-      string.format(
-        "GP Warning: Current buffer is in '%s', but GC was run in '%s'. Pushing anyway...",
-        current_root or "nil",
-        saved_root
-      ),
-      vim.log.levels.WARN
-    )
-    -- If you strictly need to push the SAVED root regardless of current buffer,
-    -- you must use raw system command, bypassing Fugitive:
-    -- vim.fn.system("git -C " .. vim.fn.fnameescape(saved_root) .. " push")
-    -- return
-  end
-
-  -- Run async push using Fugitive
-  -- We rely on the current buffer context, which is the standard Fugitive way.
   vim.cmd("Git! push")
-
-  -- Clear saved root after successful push command initiation
-  vim.g.fugitive_last_repo_root = nil
 end, {
   desc = "Git push the current repository (context verified against GC)",
   bang = true,
