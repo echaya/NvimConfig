@@ -8,7 +8,7 @@
 SRC_BASE="/home/z/.local/share/nvim/site/pack/deps/opt"
 DEST_BASE="/mnt/c/Users/echay/AppData/Local/nvim-data/site/pack/deps/opt"
 
-# Function: sync_libs
+# Function: sync_libs()
 # Arguments:
 #   $1: Plugin Name
 #   $2: Relative Subpath (use "" for root of plugin)
