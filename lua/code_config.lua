@@ -421,31 +421,8 @@ vim.keymap.set("n", "<Del>", function()
   end
 end, { noremap = true, silent = true, desc = "Close and return to last used" })
 
--- Helper function to safely get the current buffer's git root using Fugitive
-local function get_fugitive_git_root()
-  -- FugitiveWorkTree returns the root of the current repo
-  -- It may throw an error if not in a git repo, so we wrap it
-  local ok, root = pcall(vim.fn.FugitiveWorkTree)
-  if ok and root and root ~= "" then
-    return root
-  end
-  return nil
-end
-
 vim.api.nvim_create_user_command("GC", function()
-  local git_root = get_fugitive_git_root()
-
-  if not git_root then
-    vim.notify("GC command: Could not find Git repository root. Aborting.", vim.log.levels.ERROR)
-    return
-  end
-
-  -- Save state
-  vim.g.fugitive_last_repo_root = git_root
-  vim.g.fugitive_last_tabpage_nr = vim.api.nvim_get_current_tabpage()
-
-  -- Open new tab with Git commit -v
-  -- -v shows the diff inside the commit buffer
+  vim.cmd("w")
   vim.cmd("tab Git commit -v")
 end, {
   bang = true,
