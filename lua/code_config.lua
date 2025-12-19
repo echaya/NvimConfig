@@ -469,19 +469,6 @@ local function silent_async_push(root_path)
   })
 end
 
-vim.api.nvim_create_user_command("GC", function()
-  vim.cmd("tab Git diff --staged")
-  vim.cmd("vertical Git commit")
-end, {
-  desc = "Git Commit: Open commit window in new tab",
-})
-
-vim.api.nvim_create_user_command("GP", function()
-  silent_async_push()
-end, {
-  desc = "Git Push: Push from current buffer's repo",
-})
-
 vim.api.nvim_create_user_command("GH", function()
   if vim.bo.filetype ~= "gitcommit" then
     vim.notify("GH: Not a gitcommit buffer.", vim.log.levels.WARN)
