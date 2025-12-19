@@ -421,8 +421,7 @@ vim.keymap.set("n", "<Del>", function()
   end
 end, { noremap = true, silent = true, desc = "Close and return to last used" })
 
-local function silent_async_push(root_path)
-  local git_root = root_path
+local function silent_async_push(git_root)
   if not git_root or git_root == "" then
     local ok, result = pcall(vim.fn.FugitiveWorkTree)
     if ok and result and result ~= "" then
@@ -435,35 +434,33 @@ local function silent_async_push(root_path)
   end
   vim.notify("Git Push: Pushing...", vim.log.levels.INFO)
 
-  local stderr_chunks = {}
+  local output_lines = {}
+
   vim.fn.jobstart({ "git", "push" }, {
     cwd = git_root,
     on_stderr = function(_, data)
       if data then
-        vim.list_extend(stderr_chunks, data)
+        vim.list_extend(output_lines, data)
       end
     end,
     on_exit = function(_, code)
-      local clean_lines = {}
-      for _, line in ipairs(stderr_chunks) do
-        if line:match("%S") then -- Checks for at least one non-whitespace character
-          table.insert(clean_lines, line)
+      local clean_output = {}
+      for _, line in ipairs(output_lines) do
+        if line:match("%S") then
+          table.insert(clean_output, line)
         end
       end
-      local output = table.concat(clean_lines, "\n")
+      local msg = table.concat(clean_output, "\n")
 
       if code == 0 then
-        if output and output ~= "" then
-          vim.notify("Git Push Success:\n" .. output, vim.log.levels.INFO)
-        else
-          vim.notify("Git Push Success", vim.log.levels.INFO)
-        end
+        -- Success
+        vim.notify("Git Push Success" .. (msg ~= "" and (":\n" .. msg) or ""), vim.log.levels.INFO)
       else
-        if output and output ~= "" then
-          vim.notify("Git Push Failed:\n" .. output, vim.log.levels.ERROR)
-        else
-          vim.notify("Git Push Failed with exit code " .. code, vim.log.levels.ERROR)
-        end
+        -- Failure
+        vim.notify(
+          "Git Push Failed:\n" .. (msg ~= "" and msg or "Exit Code " .. code),
+          vim.log.levels.ERROR
+        )
       end
     end,
   })

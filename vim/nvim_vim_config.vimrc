@@ -290,8 +290,7 @@ nnoremap <leader>G <Cmd>tab G<cr>
 
 augroup FugitiveCustomMaps
   autocmd!
-  " Trigger on Fugitive buffers (Index, Objects, Commits, Blame, etc.)
-  " We use 'silent!' so it doesn't error if J/K weren't actually mapped in that specific buffer.
+  " unbind J/K from autoload/fugitive
   autocmd User FugitiveIndex,FugitiveObject,FugitiveCommit,FugitiveBlame silent! nunmap <buffer> J
   autocmd User FugitiveIndex,FugitiveObject,FugitiveCommit,FugitiveBlame silent! nunmap <buffer> K
 augroup END
