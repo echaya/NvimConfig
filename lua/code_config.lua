@@ -469,7 +469,6 @@ local function silent_async_push(root_path)
   })
 end
 
--- 1. GC: Split Layout (Commit Left | Diff Right)
 vim.api.nvim_create_user_command("GC", function()
   vim.cmd("tab Git commit")
   vim.cmd("vertical Git diff --staged")
@@ -478,22 +477,18 @@ end, {
   desc = "Git Commit: Open commit window in new tab",
 })
 
--- 2. GP: Trigger Push from Current Buffer
 vim.api.nvim_create_user_command("GP", function()
-  -- We just call the function. It handles its own errors and notifications.
   silent_async_push()
 end, {
   desc = "Git Push: Push from current buffer's repo",
 })
 
--- 3. GH: Save, Close, and Trigger Push with Saved Context
 vim.api.nvim_create_user_command("GH", function()
   if vim.bo.filetype ~= "gitcommit" then
     vim.notify("GH: Not a gitcommit buffer.", vim.log.levels.WARN)
     return
   end
 
-  -- Capture root BEFORE closing the tab
   local ok, current_repo_root = pcall(vim.fn.FugitiveWorkTree)
   if not ok then
     vim.notify("GH: Could not detect git root in commit buffer.", vim.log.levels.ERROR)
