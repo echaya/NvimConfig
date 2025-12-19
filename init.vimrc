@@ -21,6 +21,7 @@ let g:share_plugin = [
             \'MTDL9/vim-log-highlighting',
             \'tpope/vim-repeat',
             \'unblevable/quick-scope',
+            \ 'tpope/vim-fugitive',
             \'dhruvasagar/vim-table-mode'
             \]
 " Vim specific plugins
@@ -34,7 +35,6 @@ let g:vim_plugin = [
             \ 'Julian/vim-textobj-variable-segment',
             \ 'mbbill/undotree',
             \ 'machakann/vim-sandwich',
-            \ 'tpope/vim-fugitive',
             \ 'airblade/vim-rooter',
             \ ['bluz71/vim-nightfly-colors',"nightfly"]
             \]
