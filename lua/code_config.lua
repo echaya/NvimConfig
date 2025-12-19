@@ -421,7 +421,11 @@ vim.keymap.set("n", "<Del>", function()
   end
 end, { noremap = true, silent = true, desc = "Close and return to last used" })
 
-vim.api.nvim_create_user_command("GC", "tab Git commit -v", {
+vim.api.nvim_create_user_command("GC", function()
+  vim.cmd("tab Git commit")
+  vim.cmd("vertical Git diff --staged")
+  vim.cmd("wincmd p")
+end, {
   desc = "Git Commit: Open commit window in new tab",
 })
 
