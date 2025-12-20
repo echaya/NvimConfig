@@ -180,26 +180,39 @@ require("mini.diff").setup({
   },
 })
 
-local function copy_commit(picker, item)
+local function walk_in_codediff(picker, item)
   picker:close()
   if item.commit then
-    vim.fn.setreg("+", item.commit)
-    vim.notify("Copied commit hash: " .. item.commit)
-    -- TODO compare it against the previous commit
-    local cmd = "CodeDiff " .. item.commit
+    local current_commit = item.commit
+
+    vim.fn.setreg("+", current_commit)
+    vim.notify("Copied: " .. current_commit)
+
+    -- "git rev-parse --short <commit>^" asks git for the parent hash
+    local parent_commit = vim.trim(vim.fn.system("git rev-parse --short " .. current_commit .. "^"))
+    parent_commit = parent_commit:match("[a-f0-9]+")
+
+    -- Check if command failed (e.g., Initial commit has no parent)
+    if vim.v.shell_error ~= 0 then
+      vim.notify("Cannot find parent (Root commit?)", vim.log.levels.WARN)
+      parent_commit = ""
+    end
+
+    local cmd = string.format("CodeDiff %s %s", parent_commit, current_commit)
+    vim.notify("Diffing: " .. parent_commit .. " -> " .. current_commit)
     vim.cmd(cmd)
   end
 end
 
 vim.keymap.set({ "n", "t" }, "<leader>hl", function()
   Snacks.picker.git_log_file({
-    confirm = copy_commit,
+    confirm = walk_in_codediff,
   })
 end, { desc = "find_git_log_file" })
 
 vim.keymap.set({ "n", "t" }, "<leader>hL", function()
   Snacks.picker.git_log({
-    confirm = copy_commit,
+    confirm = walk_in_codediff,
   })
 end, { desc = "find_git_log" })
 
@@ -253,7 +266,7 @@ local function git_pickaxe(opts)
       end,
 
       preview = "git_show",
-      confirm = copy_commit,
+      confirm = walk_in_codediff,
       format = "text",
     })
   end)
