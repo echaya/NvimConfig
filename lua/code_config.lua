@@ -185,6 +185,7 @@ local function copy_commit(picker, item)
   if item.commit then
     vim.fn.setreg("+", item.commit)
     vim.notify("Copied commit hash: " .. item.commit)
+    -- TODO compare it against the previous commit
     local cmd = "CodeDiff " .. item.commit
     vim.cmd(cmd)
   end
