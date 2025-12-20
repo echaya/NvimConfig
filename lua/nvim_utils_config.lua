@@ -82,7 +82,7 @@ mini_files.setup({
   content = { prefix = my_prefix },
 })
 
-vim.keymap.set("n", "<a-e>", function()
+vim.keymap.set("n", "<leader>e", function()
   if not mini_files.close() then
     mini_files.open()
   end
