@@ -9,8 +9,10 @@ unmap X
 map ZQ removeTab
 map ZZ removeTab
 map ZX restoreTab
-map <c-s-j> previousTab
-map <c-s-k> nextTab
+map <c-s-k> previousTab
+map <c-s-j> nextTab
+map J nextTab
+map K previousTab
 map <c-d> scrollPageDown
 map <c-u> scrollPageUp
 ```
