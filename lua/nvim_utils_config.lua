@@ -1,3 +1,4 @@
+-- mini.file
 local format_size = function(size)
   if size == nil then
     return
@@ -220,7 +221,12 @@ map_multistep("i", "<Tab>", tab_steps)
 local shifttab_steps = { "blink_prev", "decrease_indent", "jump_before_open" }
 map_multistep("i", "<S-Tab>", shifttab_steps)
 
-require("mini.trailspace").setup()
+local mini_trail = require("mini.trailspace")
+mini_trail.setup()
+vim.api.nvim_create_user_command("RemoveTrailingSpace", function()
+  mini_trail.trim()
+  mini_trail.trim_last_lines()
+end, { desc = "mini trailspace remove space and trail empty line" })
 
 if vim.fn.has("linux") == 1 then
   local function paste()

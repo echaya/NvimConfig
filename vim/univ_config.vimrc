@@ -41,7 +41,6 @@ nnoremap <C-V> v
 " duplicate current window in Vertical
 :command V vsplit
 :command S split
-:command RemoveTrailingSpace %s/\s\+$//e
 " convert # In[ ]: => ### Cell
 :command ReplaceIn %s/#\s*In\[\s*\d*\s*\]\?:/###/g
 
