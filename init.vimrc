@@ -21,7 +21,7 @@ let g:share_plugin = [
             \'MTDL9/vim-log-highlighting',
             \'tpope/vim-repeat',
             \'unblevable/quick-scope',
-            \ 'tpope/vim-fugitive',
+            \'tpope/vim-fugitive',
             \'dhruvasagar/vim-table-mode'
             \]
 " Vim specific plugins

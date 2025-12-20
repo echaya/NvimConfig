@@ -467,6 +467,7 @@ local function silent_async_push(git_root)
   })
 end
 
+vim.opt.diffopt:append("inline:char")
 vim.api.nvim_create_user_command("GH", function()
   if vim.bo.filetype ~= "gitcommit" then
     vim.notify("GH: Not a gitcommit buffer.", vim.log.levels.WARN)
