@@ -188,7 +188,7 @@ local function walk_in_codediff(picker, item)
     vim.fn.setreg("+", current_commit)
     vim.notify("Copied: " .. current_commit)
 
-    -- "git rev-parse --short <commit>^" asks git for the parent hash
+    -- get parent / previous commit
     local parent_commit = vim.trim(vim.fn.system("git rev-parse --short " .. current_commit .. "^"))
     parent_commit = parent_commit:match("[a-f0-9]+")
 
@@ -455,7 +455,6 @@ local function silent_async_push(git_root)
     vim.notify("Git Push: Aborted. No git root found.", vim.log.levels.ERROR)
     return
   end
-  vim.notify("Git Push: Pushing...", vim.log.levels.INFO)
 
   local output_lines = {}
 
