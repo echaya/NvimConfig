@@ -69,8 +69,9 @@ inoremap , ,<c-g>u
 inoremap . .<c-g>u
 inoremap ; ;<c-g>u
 
-" remove noh
-nnoremap <silent><C-c> :noh<CR><Esc>
+" remove highlight
+nnoremap <silent><C-c> <cmd>noh<CR><Esc>
+nnoremap <silent><esc> <cmd>noh<CR><Esc>
 
 " formatted paste
 inoremap <silent> <c-s-v> <Esc>:set paste<Cr>a<c-r>+<Esc>:set nopaste<Cr>a
