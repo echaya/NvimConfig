@@ -504,7 +504,7 @@ vim.api.nvim_create_user_command("GH", function()
 
   vim.defer_fn(function()
     silent_async_push(current_repo_root)
-  end, 200)
+  end, 100)
 end, {
   desc = "Git Hack: Save commit, close tab, and push",
 })
