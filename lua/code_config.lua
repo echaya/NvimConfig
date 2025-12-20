@@ -233,6 +233,10 @@ local function git_pickaxe(opts)
       return
     end
 
+    vim.fn.setreg("/", query)
+    local old_hl = vim.opt.hlsearch
+    vim.opt.hlsearch = true
+
     local args = {
       "log",
       "-G" .. query,
@@ -268,6 +272,11 @@ local function git_pickaxe(opts)
       preview = "git_show",
       confirm = walk_in_codediff,
       format = "text",
+
+      on_close = function()
+        vim.opt.hlsearch = old_hl
+        vim.cmd("noh")
+      end,
     })
   end)
 end
