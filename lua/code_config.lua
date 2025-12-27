@@ -289,7 +289,7 @@ vim.keymap.set("n", "<leader>hS", function()
   git_pickaxe({ global = true })
 end, { desc = "Git Search (Global)" })
 
-require("vscode-diff").setup({
+require("codediff").setup({
   keymaps = {
     view = {
       quit = false,
