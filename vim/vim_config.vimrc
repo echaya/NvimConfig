@@ -114,4 +114,8 @@ let g:rooter_buftypes = ['']
 let g:rooter_patterns = ['.git']
 
 :command RemoveTrailingSpace %s/\s\+$//e
+
+"vim-fugitive
+command! GC execute "tab Git diff --staged" | execute "vertical Git commit"
+command GP execute "Git! push"
 runtime macros/sandwich/keymap/surround.vim
