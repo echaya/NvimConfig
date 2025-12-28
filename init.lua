@@ -58,7 +58,7 @@ now(function()
   add({ source = "folke/snacks.nvim" })
   add({ source = "thesimonho/kanagawa-paper.nvim" })
   add({ source = "folke/tokyonight.nvim" })
-  require("lua.nvim_now_config")
+  require("lua.now_config")
 end)
 
 -- deps later: utilities
@@ -81,7 +81,7 @@ later(function()
         "MunifTanjim/nui.nvim",
       },
     })
-    require("lua.nvim_utils_config")
+    require("lua.utils_config")
   end
 end)
 
