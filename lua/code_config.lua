@@ -165,6 +165,19 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+local hi_words = require("mini.extra").gen_highlighter.words
+local hipatterns = require("mini.hipatterns")
+hipatterns.setup({
+  highlighters = {
+    hack = hi_words({ "IMP", "Hack" }, "MiniHipatternsHack"),
+    fixme = hi_words({ "XXX", "FIXME" }, "MiniHipatternsFixme"),
+    todo = hi_words({ "TODO", "Todo" }, "MiniHipatternsTodo"),
+    note = hi_words({ "NOTE", "Note" }, "MiniHipatternsNote"),
+    -- Highlight hex color strings (`#rrggbb`) using that color
+    hex_color = hipatterns.gen_highlighter.hex_color(),
+  },
+})
+
 require("render-markdown").setup({
   file_types = { "markdown" },
   enabled = true,
