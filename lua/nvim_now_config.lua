@@ -409,6 +409,9 @@ icon.setup()
 icon.mock_nvim_web_devicons()
 vim.g.nvim_web_devicons = 1
 
+require("mini.git").setup()
+pcall(vim.api.nvim_del_user_command, "Git")
+
 local MiniStatusline = require("mini.statusline")
 MiniStatusline.setup({
   content = {
