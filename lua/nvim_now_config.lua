@@ -410,12 +410,15 @@ icon.mock_nvim_web_devicons()
 vim.g.nvim_web_devicons = 1
 
 local function get_fugitive_branch()
-  local head = vim.fn.FugitiveHead()
-  if head == "" then
+  local head_name = vim.fn.FugitiveHead()
+  if head_name == "" then
     return ""
   end
-
-  return " " .. head
+  local head_limiter = 20
+  if #head_name > head_limiter then
+    head_name = head_name:sub(1, head_limiter - 1) .. "…"
+  end
+  return " " .. head_name
 end
 
 local MiniStatusline = require("mini.statusline")
