@@ -120,6 +120,7 @@ later(function()
     add({ source = "MeanderingProgrammer/render-markdown.nvim" })
     require("lua.code_config")
     require("lua.repl_config")
+    require("lua.git_config")
   else
     require("lua.vscode_config")
   end
