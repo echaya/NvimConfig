@@ -412,19 +412,19 @@ vim.g.nvim_web_devicons = 1
 require("mini.git").setup()
 pcall(vim.api.nvim_del_user_command, "Git")
 
-local MiniStatusline = require("mini.statusline")
-MiniStatusline.setup({
+local mimi_statusline = require("mini.statusline")
+mimi_statusline.setup({
   content = {
     active = function()
-      local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 10000 })
-      local git = MiniStatusline.section_git({ trunc_width = 40 })
-      local diff = MiniStatusline.section_diff({ trunc_width = 75 })
-      local diagnostics = MiniStatusline.section_diagnostics({ trunc_width = 75 })
-      local lsp = MiniStatusline.section_lsp({ trunc_width = 75 })
-      local filename = MiniStatusline.section_filename({ trunc_width = 300 })
-      local fileinfo = MiniStatusline.section_fileinfo({ trunc_width = 300 })
+      local mode, mode_hl = mimi_statusline.section_mode({ trunc_width = 10000 })
+      local git = mimi_statusline.section_git({ trunc_width = 40 })
+      local diff = mimi_statusline.section_diff({ trunc_width = 75 })
+      local diagnostics = mimi_statusline.section_diagnostics({ trunc_width = 75 })
+      local lsp = mimi_statusline.section_lsp({ trunc_width = 75 })
+      local filename = mimi_statusline.section_filename({ trunc_width = 300 })
+      local fileinfo = mimi_statusline.section_fileinfo({ trunc_width = 300 })
 
-      return MiniStatusline.combine_groups({
+      return mimi_statusline.combine_groups({
         { hl = mode_hl, strings = { mode } },
         { hl = "MiniStatuslineDevinfo", strings = { git, diff, diagnostics } },
         "%<", -- Mark general truncate point
@@ -439,15 +439,35 @@ MiniStatusline.setup({
 
 local format_summary = function(data)
   local summary = vim.b[data.buf].minigit_summary
-  vim.b[data.buf].minigit_summary_string = summary.head_name or ""
+  if not summary then
+    vim.b[data.buf].minigit_summary_string = ""
+    return
+  end
+
+  local head_name = summary.head_name or ""
+  if #head_name > 20 then
+    head_name = head_name:sub(1, 19) .. "…"
+  end
+
+  local status_icon = ""
+  if summary.status and summary.status ~= "  " then
+    -- status_icon = " *" -- simple dirty indicator
+    status_icon = string.format(" [%s]", vim.trim(summary.status)) -- specific code
+  end
+
+  local progress = ""
+  if summary.in_progress and summary.in_progress ~= "" then
+    progress = string.format(" (%s)", summary.in_progress)
+  end
+
+  vim.b[data.buf].minigit_summary_string = string.format("%s%s%s", head_name, status_icon, progress)
 end
 
-local au_opts = {
+vim.api.nvim_create_autocmd("User", {
   group = vim.api.nvim_create_augroup("minigit-summary", { clear = true }),
   pattern = "MiniGitUpdated",
   callback = format_summary,
-}
-vim.api.nvim_create_autocmd("User", au_opts)
+})
 
 vim.api.nvim_create_user_command("GithubSync", function()
   vim.cmd('lua Snacks.terminal("cd d:/Workspace/SiteRepo/; ./UpdateSite.bat; exit")')
