@@ -409,15 +409,21 @@ icon.setup()
 icon.mock_nvim_web_devicons()
 vim.g.nvim_web_devicons = 1
 
-require("mini.git").setup()
-pcall(vim.api.nvim_del_user_command, "Git")
+local function get_fugitive_branch()
+  local head = vim.fn.FugitiveHead()
+  if head == "" then
+    return ""
+  end
+
+  return " " .. head
+end
 
 local MiniStatusline = require("mini.statusline")
 MiniStatusline.setup({
   content = {
     active = function()
       local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 10000 })
-      local git = MiniStatusline.section_git({ trunc_width = 40 })
+      local git = get_fugitive_branch()
       local diff = MiniStatusline.section_diff({ trunc_width = 75 })
       local diagnostics = MiniStatusline.section_diagnostics({ trunc_width = 75 })
       local lsp = MiniStatusline.section_lsp({ trunc_width = 75 })
@@ -442,12 +448,11 @@ local format_summary = function(data)
   vim.b[data.buf].minigit_summary_string = summary.head_name or ""
 end
 
-local au_opts = {
+vim.api.nvim_create_autocmd("User", {
   group = vim.api.nvim_create_augroup("minigit-summary", { clear = true }),
   pattern = "MiniGitUpdated",
   callback = format_summary,
-}
-vim.api.nvim_create_autocmd("User", au_opts)
+})
 
 vim.api.nvim_create_user_command("GithubSync", function()
   vim.cmd('lua Snacks.terminal("cd d:/Workspace/SiteRepo/; ./UpdateSite.bat; exit")')
