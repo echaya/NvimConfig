@@ -41,7 +41,7 @@ local add_vim_plugin = function(value)
   end
 end
 
-local vim_now_index = 3
+local vim_now_index = 4
 -- deps now: UI & early utilities
 now(function()
   if LoadVimPlugin then

@@ -19,9 +19,9 @@ let g:share_plugin = [
             \'dstein64/vim-startuptime',
             \'svermeulen/vim-cutlass',
             \'MTDL9/vim-log-highlighting',
+            \'tpope/vim-fugitive',
             \'tpope/vim-repeat',
             \'unblevable/quick-scope',
-            \'tpope/vim-fugitive',
             \'dhruvasagar/vim-table-mode'
             \]
 " Vim specific plugins
