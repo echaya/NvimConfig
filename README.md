@@ -27,4 +27,5 @@ keybinding:
   commits:
     moveDownCommit: '<pgdown>'
     moveUpCommit: '<pgup>'
+    checkoutCommit: '-'
 ```
