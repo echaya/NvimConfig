@@ -213,6 +213,7 @@ local function silent_async_push(git_root)
           vim.log.levels.ERROR
         )
       end
+      pcall(vim.cmd, "GFetch")
     end,
   })
 end
