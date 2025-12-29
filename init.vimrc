@@ -45,8 +45,7 @@ if has("nvim")
 else
     try
         let s:path_package = $HOME . '/.local/share/nvim/site/'
-        "source plug.vim manually from plugged folder.
-        "It should normally sit in nvim working dir autoload folder
+        "plug.vim originally sit in nvim working dir autoload folder
         exe 'source '. s:path_package.'pack/deps/opt/plug.vim'
     catch
         let s:path_package = $HOME . '/AppData/local/nvim-data/site/'
@@ -90,13 +89,11 @@ function! s:ApplyCustomHighlights()
     " QuickScope
     highlight QuickScopePrimary guifg=#afff5f gui=underline ctermfg=155 cterm=underline
     highlight QuickScopeSecondary guifg='#5fffff' gui=undercurl ctermfg=81 cterm=undercurl
-
     " colorschme TODO, XXX, IMP, NOTE
     highlight MiniHipatternsTodo guibg=#FF9E3B guifg=#282c34
     highlight MiniHipatternsFixme guibg=#E82424 guifg=#282c34
     highlight MiniHipatternsHack guibg=#957FB8 guifg=#282c34
     highlight MiniHipatternsNote guibg=#76946A guifg=#282c34
-
     " Spelling
     highlight clear SpellBad
     highlight clear SpellRare
@@ -104,16 +101,13 @@ function! s:ApplyCustomHighlights()
     highlight SpellBad gui=undercurl guifg=pink
     highlight SpellRare guifg=#E5C07B
     highlight SpellLocal gui=undercurl guifg=#FFFEE2
-
     " Snacks
     highlight SnacksStatusColumnMark guibg=NONE guifg=#D27E99
 endfunction
 
-" 2. Create the autocmd group to re-apply highlights after a colorscheme changes.
 augroup HighlightGroupRefresher
     autocmd!
     autocmd ColorScheme * call s:ApplyCustomHighlights()
 augroup END
 
-" 3. Call the function once on startup to apply highlights immediately.
 call s:ApplyCustomHighlights()

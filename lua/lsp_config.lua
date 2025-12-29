@@ -1,6 +1,5 @@
 -- Setup treesitter
 require("nvim-treesitter.configs").setup({
-  -- A list of parser names, or "all" (the listed parsers MUST always be installed)
   ensure_installed = {
     "bash",
     "diff",
@@ -21,7 +20,7 @@ require("nvim-treesitter.configs").setup({
   highlight = {
     enable = true,
     disable = function(_, buf)
-      local max_filesize = 1024 * 1024 -- 100 KB
+      local max_filesize = 10 * 1024 * 1024
       local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
       if ok and stats and stats.size > max_filesize then
         return true
@@ -50,7 +49,7 @@ vim.diagnostic.config({
   update_in_insert = false,
   underline = { enabled = true, severity = vim.diagnostic.severity.WARN }, -- Underline warnings and errors by default
   severity_sort = true,
-  virtual_text = false, -- Keep false if you prefer
+  virtual_text = false,
   float = {
     focusable = false,
     style = "minimal",
@@ -74,7 +73,6 @@ vim.diagnostic.config({
   },
 })
 
--- Autocommand for opening diagnostic float on CursorHold (User's preference)
 vim.api.nvim_create_autocmd("CursorHold", {
   group = vim.api.nvim_create_augroup("DiagnosticFloatGroup", { clear = true }), -- Renamed group for clarity
   pattern = "*",
@@ -125,7 +123,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
       client.server_capabilities.hoverProvider = false
     end
 
-    -- User's Keymaps
     vim.keymap.set("n", "gl", function()
       vim.lsp.buf.hover()
     end, { silent = true, desc = "LSP Hover", buffer = bufnr })
@@ -178,17 +175,13 @@ vim.lsp.config.ty = {
   },
   filetypes = { "python" },
   settings = {
-    ty = {
-      experimental = {
-        rename = true,
-      },
-    },
+    ty = {},
   },
   root_dir = vim.fs.root(0, { ".git/", "pyproject.toml" }),
 }
 
 vim.lsp.config.pylsp = {
-  cmd = { "pylsp" }, -- Ensure 'pylsp' is in your PATH
+  cmd = { "pylsp" },
   filetypes = { "python" },
   root_markers = {
     "pyproject.toml",
@@ -283,7 +276,6 @@ vim.lsp.config.lua_ls = {
 }
 
 vim.lsp.enable({ "ty", "ruff", "lua_ls" })
--- vim.lsp.enable({ "ruff", "lua_ls", "pyrefly", "pylsp" })
 
 vim.api.nvim_create_user_command("LspStart", function(_)
   local bufnr = vim.api.nvim_get_current_buf()

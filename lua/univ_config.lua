@@ -14,7 +14,6 @@ end
 require("leap").opts.preview = function(ch0, ch1, ch2)
   return not (ch1:match("%s") or (ch0:match("%a") and ch1:match("%a") and ch2:match("%a")))
 end
--- Define equivalence classes for brackets and quotes, in addition to <space>
 leap.opts.equivalence_classes = { " \t\r\n", "([{", ")]}", "'\"`" }
 vim.api.nvim_set_hl(0, "LeapBackdrop", { link = "Comment" })
 vim.keymap.set("n", "s", "<Plug>(leap)")
