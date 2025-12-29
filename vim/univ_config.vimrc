@@ -32,6 +32,7 @@ nnoremap <C-V> v
 :command! Wq wq
 :command! W w
 :command! Q q
+:command! E e
 :command! Qa qa
 :command! Wqa wqa
 :command! WQa wqa
