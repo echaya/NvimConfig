@@ -374,66 +374,56 @@ vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost", "VimLeavePre" }, {
   callback = function(event)
     local buf = event.buf
 
-    if not vim.api.nvim_buf_is_valid(buf) then
+    -- 1. Fast Fail: Basic Validity Checks
+    if
+      not vim.api.nvim_buf_is_valid(buf)
+      or not vim.api.nvim_buf_is_loaded(buf)
+      or not vim.api.nvim_get_option_value("modifiable", { buf = buf })
+    then
       return
     end
-    if not vim.api.nvim_buf_is_loaded(buf) then
-      return
-    end
-    if not vim.api.nvim_get_option_value("modifiable", { buf = buf }) then
-      return
-    end
-    local buf_name = vim.api.nvim_buf_get_name(buf)
-    if not buf_name or buf_name == "" then
-      -- vim.notify( "Auto-save skipped: Buffer is unnamed", vim.log.levels.DEBUG, { title = "AutoSave" })
-      return
-    end
+    -- 2. Check Blocklists (Using your original variable names)
     local buftype = vim.api.nvim_get_option_value("buftype", { buf = buf })
     if buftype ~= "" and vim.tbl_contains(disabled_buftypes_for_auto_save, buftype) then
-      -- vim.notify( "Auto-save skipped for buftype: " .. buftype .. " (" .. vim.fn.fnamemodify(buf_name, ":.") .. ")", vim.log.levels.DEBUG, { title = "AutoSave" })
       return
     end
     local filetype = vim.api.nvim_get_option_value("filetype", { buf = buf })
     if filetype ~= "" and vim.tbl_contains(disabled_filetypes_for_auto_save, filetype) then
-      -- vim.notify( "Auto-save OFF for filetype: " .. filetype .. " (" .. vim.fn.fnamemodify(buf_name, ":.") .. ")", vim.log.levels.INFO, { title = "AutoSave" })
       return
     end
-    if vim.api.nvim_get_option_value("modified", { buf = buf }) then
-      vim.schedule(function()
-        if not vim.api.nvim_buf_is_valid(buf) then
-          return
-        end
-        if not vim.api.nvim_buf_is_loaded(buf) then
-          return
-        end
-        if not vim.api.nvim_get_option_value("modifiable", { buf = buf }) then
-          return
-        end
-        if not vim.api.nvim_get_option_value("modified", { buf = buf }) then
-          return
-        end
 
-        local current_buf_name_scheduled = vim.api.nvim_buf_get_name(buf) -- Re-fetch name, in case it changed (e.g. :saveas)
-        if not current_buf_name_scheduled or current_buf_name_scheduled == "" then
-          return
+    local buf_name = vim.api.nvim_buf_get_name(buf)
+    if not buf_name or buf_name == "" then
+      return
+    end
+    -- 3. Check modification status
+    if not vim.api.nvim_get_option_value("modified", { buf = buf }) then
+      return
+    end
+    -- 4. Define the Save Logic
+    local function perform_save()
+      -- Re-verify validity in case context changed during schedule delay
+      if
+        not vim.api.nvim_buf_is_valid(buf)
+        or not vim.api.nvim_buf_is_loaded(buf)
+        or not vim.api.nvim_get_option_value("modified", { buf = buf })
+      then
+        return
+      end
+
+      vim.api.nvim_buf_call(buf, function()
+        -- Use pcall to prevent errors from breaking the editor
+        local success, err_msg = pcall(vim.cmd, "silent! write")
+        if not success then
+          vim.notify("Auto-save failed: " .. err_msg, vim.log.levels.ERROR, { title = "AutoSave" })
         end
-
-        -- vim.notify( "Auto-saving: " .. vim.fn.fnamemodify(current_buf_name_scheduled, ":."), vim.log.levels.INFO, { title = "AutoSave" })
-
-        vim.api.nvim_buf_call(buf, function()
-          local success, err_msg = pcall(vim.cmd, "silent! write")
-          if not success then
-            vim.notify(
-              "Auto-save failed for "
-                .. vim.fn.fnamemodify(current_buf_name_scheduled, ":.")
-                .. ": "
-                .. err_msg,
-              vim.log.levels.ERROR,
-              { title = "AutoSave" }
-            )
-          end
-        end)
       end)
+    end
+    -- 5. Execution Strategy: Sync on Exit, Async on Navigation
+    if event.event == "VimLeavePre" then
+      perform_save()
+    else
+      vim.schedule(perform_save)
     end
   end,
 })
