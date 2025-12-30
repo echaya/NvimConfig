@@ -43,7 +43,7 @@ nnoremap <C-V> v
 :command V vsplit
 :command S split
 " convert # In[ ]: => ### Cell
-:command ReplaceIn %s/#\s*In\[\s*\d*\s*\]\?:/###/g
+:command BuildCodeFence %s/#\s*In\[\s*\d*\s*\]\?:/###/g
 
 nnoremap <leader>q <cmd>q<cr>
 nnoremap <leader>wq <cmd>wq<cr>
