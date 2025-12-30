@@ -45,8 +45,6 @@ nnoremap <C-V> v
 " convert # In[ ]: => ### Cell
 :command BuildCodeFence %s/#\s*In\[\s*\d*\s*\]\?:/###/g
 
-nnoremap <leader>q <cmd>q<cr>
-nnoremap <leader>wq <cmd>wq<cr>
 
 " execute macro at visual range, does not stop when no match
 function! ExecuteMacroOverVisualRange()
