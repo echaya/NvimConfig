@@ -73,8 +73,42 @@ inoremap ; ;<c-g>u
 nnoremap <silent><C-c> <cmd>noh<CR><Esc>
 nnoremap <silent><esc> <cmd>noh<CR><Esc>
 
-" formatted paste
-inoremap <silent> <c-s-v> <Esc>:set paste<Cr>a<c-r>+<Esc>:set nopaste<Cr>a
+" SAFE PASTE SYSTEM
+let g:paste_threshold = 100000 " ~100KB
+
+function! s:SafePaste(mode, key, force_reg) abort
+    " A. Identify Register
+    let l:reg = a:force_reg
+    if l:reg == ''
+        let l:reg = v:register
+        if a:mode == 'i' | let l:reg = len(@+) > 0 ? '+' : '*' | endif
+    endif
+
+    let l:content = getreg(l:reg)
+    let l:length = len(l:content)
+
+    if l:length > g:paste_threshold
+        let l:size_kb = l:length / 1024
+        let l:msg = "Paste is HUGE (" . l:size_kb . " KB). Do you want to proceed?"
+        " Returns 1 for Yes. If No/Cancel, we stop here.
+        if confirm(l:msg, "&Yes\n&No", 2) != 1
+            echo "Paste cancelled."
+            return
+        endif
+    endif
+
+    if a:mode == 'n'
+        let l:cmd = 'normal! ' . v:count1 . '"' . l:reg . a:key
+        execute l:cmd
+
+    elseif a:mode == 'i'
+        let l:keys = "\<Esc>:set paste\<Cr>a\<c-r>" . l:reg . "\<Esc>:set nopaste\<Cr>a"
+        call feedkeys(l:keys, 'n')
+    endif
+endfunction
+
+nnoremap <silent> p :call <SID>SafePaste('n', 'p', '')<CR>
+nnoremap <silent> P :call <SID>SafePaste('n', 'P', '')<CR>
 
 " diff windows
 :command Dthis wind diffthis
