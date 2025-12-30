@@ -5,18 +5,21 @@ end, { desc = "smart_open" })
 vim.keymap.set("n", "<leader>ff", function()
   Snacks.picker.files()
 end, { desc = "find_file" })
-vim.keymap.set("n", "<leader>fb", function()
-  Snacks.picker.buffers()
-end, { desc = "find_buffers" })
 vim.keymap.set("n", "<leader>fr", function()
   Snacks.picker.recent()
 end, { desc = "find_recent" })
+vim.keymap.set("n", "<leader>bb", function()
+  Snacks.picker.buffers()
+end, { desc = "find_buffers" })
+vim.keymap.set("n", "<leader>bd", function()
+  Snacks.bufdelete()
+end, { desc = "Delete Buffer" })
 vim.keymap.set("n", "<localleader>e", function()
   Snacks.picker.explorer()
   vim.defer_fn(function()
     vim.cmd("wincmd =")
   end, 100)
-end, { desc = "find_file" })
+end, { desc = "snacks_explorer" })
 
 vim.keymap.set({ "n" }, "<leader>fs", function()
   Snacks.picker.lsp_symbols({
@@ -77,7 +80,7 @@ vim.keymap.set("n", "<leader>fc", function()
 end, { desc = "find_colorscheme" })
 vim.keymap.set("n", "<leader>fp", function()
   Snacks.picker.files({ cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "site") })
-end, { desc = "find_plugin" })
+end, { desc = "find_plugin_files" })
 vim.keymap.set("n", "<leader>pp", function()
   Snacks.picker.pickers()
 end, { desc = "find_plugin" })
@@ -145,6 +148,7 @@ Snacks.toggle({
     vim.fn.call("ApplyCursorLine", {})
   end,
 }):map("|C")
+
 Snacks.toggle({
   name = "CursorLine",
 
@@ -179,21 +183,13 @@ Snacks.toggle({
 vim.keymap.set("n", "<leader>un", function()
   Snacks.notifier.hide()
 end, { desc = "Dismiss All Notifications" })
-
-vim.keymap.set("n", "<leader>bd", function()
-  Snacks.bufdelete()
-end, { desc = "Delete Buffer" })
-
 vim.keymap.set("n", "<leader>n", function()
   Snacks.notifier.show_history()
 end, { desc = "notification_history" })
 
-vim.keymap.set("n", "<leader>fm", "<cmd>messages<cr>", { desc = "find_messages" })
+vim.keymap.set("n", "<leader>m", "<cmd>messages<cr>", { desc = "find_messages" })
 
 vim.keymap.set("n", "<leader>gb", function()
-  Snacks.git.blame_line()
-end, { desc = "Git Blame" })
-vim.keymap.set("n", "<leader>gB", function()
   Snacks.gitbrowse()
 end, { desc = "Git Browse" })
 
