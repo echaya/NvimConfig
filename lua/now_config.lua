@@ -394,3 +394,124 @@ require("tokyonight").setup({
     hl.TabLineSel = { bg = colors.bg_visual }
   end,
 })
+
+local function close_buffers_outside_context()
+  local FORCE_DELETE = false
+  local current_buf = vim.api.nvim_get_current_buf()
+
+  -- 1. Optimized Normalization: Handles Symlinks & Windows Paths
+  local function resolve_path(path)
+    if not path or path == "" then
+      return nil
+    end
+    -- Expand to absolute path first
+    local expanded = vim.fn.fnamemodify(path, ":p")
+    -- Try to resolve real path (handles Symlinks/Junctions)
+    -- If fs_realpath fails (file doesn't exist on disk yet), fallback to expanded
+    local real = vim.uv.fs_realpath(expanded) or expanded
+    -- Windows Normalization: Lowercase & Standardize Slashes
+    if vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
+      real = real:lower()
+      real = real:gsub("\\", "/")
+    end
+    return real
+  end
+  -- 2. Detect Target Scope
+  -- Try Fugitive -> Fallback to Current File Dir -> Fallback to CWD
+  local target_dir = nil
+  local status, git_dir = pcall(vim.fn.FugitiveWorkTree, current_buf)
+
+  if status and git_dir and #git_dir > 0 then
+    target_dir = git_dir
+  else
+    target_dir = vim.fn.expand("%:p:h")
+    if target_dir == "" then
+      target_dir = vim.fn.getcwd()
+    end
+  end
+
+  -- Normalize Target
+  target_dir = resolve_path(target_dir)
+  -- Ensure trailing slash for directory matching
+  if target_dir and target_dir:sub(-1) ~= "/" then
+    target_dir = target_dir .. "/"
+  else
+    return
+  end
+
+  -- 3. Efficient Loop & Filter
+  local buffers = vim.api.nvim_list_bufs()
+  local closed_count = 0
+  local kept_count = 0
+
+  for _, buf_id in ipairs(buffers) do
+    -- A. Skip Current Buffer (Integer check is fastest)
+    if buf_id == current_buf then
+      goto continue
+    end
+
+    -- B. Skip Unlisted Buffers (Boolean check)
+    if not vim.api.nvim_get_option_value("buflisted", { buf = buf_id }) then
+      goto continue
+    end
+
+    -- C. Skip Special Buftypes (String check)
+    local buftype = vim.api.nvim_get_option_value("buftype", { buf = buf_id })
+    if buftype ~= "" then
+      goto continue
+    end
+
+    -- D. Get Name and Filter Protocols
+    local buf_name = vim.api.nvim_buf_get_name(buf_id)
+    if buf_name == "" then
+      goto continue
+    end
+    -- Skip non-file protocols (e.g., fugitive://, term://) to avoid path errors
+    if buf_name:match("^%w+://") then
+      goto continue
+    end
+
+    -- E. Resolve Path (Most expensive step, done last)
+    local buf_path = resolve_path(buf_name)
+
+    -- F. Check Scope
+    -- We check if the resolved buffer path starts with the resolved target directory
+    if buf_path and not string.find(buf_path, "^" .. vim.pesc(target_dir)) then
+      -- G. Delete Logic
+      local is_modified = vim.api.nvim_get_option_value("modified", { buf = buf_id })
+
+      if is_modified and not FORCE_DELETE then
+        kept_count = kept_count + 1
+      else
+        local success, err = pcall(vim.api.nvim_buf_delete, buf_id, { force = FORCE_DELETE })
+        if success then
+          closed_count = closed_count + 1
+        else
+          vim.notify("Failed to close " .. buf_name .. ": " .. tostring(err), vim.log.levels.ERROR)
+        end
+      end
+    end
+
+    ::continue::
+  end
+
+  -- 4. Minimalist Notification
+  if closed_count > 0 then
+    vim.notify(
+      string.format("Scope: %s\nClosed: %d buffers", target_dir, closed_count),
+      vim.log.levels.INFO
+    )
+  elseif kept_count > 0 then
+    vim.notify(
+      string.format("Scope: %s\nKept %d unsaved buffers", target_dir, kept_count),
+      vim.log.levels.WARN
+    )
+  else
+    vim.notify("Workspace clean.", vim.log.levels.INFO)
+  end
+end
+
+vim.keymap.set("n", "<leader>bD", close_buffers_outside_context, {
+  desc = "Close buffers not in current Git repo",
+  silent = true,
+})
