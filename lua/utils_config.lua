@@ -37,7 +37,7 @@ end
 local mini_files = require("mini.files")
 local my_prefix = function(fs_entry)
   local prefix, hl = mini_files.default_prefix(fs_entry)
-  local fs_stat = vim.loop.fs_stat(fs_entry.path) or {}
+  local fs_stat = vim.uv.fs_stat(fs_entry.path) or {}
   local pre_prefix = my_pre_prefix(fs_stat)
   return pre_prefix .. " " .. prefix, hl
 end
@@ -164,13 +164,13 @@ local yank_scp_command = function()
     return
   end
   local path = entry.path
-  local hostname = vim.loop.os_gethostname() -- e.g., "dev_web-01.example.com"
+  local hostname = vim.uv.os_gethostname() -- e.g., "dev_web-01.example.com"
   local short_host = hostname:match("_(.*)") or hostname
   short_host = short_host:match("^([^%.]+)") or short_host
   local scp_cmd = string.format("scp -P 8080 %s.spaces:%s .", short_host, path)
   local b64 = vim.fn.system(string.format("echo -n '%s' | base64 | tr -d '\n'", scp_cmd))
   local osc52 = string.format("\27]52;c;%s\7", b64)
-  vim.loop.fs_write(1, osc52, -1)
+  vim.uv.fs_write(1, osc52, -1)
   vim.notify("📋 Copied to Clipboard:\n" .. scp_cmd, vim.log.levels.INFO)
   mini_files.close()
 end
