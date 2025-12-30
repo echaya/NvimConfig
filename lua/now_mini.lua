@@ -15,20 +15,11 @@ local FETCH_COOLDOWN = 60
 -- Helper: Get the actual Root Directory of the git repo
 local function get_git_root(buf_id)
   if vim.fn.exists("*FugitiveWorkTree") == 1 then
-    -- Try Fugitive's resolved root
     local root = vim.fn.FugitiveWorkTree(buf_id)
     if root ~= "" and vim.fn.isdirectory(root) == 1 then
       return root
     end
   end
-
-  -- Fallback: Use file's directory
-  local filepath = vim.api.nvim_buf_get_name(buf_id)
-  if filepath == "" then
-    return nil
-  end
-  local cwd = vim.fn.fnamemodify(filepath, ":p:h")
-  return vim.fn.isdirectory(cwd) == 1 and cwd or nil
 end
 
 -- 1. Render String Generator
@@ -137,7 +128,6 @@ local function update_git_status(buf_id)
     return
   end
 
-  -- Optimization: Skip checking if buffer has no name (start screens, etc)
   if vim.api.nvim_buf_get_name(buf_id) == "" then
     return
   end
@@ -146,7 +136,6 @@ local function update_git_status(buf_id)
     return
   end
 
-  -- FugitiveHead is fast, but let's wrap it just in case
   local head = vim.fn.FugitiveHead(buf_id)
   if head == "" then
     git_cache[buf_id] = nil
@@ -244,17 +233,6 @@ MiniStatusline.setup({
       })
     end,
   },
-})
-
-local format_summary = function(data)
-  local summary = vim.b[data.buf].minigit_summary
-  vim.b[data.buf].minigit_summary_string = summary.head_name or ""
-end
-
-vim.api.nvim_create_autocmd("User", {
-  group = vim.api.nvim_create_augroup("minigit-summary", { clear = true }),
-  pattern = "MiniGitUpdated",
-  callback = format_summary,
 })
 
 vim.api.nvim_create_user_command("GithubSync", function()
