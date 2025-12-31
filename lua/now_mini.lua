@@ -157,24 +157,24 @@ local function update_render_string(data)
   data.render = table.concat(parts, " ")
 end
 
-local function fetch_git_counts(buf_id)
-  local cwd = get_git_root(buf_id)
-  if not cwd then
+local function fetch_git_counts(buf_id, from_fetch)
+  local data = git_cache[buf_id]
+  if not data or not data.root then
     return
   end
 
-  if git_cache[buf_id].job_id then
-    pcall(vim.fn.jobstop, git_cache[buf_id].job_id)
+  if data.job_id then
+    pcall(vim.fn.jobstop, data.job_id)
   end
 
   local stdout_data = {}
   local job_id = vim.fn.jobstart(
     { "git", "rev-list", "--count", "--left-right", "HEAD...@{upstream}" },
     {
-      cwd = cwd,
+      cwd = data.root,
       stdout_buffered = true,
-      on_stdout = function(_, data)
-        stdout_data = data
+      on_stdout = function(_, output)
+        stdout_data = output
       end,
       on_exit = vim.schedule_wrap(function(this_job_id, code, _)
         if
@@ -186,15 +186,46 @@ local function fetch_git_counts(buf_id)
         end
         git_cache[buf_id].job_id = nil
 
-        if code ~= 0 then
-          git_cache[buf_id].has_upstream = false
-        else
+        local new_ahead = 0
+        local new_behind = 0
+        local has_upstream = false
+
+        if code == 0 then
           local result = (stdout_data and stdout_data[1]) or ""
-          local ahead, behind = result:match("(%d+)%s+(%d+)")
-          git_cache[buf_id].has_upstream = true
-          git_cache[buf_id].ahead = tonumber(ahead) or 0
-          git_cache[buf_id].behind = tonumber(behind) or 0
+          local a, b = result:match("(%d+)%s+(%d+)")
+          new_ahead = tonumber(a) or 0
+          new_behind = tonumber(b) or 0
+          has_upstream = true
         end
+        if
+          from_fetch
+          and buf_id == vim.api.nvim_get_current_buf()
+          and git_cache[buf_id].has_upstream ~= nil
+        then
+          local old_behind = git_cache[buf_id].behind or 0
+          local old_ahead = git_cache[buf_id].ahead or 0
+
+          if new_behind > old_behind then
+            vim.notify(
+              string.format(
+                "Git: Incoming changes found (+%d)\n%s %d  %s %d",
+                new_behind - old_behind,
+                icons.ahead,
+                new_ahead,
+                icons.behind,
+                new_behind
+              ),
+              vim.log.levels.INFO
+            )
+          elseif new_behind ~= old_behind or new_ahead ~= old_ahead then
+            -- vim.notify("Git status updated", vim.log.levels.INFO)
+          end
+        end
+
+        git_cache[buf_id].has_upstream = has_upstream
+        git_cache[buf_id].ahead = new_ahead
+        git_cache[buf_id].behind = new_behind
+
         update_render_string(git_cache[buf_id])
         vim.cmd("redrawstatus")
       end),
@@ -205,7 +236,6 @@ end
 
 -- 3. Async Remote Fetch
 local function fetch_git_remote(buf_id)
-  -- 1. Use Cached Root
   local data = git_cache[buf_id]
   if not data or not data.root then
     return
@@ -220,17 +250,15 @@ local function fetch_git_remote(buf_id)
   end
 
   repo_fetch_state[cwd] = now
-  -- vim.notify("Remote Fetching: " .. cwd, vim.log.levels.INFO) -- Optional debug
 
   vim.fn.jobstart({ "git", "fetch", "--no-tags", "--quiet" }, {
     cwd = cwd,
     on_exit = function(_, code)
       if code == 0 then
         vim.schedule(function()
-          -- 2. Optimized Loop: Check cached roots directly
           for b_id, cache in pairs(git_cache) do
             if vim.api.nvim_buf_is_valid(b_id) and cache.root == cwd then
-              fetch_git_counts(b_id)
+              fetch_git_counts(b_id, true)
             end
           end
         end)
@@ -251,16 +279,14 @@ local function update_git_status(buf_id)
     return
   end
 
-  -- 3. Cache Root Only Once (or update if needed)
   if not git_cache[buf_id] then
     local root = get_git_root(buf_id)
     if not root then
       return
-    end -- Don't cache if not in a valid git root
-    git_cache[buf_id] = { head = head, root = root }
+    end
+    git_cache[buf_id] = { head = head, root = root, has_upstream = nil }
   else
     git_cache[buf_id].head = head
-    -- Note: We assume 'root' doesn't change for a living buffer
   end
 
   update_render_string(git_cache[buf_id])
@@ -276,7 +302,7 @@ local function update_git_status(buf_id)
     vim.schedule_wrap(function()
       if git_cache[buf_id] and vim.api.nvim_buf_is_valid(buf_id) then
         git_cache[buf_id].timer = nil
-        fetch_git_counts(buf_id)
+        fetch_git_counts(buf_id, false)
         fetch_git_remote(buf_id)
       end
     end)
