@@ -28,23 +28,17 @@ local function resolve_path(path)
 end
 
 local function get_git_root(buf_id)
-  local path = nil
-  if vim.fn.exists("*FugitiveWorkTree") == 1 then
-    -- pcall ensures we don't crash if Fugitive fails
-    local ok, root = pcall(vim.fn.FugitiveWorkTree, buf_id)
-    if ok and root and #root > 0 and vim.fn.isdirectory(root) == 1 then
-      path = root
-    end
+  local ok, root = pcall(vim.fn.FugitiveWorkTree, buf_id)
+  if ok and root and #root > 0 and vim.fn.isdirectory(root) == 1 then
+    return resolve_path(root)
   end
-  return resolve_path(path)
+  return nil
 end
 
 local function close_buffers_outside_context()
   local FORCE_DELETE = false
   local current_buf = vim.api.nvim_get_current_buf()
 
-  -- 1. Detect Target Scope
-  -- Priority: Git Root -> Current File Dir -> CWD
   local target_dir = get_git_root(current_buf)
 
   if not target_dir then
@@ -65,7 +59,7 @@ local function close_buffers_outside_context()
 
   -- 2. Efficient Loop & Filter
   local buffers = vim.api.nvim_list_bufs()
-  local closed_count = 0
+  local closed_names = {} -- Store names for notification
   local kept_count = 0
 
   for _, buf_id in ipairs(buffers) do
@@ -92,7 +86,6 @@ local function close_buffers_outside_context()
     local buf_path = resolve_path(buf_name)
 
     -- E. Check Scope
-    -- We check if the resolved buffer path starts with the resolved target directory
     if buf_path and not string.find(buf_path, "^" .. vim.pesc(target_matcher)) then
       local is_modified = vim.api.nvim_get_option_value("modified", { buf = buf_id })
 
@@ -101,7 +94,7 @@ local function close_buffers_outside_context()
       else
         local success, err = pcall(vim.api.nvim_buf_delete, buf_id, { force = FORCE_DELETE })
         if success then
-          closed_count = closed_count + 1
+          table.insert(closed_names, "• " .. buf_name)
         else
           vim.notify("Failed to close " .. buf_name .. ": " .. tostring(err), vim.log.levels.ERROR)
         end
@@ -111,9 +104,14 @@ local function close_buffers_outside_context()
   end
 
   -- 3. Notification
-  if closed_count > 0 then
+  if #closed_names > 0 then
     vim.notify(
-      string.format("Scope: %s\nClosed: %d buffers", target_dir, closed_count),
+      string.format(
+        "Scope: %s\nClosed %d buffers:\n%s",
+        target_dir,
+        #closed_names,
+        table.concat(closed_names, "\n")
+      ),
       vim.log.levels.INFO
     )
   elseif kept_count > 0 then
@@ -163,7 +161,6 @@ local function update_render_string(data)
 end
 
 local function fetch_git_counts(buf_id)
-  -- Uses the shared, robust get_git_root
   local cwd = get_git_root(buf_id)
   if not cwd then
     return
@@ -242,11 +239,6 @@ local function update_git_status(buf_id)
     return
   end
 
-  -- Check FugitiveHead existence to prevent errors
-  if vim.fn.exists("*FugitiveHead") == 0 then
-    return
-  end
-
   local head = vim.fn.FugitiveHead(buf_id)
   if head == "" then
     git_cache[buf_id] = nil
@@ -317,7 +309,7 @@ vim.api.nvim_create_user_command("GFetch", function()
 end, {})
 
 -- Exposed Global Function for Statusline
-_G.get_git_status_string = function()
+local get_git_status_string = function()
   local buf = vim.api.nvim_get_current_buf()
   return (git_cache[buf] and git_cache[buf].render) or ""
 end
