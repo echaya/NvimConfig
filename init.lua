@@ -28,7 +28,7 @@ package.path = package.path
   .. "?.lua;"
   .. vim.g.config_dir
   .. "?/init.lua"
--- control how many vim plugins to be loaded now
+-- control if all vim plugins to be loaded now - only for Plugin Sync and Update
 if LoadVimPlugin == nil then
   LoadVimPlugin = false
 end
