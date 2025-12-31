@@ -229,11 +229,10 @@ vim.api.nvim_create_user_command("RemoveTrailingSpace", function()
 end, { desc = "mini trailspace remove space and trail empty line" })
 
 if vim.fn.has("linux") == 1 then
+  local last_copy = { { "" }, "v" }
+
   local function paste()
-    return {
-      vim.fn.split(vim.fn.getreg(""), "\n"),
-      vim.fn.getregtype(""),
-    }
+    return last_copy
   end
 
   vim.g.clipboard = {
@@ -247,6 +246,13 @@ if vim.fn.has("linux") == 1 then
       ["*"] = paste,
     },
   }
+
+  vim.api.nvim_create_autocmd("TextYankPost", {
+    callback = function()
+      last_copy = { vim.v.event.regcontents, vim.v.event.regtype }
+    end,
+  })
+
 end
 vim.opt.clipboard:append("unnamedplus")
 
