@@ -129,11 +129,8 @@ vim.keymap.set("n", "<leader>bD", close_buffers_outside_context, {
   silent = true,
 })
 
--- =============================================================================
--- Feature 2: Git Statusline Component
--- =============================================================================
-
 local git_cache = {}
+local repo_fetch_state = {}
 local icons = { branch = "", ahead = "", behind = "", no_upstream = "☁" }
 local FETCH_COOLDOWN = 60
 
@@ -206,26 +203,33 @@ local function fetch_git_counts(buf_id)
   git_cache[buf_id].job_id = job_id
 end
 
+-- 3. Async Remote Fetch
 local function fetch_git_remote(buf_id)
-  local now = os.time()
-  local last = git_cache[buf_id].last_fetch or 0
-  if (now - last) < FETCH_COOLDOWN then
-    return
-  end
-
   local cwd = get_git_root(buf_id)
   if not cwd then
     return
   end
 
+  local now = os.time()
+  local last_fetch = repo_fetch_state[cwd] or 0
+
+  if (now - last_fetch) < FETCH_COOLDOWN then
+    return
+  end
+
+  repo_fetch_state[cwd] = now
   vim.fn.jobstart({ "git", "fetch", "--no-tags", "--quiet" }, {
     cwd = cwd,
     on_exit = function(_, code)
-      if code == 0 and git_cache[buf_id] then
-        git_cache[buf_id].last_fetch = os.time()
+      if code == 0 then
         vim.schedule(function()
-          if vim.api.nvim_buf_is_valid(buf_id) then
-            fetch_git_counts(buf_id)
+          for b_id, cache in pairs(git_cache) do
+            if vim.api.nvim_buf_is_valid(b_id) then
+              local b_root = get_git_root(b_id)
+              if b_root == cwd then
+                fetch_git_counts(b_id)
+              end
+            end
           end
         end)
       end
@@ -246,7 +250,7 @@ local function update_git_status(buf_id)
   end
 
   if not git_cache[buf_id] then
-    git_cache[buf_id] = { head = head, last_fetch = 0 }
+    git_cache[buf_id] = { head = head }
   else
     git_cache[buf_id].head = head
   end
