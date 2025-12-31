@@ -25,7 +25,7 @@ cmp.setup({
     list = { selection = { preselect = true, auto_insert = true } },
     documentation = {
       auto_show = true,
-      auto_show_delay_ms = 250,
+      auto_show_delay_ms = 200,
     },
   },
   sources = {
@@ -232,7 +232,6 @@ require("neowiki").setup({
   },
 })
 
-vim.keymap.set("n", "<leader>wW", require("neowiki").open_wiki, { desc = "open wiki" })
 vim.keymap.set(
   "n",
   "<leader>ww",
@@ -241,7 +240,7 @@ vim.keymap.set(
 )
 vim.keymap.set(
   "n",
-  "<leader>wt",
+  "<leader>wW",
   require("neowiki").open_wiki_new_tab,
   { desc = "open wiki in new tab" }
 )
