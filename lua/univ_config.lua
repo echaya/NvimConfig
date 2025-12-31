@@ -4,7 +4,7 @@ end, { noremap = true, silent = true, desc = "Open file under cursor in default 
 
 local leap = require("leap")
 leap.opts.case_sensitive = true
-require("leap").opts.on_beacons = function(targets, _, _)
+leap.opts.on_beacons = function(targets, _, _)
   for _, t in ipairs(targets) do
     if t.label and t.beacon then
       t.beacon[1] = 0
@@ -16,25 +16,27 @@ require("leap").opts.preview = function(ch0, ch1, ch2)
 end
 leap.opts.equivalence_classes = { " \t\r\n", "([{", ")]}", "'\"`" }
 vim.api.nvim_set_hl(0, "LeapBackdrop", { link = "Comment" })
+leap.opts.preview_filter = false
+require("leap.user").set_repeat_keys("<enter>", "<backspace>")
+-- leap core
 vim.keymap.set("n", "s", "<Plug>(leap)")
-vim.keymap.set("n", "<leader>s", "<Plug>(leap-from-window)")
-vim.keymap.set({ "x", "o" }, "z", function()
+vim.keymap.set("n", "S", "<Plug>(leap-from-window)")
+vim.keymap.set({ "o" }, "z", function()
   leap.leap({ inclusive = true, offset = 1 })
-end, { desc = "leap forward textobj" })
-vim.keymap.set({ "x", "o" }, "Z", function()
+end, { desc = "leap forward" })
+vim.keymap.set({ "o" }, "Z", function()
   leap.leap({ inclusive = true, offset = 0, backward = true })
-end, { desc = "leap forward textobj" })
--- Trigger visual selection right away and visual line mode
+end, { desc = "leap backward" })
+-- leap treesitter
+vim.keymap.set({ "x", "o" }, "S", function()
+  require("leap.treesitter").select()
+end, { desc = "leap tree sitter" })
+-- leap remote
 vim.keymap.set({ "o" }, "r", function()
   require("leap.remote").action()
 end)
 vim.keymap.set({ "o" }, "R", function()
   require("leap.remote").action({ input = "V" })
-end)
-require("leap").opts.preview_filter = false
-require("leap.user").set_repeat_keys("<enter>", "<backspace>")
-vim.keymap.set({ "n", "x", "o" }, "S", function()
-  require("leap.treesitter").select()
 end)
 
 local augend = require("dial.augend")
