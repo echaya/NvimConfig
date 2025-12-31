@@ -8,21 +8,137 @@ icon.setup()
 icon.mock_nvim_web_devicons()
 vim.g.nvim_web_devicons = 1
 
+local function resolve_path(path)
+  if not path or path == "" then
+    return nil
+  end
+  local expanded = vim.fn.fnamemodify(path, ":p")
+  local real = vim.uv.fs_realpath(expanded) or expanded
+
+  if vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
+    real = real:lower()
+    real = real:gsub("\\", "/")
+  end
+
+  if #real > 1 and real:sub(-1) == "/" then
+    real = real:sub(1, -2)
+  end
+
+  return real
+end
+
+local function get_git_root(buf_id)
+  local path = nil
+  if vim.fn.exists("*FugitiveWorkTree") == 1 then
+    -- pcall ensures we don't crash if Fugitive fails
+    local ok, root = pcall(vim.fn.FugitiveWorkTree, buf_id)
+    if ok and root and #root > 0 and vim.fn.isdirectory(root) == 1 then
+      path = root
+    end
+  end
+  return resolve_path(path)
+end
+
+local function close_buffers_outside_context()
+  local FORCE_DELETE = false
+  local current_buf = vim.api.nvim_get_current_buf()
+
+  -- 1. Detect Target Scope
+  -- Priority: Git Root -> Current File Dir -> CWD
+  local target_dir = get_git_root(current_buf)
+
+  if not target_dir then
+    local buf_dir = vim.fn.expand("%:p:h")
+    if buf_dir ~= "" then
+      target_dir = resolve_path(buf_dir)
+    else
+      target_dir = resolve_path(vim.fn.getcwd())
+    end
+  end
+
+  if not target_dir then
+    return
+  end
+
+  -- Ensure trailing slash for directory matching logic
+  local target_matcher = target_dir .. "/"
+
+  -- 2. Efficient Loop & Filter
+  local buffers = vim.api.nvim_list_bufs()
+  local closed_count = 0
+  local kept_count = 0
+
+  for _, buf_id in ipairs(buffers) do
+    -- A. Skip Current Buffer
+    if buf_id == current_buf then
+      goto continue
+    end
+
+    -- B. Skip Unlisted & Special Buffers
+    if not vim.api.nvim_get_option_value("buflisted", { buf = buf_id }) then
+      goto continue
+    end
+    if vim.api.nvim_get_option_value("buftype", { buf = buf_id }) ~= "" then
+      goto continue
+    end
+
+    -- C. Get Name and Filter Protocols
+    local buf_name = vim.api.nvim_buf_get_name(buf_id)
+    if buf_name == "" or buf_name:match("^%w+://") then
+      goto continue
+    end
+
+    -- D. Resolve Path (Expensive step, done last)
+    local buf_path = resolve_path(buf_name)
+
+    -- E. Check Scope
+    -- We check if the resolved buffer path starts with the resolved target directory
+    if buf_path and not string.find(buf_path, "^" .. vim.pesc(target_matcher)) then
+      local is_modified = vim.api.nvim_get_option_value("modified", { buf = buf_id })
+
+      if is_modified and not FORCE_DELETE then
+        kept_count = kept_count + 1
+      else
+        local success, err = pcall(vim.api.nvim_buf_delete, buf_id, { force = FORCE_DELETE })
+        if success then
+          closed_count = closed_count + 1
+        else
+          vim.notify("Failed to close " .. buf_name .. ": " .. tostring(err), vim.log.levels.ERROR)
+        end
+      end
+    end
+    ::continue::
+  end
+
+  -- 3. Notification
+  if closed_count > 0 then
+    vim.notify(
+      string.format("Scope: %s\nClosed: %d buffers", target_dir, closed_count),
+      vim.log.levels.INFO
+    )
+  elseif kept_count > 0 then
+    vim.notify(
+      string.format("Scope: %s\nKept %d unsaved buffers", target_dir, kept_count),
+      vim.log.levels.WARN
+    )
+  else
+    vim.notify("Workspace clean.", vim.log.levels.INFO)
+  end
+end
+
+vim.keymap.set("n", "<leader>bD", close_buffers_outside_context, {
+  desc = "Close buffers not in current Git repo",
+  silent = true,
+})
+
+-- =============================================================================
+-- Feature 2: Git Statusline Component
+-- =============================================================================
+
 local git_cache = {}
 local icons = { branch = "", ahead = "", behind = "", no_upstream = "☁" }
 local FETCH_COOLDOWN = 60
 
--- Helper: Get the actual Root Directory of the git repo
-local function get_git_root(buf_id)
-  if vim.fn.exists("*FugitiveWorkTree") == 1 then
-    local root = vim.fn.FugitiveWorkTree(buf_id)
-    if root ~= "" and vim.fn.isdirectory(root) == 1 then
-      return root
-    end
-  end
-end
-
--- 1. Render String Generator
 local function update_render_string(data)
   local parts = {}
   local head_limiter = 15
@@ -46,8 +162,8 @@ local function update_render_string(data)
   data.render = table.concat(parts, " ")
 end
 
--- 2. Async Local Counts
 local function fetch_git_counts(buf_id)
+  -- Uses the shared, robust get_git_root
   local cwd = get_git_root(buf_id)
   if not cwd then
     return
@@ -93,7 +209,6 @@ local function fetch_git_counts(buf_id)
   git_cache[buf_id].job_id = job_id
 end
 
--- 3. Async Remote Fetch
 local function fetch_git_remote(buf_id)
   local now = os.time()
   local last = git_cache[buf_id].last_fetch or 0
@@ -121,17 +236,13 @@ local function fetch_git_remote(buf_id)
   })
 end
 
--- 4. Trigger Orchestrator
 local function update_git_status(buf_id)
   buf_id = buf_id or vim.api.nvim_get_current_buf()
-  if not vim.api.nvim_buf_is_valid(buf_id) then
+  if not vim.api.nvim_buf_is_valid(buf_id) or vim.api.nvim_buf_get_name(buf_id) == "" then
     return
   end
 
-  if vim.api.nvim_buf_get_name(buf_id) == "" then
-    return
-  end
-
+  -- Check FugitiveHead existence to prevent errors
   if vim.fn.exists("*FugitiveHead") == 0 then
     return
   end
@@ -168,12 +279,7 @@ local function update_git_status(buf_id)
   )
 end
 
--- 5. Statusline Component
-local function get_git_status_string()
-  local buf = vim.api.nvim_get_current_buf()
-  return (git_cache[buf] and git_cache[buf].render) or ""
-end
-
+-- Setup Autocommands
 local grp_git = vim.api.nvim_create_augroup("LocalGitStatus", { clear = true })
 
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "FocusGained" }, {
@@ -183,14 +289,6 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "FocusGained" }, {
     update_git_status(args.buf)
   end,
 })
-
-vim.api.nvim_create_user_command("GFetch", function()
-  local buf = vim.api.nvim_get_current_buf()
-  if git_cache[buf] then
-    git_cache[buf].last_fetch = 0
-  end
-  update_git_status(buf)
-end, {})
 
 vim.api.nvim_create_autocmd("BufWipeout", {
   group = grp_git,
@@ -210,6 +308,19 @@ vim.api.nvim_create_autocmd("BufWipeout", {
   end,
 })
 
+vim.api.nvim_create_user_command("GFetch", function()
+  local buf = vim.api.nvim_get_current_buf()
+  if git_cache[buf] then
+    git_cache[buf].last_fetch = 0
+  end
+  update_git_status(buf)
+end, {})
+
+-- Exposed Global Function for Statusline
+_G.get_git_status_string = function()
+  local buf = vim.api.nvim_get_current_buf()
+  return (git_cache[buf] and git_cache[buf].render) or ""
+end
 local MiniStatusline = require("mini.statusline")
 MiniStatusline.setup({
   content = {
