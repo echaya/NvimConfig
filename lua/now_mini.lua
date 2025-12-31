@@ -205,12 +205,12 @@ local function fetch_git_counts(buf_id, from_fetch)
           local old_behind = git_cache[buf_id].behind or 0
           local old_ahead = git_cache[buf_id].ahead or 0
 
-          if new_behind > old_behind then
+          if new_behind ~= old_behind then
             local repo_name = vim.fn.fnamemodify(data.root, ":t")
             local diff_count = new_behind - old_behind
             vim.notify(
               string.format(
-                "%s Git Update Detected\n\nRepo:   %s\nBranch: %s\n\n%s Incoming: %d (new +%d)\n%s Outgoing: %d",
+                "%s Git Update Detected\nRepo:   %s\nBranch: %s\n%s Incoming: %d (new %d)\n%s Outgoing: %d",
                 icons.sync,
                 repo_name,
                 data.head,
