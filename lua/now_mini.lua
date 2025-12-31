@@ -132,7 +132,7 @@ vim.keymap.set("n", "<leader>bD", close_buffers_outside_context, {
 local git_cache = {}
 local repo_fetch_state = {}
 local icons = { branch = "", ahead = "", behind = "", no_upstream = "☁" }
-local FETCH_COOLDOWN = 60
+local FETCH_COOLDOWN = 180
 
 local function update_render_string(data)
   local parts = {}
@@ -205,11 +205,13 @@ end
 
 -- 3. Async Remote Fetch
 local function fetch_git_remote(buf_id)
-  local cwd = get_git_root(buf_id)
-  if not cwd then
+  -- 1. Use Cached Root
+  local data = git_cache[buf_id]
+  if not data or not data.root then
     return
   end
 
+  local cwd = data.root
   local now = os.time()
   local last_fetch = repo_fetch_state[cwd] or 0
 
@@ -218,17 +220,17 @@ local function fetch_git_remote(buf_id)
   end
 
   repo_fetch_state[cwd] = now
+  -- vim.notify("Remote Fetching: " .. cwd, vim.log.levels.INFO) -- Optional debug
+
   vim.fn.jobstart({ "git", "fetch", "--no-tags", "--quiet" }, {
     cwd = cwd,
     on_exit = function(_, code)
       if code == 0 then
         vim.schedule(function()
+          -- 2. Optimized Loop: Check cached roots directly
           for b_id, cache in pairs(git_cache) do
-            if vim.api.nvim_buf_is_valid(b_id) then
-              local b_root = get_git_root(b_id)
-              if b_root == cwd then
-                fetch_git_counts(b_id)
-              end
+            if vim.api.nvim_buf_is_valid(b_id) and cache.root == cwd then
+              fetch_git_counts(b_id)
             end
           end
         end)
@@ -249,10 +251,16 @@ local function update_git_status(buf_id)
     return
   end
 
+  -- 3. Cache Root Only Once (or update if needed)
   if not git_cache[buf_id] then
-    git_cache[buf_id] = { head = head }
+    local root = get_git_root(buf_id)
+    if not root then
+      return
+    end -- Don't cache if not in a valid git root
+    git_cache[buf_id] = { head = head, root = root }
   else
     git_cache[buf_id].head = head
+    -- Note: We assume 'root' doesn't change for a living buffer
   end
 
   update_render_string(git_cache[buf_id])
@@ -306,17 +314,18 @@ vim.api.nvim_create_autocmd("BufWipeout", {
 
 vim.api.nvim_create_user_command("GFetch", function()
   local buf = vim.api.nvim_get_current_buf()
-  if git_cache[buf] then
-    git_cache[buf].last_fetch = 0
+  if git_cache[buf] and git_cache[buf].root then
+    repo_fetch_state[git_cache[buf].root] = 0
   end
   update_git_status(buf)
 end, {})
 
--- Exposed Global Function for Statusline
+-- Exposed Global
 local get_git_status_string = function()
   local buf = vim.api.nvim_get_current_buf()
   return (git_cache[buf] and git_cache[buf].render) or ""
 end
+
 local MiniStatusline = require("mini.statusline")
 MiniStatusline.setup({
   content = {
