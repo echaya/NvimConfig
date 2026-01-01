@@ -1,8 +1,15 @@
--- mini.file
+local mini_files = require("mini.files")
+
+local WIN_WIDTH_FOCUS = 50
+local WIN_WIDTH_NOFOCUS = 15
+local WIN_WIDTH_NOFOCUS_DETAILED = 30
+local WIN_WIDTH_PREVIEW = 100
+
 local format_size = function(size)
-  if size == nil then
-    return
-  elseif size < 1024 then
+  if not size then
+    return ""
+  end
+  if size < 1024 then
     return string.format("%3dB", size)
   elseif size < 1048576 then
     return string.format("%3.0fK", size / 1024)
@@ -11,34 +18,41 @@ local format_size = function(size)
   end
 end
 local format_time = function(time)
-  if time == nil then
-    return
-  else
-    local ret = vim.fn.strftime("%y-%m-%d %H:%M", time.sec)
-    return ret
+  if not time then
+    return ""
   end
+  return vim.fn.strftime("%y-%m-%d %H:%M", time.sec)
 end
 
 local my_pre_prefix = function(fs_stat)
-  local _, mtime = pcall(format_time, fs_stat.mtime)
-  local pre_prefix = ""
-  if mtime ~= nil then
-    pre_prefix = pre_prefix .. " " .. mtime
+  if not fs_stat then
+    return ""
+  end
+  local parts = {}
+  local mtime = format_time(fs_stat.mtime)
+  if mtime ~= "" then
+    table.insert(parts, mtime)
   end
   if fs_stat.type == "file" then
-    local _, size = pcall(format_size, fs_stat.size)
-    if size ~= nil then
-      pre_prefix = pre_prefix .. " " .. size
+    local size = format_size(fs_stat.size)
+    if size ~= "" then
+      table.insert(parts, size)
     end
   end
-  return pre_prefix
+  if #parts == 0 then
+    return ""
+  end
+  return table.concat(parts, " ")
 end
 
-local mini_files = require("mini.files")
 local my_prefix = function(fs_entry)
   local prefix, hl = mini_files.default_prefix(fs_entry)
-  local fs_stat = vim.uv.fs_stat(fs_entry.path) or {}
+  local fs_stat = vim.uv.fs_stat(fs_entry.path)
   local pre_prefix = my_pre_prefix(fs_stat)
+
+  if pre_prefix == "" then
+    return prefix, hl
+  end
   return pre_prefix .. " " .. prefix, hl
 end
 
@@ -48,51 +62,24 @@ local toggle_details = function()
   if show_details then
     mini_files.refresh({
       windows = {
-        width_nofocus = 30,
+        width_nofocus = WIN_WIDTH_NOFOCUS_DETAILED,
       },
       content = { prefix = my_prefix },
     })
   else
     mini_files.refresh({
       windows = {
-        width_nofocus = 15,
+        width_nofocus = WIN_WIDTH_NOFOCUS,
       },
       content = { prefix = mini_files.default_prefix },
     })
   end
 end
 
-mini_files.setup({
-  mappings = {
-    go_in_plus = "<CR>",
-    trim_left = ">",
-    trim_right = "<",
-  },
-  options = {
-    permanent_delete = true,
-    use_as_default_explorer = true,
-  },
-  windows = {
-    max_number = math.huge,
-    preview = true,
-    width_focus = 50,
-    width_nofocus = 30,
-    width_preview = 100,
-  },
-  content = { prefix = my_prefix },
-})
-
-vim.keymap.set("n", "<leader>e", function()
-  if not mini_files.close() then
-    mini_files.open()
-  end
-end)
-
 local show_dotfiles = true
 local filter_show = function(_)
   return true
 end
-
 local filter_hide = function(fs_entry)
   return not vim.startswith(fs_entry.name, ".")
 end
@@ -100,14 +87,13 @@ end
 local toggle_dotfiles = function()
   show_dotfiles = not show_dotfiles
   local new_filter = show_dotfiles and filter_show or filter_hide
-  require("mini.files").refresh({ content = { filter = new_filter } })
+  mini_files.refresh({ content = { filter = new_filter } })
 end
 
 local show_preview = true
 local toggle_preview = function()
   show_preview = not show_preview
-  -- Refresh the mini.files window with the new preview setting
-  require("mini.files").refresh({
+  mini_files.refresh({
     windows = {
       preview = show_preview,
     },
@@ -115,17 +101,26 @@ local toggle_preview = function()
 end
 
 local open_totalcmd = function(_)
-  local cur_entry_path = mini_files.get_fs_entry().path
-  -- local cur_directory = vim.fs.dirname(cur_entry_path)
-  -- vim.fn.system(string.format("gio open '%s'", cur_entry_path))
-  vim.api.nvim_command(string.format("!%s /O /T /L='%s'", vim.g.total_cmd_exe, cur_entry_path))
+  local entry = mini_files.get_fs_entry()
+  if not entry then
+    return
+  end
+
+  if not vim.g.total_cmd_exe then
+    vim.notify("Global variable 'total_cmd_exe' is not set.", vim.log.levels.ERROR)
+    return
+  end
+
+  vim.api.nvim_command(string.format("!%s /O /T /L='%s'", vim.g.total_cmd_exe, entry.path))
   mini_files.close()
 end
 
 local open_file = function(_)
-  local cur_entry_path = mini_files.get_fs_entry().path
-  vim.ui.open(cur_entry_path)
-  mini_files.close()
+  local entry = mini_files.get_fs_entry()
+  if entry then
+    vim.ui.open(entry.path)
+    mini_files.close()
+  end
 end
 
 local map_split = function(buf_id, lhs, direction, close)
@@ -144,20 +139,24 @@ local map_split = function(buf_id, lhs, direction, close)
     end
   end
 
-  -- Adding `desc` will result into `show_help` entries
   local desc = "Split " .. direction
   vim.keymap.set("n", lhs, rhs, { buffer = buf_id, desc = desc })
 end
 
 local files_set_cwd = function(_)
-  -- Works only if cursor is on the valid file system entry
-  -- Does not work with have vim-rooter is on
-  local cur_entry_path = mini_files.get_fs_entry().path
+  local entry = mini_files.get_fs_entry()
+  if not entry then
+    return
+  end
+  local cur_entry_path = entry.path
   local cur_directory = vim.fs.dirname(cur_entry_path)
+  if entry.fs_type == "directory" then
+    cur_directory = cur_entry_path
+  end
   vim.fn.chdir(cur_directory)
-  vim.notify(vim.inspect(cur_directory))
+  vim.notify("CWD set to: " .. cur_directory)
 end
--- Function to generate SCP command and copy to clipboard via OSC 52
+
 local yank_scp_command = function()
   local entry = mini_files.get_fs_entry()
   if not entry then
@@ -175,27 +174,58 @@ local yank_scp_command = function()
   mini_files.close()
 end
 
+mini_files.setup({
+  mappings = {
+    go_in_plus = "<CR>",
+    trim_left = ">",
+    trim_right = "<",
+  },
+  options = {
+    permanent_delete = true,
+    use_as_default_explorer = true,
+  },
+  windows = {
+    max_number = math.huge,
+    preview = true,
+    width_focus = WIN_WIDTH_FOCUS,
+    width_nofocus = WIN_WIDTH_NOFOCUS_DETAILED, -- Default to detailed view
+    width_preview = WIN_WIDTH_PREVIEW,
+  },
+  content = { prefix = my_prefix },
+})
+
 vim.api.nvim_create_autocmd("User", {
   pattern = "MiniFilesBufferCreate",
   group = vim.api.nvim_create_augroup("mini-file-buffer", { clear = true }),
   callback = function(args)
     local buf_id = args.data.buf_id
-    -- g? to show keymap table
-    vim.keymap.set("n", "g.", toggle_dotfiles, { buffer = buf_id, desc = "Toggle dot files" })
-    vim.keymap.set("n", "g,", toggle_details, { buffer = buf_id, desc = "Toggle file details" })
-    vim.keymap.set("n", "gt", open_totalcmd, { buffer = buf_id, desc = "Open in TotalCmd" })
-    vim.keymap.set("n", "gx", open_file, { buffer = buf_id, desc = "Open Externally" })
-    vim.keymap.set("n", "gy", yank_scp_command, { buffer = buf_id, desc = "Create scp comand" })
-    vim.keymap.set("n", "gp", toggle_preview, { buffer = buf_id, desc = "Toggle preview" })
-    vim.keymap.set("n", "g`", files_set_cwd, { buffer = args.data.buf_id, desc = "Set dir" })
-    vim.keymap.set("n", "<esc>", require("mini.files").close, { buffer = buf_id, desc = "Close" })
+
+    local map = function(lhs, rhs, desc)
+      vim.keymap.set("n", lhs, rhs, { buffer = buf_id, desc = desc })
+    end
+
+    map("g.", toggle_dotfiles, "Toggle dot files")
+    map("g,", toggle_details, "Toggle file details")
+    map("gt", open_totalcmd, "Open in TotalCmd")
+    map("gx", open_file, "Open Externally")
+    map("gy", yank_scp_command, "Create scp comand")
+    map("gp", toggle_preview, "Toggle preview")
+    map("g`", files_set_cwd, "Set dir")
+    map("<esc>", mini_files.close, "Close")
+    map("<a-h>", toggle_dotfiles, "Toggle dot files")
+
     map_split(buf_id, "gs", "belowright horizontal", false)
     map_split(buf_id, "gv", "belowright vertical", false)
     map_split(buf_id, "<C-s>", "belowright horizontal", true)
     map_split(buf_id, "<C-v>", "belowright vertical", true)
-    vim.keymap.set("n", "<a-h>", toggle_dotfiles, { buffer = buf_id, desc = "Toggle dot files" })
   end,
 })
+
+vim.keymap.set("n", "<leader>e", function()
+  if not mini_files.close() then
+    mini_files.open()
+  end
+end, { desc = "Toggle Mini Files" })
 
 local map_combo = require("mini.keymap").map_combo
 map_combo({ "i", "t" }, "jk", "<BS><BS><Cmd>stopinsert<CR>", { delay = 150 })
@@ -252,7 +282,6 @@ if vim.fn.has("linux") == 1 then
       last_copy = { vim.v.event.regcontents, vim.v.event.regtype }
     end,
   })
-
 end
 vim.opt.clipboard:append("unnamedplus")
 
