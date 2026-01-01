@@ -219,21 +219,27 @@ end
 local sort_mode = "name" -- "name" | "size" | "date"
 local last_warn_time = 0
 local custom_sort = function(fs_entries)
+  if #fs_entries == 0 then
+    return fs_entries
+  end
+
   if sort_mode == "name" then
+    return mini_files.default_sort(fs_entries)
+  end
+
+  local dir_of_entries = vim.fs.dirname(fs_entries[1].path)
+  local state = mini_files.get_explorer_state()
+  local focused_dir = state and state.branch[state.depth_focus]
+  if dir_of_entries ~= focused_dir then
     return mini_files.default_sort(fs_entries)
   end
 
   if #fs_entries > SORT_LIMIT then
     local now = vim.uv.now()
     if (now - last_warn_time) > 2000 then
-      vim.notify(
-        string.format("Directory too large (>%d). Falling back to name sort.", SORT_LIMIT),
-        vim.log.levels.WARN,
-        { title = "MiniFiles Sort" }
-      )
+      vim.notify("Directory too large. Falling back to name sort.", vim.log.levels.WARN)
       last_warn_time = now
     end
-
     return mini_files.default_sort(fs_entries)
   end
 
@@ -241,6 +247,8 @@ local custom_sort = function(fs_entries)
     return sort_by_size(fs_entries)
   elseif sort_mode == "date" then
     return sort_by_date(fs_entries)
+  else
+    return mini_files.default_sort(fs_entries)
   end
 end
 
@@ -308,6 +316,7 @@ vim.api.nvim_create_autocmd("User", {
 
 vim.keymap.set("n", "<leader>e", function()
   if not mini_files.close() then
+    sort_mode = "name"
     mini_files.open()
   end
 end, { desc = "Toggle Mini Files" })
