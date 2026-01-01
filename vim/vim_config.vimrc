@@ -33,6 +33,8 @@ if has('termguicolors')
     set termguicolors
 endif
 
+noremap <C-s> :w<cr>
+
 noremap <C-h> <C-w><C-h>
 noremap <C-j> <C-w><C-j>
 noremap <C-k> <C-w><C-k>
@@ -131,7 +133,6 @@ xmap z <Plug>(sandwich-add)
 nmap dz <Plug>(sandwich-delete)
 nmap cz <Plug>(sandwich-replace)
 
-" Ensure dot (.) works with sandwich actions
 runtime autoload/repeat.vim
 if hasmapto('<Plug>(RepeatDot)')
   nmap . <Plug>(operator-sandwich-predot)<Plug>(RepeatDot)

@@ -94,26 +94,6 @@ vim.api.nvim_create_user_command("GP", function()
   vscode.action("git.sync")
 end, { desc = "Git: Sync (Pull/Push)" })
 
--- Bookmarks
-vim.keymap.set("n", "mm", function()
-  vscode.call("bookmarks.toggle")
-end, { desc = "Bookmarks: Toggle" })
-vim.keymap.set("n", "mj", function()
-  vscode.call("bookmarks.jumpToNext")
-end, { desc = "Bookmarks: Next" })
-vim.keymap.set("n", "mk", function()
-  vscode.call("bookmarks.jumpToPrevious")
-end, { desc = "Bookmarks: Previous" })
-vim.keymap.set("n", "mi", function()
-  vscode.call("bookmarks.toggleLabeled")
-end, { desc = "Bookmarks: Toggle Labeled" })
-vim.keymap.set("n", "`", function()
-  vscode.call("bookmarks.listFromAllFiles")
-end, { desc = "Bookmarks: List All" })
-vim.keymap.set("n", "dmm", function()
-  vscode.call("bookmarks.clearFromAllFiles")
-end, { desc = "Bookmarks: Clear All" })
-
 -- Commenting (using <Plug> mappings)
 -- For <Plug> mappings, we map to the placeholder string itself.
 -- These mappings are designed to be remappable by the plugin.
