@@ -451,9 +451,7 @@ vim.cmd([[
 
 vim.o.sessionoptions = "buffers,curdir,folds,globals,help,skiprtp,tabpages"
 local mini_session = require("mini.sessions")
-mini_session.setup({ file = "" })
 
--- save session functions copy from nvim-session-manager
 local function is_restorable(buffer)
   if #vim.api.nvim_get_option_value("bufhidden", { buf = buffer }) ~= 0 then
     return false
@@ -488,15 +486,21 @@ local clean_up_buffer = function()
   end
 end
 
-SaveMiniSession = function()
-  clean_up_buffer()
+mini_session.setup({
+  file = "",
+  hooks = {
+    -- Clean buffers only when a write is actually triggered
+    pre = { write = clean_up_buffer },
+  },
+})
 
+SaveMiniSession = function()
   local question = "Save session relative to which directory?"
   local choices = "&Project (getcwd)\n&File (current buffer)"
   local ok, choice_index = pcall(vim.fn.confirm, question, choices, 1)
   if not ok or choice_index == 0 then
     vim.notify("Session save cancelled.", vim.log.levels.INFO)
-    return -- Abort the function
+    return -- Abort (Buffers remain untouched)
   end
 
   local base_path
@@ -511,7 +515,7 @@ SaveMiniSession = function()
   end
 
   local session_name = base_path:gsub("[:/\\]$", ""):gsub(":", ""):gsub("[/\\]", "_")
-  mini_session.write(session_name)
+  mini_session.write(session_name) -- Hook triggers here
   vim.notify("Session saved as: " .. session_name, vim.log.levels.INFO)
 end
 
