@@ -127,7 +127,7 @@ let g:sandwich#recipes += [
 nmap yz <Plug>(sandwich-add)
 nmap yzz <Plug>(sandwich-add)_
 nmap yZ <Plug>(sandwich-add)$
-xmap Z <Plug>(sandwich-add)
+xmap z <Plug>(sandwich-add)
 nmap dz <Plug>(sandwich-delete)
 nmap cz <Plug>(sandwich-replace)
 
