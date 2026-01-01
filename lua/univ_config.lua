@@ -16,12 +16,12 @@ vim.api.nvim_set_hl(0, "LeapBackdrop", { link = "Comment" })
 leap.opts.preview_filter = false
 require("leap.user").set_repeat_keys("<enter>", "<backspace>")
 -- leap core
-vim.keymap.set("n", "s", "<Plug>(leap)")
+vim.keymap.set({ "n", "x" }, "s", "<Plug>(leap)")
 vim.keymap.set("n", "S", "<Plug>(leap-from-window)")
-vim.keymap.set({ "o" }, "z", function()
+vim.keymap.set({ "o" }, "s", function()
   leap.leap({ inclusive = true, offset = 1 })
 end, { desc = "leap forward" })
-vim.keymap.set({ "o" }, "Z", function()
+vim.keymap.set({ "o" }, "S", function()
   leap.leap({ inclusive = true, offset = 0, backward = true })
 end, { desc = "leap backward" })
 -- leap treesitter
