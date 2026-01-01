@@ -1,7 +1,4 @@
-vim.keymap.set("n", "<localleader>x", function()
-  vim.cmd("!start " .. vim.fn.shellescape(vim.fn.expand("<cfile>"), true))
-end, { noremap = true, silent = true, desc = "Open file under cursor in default program" })
-
+-- setup leap
 local leap = require("leap")
 leap.opts.case_sensitive = true
 leap.opts.on_beacons = function(targets, _, _)

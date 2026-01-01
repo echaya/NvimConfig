@@ -1,3 +1,7 @@
+vim.keymap.set("n", "<localleader>x", function()
+  vim.cmd("!start " .. vim.fn.shellescape(vim.fn.expand("<cfile>"), true))
+end, { noremap = true, silent = true, desc = "Open file under cursor in default program" })
+
 -- Setup Autocomplete
 local cmp = require("blink.cmp")
 cmp.setup({
