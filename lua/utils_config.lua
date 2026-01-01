@@ -1,10 +1,21 @@
 local mini_files = require("mini.files")
 
-local WIN_WIDTH_FOCUS = 50
-local WIN_WIDTH_NOFOCUS = 15
-local WIN_WIDTH_NOFOCUS_DETAILED = 30
-local WIN_WIDTH_PREVIEW = 100
-local SORT_LIMIT = 100
+local CONFIG = {
+  width_focus = 50,
+  width_nofocus = 15,
+  width_nofocus_detailed = 30,
+  width_preview = 100,
+  sort_limit = 100,
+  sort_warning_cd = 2000,
+}
+
+local STATE = {
+  show_details = true,
+  show_dotfiles = true,
+  show_preview = true,
+  sort_mode = "name", -- "name" | "date" | "size"
+  last_warn_time = 0,
+}
 
 local format_size = function(size)
   if not size then
@@ -22,9 +33,8 @@ local format_time = function(time)
   if not time then
     return ""
   end
-  return vim.fn.strftime("%y-%m-%d %H:%M", time.sec)
+  return os.date("%y-%m-%d %H:%M", time.sec)
 end
-
 local my_pre_prefix = function(fs_stat)
   if not fs_stat then
     return ""
@@ -48,7 +58,7 @@ end
 
 local my_prefix = function(fs_entry)
   local prefix, hl = mini_files.default_prefix(fs_entry)
-  local fs_stat = vim.uv.fs_stat(fs_entry.path)
+  local fs_stat = fs_entry.stat or vim.uv.fs_stat(fs_entry.path)
   local pre_prefix = my_pre_prefix(fs_stat)
 
   if pre_prefix == "" then
@@ -57,125 +67,6 @@ local my_prefix = function(fs_entry)
   return pre_prefix .. " " .. prefix, hl
 end
 
-local show_details = true
-local toggle_details = function()
-  show_details = not show_details
-  if show_details then
-    mini_files.refresh({
-      windows = {
-        width_nofocus = WIN_WIDTH_NOFOCUS_DETAILED,
-      },
-      content = { prefix = my_prefix },
-    })
-  else
-    mini_files.refresh({
-      windows = {
-        width_nofocus = WIN_WIDTH_NOFOCUS,
-      },
-      content = { prefix = mini_files.default_prefix },
-    })
-  end
-end
-
-local show_dotfiles = true
-local filter_show = function(_)
-  return true
-end
-local filter_hide = function(fs_entry)
-  return not vim.startswith(fs_entry.name, ".")
-end
-
-local toggle_dotfiles = function()
-  show_dotfiles = not show_dotfiles
-  local new_filter = show_dotfiles and filter_show or filter_hide
-  mini_files.refresh({ content = { filter = new_filter } })
-end
-
-local show_preview = true
-local toggle_preview = function()
-  show_preview = not show_preview
-  mini_files.refresh({
-    windows = {
-      preview = show_preview,
-    },
-  })
-end
-
-local open_totalcmd = function(_)
-  local entry = mini_files.get_fs_entry()
-  if not entry then
-    return
-  end
-
-  if not vim.g.total_cmd_exe then
-    vim.notify("Global variable 'total_cmd_exe' is not set.", vim.log.levels.ERROR)
-    return
-  end
-
-  vim.api.nvim_command(string.format("!%s /O /T /L='%s'", vim.g.total_cmd_exe, entry.path))
-  mini_files.close()
-end
-
-local open_file = function(_)
-  local entry = mini_files.get_fs_entry()
-  if entry then
-    vim.ui.open(entry.path)
-    mini_files.close()
-  end
-end
-
-local map_split = function(buf_id, lhs, direction, close)
-  local rhs = function()
-    -- Make new window and set it as target
-    local cur_target = mini_files.get_explorer_state().target_window
-    local new_target = vim.api.nvim_win_call(cur_target, function()
-      vim.cmd(direction .. " split")
-      return vim.api.nvim_get_current_win()
-    end)
-
-    mini_files.set_target_window(new_target)
-    mini_files.go_in()
-    if close then
-      mini_files.close()
-    end
-  end
-
-  local desc = "Split " .. direction
-  vim.keymap.set("n", lhs, rhs, { buffer = buf_id, desc = desc })
-end
-
-local files_set_cwd = function(_)
-  local entry = mini_files.get_fs_entry()
-  if not entry then
-    return
-  end
-  local cur_entry_path = entry.path
-  local cur_directory = vim.fs.dirname(cur_entry_path)
-  if entry.fs_type == "directory" then
-    cur_directory = cur_entry_path
-  end
-  vim.fn.chdir(cur_directory)
-  vim.notify("CWD set to: " .. cur_directory)
-end
-
-local yank_scp_command = function()
-  local entry = mini_files.get_fs_entry()
-  if not entry then
-    return
-  end
-  local path = entry.path
-  local hostname = vim.uv.os_gethostname() -- e.g., "dev_web-01.example.com"
-  local short_host = hostname:match("_(.*)") or hostname
-  short_host = short_host:match("^([^%.]+)") or short_host
-  local scp_cmd = string.format("scp -P 8080 %s.spaces:%s .", short_host, path)
-  local b64 = vim.fn.system(string.format("echo -n '%s' | base64 | tr -d '\n'", scp_cmd))
-  local osc52 = string.format("\27]52;c;%s\7", b64)
-  vim.uv.fs_write(1, osc52, -1)
-  vim.notify("📋 Copied to Clipboard:\n" .. scp_cmd, vim.log.levels.INFO)
-  mini_files.close()
-end
-
-local sort_mode = "name" -- "name" | "size" | "date"
 local prepare_stats = function(fs_entries)
   for _, entry in ipairs(fs_entries) do
     if not entry.stat then
@@ -193,9 +84,7 @@ local sort_by_size = function(fs_entries)
     if a.fs_type == "directory" then
       return a.name:lower() < b.name:lower()
     end
-    local size_a = a.stat.size or 0
-    local size_b = b.stat.size or 0
-    return size_a > size_b
+    return (a.stat.size or 0) > (b.stat.size or 0)
   end)
   return fs_entries
 end
@@ -209,62 +98,154 @@ local sort_by_date = function(fs_entries)
     if a.fs_type == "directory" then
       return a.name:lower() < b.name:lower()
     end
-    local time_a = a.stat.mtime and a.stat.mtime.sec or 0
-    local time_b = b.stat.mtime and b.stat.mtime.sec or 0
-    return time_a > time_b
+    return (a.stat.mtime and a.stat.mtime.sec or 0) > (b.stat.mtime and b.stat.mtime.sec or 0)
   end)
   return fs_entries
 end
 
-local sort_mode = "name" -- "name" | "size" | "date"
-local last_warn_time = 0
 local custom_sort = function(fs_entries)
   if #fs_entries == 0 then
     return fs_entries
   end
-
-  if sort_mode == "name" then
+  if STATE.sort_mode == "name" then
     return mini_files.default_sort(fs_entries)
   end
 
   local dir_of_entries = vim.fs.dirname(fs_entries[1].path)
-  local state = mini_files.get_explorer_state()
-  local focused_dir = state and state.branch[state.depth_focus]
+  local explorer = mini_files.get_explorer_state()
+  local focused_dir = explorer and explorer.branch[explorer.depth_focus]
   if dir_of_entries ~= focused_dir then
     return mini_files.default_sort(fs_entries)
   end
 
-  if #fs_entries > SORT_LIMIT then
+  if #fs_entries > CONFIG.sort_limit then
     local now = vim.uv.now()
-    if (now - last_warn_time) > 2000 then
-      vim.notify("Directory too large. Falling back to name sort.", vim.log.levels.WARN)
-      last_warn_time = now
+    if (now - STATE.last_warn_time) > CONFIG.sort_warning_cd then
+      vim.notify(
+        "Directory too large (> " .. CONFIG.sort_limit .. "). Falling back to name sort.",
+        vim.log.levels.WARN
+      )
+      STATE.last_warn_time = now
     end
     return mini_files.default_sort(fs_entries)
   end
 
-  if sort_mode == "size" then
+  if STATE.sort_mode == "size" then
     return sort_by_size(fs_entries)
-  elseif sort_mode == "date" then
+  elseif STATE.sort_mode == "date" then
     return sort_by_date(fs_entries)
   else
     return mini_files.default_sort(fs_entries)
   end
 end
 
+local toggle_details = function()
+  STATE.show_details = not STATE.show_details
+  local new_width = STATE.show_details and CONFIG.width_nofocus_detailed or CONFIG.width_nofocus
+  local new_prefix = STATE.show_details and my_prefix or mini_files.default_prefix
+
+  mini_files.refresh({
+    windows = { width_nofocus = new_width },
+    content = { prefix = new_prefix },
+  })
+end
+
+local toggle_dotfiles = function()
+  STATE.show_dotfiles = not STATE.show_dotfiles
+  local new_filter = function(fs_entry)
+    return STATE.show_dotfiles or not vim.startswith(fs_entry.name, ".")
+  end
+  mini_files.refresh({ content = { filter = new_filter } })
+end
+
+local toggle_preview = function()
+  STATE.show_preview = not STATE.show_preview
+  mini_files.refresh({ windows = { preview = STATE.show_preview } })
+end
+
 local toggle_sort = function()
-  if sort_mode == "name" then
-    sort_mode = "size"
-    vim.notify("Sort: Size (Descending)", vim.log.levels.INFO)
-  elseif sort_mode == "size" then
-    sort_mode = "date"
+  if STATE.sort_mode == "name" then
+    STATE.sort_mode = "date"
     vim.notify("Sort: Date (Newest)", vim.log.levels.INFO)
+  elseif STATE.sort_mode == "date" then
+    STATE.sort_mode = "size"
+    vim.notify("Sort: Size (Descending)", vim.log.levels.INFO)
   else
-    sort_mode = "name"
+    STATE.sort_mode = "name"
     vim.notify("Sort: Name (A-Z)", vim.log.levels.INFO)
   end
-
   mini_files.refresh({ content = { sort = custom_sort } })
+end
+
+local open_totalcmd = function()
+  local entry = mini_files.get_fs_entry()
+  if not entry then
+    return
+  end
+  if not vim.g.total_cmd_exe then
+    return vim.notify("Global 'total_cmd_exe' not set.", vim.log.levels.ERROR)
+  end
+  vim.cmd(string.format("!%s /O /T /L='%s'", vim.g.total_cmd_exe, entry.path))
+  mini_files.close()
+end
+
+local open_file_externally = function()
+  local entry = mini_files.get_fs_entry()
+  if entry then
+    vim.ui.open(entry.path)
+    mini_files.close()
+  end
+end
+
+local set_cwd = function()
+  local entry = mini_files.get_fs_entry()
+  if not entry then
+    return
+  end
+  local cur_dir = entry.fs_type == "directory" and entry.path or vim.fs.dirname(entry.path)
+  vim.fn.chdir(cur_dir)
+  vim.notify("CWD set to: " .. cur_dir)
+end
+
+local yank_scp_command = function()
+  local entry = mini_files.get_fs_entry()
+  if not entry then
+    return
+  end
+
+  local path = entry.path
+  local hostname = vim.uv.os_gethostname()
+  local short_host = hostname:match("_(.*)") or hostname
+  short_host = short_host:match("^[^%.]+") or short_host
+
+  local scp_cmd = string.format("scp -P 8080 %s.spaces:%s .", short_host, path)
+  local b64
+  if vim.base64 then
+    b64 = vim.base64.encode(scp_cmd)
+  else
+    b64 = vim.fn.system(string.format("echo -n '%s' | base64 | tr -d '\n'", scp_cmd))
+  end
+
+  local osc52 = string.format("\27]52;c;%s\7", b64)
+  vim.uv.fs_write(1, osc52, -1)
+  vim.notify("📋 Copied SCP command:\n" .. scp_cmd, vim.log.levels.INFO)
+  mini_files.close()
+end
+
+local map_split = function(buf_id, lhs, direction, close)
+  local rhs = function()
+    local cur_target = mini_files.get_explorer_state().target_window
+    local new_target = vim.api.nvim_win_call(cur_target, function()
+      vim.cmd(direction .. " split")
+      return vim.api.nvim_get_current_win()
+    end)
+    mini_files.set_target_window(new_target)
+    mini_files.go_in()
+    if close then
+      mini_files.close()
+    end
+  end
+  vim.keymap.set("n", lhs, rhs, { buffer = buf_id, desc = "Split " .. direction })
 end
 
 mini_files.setup({
@@ -280,43 +261,59 @@ mini_files.setup({
   windows = {
     max_number = math.huge,
     preview = true,
-    width_focus = WIN_WIDTH_FOCUS,
-    width_nofocus = WIN_WIDTH_NOFOCUS_DETAILED, -- Default to detailed view
-    width_preview = WIN_WIDTH_PREVIEW,
+    width_focus = CONFIG.width_focus,
+    width_nofocus = CONFIG.width_nofocus_detailed,
+    width_preview = CONFIG.width_preview,
   },
   content = { prefix = my_prefix, sort = custom_sort },
 })
+
+local go_in_reset = function()
+  STATE.sort_mode = "name"
+  mini_files.go_in()
+end
+
+local go_out_reset = function()
+  STATE.sort_mode = "name"
+  mini_files.go_out()
+end
+
+local go_in_plus_reset = function()
+  STATE.sort_mode = "name"
+  mini_files.go_in({ close_on_file = true })
+end
 
 vim.api.nvim_create_autocmd("User", {
   pattern = "MiniFilesBufferCreate",
   group = vim.api.nvim_create_augroup("mini-file-buffer", { clear = true }),
   callback = function(args)
-    local buf_id = args.data.buf_id
-
+    local b = args.data.buf_id
     local map = function(lhs, rhs, desc)
-      vim.keymap.set("n", lhs, rhs, { buffer = buf_id, desc = desc })
+      vim.keymap.set("n", lhs, rhs, { buffer = b, desc = desc })
     end
-
+    map("l", go_in_reset, "Go in (Reset Sort)")
+    map("h", go_out_reset, "Go out (Reset Sort)")
+    map("<CR>", go_in_plus_reset, "Go in plus (Reset Sort)")
     map("g.", toggle_dotfiles, "Toggle dot files")
     map("g,", toggle_details, "Toggle file details")
-    map("gs", toggle_sort, "Toggle sort")
+    map("gs", toggle_sort, "Toggle sort (Name/Size/Date)")
     map("gt", open_totalcmd, "Open in TotalCmd")
-    map("gx", open_file, "Open Externally")
-    map("gy", yank_scp_command, "Create scp comand")
+    map("gx", open_file_externally, "Open Externally")
+    map("gy", yank_scp_command, "Copy SCP command")
     map("gp", toggle_preview, "Toggle preview")
-    map("g`", files_set_cwd, "Set dir")
+    map("g`", set_cwd, "Set CWD")
     map("<esc>", mini_files.close, "Close")
     map("<a-h>", toggle_dotfiles, "Toggle dot files")
 
-    map_split(buf_id, "gv", "belowright vertical", false)
-    map_split(buf_id, "<C-s>", "belowright horizontal", true)
-    map_split(buf_id, "<C-v>", "belowright vertical", true)
+    map_split(b, "gv", "belowright vertical", false)
+    map_split(b, "<C-s>", "belowright horizontal", true)
+    map_split(b, "<C-v>", "belowright vertical", true)
   end,
 })
 
 vim.keymap.set("n", "<leader>e", function()
   if not mini_files.close() then
-    sort_mode = "name"
+    STATE.sort_mode = "name"
     mini_files.open()
   end
 end, { desc = "Toggle Mini Files" })
