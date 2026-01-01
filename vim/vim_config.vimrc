@@ -114,21 +114,4 @@ let g:rooter_buftypes = ['']
 let g:rooter_patterns = ['.git']
 
 :command RemoveTrailingSpace %s/\s\+$//e
-
-" vim-sandich keymap override
-let g:sandwich_no_default_key_mappings = 1
-let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
-let g:sandwich#recipes += [
-      \   {'buns': ['{ ', ' }'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['{']},
-      \   {'buns': ['[ ', ' ]'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['[']},
-      \   {'buns': ['( ', ' )'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['(']},
-      \ ]
-
-" 3. Keymappings
-map <leader>sa <Plug>(sandwich-add)
-map <leader>sd <Plug>(sandwich-delete)
-map <leader>sr <Plug>(sandwich-replace)
-" Special Shortcuts matching mini.surround config
-nmap <leader>ss <Plug>(sandwich-add)_
-nmap <leader>S <Plug>(sandwich-add)$
-xmap S <Plug>(sandwich-add)
+runtime macros/sandwich/keymap/surround.vim
