@@ -88,23 +88,22 @@ require("mini.ai").setup({
 
 require("mini.surround").setup({
   mappings = {
-    add = "<leader>sa", -- Add surrounding in Normal and Visual modes
-    delete = "<leader>sd", -- Delete surrounding
-    find = "<leader>sf", -- Find surrounding (to the right)
-    find_left = "<leader>sF", -- Find surrounding (to the left)
-    highlight = "<leader>sh", -- Highlight surrounding
-    replace = "<leader>sr", -- Replace surrounding
-    suffix_last = "",
-    suffix_next = "",
+    add = "yz",
+    delete = "dz",
+    replace = "cz",
+    find = "",
+    find_left = "",
+    highlight = "",
   },
   n_lines = 50,
   search_method = "cover_or_next",
 })
-vim.keymap.set("n", "<leader>ss", "<leader>sa_", { remap = true, desc = "Add surround _" })
-vim.keymap.set("n", "<leader>S", "<leader>sa$", { remap = true, desc = "Add surround $" })
+vim.keymap.del("x", "yz")
+vim.keymap.set("n", "<leader>zz", "yz_", { remap = true, desc = "Add surround _" })
+vim.keymap.set("n", "<leader>Z", "yz$", { remap = true, desc = "Add surround $" })
 vim.keymap.set(
   "x",
-  "S",
+  "Z",
   [[:<C-u>lua MiniSurround.add('visual')<CR>]],
   { silent = true, desc = "Add surrounding to selection" }
 )
