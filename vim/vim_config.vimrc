@@ -124,11 +124,17 @@ let g:sandwich#recipes += [
       \   {'buns': ['( ', ' )'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['(']},
       \ ]
 
-" 3. Keymappings
-map <leader>sa <Plug>(sandwich-add)
-map <leader>sd <Plug>(sandwich-delete)
-map <leader>sr <Plug>(sandwich-replace)
-" Special Shortcuts matching mini.surround config
-nmap <leader>ss <Plug>(sandwich-add)_
-nmap <leader>S <Plug>(sandwich-add)$
-xmap S <Plug>(sandwich-add)
+nmap yz <Plug>(sandwich-add)
+nmap yzz <Plug>(sandwich-add)_
+nmap yZ <Plug>(sandwich-add)$
+xmap Z <Plug>(sandwich-add)
+nmap dz <Plug>(sandwich-delete)
+nmap cz <Plug>(sandwich-replace)
+
+" Ensure dot (.) works with sandwich actions
+runtime autoload/repeat.vim
+if hasmapto('<Plug>(RepeatDot)')
+  nmap . <Plug>(operator-sandwich-predot)<Plug>(RepeatDot)
+else
+  nmap . <Plug>(operator-sandwich-dot)
+endif
