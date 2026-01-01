@@ -4,7 +4,7 @@ local WIN_WIDTH_FOCUS = 50
 local WIN_WIDTH_NOFOCUS = 15
 local WIN_WIDTH_NOFOCUS_DETAILED = 30
 local WIN_WIDTH_PREVIEW = 100
-local SORT_LIMIT = 3
+local SORT_LIMIT = 100
 
 local format_size = function(size)
   if not size then
@@ -216,17 +216,24 @@ local sort_by_date = function(fs_entries)
   return fs_entries
 end
 
+local sort_mode = "name" -- "name" | "size" | "date"
+local last_warn_time = 0
 local custom_sort = function(fs_entries)
   if sort_mode == "name" then
     return mini_files.default_sort(fs_entries)
   end
 
   if #fs_entries > SORT_LIMIT then
-    vim.notify(
-      string.format("Directory too large (>%d). Falling back to name sort.", SORT_LIMIT),
-      vim.log.levels.WARN,
-      { title = "MiniFiles Sort" }
-    )
+    local now = vim.uv.now()
+    if (now - last_warn_time) > 2000 then
+      vim.notify(
+        string.format("Directory too large (>%d). Falling back to name sort.", SORT_LIMIT),
+        vim.log.levels.WARN,
+        { title = "MiniFiles Sort" }
+      )
+      last_warn_time = now
+    end
+
     return mini_files.default_sort(fs_entries)
   end
 
