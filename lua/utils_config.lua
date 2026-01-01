@@ -4,6 +4,7 @@ local WIN_WIDTH_FOCUS = 50
 local WIN_WIDTH_NOFOCUS = 15
 local WIN_WIDTH_NOFOCUS_DETAILED = 30
 local WIN_WIDTH_PREVIEW = 100
+local SORT_LIMIT = 3
 
 local format_size = function(size)
   if not size then
@@ -174,6 +175,83 @@ local yank_scp_command = function()
   mini_files.close()
 end
 
+local sort_mode = "name" -- "name" | "size" | "date"
+local prepare_stats = function(fs_entries)
+  for _, entry in ipairs(fs_entries) do
+    if not entry.stat then
+      entry.stat = vim.uv.fs_stat(entry.path) or {}
+    end
+  end
+end
+
+local sort_by_size = function(fs_entries)
+  prepare_stats(fs_entries)
+  table.sort(fs_entries, function(a, b)
+    if a.fs_type ~= b.fs_type then
+      return a.fs_type == "directory"
+    end
+    if a.fs_type == "directory" then
+      return a.name:lower() < b.name:lower()
+    end
+    local size_a = a.stat.size or 0
+    local size_b = b.stat.size or 0
+    return size_a > size_b
+  end)
+  return fs_entries
+end
+
+local sort_by_date = function(fs_entries)
+  prepare_stats(fs_entries)
+  table.sort(fs_entries, function(a, b)
+    if a.fs_type ~= b.fs_type then
+      return a.fs_type == "directory"
+    end
+    if a.fs_type == "directory" then
+      return a.name:lower() < b.name:lower()
+    end
+    local time_a = a.stat.mtime and a.stat.mtime.sec or 0
+    local time_b = b.stat.mtime and b.stat.mtime.sec or 0
+    return time_a > time_b
+  end)
+  return fs_entries
+end
+
+local custom_sort = function(fs_entries)
+  if sort_mode == "name" then
+    return mini_files.default_sort(fs_entries)
+  end
+
+  if #fs_entries > SORT_LIMIT then
+    vim.notify(
+      string.format("Directory too large (>%d). Falling back to name sort.", SORT_LIMIT),
+      vim.log.levels.WARN,
+      { title = "MiniFiles Sort" }
+    )
+    return mini_files.default_sort(fs_entries)
+  end
+
+  if sort_mode == "size" then
+    return sort_by_size(fs_entries)
+  elseif sort_mode == "date" then
+    return sort_by_date(fs_entries)
+  end
+end
+
+local toggle_sort = function()
+  if sort_mode == "name" then
+    sort_mode = "size"
+    vim.notify("Sort: Size (Descending)", vim.log.levels.INFO)
+  elseif sort_mode == "size" then
+    sort_mode = "date"
+    vim.notify("Sort: Date (Newest)", vim.log.levels.INFO)
+  else
+    sort_mode = "name"
+    vim.notify("Sort: Name (A-Z)", vim.log.levels.INFO)
+  end
+
+  mini_files.refresh({ content = { sort = custom_sort } })
+end
+
 mini_files.setup({
   mappings = {
     go_in_plus = "<CR>",
@@ -191,7 +269,7 @@ mini_files.setup({
     width_nofocus = WIN_WIDTH_NOFOCUS_DETAILED, -- Default to detailed view
     width_preview = WIN_WIDTH_PREVIEW,
   },
-  content = { prefix = my_prefix },
+  content = { prefix = my_prefix, sort = custom_sort },
 })
 
 vim.api.nvim_create_autocmd("User", {
@@ -206,6 +284,7 @@ vim.api.nvim_create_autocmd("User", {
 
     map("g.", toggle_dotfiles, "Toggle dot files")
     map("g,", toggle_details, "Toggle file details")
+    map("gs", toggle_sort, "Toggle sort")
     map("gt", open_totalcmd, "Open in TotalCmd")
     map("gx", open_file, "Open Externally")
     map("gy", yank_scp_command, "Create scp comand")
@@ -214,7 +293,6 @@ vim.api.nvim_create_autocmd("User", {
     map("<esc>", mini_files.close, "Close")
     map("<a-h>", toggle_dotfiles, "Toggle dot files")
 
-    map_split(buf_id, "gs", "belowright horizontal", false)
     map_split(buf_id, "gv", "belowright vertical", false)
     map_split(buf_id, "<C-s>", "belowright horizontal", true)
     map_split(buf_id, "<C-v>", "belowright vertical", true)
