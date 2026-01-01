@@ -52,30 +52,12 @@ require("dial.config").augends:register_group({
     augend.constant.alias.bool,
     augend.constant.new({ elements = { "True", "False" } }),
   },
-  visual = {
-    augend.integer.alias.decimal,
-    augend.integer.alias.hex,
-    augend.date.alias["%Y-%m-%d"],
-    augend.date.alias["%Y/%m/%d"],
-    augend.date.alias["%m/%d"],
-    augend.date.alias["%H:%M"],
-    augend.date.alias["%H:%M:%S"],
-    augend.constant.alias.bool,
-    augend.constant.new({ elements = { "True", "False" } }),
-  },
 })
-
 vim.keymap.set("n", "<C-a>", function()
   require("dial.map").manipulate("increment", "normal")
 end)
 vim.keymap.set("n", "<C-x>", function()
   require("dial.map").manipulate("decrement", "normal")
-end)
-vim.keymap.set("v", "<C-a>", function()
-  require("dial.map").manipulate("increment", "visual")
-end)
-vim.keymap.set("v", "<C-x>", function()
-  require("dial.map").manipulate("decrement", "visual")
 end)
 
 local gen_ai_spec = require("mini.extra").gen_ai_spec
