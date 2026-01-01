@@ -516,7 +516,6 @@ SaveMiniSession = function()
 
   local session_name = base_path:gsub("[:/\\]$", ""):gsub(":", ""):gsub("[/\\]", "_")
   mini_session.write(session_name) -- Hook triggers here
-  vim.notify("Session saved as: " .. session_name, vim.log.levels.INFO)
 end
 
 vim.keymap.set(
