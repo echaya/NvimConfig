@@ -28,15 +28,12 @@ vim.keymap.set({ "o" }, "Z", function()
   leap.leap({ inclusive = true, offset = 0, backward = true })
 end, { desc = "leap backward" })
 -- leap treesitter
-vim.keymap.set({ "x", "o" }, "S", function()
-  require("leap.treesitter").select()
+vim.keymap.set({ "n", "x", "o" }, "R", function()
+  require("leap.treesitter").select({ opts = require("leap.user").with_traversal_keys("R", "r") })
 end, { desc = "leap tree sitter" })
 -- leap remote
 vim.keymap.set({ "o" }, "r", function()
   require("leap.remote").action()
-end)
-vim.keymap.set({ "o" }, "R", function()
-  require("leap.remote").action({ input = "V" })
 end)
 
 local augend = require("dial.augend")
