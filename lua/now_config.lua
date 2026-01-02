@@ -318,6 +318,22 @@ Snacks.setup({
         focus = "list",
         auto_confirm = false,
       },
+      explorer = {
+        win = {
+          input = {
+            keys = {
+              ["<c-l>"] = false,
+              ["<esc>"] = { "", mode = "n" },
+            },
+          },
+          list = {
+            keys = {
+              ["<c-l>"] = false,
+              ["<esc>"] = { "", mode = "n" },
+            },
+          },
+        },
+      },
     },
   },
 })
