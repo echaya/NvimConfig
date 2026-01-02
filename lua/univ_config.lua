@@ -88,7 +88,7 @@ require("mini.ai").setup({
 
 require("mini.surround").setup({
   mappings = {
-    add = "", -- Manual 'yz' to protect Visual Yank
+    add = "yz",
     delete = "dz",
     replace = "cz",
     find = "",
@@ -98,20 +98,15 @@ require("mini.surround").setup({
   n_lines = 50,
   search_method = "cover_or_next",
 })
-vim.keymap.set(
-  "n",
-  "yz",
-  [[:<C-u>lua MiniSurround.add('normal')<CR>]],
-  { silent = true, desc = "Add Surround" }
-)
+pcall(vim.keymap.del, "x", "yz")
 vim.keymap.set(
   "x",
   "z",
   [[:<C-u>lua MiniSurround.add('visual')<CR>]],
   { silent = true, desc = "Add surrounding to selection" }
 )
-vim.keymap.set("n", "<leader>zz", "yz_", { remap = true, desc = "Add surround _" })
-vim.keymap.set("n", "<leader>Z", "yz$", { remap = true, desc = "Add surround $" })
+vim.keymap.set("n", "yzz", "yz_", { remap = true, desc = "Add surround _" })
+vim.keymap.set("n", "yZ", "yz$", { remap = true, desc = "Add surround $" })
 
 require("mini.operators").setup({
   replace = {
