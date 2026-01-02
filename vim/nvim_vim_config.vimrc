@@ -119,8 +119,10 @@ nnoremap <silent> P :call <SID>SafePaste('n', 'P', '')<CR>
 :command! EV e $MYVIMRC
 
 " jump to the next / previous quickfix item
+nnoremap [Q <cmd>cfirst<CR>
 nnoremap [q <cmd>cp<CR>
 nnoremap ]q <cmd>cn<CR>
+nnoremap ]Q <cmd>clast<CR>
 :command CC cclose
 
 " centerize on page navigation
