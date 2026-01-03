@@ -219,13 +219,7 @@ local yank_scp_command = function()
   short_host = short_host:match("^[^%.]+") or short_host
 
   local scp_cmd = string.format("scp -P 8080 %s.spaces:%s .", short_host, path)
-  local b64
-  if vim.base64 then
-    b64 = vim.base64.encode(scp_cmd)
-  else
-    b64 = vim.fn.system(string.format("echo -n '%s' | base64 | tr -d '\n'", scp_cmd))
-  end
-
+  local b64 = vim.base64.encode(scp_cmd)
   local osc52 = string.format("\27]52;c;%s\7", b64)
   vim.uv.fs_write(1, osc52, -1)
   vim.notify("📋 Copied SCP command:\n" .. scp_cmd, vim.log.levels.INFO)
