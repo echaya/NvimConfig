@@ -5,9 +5,8 @@ local CONFIG = {
   width_nofocus = 15,
   width_nofocus_detailed = 30,
   width_preview = 100,
-  sort_limit = 100,
-  sort_warning_cd = 2000,
-  cache_dir_limit = 100,
+  sort_limit = 5, -- Max files before disabling details/sort
+  sort_warning_cd = 2000, -- Cooldown for warnings (ms)
 }
 
 local STATE = {
@@ -19,16 +18,18 @@ local STATE = {
 }
 
 ----------------------------------------------------------------------
--- Cache Management
+-- Cache & State Management
 ----------------------------------------------------------------------
 local STAT_CACHE = {} -- Map: path -> fs_stat
 local CACHED_DIRS = {} -- Set: dir_path -> boolean
-local CACHE_DIR_COUNT = 0 -- Counter
+local CACHE_DIR_COUNT = 0 -- Counter for cached directories
+local LARGE_DIRS = {} -- Set: dir_path -> boolean (Too large for details)
 
 -- Clear cache (used on close, overflow, or synchronize)
 local clear_cache = function()
   STAT_CACHE = {}
   CACHED_DIRS = {}
+  LARGE_DIRS = {}
   CACHE_DIR_COUNT = 0
 end
 
@@ -43,7 +44,7 @@ local ensure_stats = function(fs_entries)
 
   -- 1. Cache Limit Management (100 dirs max)
   if not CACHED_DIRS[dir_path] then
-    if CACHE_DIR_COUNT >= CONFIG.cache_dir_limit then
+    if CACHE_DIR_COUNT >= 100 then
       clear_cache()
     end
     CACHED_DIRS[dir_path] = true
@@ -105,12 +106,27 @@ local my_pre_prefix = function(fs_stat)
 end
 
 local my_prefix = function(fs_entry)
-  -- Lazy Loading: If details are off, don't calculate anything
+  -- 1. Global toggle check
   if not STATE.show_details then
     return mini_files.default_prefix(fs_entry)
   end
 
-  -- Retrieve from cache (populated by custom_sort)
+  -- 2. "Too Large" Directory check (Performance Optimization)
+  -- If marked large, return placeholder "..." to indicate hidden details
+  local parent_dir = vim.fs.dirname(fs_entry.path)
+  if LARGE_DIRS[parent_dir] then
+    local now = vim.uv.now()
+    if (now - STATE.last_warn_time) > CONFIG.sort_warning_cd then
+      vim.notify(
+        "Directory too large (> " .. CONFIG.sort_limit .. "). Details hidden.",
+        vim.log.levels.WARN
+      )
+      STATE.last_warn_time = now
+    end
+    return "... " .. mini_files.default_prefix(fs_entry)
+  end
+
+  -- 3. Retrieve from cache
   local fs_stat = STAT_CACHE[fs_entry.path]
 
   -- Fallback: If cache miss (rare), fetch now
@@ -170,30 +186,57 @@ local custom_sort = function(fs_entries)
     return fs_entries
   end
 
-  local explorer = mini_files.get_explorer_state()
-  local dir_of_entries = vim.fs.dirname(fs_entries[1].path)
+  local dir_path = vim.fs.dirname(fs_entries[1].path)
 
-  -- Determine if this is the currently focused directory
+  -- 1. COUNT FILES (Fast O(N) loop)
+  local file_count = 0
+  for _, entry in ipairs(fs_entries) do
+    if entry.fs_type == "file" then
+      file_count = file_count + 1
+    end
+  end
+
+  -- 2. DECISION: Is this directory "Too Large"?
+  if file_count > CONFIG.sort_limit then
+    LARGE_DIRS[dir_path] = true
+
+    -- Notify user (Debounced)
+    local now = vim.uv.now()
+    if (now - STATE.last_warn_time) > CONFIG.sort_warning_cd then
+      vim.notify(
+        "Directory too large (> " .. CONFIG.sort_limit .. "). Sorting disabled.",
+        vim.log.levels.WARN
+      )
+      STATE.last_warn_time = now
+    end
+
+    return mini_files.default_sort(fs_entries)
+  else
+    LARGE_DIRS[dir_path] = nil -- Clear flag if directory size reduced
+  end
+
+  -- 3. Active Directory Logic
+  -- Only apply Custom Sort (Size/Date) to the currently focused directory
+  local explorer = mini_files.get_explorer_state()
   local is_active = false
   if explorer then
     local focused_dir = explorer.branch[explorer.depth_focus]
-    if dir_of_entries == focused_dir then
+    if dir_path == focused_dir then
       is_active = true
     end
   end
 
-  -- DECISION: Active Dir = User Choice; Others = Name
   local mode_to_use = is_active and STATE.sort_mode or "name"
 
-  -- 1. Cache Management
+  -- 4. Cache Management
   -- Populate cache if:
-  -- A. We are about to sort by Size/Date (mode_to_use is not name)
+  -- A. We are about to sort by Size/Date
   -- B. OR 'show_details' is ON (prefix needs stats regardless of sort)
   if STATE.show_details or mode_to_use ~= "name" then
     ensure_stats(fs_entries)
   end
 
-  -- 2. Sort Execution
+  -- 5. Sort Execution
   if mode_to_use == "size" then
     return sort_by_size(fs_entries)
   elseif mode_to_use == "date" then
@@ -339,6 +382,7 @@ mini_files.setup({
   content = { prefix = my_prefix, sort = custom_sort },
 })
 
+-- Navigation Wrappers (Reset Sort to Name on Entry/Exit)
 local go_in_reset = function()
   STATE.sort_mode = "name"
   mini_files.go_in()
@@ -407,7 +451,6 @@ vim.api.nvim_create_autocmd("User", {
     map("<a-h>", toggle_dotfiles, "Toggle dot files")
 
     -- Splits
-    map_split(b, "gs", "belowright horizontal", false)
     map_split(b, "gv", "belowright vertical", false)
     map_split(b, "<C-s>", "belowright horizontal", true)
     map_split(b, "<C-v>", "belowright vertical", true)
