@@ -67,8 +67,6 @@ xnoremap <expr> k v:count == 0 ? 'gk' : 'k'
 nnoremap  <silent> go :<C-u>call append(line("."),   repeat([""], v:count1))<CR>
 nnoremap <silent> gO :<C-u>call append(line(".")-1, repeat([""], v:count1))<CR>
 
-" use <leader><Esc> to escape terminal mode
-tnoremap <leader><Esc> <C-\><C-n>
  "adding more character objectives
 for s:char in [',','/', '*', '%', '_', '`', '!','.']
     execute 'xnoremap i' . s:char . ' :<C-u>normal! T' . s:char . 'vt' . s:char . '<CR>'
@@ -100,6 +98,7 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 
 " Escape shortcut
 inoremap jk <ESC>
+tnoremap jk <C-\><C-n>
 
 let &t_SI = "\e[6 q"
 let &t_EI = "\e[2 q"
