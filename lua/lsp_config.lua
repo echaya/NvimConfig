@@ -162,6 +162,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
+local keys_to_delete = { "grn", "grr", "gra", "gri", "grt" }
+for _, key in ipairs(keys_to_delete) do
+  pcall(vim.keymap.del, "n", key)
+end
+
 local function get_python_sys_path()
   local cmd = 'python -c "import sys, os; print(os.pathsep.join(sys.path))"'
   local path_str = vim.trim(vim.fn.system(cmd))
