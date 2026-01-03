@@ -220,15 +220,15 @@ end
 
 -- TODO to add when upgrade to nvim 0.12
 -- vim.opt.diffopt:append("inline:char")
-vim.api.nvim_create_user_command("GH", function()
+vim.api.nvim_create_user_command("GHack", function()
   if vim.bo.filetype ~= "gitcommit" then
-    vim.notify("GH: Not a gitcommit buffer.", vim.log.levels.WARN)
+    vim.notify("GHack: Not a gitcommit buffer.", vim.log.levels.WARN)
     return
   end
 
   local ok, current_repo_root = pcall(vim.fn.FugitiveWorkTree)
   if not ok then
-    vim.notify("GH: Could not detect git root in commit buffer.", vim.log.levels.ERROR)
+    vim.notify("GHack: Could not detect git root in commit buffer.", vim.log.levels.ERROR)
     return
   end
 

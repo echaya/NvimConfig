@@ -321,8 +321,8 @@ augroup END
 call s:SetupTabLineHighlights()
 
 "vim-fugitive
-command! GC execute "tab Git diff --staged" | execute "vertical Git commit"
-command GP execute "Git! push"
+command! GCommit execute "tab Git diff --staged" | execute "vertical Git commit"
+command GPush execute "Git! push"
 nnoremap <leader>G <Cmd>tab G<cr>
 
 augroup FugitiveCustomMaps
