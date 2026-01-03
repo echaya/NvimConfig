@@ -7,6 +7,7 @@ local CONFIG = {
   width_preview = 100,
   sort_limit = 100,
   sort_warning_cd = 2000,
+  cache_dir_limit = 100,
 }
 
 local STATE = {
@@ -17,6 +18,49 @@ local STATE = {
   last_warn_time = 0,
 }
 
+----------------------------------------------------------------------
+-- Cache Management
+----------------------------------------------------------------------
+local STAT_CACHE = {} -- Map: path -> fs_stat
+local CACHED_DIRS = {} -- Set: dir_path -> boolean
+local CACHE_DIR_COUNT = 0 -- Counter
+
+-- Clear cache (used on close, overflow, or synchronize)
+local clear_cache = function()
+  STAT_CACHE = {}
+  CACHED_DIRS = {}
+  CACHE_DIR_COUNT = 0
+end
+
+-- Bulk fetch stats (Performance bottleneck handled here)
+local ensure_stats = function(fs_entries)
+  if #fs_entries == 0 then
+    return
+  end
+
+  -- Identify the directory of these entries
+  local dir_path = vim.fs.dirname(fs_entries[1].path)
+
+  -- 1. Cache Limit Management (100 dirs max)
+  if not CACHED_DIRS[dir_path] then
+    if CACHE_DIR_COUNT >= CONFIG.cache_dir_limit then
+      clear_cache()
+    end
+    CACHED_DIRS[dir_path] = true
+    CACHE_DIR_COUNT = CACHE_DIR_COUNT + 1
+  end
+
+  -- 2. Populate stats
+  for _, entry in ipairs(fs_entries) do
+    if not STAT_CACHE[entry.path] then
+      STAT_CACHE[entry.path] = vim.uv.fs_stat(entry.path)
+    end
+  end
+end
+
+----------------------------------------------------------------------
+-- Formatting & Prefix
+----------------------------------------------------------------------
 local format_size = function(size)
   if not size then
     return ""
@@ -29,12 +73,14 @@ local format_size = function(size)
     return string.format("%3.0fM", size / 1048576)
   end
 end
+
 local format_time = function(time)
   if not time then
     return ""
   end
   return os.date("%y-%m-%d %H:%M", time.sec)
 end
+
 local my_pre_prefix = function(fs_stat)
   if not fs_stat then
     return ""
@@ -44,12 +90,14 @@ local my_pre_prefix = function(fs_stat)
   if mtime ~= "" then
     table.insert(parts, mtime)
   end
+
   if fs_stat.type == "file" then
     local size = format_size(fs_stat.size)
     if size ~= "" then
       table.insert(parts, size)
     end
   end
+
   if #parts == 0 then
     return ""
   end
@@ -57,8 +105,21 @@ local my_pre_prefix = function(fs_stat)
 end
 
 local my_prefix = function(fs_entry)
+  -- Lazy Loading: If details are off, don't calculate anything
+  if not STATE.show_details then
+    return mini_files.default_prefix(fs_entry)
+  end
+
+  -- Retrieve from cache (populated by custom_sort)
+  local fs_stat = STAT_CACHE[fs_entry.path]
+
+  -- Fallback: If cache miss (rare), fetch now
+  if not fs_stat then
+    fs_stat = vim.uv.fs_stat(fs_entry.path)
+    STAT_CACHE[fs_entry.path] = fs_stat
+  end
+
   local prefix, hl = mini_files.default_prefix(fs_entry)
-  local fs_stat = fs_entry.stat or vim.uv.fs_stat(fs_entry.path)
   local pre_prefix = my_pre_prefix(fs_stat)
 
   if pre_prefix == "" then
@@ -67,30 +128,27 @@ local my_prefix = function(fs_entry)
   return pre_prefix .. " " .. prefix, hl
 end
 
-local prepare_stats = function(fs_entries)
-  for _, entry in ipairs(fs_entries) do
-    if not entry.stat then
-      entry.stat = vim.uv.fs_stat(entry.path) or {}
-    end
-  end
-end
-
+----------------------------------------------------------------------
+-- Sorting Logic
+----------------------------------------------------------------------
 local sort_by_size = function(fs_entries)
-  prepare_stats(fs_entries)
   table.sort(fs_entries, function(a, b)
     if a.fs_type ~= b.fs_type then
-      return a.fs_type == "directory"
+      return a.fs_type == "directory" -- Dirs first
     end
     if a.fs_type == "directory" then
       return a.name:lower() < b.name:lower()
     end
-    return (a.stat.size or 0) > (b.stat.size or 0)
+
+    local stat_a = STAT_CACHE[a.path]
+    local stat_b = STAT_CACHE[b.path]
+
+    return (stat_a and stat_a.size or 0) > (stat_b and stat_b.size or 0)
   end)
   return fs_entries
 end
 
 local sort_by_date = function(fs_entries)
-  prepare_stats(fs_entries)
   table.sort(fs_entries, function(a, b)
     if a.fs_type ~= b.fs_type then
       return a.fs_type == "directory"
@@ -98,7 +156,11 @@ local sort_by_date = function(fs_entries)
     if a.fs_type == "directory" then
       return a.name:lower() < b.name:lower()
     end
-    return (a.stat.mtime and a.stat.mtime.sec or 0) > (b.stat.mtime and b.stat.mtime.sec or 0)
+
+    local stat_a = STAT_CACHE[a.path]
+    local stat_b = STAT_CACHE[b.path]
+
+    return (stat_a and stat_a.mtime.sec or 0) > (stat_b and stat_b.mtime.sec or 0)
   end)
   return fs_entries
 end
@@ -107,46 +169,49 @@ local custom_sort = function(fs_entries)
   if #fs_entries == 0 then
     return fs_entries
   end
-  if STATE.sort_mode == "name" then
-    return mini_files.default_sort(fs_entries)
-  end
 
-  local dir_of_entries = vim.fs.dirname(fs_entries[1].path)
   local explorer = mini_files.get_explorer_state()
-  local focused_dir = explorer and explorer.branch[explorer.depth_focus]
-  if dir_of_entries ~= focused_dir then
-    return mini_files.default_sort(fs_entries)
-  end
+  local dir_of_entries = vim.fs.dirname(fs_entries[1].path)
 
-  if #fs_entries > CONFIG.sort_limit then
-    local now = vim.uv.now()
-    if (now - STATE.last_warn_time) > CONFIG.sort_warning_cd then
-      vim.notify(
-        "Directory too large (> " .. CONFIG.sort_limit .. "). Falling back to name sort.",
-        vim.log.levels.WARN
-      )
-      STATE.last_warn_time = now
+  -- Determine if this is the currently focused directory
+  local is_active = false
+  if explorer then
+    local focused_dir = explorer.branch[explorer.depth_focus]
+    if dir_of_entries == focused_dir then
+      is_active = true
     end
-    return mini_files.default_sort(fs_entries)
   end
 
-  if STATE.sort_mode == "size" then
+  -- DECISION: Active Dir = User Choice; Others = Name
+  local mode_to_use = is_active and STATE.sort_mode or "name"
+
+  -- 1. Cache Management
+  -- Populate cache if:
+  -- A. We are about to sort by Size/Date (mode_to_use is not name)
+  -- B. OR 'show_details' is ON (prefix needs stats regardless of sort)
+  if STATE.show_details or mode_to_use ~= "name" then
+    ensure_stats(fs_entries)
+  end
+
+  -- 2. Sort Execution
+  if mode_to_use == "size" then
     return sort_by_size(fs_entries)
-  elseif STATE.sort_mode == "date" then
+  elseif mode_to_use == "date" then
     return sort_by_date(fs_entries)
   else
     return mini_files.default_sort(fs_entries)
   end
 end
 
+----------------------------------------------------------------------
+-- Actions & Toggles
+----------------------------------------------------------------------
 local toggle_details = function()
   STATE.show_details = not STATE.show_details
   local new_width = STATE.show_details and CONFIG.width_nofocus_detailed or CONFIG.width_nofocus
-  local new_prefix = STATE.show_details and my_prefix or mini_files.default_prefix
-
   mini_files.refresh({
     windows = { width_nofocus = new_width },
-    content = { prefix = new_prefix },
+    content = { prefix = my_prefix },
   })
 end
 
@@ -163,18 +228,29 @@ local toggle_preview = function()
   mini_files.refresh({ windows = { preview = STATE.show_preview } })
 end
 
-local toggle_sort = function()
-  if STATE.sort_mode == "name" then
-    STATE.sort_mode = "date"
-    vim.notify("Sort: Date (Newest)", vim.log.levels.INFO)
-  elseif STATE.sort_mode == "date" then
-    STATE.sort_mode = "size"
-    vim.notify("Sort: Size (Descending)", vim.log.levels.INFO)
-  else
-    STATE.sort_mode = "name"
-    vim.notify("Sort: Name (A-Z)", vim.log.levels.INFO)
+local set_sort = function(mode)
+  if STATE.sort_mode == mode then
+    return
   end
+  STATE.sort_mode = mode
+
+  local msg = "Sort: Name (A-Z)"
+  if mode == "size" then
+    msg = "Sort: Size (Descending)"
+  end
+  if mode == "date" then
+    msg = "Sort: Date (Newest)"
+  end
+
+  vim.notify(msg, vim.log.levels.INFO)
   mini_files.refresh({ content = { sort = custom_sort } })
+end
+
+-- Wrapper for synchronize to clear cache
+local safe_synchronize = function()
+  mini_files.synchronize()
+  clear_cache()
+  vim.notify("Synchronized & Cache Cleared", vim.log.levels.INFO)
 end
 
 local open_totalcmd = function()
@@ -212,12 +288,10 @@ local yank_scp_command = function()
   if not entry then
     return
   end
-
   local path = entry.path
   local hostname = vim.uv.os_gethostname()
   local short_host = hostname:match("_(.*)") or hostname
   short_host = short_host:match("^[^%.]+") or short_host
-
   local scp_cmd = string.format("scp -P 8080 %s.spaces:%s .", short_host, path)
   local b64 = vim.base64.encode(scp_cmd)
   local osc52 = string.format("\27]52;c;%s\7", b64)
@@ -242,6 +316,9 @@ local map_split = function(buf_id, lhs, direction, close)
   vim.keymap.set("n", lhs, rhs, { buffer = buf_id, desc = "Split " .. direction })
 end
 
+----------------------------------------------------------------------
+-- Setup
+----------------------------------------------------------------------
 mini_files.setup({
   mappings = {
     go_in_plus = "<CR>",
@@ -277,6 +354,19 @@ local go_in_plus_reset = function()
   mini_files.go_in({ close_on_file = true })
 end
 
+----------------------------------------------------------------------
+-- Autocmds & Mappings
+----------------------------------------------------------------------
+
+-- 1. Auto-clear cache on close
+vim.api.nvim_create_autocmd("User", {
+  pattern = "MiniFilesWindowClose",
+  callback = function()
+    clear_cache()
+  end,
+})
+
+-- 2. Buffer Mappings
 vim.api.nvim_create_autocmd("User", {
   pattern = "MiniFilesBufferCreate",
   group = vim.api.nvim_create_augroup("mini-file-buffer", { clear = true }),
@@ -285,20 +375,39 @@ vim.api.nvim_create_autocmd("User", {
     local map = function(lhs, rhs, desc)
       vim.keymap.set("n", lhs, rhs, { buffer = b, desc = desc })
     end
+
+    -- Navigation (Resets sort to name)
     map("l", go_in_reset, "Go in (Reset Sort)")
     map("h", go_out_reset, "Go out (Reset Sort)")
     map("<CR>", go_in_plus_reset, "Go in plus (Reset Sort)")
+
+    -- Toggles
     map("g.", toggle_dotfiles, "Toggle dot files")
     map("g,", toggle_details, "Toggle file details")
-    map("gs", toggle_sort, "Toggle sort (Name/Size/Date)")
+    map("gp", toggle_preview, "Toggle preview")
+
+    -- Sorting
+    map("gz", function()
+      set_sort("size")
+    end, "Sort by Size")
+    map("gm", function()
+      set_sort("date")
+    end, "Sort by Modified")
+    map("ga", function()
+      set_sort("name")
+    end, "Sort by Name")
+
+    -- Actions
+    map("=", safe_synchronize, "Synchronize & Clear Cache")
     map("gt", open_totalcmd, "Open in TotalCmd")
     map("gx", open_file_externally, "Open Externally")
     map("gy", yank_scp_command, "Copy SCP command")
-    map("gp", toggle_preview, "Toggle preview")
     map("g`", set_cwd, "Set CWD")
     map("<esc>", mini_files.close, "Close")
     map("<a-h>", toggle_dotfiles, "Toggle dot files")
 
+    -- Splits
+    map_split(b, "gs", "belowright horizontal", false)
     map_split(b, "gv", "belowright vertical", false)
     map_split(b, "<C-s>", "belowright horizontal", true)
     map_split(b, "<C-v>", "belowright vertical", true)
@@ -311,7 +420,6 @@ vim.keymap.set("n", "<leader>e", function()
     mini_files.open()
   end
 end, { desc = "Toggle Mini Files" })
-
 local map_combo = require("mini.keymap").map_combo
 map_combo({ "i", "t" }, "jk", "<BS><BS><Cmd>stopinsert<CR>", { delay = 150 })
 map_combo({ "c", "s", "x" }, "jk", "<BS><BS><Esc>", { delay = 150 })
