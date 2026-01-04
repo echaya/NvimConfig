@@ -388,16 +388,16 @@ vim.api.nvim_create_autocmd("User", {
     map("<CR>", go_in_plus_reset, "Go in plus (Reset Sort)")
 
     map("g.", toggle_dotfiles, "Toggle dot files")
-    map("g,", toggle_details, "Toggle file details")
     map("gp", toggle_preview, "Toggle preview")
 
-    map("gs", function()
+    map(",,", toggle_details, "Toggle file details")
+    map(",s", function()
       set_sort("size")
     end, "Sort by Size")
-    map("gm", function()
+    map(",m", function()
       set_sort("date")
     end, "Sort by Modified")
-    map("ga", function()
+    map(",a", function()
       set_sort("name")
     end, "Sort by Name")
 
@@ -407,7 +407,6 @@ vim.api.nvim_create_autocmd("User", {
     map("gy", yank_scp_command, "Copy SCP command")
     map("g`", set_cwd, "Set CWD")
     map("<esc>", mini_files.close, "Close")
-    map("<a-h>", toggle_dotfiles, "Toggle dot files")
 
     map_split(b, "gs", "belowright horizontal", false)
     map_split(b, "gv", "belowright vertical", false)
