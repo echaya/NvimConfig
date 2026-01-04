@@ -7,6 +7,7 @@ local CONFIG = {
   width_preview = 100,
   sort_limit = 100, -- Max files before disabling details/sort
   sort_warning_cd = 2000, -- Cooldown for warnings (ms)
+  cache_limit = 1000, -- Max No. of dir to be stored
 }
 
 local STATE = {
@@ -17,9 +18,6 @@ local STATE = {
   last_warn_time = 0,
 }
 
-----------------------------------------------------------------------
--- Cache & State Management
-----------------------------------------------------------------------
 local STAT_CACHE = {} -- Map: path -> fs_stat
 local CACHED_DIRS = {} -- Set: dir_path -> boolean
 local CACHE_DIR_COUNT = 0 -- Counter for cached directories
@@ -41,9 +39,9 @@ local ensure_stats = function(fs_entries)
 
   local dir_path = vim.fs.dirname(fs_entries[1].path)
 
-  -- 1. Cache Limit Management (100 dirs max)
+  -- 1. Cache Limit Management
   if not CACHED_DIRS[dir_path] then
-    if CACHE_DIR_COUNT >= 100 then
+    if CACHE_DIR_COUNT >= CONFIG.cache_limit then
       clear_cache()
     end
     CACHED_DIRS[dir_path] = true
@@ -58,9 +56,6 @@ local ensure_stats = function(fs_entries)
   end
 end
 
-----------------------------------------------------------------------
--- Formatting & Prefix
-----------------------------------------------------------------------
 local format_size = function(size)
   if not size then
     return ""
@@ -110,23 +105,23 @@ local my_prefix = function(fs_entry)
     return mini_files.default_prefix(fs_entry)
   end
 
-  -- 2. "Too Large" Directory check (Performance Optimization)
-  local parent_dir = vim.fs.dirname(fs_entry.path)
-  if LARGE_DIRS[parent_dir] then
-    return "... " .. mini_files.default_prefix(fs_entry)
-  end
-
-  -- 3. Retrieve from cache
+  -- 2. Retrieve from cache
   local fs_stat = STAT_CACHE[fs_entry.path]
 
-  -- Fallback: If cache miss (rare), fetch now
-  if not fs_stat then
+  -- Fallback: In case fs_stat is missing (due to cache clearance), fetch now
+  local parent_dir = vim.fs.dirname(fs_entry.path)
+  if not fs_stat and not LARGE_DIRS[parent_dir] then
     fs_stat = vim.uv.fs_stat(fs_entry.path)
     STAT_CACHE[fs_entry.path] = fs_stat
   end
 
   local prefix, hl = mini_files.default_prefix(fs_entry)
-  local pre_prefix = my_pre_prefix(fs_stat)
+
+  -- 3. "Too Large" Directory check
+  local pre_prefix = "..."
+  if not LARGE_DIRS[parent_dir] then
+    pre_prefix = my_pre_prefix(fs_stat)
+  end
 
   if pre_prefix == "" then
     return prefix, hl
@@ -134,9 +129,6 @@ local my_prefix = function(fs_entry)
   return pre_prefix .. " " .. prefix, hl
 end
 
-----------------------------------------------------------------------
--- Sorting Logic
-----------------------------------------------------------------------
 local sort_by_size = function(fs_entries)
   table.sort(fs_entries, function(a, b)
     if a.fs_type ~= b.fs_type then
@@ -179,7 +171,6 @@ local custom_sort = function(fs_entries)
   local dir_path = vim.fs.dirname(fs_entries[1].path)
 
   -- 1. Check if Active Directory
-  -- We need this info early to decide whether to Warn or not
   local explorer = mini_files.get_explorer_state()
   local is_active = false
   if explorer then
@@ -189,28 +180,18 @@ local custom_sort = function(fs_entries)
     end
   end
 
-  -- 2. COUNT FILES (Fast O(N) loop)
-  local file_count = 0
-  for _, entry in ipairs(fs_entries) do
-    if entry.fs_type == "file" then
-      file_count = file_count + 1
-    end
-  end
-
-  -- 3. DECISION: Is this directory "Too Large"?
-  if file_count > CONFIG.sort_limit then
+  -- 2. DECISION: Is this directory "Too Large"?
+  if #fs_entries > CONFIG.sort_limit then
+    -- if file_count > CONFIG.sort_limit then
     LARGE_DIRS[dir_path] = true
 
-    -- Notification Logic:
-    -- Only warn if:
-    -- A. It is the ACTIVE directory (Don't spam for previews)
-    -- B. We are trying to Sort by Size/Date (Name sort is fine, no need to warn)
+    -- 3. Notification: Only warn in active dir and sort by Size/Date
     if is_active and STATE.sort_mode ~= "name" then
       local now = vim.uv.now()
       if (now - STATE.last_warn_time) > CONFIG.sort_warning_cd then
         vim.notify(
           "Directory too large ("
-            .. file_count
+            .. #fs_entries
             .. " > "
             .. CONFIG.sort_limit
             .. "). Falling back to Name sort.",
@@ -226,7 +207,6 @@ local custom_sort = function(fs_entries)
   end
 
   -- 4. Apply Sort (If not too large)
-  -- Active Dir = User Choice; Background Dirs = Name
   local mode_to_use = is_active and STATE.sort_mode or "name"
 
   if STATE.show_details or mode_to_use ~= "name" then
@@ -242,9 +222,6 @@ local custom_sort = function(fs_entries)
   end
 end
 
-----------------------------------------------------------------------
--- Actions & Toggles
-----------------------------------------------------------------------
 local toggle_details = function()
   STATE.show_details = not STATE.show_details
   local new_width = STATE.show_details and CONFIG.width_nofocus_detailed or CONFIG.width_nofocus
@@ -354,9 +331,6 @@ local map_split = function(buf_id, lhs, direction, close)
   vim.keymap.set("n", lhs, rhs, { buffer = buf_id, desc = "Split " .. direction })
 end
 
-----------------------------------------------------------------------
--- Setup
-----------------------------------------------------------------------
 mini_files.setup({
   mappings = {
     go_in_plus = "<CR>",
@@ -393,9 +367,6 @@ local go_in_plus_reset = function()
   mini_files.go_in({ close_on_file = true })
 end
 
-----------------------------------------------------------------------
--- Autocmds & Mappings
-----------------------------------------------------------------------
 vim.api.nvim_create_autocmd("User", {
   pattern = "MiniFilesWindowClose",
   callback = function()
@@ -420,7 +391,7 @@ vim.api.nvim_create_autocmd("User", {
     map("g,", toggle_details, "Toggle file details")
     map("gp", toggle_preview, "Toggle preview")
 
-    map("gz", function()
+    map("gs", function()
       set_sort("size")
     end, "Sort by Size")
     map("gm", function()
@@ -438,6 +409,7 @@ vim.api.nvim_create_autocmd("User", {
     map("<esc>", mini_files.close, "Close")
     map("<a-h>", toggle_dotfiles, "Toggle dot files")
 
+    map_split(b, "gs", "belowright horizontal", false)
     map_split(b, "gv", "belowright vertical", false)
     map_split(b, "<C-s>", "belowright horizontal", true)
     map_split(b, "<C-v>", "belowright vertical", true)
