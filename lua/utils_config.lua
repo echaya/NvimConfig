@@ -7,7 +7,7 @@ local CONFIG = {
   width_preview = 100,
   sort_limit = 100, -- Max files before disabling details/sort
   sort_warning_cd = 2000, -- Cooldown for warnings (ms)
-  cache_limit = 1000, -- Max No. of dir to be stored
+  cache_limit = 1000, -- Max No. of dir to be cached
 }
 
 local STATE = {
@@ -31,7 +31,6 @@ local clear_cache = function()
   CACHE_DIR_COUNT = 0
 end
 
--- Bulk fetch stats (Performance bottleneck handled here)
 local ensure_stats = function(fs_entries)
   if #fs_entries == 0 then
     return
@@ -39,7 +38,6 @@ local ensure_stats = function(fs_entries)
 
   local dir_path = vim.fs.dirname(fs_entries[1].path)
 
-  -- 1. Cache Limit Management
   if not CACHED_DIRS[dir_path] then
     if CACHE_DIR_COUNT >= CONFIG.cache_limit then
       clear_cache()
@@ -48,7 +46,6 @@ local ensure_stats = function(fs_entries)
     CACHE_DIR_COUNT = CACHE_DIR_COUNT + 1
   end
 
-  -- 2. Populate stats
   for _, entry in ipairs(fs_entries) do
     if not STAT_CACHE[entry.path] then
       STAT_CACHE[entry.path] = vim.uv.fs_stat(entry.path)
@@ -100,14 +97,11 @@ local my_pre_prefix = function(fs_stat)
 end
 
 local my_prefix = function(fs_entry)
-  -- 1. Global toggle check
   if not STATE.show_details then
     return mini_files.default_prefix(fs_entry)
   end
 
-  -- 2. Retrieve from cache
   local fs_stat = STAT_CACHE[fs_entry.path]
-
   -- Fallback: In case fs_stat is missing (due to cache clearance), fetch now
   local parent_dir = vim.fs.dirname(fs_entry.path)
   if not fs_stat and not LARGE_DIRS[parent_dir] then
@@ -117,7 +111,6 @@ local my_prefix = function(fs_entry)
 
   local prefix, hl = mini_files.default_prefix(fs_entry)
 
-  -- 3. "Too Large" Directory check
   local pre_prefix = "..."
   if not LARGE_DIRS[parent_dir] then
     pre_prefix = my_pre_prefix(fs_stat)
@@ -129,36 +122,22 @@ local my_prefix = function(fs_entry)
   return pre_prefix .. " " .. prefix, hl
 end
 
-local sort_by_size = function(fs_entries)
+local sorter = function(fs_entries, fs_accessor)
   table.sort(fs_entries, function(a, b)
-    if a.fs_type ~= b.fs_type then
-      return a.fs_type == "directory" -- Dirs first
-    end
-    if a.fs_type == "directory" then
-      return a.name:lower() < b.name:lower()
-    end
-
-    local stat_a = STAT_CACHE[a.path]
-    local stat_b = STAT_CACHE[b.path]
-
-    return (stat_a and stat_a.size or 0) > (stat_b and stat_b.size or 0)
-  end)
-  return fs_entries
-end
-
-local sort_by_date = function(fs_entries)
-  table.sort(fs_entries, function(a, b)
+    -- 1. Directories always come first and sorted by name
     if a.fs_type ~= b.fs_type then
       return a.fs_type == "directory"
     end
     if a.fs_type == "directory" then
       return a.name:lower() < b.name:lower()
     end
-
+    -- 2. Files are sorted using the provided accessor
     local stat_a = STAT_CACHE[a.path]
     local stat_b = STAT_CACHE[b.path]
 
-    return (stat_a and stat_a.mtime.sec or 0) > (stat_b and stat_b.mtime.sec or 0)
+    local val_a = stat_a and fs_accessor(stat_a) or 0
+    local val_b = stat_b and fs_accessor(stat_b) or 0
+    return val_a > val_b
   end)
   return fs_entries
 end
@@ -180,12 +159,11 @@ local custom_sort = function(fs_entries)
     end
   end
 
-  -- 2. DECISION: Is this directory "Too Large"?
+  -- 2. check if the dir too big
   if #fs_entries > CONFIG.sort_limit then
     -- if file_count > CONFIG.sort_limit then
     LARGE_DIRS[dir_path] = true
 
-    -- 3. Notification: Only warn in active dir and sort by Size/Date
     if is_active and STATE.sort_mode ~= "name" then
       local now = vim.uv.now()
       if (now - STATE.last_warn_time) > CONFIG.sort_warning_cd then
@@ -194,7 +172,7 @@ local custom_sort = function(fs_entries)
             .. #fs_entries
             .. " > "
             .. CONFIG.sort_limit
-            .. "). Falling back to Name sort.",
+            .. "). Sorting aborted.",
           vim.log.levels.WARN
         )
         STATE.last_warn_time = now
@@ -206,17 +184,21 @@ local custom_sort = function(fs_entries)
     LARGE_DIRS[dir_path] = nil
   end
 
-  -- 4. Apply Sort (If not too large)
   local mode_to_use = is_active and STATE.sort_mode or "name"
 
   if STATE.show_details or mode_to_use ~= "name" then
     ensure_stats(fs_entries)
   end
 
+  -- 3. perform sorting
   if mode_to_use == "size" then
-    return sort_by_size(fs_entries)
+    return sorter(fs_entries, function(s)
+      return s.size
+    end)
   elseif mode_to_use == "date" then
-    return sort_by_date(fs_entries)
+    return sorter(fs_entries, function(s)
+      return s.mtime.sec
+    end)
   else
     return mini_files.default_sort(fs_entries)
   end
