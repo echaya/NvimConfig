@@ -388,6 +388,7 @@ vim.api.nvim_create_autocmd("User", {
     map("<CR>", go_in_plus_reset, "Go in plus (Reset Sort)")
 
     map("g.", toggle_dotfiles, "Toggle dot files")
+    map("<a-h>", toggle_dotfiles, "Toggle dot files")
     map("gp", toggle_preview, "Toggle preview")
 
     map(",,", toggle_details, "Toggle file details")
