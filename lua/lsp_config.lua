@@ -13,6 +13,8 @@ require("nvim-treesitter.configs").setup({
     "regex",
     "vim",
     "vimdoc",
+    "toml",
+    "json",
   },
   sync_install = false,
   auto_install = false,

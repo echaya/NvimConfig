@@ -373,14 +373,14 @@ vim.api.nvim_create_autocmd("User", {
     map("<a-h>", toggle_dotfiles, "Toggle dot files")
     map("gp", toggle_preview, "Toggle preview")
 
-    map(",,", toggle_details, "Toggle file details")
-    map(",s", function()
+    map("g,", toggle_details, "Toggle file details")
+    map("gz", function()
       set_sort("size")
     end, "Sort by Size")
-    map(",m", function()
+    map("gm", function()
       set_sort("date")
     end, "Sort by Modified")
-    map(",a", function()
+    map("ga", function()
       set_sort("name")
     end, "Sort by Name")
 

@@ -221,8 +221,8 @@ end
 -- TODO to add when upgrade to nvim 0.12
 -- vim.opt.diffopt:append("inline:char")
 vim.api.nvim_create_user_command("GHack", function()
-  if vim.bo.filetype ~= "gitcommit" then
-    vim.notify("GHack: Not a gitcommit buffer.", vim.log.levels.WARN)
+  if vim.bo.filetype ~= "gitcommit" and vim.bo.filetype ~= "fugitive" then
+    vim.notify("GHack: Not a gitcommit/fugitive buffer.", vim.log.levels.WARN)
     return
   end
 
@@ -232,7 +232,9 @@ vim.api.nvim_create_user_command("GHack", function()
     return
   end
 
-  vim.cmd("write")
+  if vim.bo.filetype == "gitcommit" then
+    vim.cmd("write")
+  end
   local target_tab = vim.g.last_active_tab
   local current_tab = vim.api.nvim_get_current_tabpage()
   vim.cmd("tabclose")
