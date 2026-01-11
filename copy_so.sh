@@ -48,6 +48,6 @@ sync_libs "blink.cmp" "target/release" "libblink_cmp_fuzzy.so"
 
 # 2. vscode-diff.nvim
 # Note: We pass "" as subpath because the .so is in the plugin root
-sync_libs "vscode-diff.nvim" "" "*.so"
+sync_libs "codediff.nvim" "" "*.so"
 
 echo "Sync complete."
