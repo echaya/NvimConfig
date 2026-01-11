@@ -173,7 +173,7 @@ vim.keymap.set(
   { desc = "toggle hunk overlay" }
 )
 
-local function silent_async_push(git_root)
+local function silent_async_pp(git_root, command)
   if not git_root or git_root == "" then
     local ok, result = pcall(vim.fn.FugitiveWorkTree)
     if ok and result and result ~= "" then
@@ -187,7 +187,7 @@ local function silent_async_push(git_root)
 
   local output_lines = {}
 
-  vim.fn.jobstart({ "git", "push" }, {
+  vim.fn.jobstart({ "git", command }, {
     cwd = git_root,
     on_stderr = function(_, data)
       if data then
@@ -205,15 +205,18 @@ local function silent_async_push(git_root)
 
       if code == 0 then
         -- Success
-        vim.notify("Git Push Success" .. (msg ~= "" and (":\n" .. msg) or ""), vim.log.levels.INFO)
+        vim.notify(
+          "Git " .. command .. " Success" .. (msg ~= "" and (":\n" .. msg) or ""),
+          vim.log.levels.INFO
+        )
+        pcall(vim.cmd, "GFetch")
       else
         -- Failure
         vim.notify(
-          "Git Push Failed:\n" .. (msg ~= "" and msg or "Exit Code " .. code),
+          "Git " .. command .. " Failed:\n" .. (msg ~= "" and msg or "Exit Code " .. code),
           vim.log.levels.ERROR
         )
       end
-      pcall(vim.cmd, "GFetch")
     end,
   })
 end
@@ -221,14 +224,14 @@ end
 -- TODO to add when upgrade to nvim 0.12
 -- vim.opt.diffopt:append("inline:char")
 vim.api.nvim_create_user_command("GHack", function()
-  if vim.bo.filetype ~= "gitcommit" and vim.bo.filetype ~= "fugitive" then
-    vim.notify("GHack: Not a gitcommit/fugitive buffer.", vim.log.levels.WARN)
-    return
-  end
-
   local ok, current_repo_root = pcall(vim.fn.FugitiveWorkTree)
   if not ok then
     vim.notify("GHack: Could not detect git root in commit buffer.", vim.log.levels.ERROR)
+    return
+  end
+
+  if vim.bo.filetype ~= "gitcommit" and vim.bo.filetype ~= "fugitive" then
+    silent_async_pp(current_repo_root, "pull")
     return
   end
 
@@ -243,8 +246,8 @@ vim.api.nvim_create_user_command("GHack", function()
   end
 
   vim.defer_fn(function()
-    silent_async_push(current_repo_root)
+    silent_async_pp(current_repo_root, "push")
   end, 100)
 end, {
-  desc = "Git Hack: Save commit, close tab, and push",
+  desc = "Git Hack: Context Based Push or Pull",
 })

@@ -520,16 +520,16 @@ end
 
 vim.keymap.set(
   "n",
-  "<localleader>ss",
+  "<leader>ss",
   "<cmd>lua MiniSessions.select('read')<cr>",
   { desc = "session_select" }
 )
 
-vim.keymap.set("n", "<localleader>sS", function()
+vim.keymap.set("n", "<leader>sS", function()
   SaveMiniSession()
 end, { desc = "session_save" })
 
-vim.keymap.set("n", "<localleader>sd", function()
+vim.keymap.set("n", "<leader>sd", function()
   local session_path = vim.v.this_session
   if session_path == "" then
     vim.notify("No active session", vim.log.levels.INFO)
@@ -541,7 +541,7 @@ end, { desc = "session_display" })
 
 vim.keymap.set(
   "n",
-  "<localleader>sD",
+  "<leader>sD",
   "<cmd>lua MiniSessions.select('delete')<cr>",
   { desc = "session_delete" }
 )

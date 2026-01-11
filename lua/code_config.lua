@@ -221,7 +221,7 @@ vim.keymap.set("n", "<localleader>qf", toggle_qf, { desc = "Toggle quickfix" })
 require("neowiki").setup({
   wiki_dirs = {
     { name = "wiki", path = vim.g.MDir },
-    -- { name = "todo", path = "todo" }, -- test for neowiki
+    -- { name = "todo", path = "todo" }, --for neowiki development
   },
   discover_nested_roots = true,
   keymaps = {

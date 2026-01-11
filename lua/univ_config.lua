@@ -133,7 +133,7 @@ require("mini.operators").setup({
 })
 
 vim.api.nvim_create_autocmd({ "VimLeavePre" }, {
-  group = vim.api.nvim_create_augroup("fuck_shada_temp", { clear = true }),
+  group = vim.api.nvim_create_augroup("dump_shada_temp", { clear = true }),
   pattern = { "*" },
   callback = function()
     local status = 0

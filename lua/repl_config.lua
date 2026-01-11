@@ -36,6 +36,7 @@ yarepl.setup({
       end,
     },
   },
+  highlight_on_send_operator = { enabled = true },
 })
 
 local python_repl_group = vim.api.nvim_create_augroup("python-repl-config", { clear = true })
@@ -149,6 +150,12 @@ vim.api.nvim_create_autocmd("FileType", {
     end, {
       buffer = args.buf,
       desc = "yarepl_send_operator",
+    })
+
+    vim.keymap.set("n", "<localleader><localleader><localleader>", "<localleader><localleader>_", {
+      buffer = args.buf,
+      remap = true,
+      desc = "yarepl_send_current_line",
     })
 
     local function create_repl_sender_yarepl(key, desc, command_format_string)

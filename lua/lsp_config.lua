@@ -379,21 +379,21 @@ end, {
   desc = "Show information about active LSP clients for the current buffer.",
 })
 
-vim.keymap.set("n", "<localleader>lr", function()
+vim.keymap.set("n", "<leader>lr", function()
   vim.cmd("LspRestart")
 end, { silent = true, desc = "LSP Restart" })
 
-vim.keymap.set("n", "<localleader>ls", function()
+vim.keymap.set("n", "<leader>ls", function()
   vim.cmd("LspStart")
 end, { silent = true, desc = "LSP Start" })
 
-vim.keymap.set("n", "<localleader>lS", function()
+vim.keymap.set("n", "<leader>lS", function()
   vim.cmd("LspStop")
 end, { silent = true, desc = "LSP Stop" })
 
 Snacks.toggle({
   notify = false,
-  name = "Python LSP (Ty)", -- The toggle is "On" when Ty is active
+  name = "Python LSP (Ty)",
   get = function()
     local ty_active = #vim.lsp.get_clients({ bufnr = 0, name = "ty" }) > 0
     local pyrefly_active = #vim.lsp.get_clients({ bufnr = 0, name = "pyrefly" }) > 0
