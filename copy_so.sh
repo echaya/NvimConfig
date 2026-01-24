@@ -1,4 +1,5 @@
 #! /bin/bash
+
 # NOTE nvim-treesitter installing is handled by RHEL so doesnt need to copy
 # cp -r ../plugged/nvim-treesitter/parser/ /mnt/c/tools/neovim/plugged/linux-treesitter/
 # cp -r ../plugged/nvim-treesitter/parser-info/ /mnt/c/tools/neovim/plugged/linux-treesitter/
@@ -30,10 +31,19 @@ sync_libs() {
         mkdir -p "$dest_dir"
     fi
 
-    # 2. Check and Copy
-    # This allows *.so to expand to the actual list of files.
+    # 2. Check source existence
+    # We use 'ls' to allow the $pattern (like *.so) to expand.
+    # Redirecting stderr/stdout to null keeps it quiet.
     if ls "${src_dir}"/$pattern 1> /dev/null 2>&1; then
         echo "Syncing ${plugin}..."
+
+        # 3. Clean Destination
+        # Remove existing files matching the pattern in the destination.
+        echo "  - Cleaning existing files in destination..."
+        rm -f "${dest_dir}"/$pattern
+
+        # 4. Copy New Files
+        echo "  - Copying new files..."
         cp "${src_dir}"/$pattern "${dest_dir}/"
     else
         echo "Warning: No files found in: ${src_dir}/$pattern"
@@ -43,11 +53,11 @@ sync_libs() {
 # --- Execution ---
 
 # 1. blink.cmp
-# Note: "target/release" is the subpath
+# Deletes 'libblink_cmp_fuzzy.so' in dest if exists, then copies new one.
 sync_libs "blink.cmp" "target/release" "libblink_cmp_fuzzy.so"
 
 # 2. vscode-diff.nvim
-# Note: We pass "" as subpath because the .so is in the plugin root
+# Deletes any '*.so' files in dest, then copies new ones.
 sync_libs "codediff.nvim" "" "*.so"
 
 echo "Sync complete."
