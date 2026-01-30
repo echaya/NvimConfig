@@ -144,7 +144,7 @@ vim.api.nvim_create_autocmd("FileType", {
       end
     end, { buffer = args.buf, desc = "yarepl_source_cell_visual_ipython" })
 
-    vim.keymap.set("n", "<localleader><localleader>", function()
+    vim.keymap.set("n", "<localleader>", function()
       local target_id = (vim.v.count == 0) and vim.fn.tabpagenr() or vim.v.count
       vim.cmd(string.format("%dREPLSendOperator ipython", target_id))
     end, {
@@ -152,7 +152,7 @@ vim.api.nvim_create_autocmd("FileType", {
       desc = "yarepl_send_operator",
     })
 
-    vim.keymap.set("n", "<localleader><localleader><localleader>", "<localleader><localleader>_", {
+    vim.keymap.set("n", "<localleader><localleader>", "<localleader>_", {
       buffer = args.buf,
       remap = true,
       desc = "yarepl_send_current_line",
@@ -192,10 +192,17 @@ vim.api.nvim_create_autocmd("FileType", {
       end, { buffer = args.buf, desc = desc .. "_ipython" })
     end
 
+    vim.keymap.set(
+      "o",
+      "p",
+      "<nop>",
+      { buffer = args.buf, desc = "Disable paragraph motion to favor custom p mappings" }
+    )
+
     create_repl_sender_yarepl("<localleader>pp", "yarepl_print", "print(%s)")
     create_repl_sender_yarepl("<localleader>pL", "yarepl_print_length", "print(len(%s))")
     create_repl_sender_yarepl("<localleader>pl", "yarepl_print_last", "print(%s.iloc[-1].T)")
-    create_repl_sender_yarepl("<localleader>pf", "yarepl_print_first", "print(%s.iloc[0].T)")
+    create_repl_sender_yarepl("<localleader>po", "yarepl_print_first", "print(%s.iloc[0].T)")
     create_repl_sender_yarepl("<localleader>pi", "yarepl_print_info", "print(%s.info())")
 
     vim.keymap.set("n", "<localleader>y", function()
@@ -311,7 +318,7 @@ vim.api.nvim_create_autocmd("FileType", {
     )
     vim.keymap.set("i", ";ct", ".copy(True)", { buffer = true, desc = "Insert: .copy(True)" })
     vim.keymap.set("i", ";f", "###<CR><Esc>", { buffer = true, desc = "Insert: New cell fence" })
-    vim.keymap.set("i", ";pf", ".iloc[0].T", { buffer = true, desc = "Insert:.iloc[0].T" })
+    vim.keymap.set("i", ";po", ".iloc[0].T", { buffer = true, desc = "Insert:.iloc[0].T" })
     vim.keymap.set("i", ";it", "inplace=True", { buffer = true, desc = "Insert: inplace=True" })
     vim.keymap.set("i", ";pl", ".iloc[-1].T", { buffer = true, desc = "Insert: .iloc[-1].T" })
     vim.keymap.set("n", "<localleader>db", function()
@@ -351,5 +358,5 @@ end, { desc = "Select visual" })
 
 -- Global Terminal mappings
 vim.keymap.set("t", ";cb", ".to_clipboard()", { desc = "Terminal: Insert .to_clipboard()" })
-vim.keymap.set("t", ";pf", ".iloc[0].T", { desc = "Terminal: Insert .iloc[0].T" })
+vim.keymap.set("t", ";po", ".iloc[0].T", { desc = "Terminal: Insert .iloc[0].T" })
 vim.keymap.set("t", ";pl", ".iloc[-1].T", { desc = "Terminal: Insert .iloc[-1].T" })
