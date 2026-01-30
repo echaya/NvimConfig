@@ -14,7 +14,7 @@ end, { desc = "find_buffers" })
 vim.keymap.set("n", "<leader>bd", function()
   Snacks.bufdelete()
 end, { desc = "Delete Buffer" })
-vim.keymap.set("n", "<localleader>e", function()
+vim.keymap.set("n", "<leader>E", function()
   Snacks.picker.explorer()
   vim.defer_fn(function()
     vim.cmd("wincmd =")
@@ -92,7 +92,7 @@ vim.keymap.set("n", "<leader>fz", function()
 end, { desc = "find_zoxide" })
 vim.keymap.set("n", "<leader>T", function()
   vim.cmd("tabnew")
-  vim.defer_fn(Snacks.picker.zoxide, 100)
+  vim.defer_fn(Snacks.picker.zoxide, 200)
 end, { desc = "find_zoxide" })
 vim.keymap.set("n", "<leader>fd", function()
   Snacks.picker.diagnostics()
@@ -112,6 +112,13 @@ end, { desc = "live_grep" })
 vim.keymap.set("n", "<leader>gw", function()
   Snacks.picker.grep_word()
 end, { desc = "grep_string" })
+
+vim.keymap.set("n", "|z", function()
+  Snacks.zen()
+end, { desc = "Toggle Zen Mode" })
+vim.keymap.set("n", "|Z", function()
+  Snacks.zen.zoom()
+end, { desc = "Toggle Zoom" })
 
 Snacks.toggle.option("spell", { name = "Spelling" }):map("|s")
 Snacks.toggle.option("wrap", { name = "Wrap" }):map("|w")
@@ -201,6 +208,14 @@ vim.keymap.set({ "n", "t" }, "<a-`>", function()
   Snacks.terminal()
 end, { desc = "Toggle terminal" })
 
+vim.keymap.set({ "n" }, "<leader>y", function()
+  Snacks.terminal("yazi;exit", {
+    win = {
+      style = "lazygit",
+    },
+  })
+end, { desc = "yazi" })
+
 vim.keymap.set({ "n" }, "<leader>.", function()
   Snacks.scratch()
 end, { desc = "Toggle Scratch Buffer" })
@@ -208,13 +223,6 @@ end, { desc = "Toggle Scratch Buffer" })
 vim.keymap.set({ "n" }, "<leader>f.", function()
   Snacks.scratch.select()
 end, { desc = "Find Scratch" })
-
-vim.keymap.set("n", "<leader>z", function()
-  Snacks.zen()
-end, { desc = "Toggle Zen Mode" })
-vim.keymap.set("n", "<leader>Z", function()
-  Snacks.zen.zoom()
-end, { desc = "Toggle Zoom" })
 
 Snacks.setup({
   bigfile = { enabled = true },
