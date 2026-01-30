@@ -349,7 +349,7 @@ Snacks.setup({
 })
 
 local colorscheme_A = "tokyonight-night"
-local colorscheme_B = "kanagawa-paper"
+local colorscheme_B = "kanagawa"
 Snacks.toggle({
   name = "",
   notify = false,
@@ -367,17 +367,22 @@ Snacks.toggle({
 }):map("|b")
 
 -- vim.highlight.priorities.semantic_tokens = 95 -- Or any number lower than 100, treesitter's priority level
-local palette = require("kanagawa-paper.colors").palette
-require("kanagawa-paper").setup({
-  dim_inactive = true,
-  cache = true,
+require("kanagawa").setup({
+  compile = true,
+  keywordStyle = { italic = false },
+  dimInactive = true,
   colors = {
     theme = {
-      ink = { ui = { bg = palette.sumiInk0, bg_dim = palette.sumiInkn1 } },
+      all = { ui = { bg_gutter = "" } },
     },
   },
   overrides = function(colors)
     return {
+      -- Assign a static color to strings
+      BlinkCmpMenu = { bg = colors.palette.dragonBlack3 },
+      BlinkCmpLabelDetail = { bg = colors.palette.dragonBlack3 },
+      BlinkCmpMenuSelection = { bg = colors.palette.waveBlue1 },
+
       NormalFloat = { bg = "none" },
       FloatBorder = { bg = "none" },
       FloatTitle = { bg = "none" },
@@ -385,6 +390,7 @@ require("kanagawa-paper").setup({
       MatchParen = { bg = colors.palette.sumiInk6, bold = true },
       FlashLabel = { fg = colors.palette.carpYellow, bg = colors.palette.sumiInk5, bold = true },
       TabLine = { fg = colors.palette.lotusViolet2 },
+      ["@variable.builtin"] = { italic = false },
       ["@diff.minus"] = { bg = colors.palette.winterRed },
       ["@diff.plus"] = { bg = colors.palette.winterGreen },
       ["@diff.delta"] = { bg = colors.palette.winterYellow },

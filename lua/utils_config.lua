@@ -289,7 +289,7 @@ local yank_scp_command = function()
   local hostname = vim.uv.os_gethostname()
   local short_host = hostname:match("_(.*)") or hostname
   short_host = short_host:match("^[^%.]+") or short_host
-  local scp_cmd = string.format("scp -P 8080 %s.spaces:%s .", short_host, path)
+  local scp_cmd = string.format('scp -P 8080 %s.spaces:"%s" .', short_host, path)
   local b64 = vim.base64.encode(scp_cmd)
   local osc52 = string.format("\27]52;c;%s\7", b64)
   vim.uv.fs_write(1, osc52, -1)
