@@ -149,6 +149,30 @@ end, {
   desc = "CodeDiff [HEAD~(count-1)]",
 })
 
+vim.keymap.set("n", "<leader>hv", function()
+  vim.g.prev_tab_nr = vim.api.nvim_get_current_tabpage()
+  local cmd
+  cmd = "CodeDiff history %"
+  vim.notify(cmd, vim.log.levels.INFO)
+  vim.cmd(cmd)
+end, {
+  noremap = true,
+  silent = true,
+  desc = "CodeDiff file history",
+})
+
+vim.keymap.set("n", "<leader>hV", function()
+  vim.g.prev_tab_nr = vim.api.nvim_get_current_tabpage()
+  local cmd
+  cmd = "CodeDiff history"
+  vim.notify(cmd, vim.log.levels.INFO)
+  vim.cmd(cmd)
+end, {
+  noremap = true,
+  silent = true,
+  desc = "CodeDiff repo history",
+})
+
 local function get_default_branch_name()
   local res = vim
     .system({ "git", "rev-parse", "--verify", "main" }, { capture_output = true })
