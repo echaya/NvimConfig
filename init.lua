@@ -94,7 +94,7 @@ if vim.g.vscode == nil then
       depends = {
         "echaya/friendly-snippets",
       },
-      checkout = "v1.8.0", -- check releases for latest tag
+      checkout = "v1.9.1", -- check releases for latest tag
     })
     add({
       source = "nvim-treesitter/nvim-treesitter",
