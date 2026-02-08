@@ -129,6 +129,7 @@ Snacks.toggle.option("ignorecase", { name = "Ignorecase" }):map("|i")
 Snacks.toggle.inlay_hints():map("|H")
 Snacks.toggle.animate():map("|a")
 Snacks.toggle.diagnostics():map("|d")
+
 Snacks.toggle({
   name = "TableMode",
   notify = false,
@@ -186,6 +187,20 @@ Snacks.toggle({
     vim.b.ts_context_enabled = state
   end,
 }):map("|T")
+
+Snacks.toggle({
+  name = "blink.cmp",
+  get = function()
+    return vim.b.completion or false
+  end,
+  set = function(state)
+    if state then
+      vim.b.completion = false
+    else
+      vim.b.completion = true
+    end
+  end,
+}):map("|B")
 
 vim.keymap.set("n", "<leader>un", function()
   Snacks.notifier.hide()
