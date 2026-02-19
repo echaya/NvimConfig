@@ -1,17 +1,13 @@
 -- git related
 require("mini.diff").setup({
-  view = {
-    style = "sign",
-  },
+  view = { style = "sign" },
   mappings = {
     goto_first = "[C",
     goto_prev = "[c",
     goto_next = "]c",
     goto_last = "]C",
   },
-  options = {
-    algorithm = "patience",
-  },
+  options = { algorithm = "patience" },
 })
 
 local function walk_in_codediff(picker, item)
@@ -126,8 +122,6 @@ require("codediff").setup({
     view = {
       quit = false,
       toggle_explorer = "<leader>e", -- Toggle explorer visibility (explorer mode only)
-      next_hunk = "]v",
-      prev_hunk = "[v",
     },
   },
 })
