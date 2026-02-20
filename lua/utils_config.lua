@@ -485,34 +485,75 @@ if vim.fn.has("linux") == 1 then
 end
 vim.opt.clipboard:append("unnamedplus")
 
-local wk = require("which-key")
-wk.setup({
-  present = "modern",
+local miniclue = require("mini.clue")
+miniclue.setup({
   triggers = {
-    { "<auto>", mode = "nixsoc" },
-    -- { "<leader>", mode = {"n","v","t"}},
+    { mode = "n", keys = "<Leader>" },
+    { mode = "x", keys = "<Leader>" },
+    { mode = "n", keys = "<LocalLeader>" },
+    { mode = "x", keys = "<LocalLeader>" },
+    { mode = "i", keys = "<C-x>" },
+    { mode = "n", keys = "g" },
+    { mode = "x", keys = "g" },
+    { mode = "n", keys = "'" },
+    { mode = "n", keys = "`" },
+    { mode = "x", keys = "'" },
+    { mode = "x", keys = "`" },
+    { mode = "n", keys = '"' },
+    { mode = "x", keys = '"' },
+    { mode = "i", keys = "<C-r>" },
+    { mode = "c", keys = "<C-r>" },
+    { mode = "n", keys = "<C-w>" },
+    { mode = "n", keys = "z" },
+    { mode = "x", keys = "z" },
+
+    { mode = "n", keys = "[" },
+    { mode = "n", keys = "]" },
+    { mode = "n", keys = "Z" }, -- For ZX
+    { mode = "n", keys = "d" }, -- For dm / dM
+    { mode = "i", keys = ";" }, -- For ;f
   },
-  delay = function(ctx)
-    return ctx.plugin and 0 or 150
-  end,
-  defer = function(ctx)
-    return ctx.mode == "V" or ctx.mode == "<C-V>" or ctx.mode == "v"
-  end,
-  debug = false,
-  win = {
-    padding = { 0, 2 },
-    wo = {
-      winblend = 20, -- value between 0-100 0 for fully opaque and 100 for fully transparent
+  clues = {
+    { mode = "n", keys = "<leader>g", desc = "+Git/Comment" },
+    miniclue.gen_clues.g(),
+    miniclue.gen_clues.marks(),
+    miniclue.gen_clues.registers({ show_contents = true }),
+    miniclue.gen_clues.windows({
+      submode_navigate = true,
+      submode_move = true,
+      submode_resize = true,
+    }),
+    miniclue.gen_clues.z(),
+    miniclue.gen_clues.square_brackets(),
+    miniclue.gen_clues.builtin_completion(),
+  },
+
+  window = {
+    delay = 150,
+    config = {
+      width = "auto",
     },
   },
-  layout = {
-    spacing = 2, -- spacing between columns
-  },
-  disable = {
-    ft = { "minifiles" },
-    bt = {},
-  },
 })
+
+miniclue.ensure_all_triggers()
+local set_desc = miniclue.set_mapping_desc
+set_desc("n", "ZX", "Reopen Closed Buffer")
+set_desc("n", "<localleader>[", "Previous Window")
+set_desc("n", "<leader>=", "Balance Windows")
+set_desc("n", "<leader>G", "Git Fugitive Tab")
+set_desc("n", "[Q", "First Quickfix")
+set_desc("n", "[q", "Previous Quickfix")
+set_desc("n", "]q", "Next Quickfix")
+set_desc("n", "]Q", "Last Quickfix")
+set_desc("n", "<leader>gc", "Comment & Copy Line")
+set_desc("x", "<leader>gc", "Comment & Copy Line")
+set_desc("n", "gj", "Join lines (J)")
+set_desc("n", "dm", "Delete Mark (prompt)")
+set_desc("n", "dM", "Delete All Marks!")
+set_desc("n", "xx", "Cut line")
+set_desc("n", "X", "Cut to end of line")
+set_desc("t", "<localleader>[", "Previous Window")
 
 vim.api.nvim_create_autocmd("FileType", {
   pattern = {
