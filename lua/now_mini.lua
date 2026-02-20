@@ -368,6 +368,7 @@ MiniStatusline.setup({
       local lsp = MiniStatusline.section_lsp({ trunc_width = 75 })
       local filename = MiniStatusline.section_filename({ trunc_width = 300 })
       local fileinfo = MiniStatusline.section_fileinfo({ trunc_width = 300 })
+      local showcmd = "%S"
 
       return MiniStatusline.combine_groups({
         { hl = mode_hl, strings = { mode } },
@@ -375,6 +376,7 @@ MiniStatusline.setup({
         "%<", -- Mark general truncate point
         { hl = "MiniStatuslineFilename", strings = { filename } },
         "%=", -- End left alignment
+        { strings = { showcmd } },
         { hl = "MiniStatuslineFileinfo", strings = { fileinfo, lsp } },
         { hl = mode_hl, strings = { tostring(vim.api.nvim_buf_line_count(0)) } },
       })

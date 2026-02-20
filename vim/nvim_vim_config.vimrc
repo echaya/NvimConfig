@@ -21,6 +21,7 @@ set enc=utf-8
 set number relativenumber
 set scrolloff=5
 set showcmd
+set showcmdloc=statusline
 set shellslash
 set showtabline=2
 set wrap
