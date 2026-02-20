@@ -509,7 +509,7 @@ wk.setup({
     spacing = 2, -- spacing between columns
   },
   disable = {
-    ft = { "toggleterm", "NvimTree", "oil", "minifiles" },
+    ft = { "minifiles" },
     bt = {},
   },
 })
