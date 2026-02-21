@@ -369,7 +369,7 @@ MiniStatusline.setup({
       local filename = MiniStatusline.section_filename({ trunc_width = 300 })
       local fileinfo = MiniStatusline.section_fileinfo({ trunc_width = 300 })
       local showcmd = "%S"
-
+      local search = MiniStatusline.section_searchcount({ trunc_width = 75 })
       return MiniStatusline.combine_groups({
         { hl = mode_hl, strings = { mode } },
         { hl = "MiniStatuslineDevinfo", strings = { git, diff, diagnostics } },
@@ -377,18 +377,11 @@ MiniStatusline.setup({
         { hl = "MiniStatuslineFilename", strings = { filename } },
         "%=", -- End left alignment
         { strings = { showcmd } },
-        { hl = "MiniStatuslineFileinfo", strings = { fileinfo, lsp } },
+        { hl = "MiniStatuslineFileinfo", strings = { search, fileinfo, lsp } },
         { hl = mode_hl, strings = { tostring(vim.api.nvim_buf_line_count(0)) } },
       })
     end,
   },
-})
-
-vim.api.nvim_create_user_command("GithubSync", function()
-  vim.cmd('lua Snacks.terminal("cd d:/Workspace/SiteRepo/; ./UpdateSite.bat; exit")')
-end, {
-  desc = "Sync Site Repo to Github via snacks.terminal() call",
-  nargs = 0,
 })
 
 local MiniStarter = require("mini.starter")

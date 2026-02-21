@@ -224,7 +224,7 @@ vim.keymap.set("n", "<leader>Z", function()
   Snacks.zen.zoom()
 end, { desc = "toggle zoom" })
 
-vim.opt.shortmess:append("WcC")
+vim.opt.shortmess:append("WcCS")
 vim.opt.wildmenu = true
 vim.opt.wildmode = "longest:full,full"
 vim.opt.wildoptions = "pum"
@@ -354,6 +354,13 @@ Snacks.setup({
       },
     },
   },
+})
+
+vim.api.nvim_create_user_command("GithubSync", function()
+  vim.cmd('lua Snacks.terminal("cd d:/Workspace/SiteRepo/; ./UpdateSite.bat; exit")')
+end, {
+  desc = "Sync Site Repo to Github via snacks.terminal() call",
+  nargs = 0,
 })
 
 local colorscheme_A = "tokyonight-night"
