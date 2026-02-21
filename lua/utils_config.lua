@@ -619,60 +619,30 @@ mini_misc.setup()
 mini_misc.setup_auto_root()
 mini_misc.setup_restore_cursor()
 
-require("noice").setup({
-  lsp = {
-    override = {
-      ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-      ["vim.lsp.util.stylize_markdown"] = true,
-      ["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
-    },
-  },
-  routes = {
-    {
-      filter = {
-        event = "msg_show",
-        any = {
-          { find = "%d+L, %d+B" },
-          { find = "; after #%d+" },
-          { find = "; before #%d+" },
-        },
-      },
-      view = "mini",
-    },
-  },
-  signature = { auto_open = { throttle = 10 } },
-  presets = {
-    bottom_search = true, -- use a classic bottom cmdline for search
-    command_palette = true, -- position the cmdline and popupmenu together
-    long_message_to_split = true, -- long messages will be sent to a split
-    inc_rename = false, -- enables an input dialog for inc-rename.nvim
-    lsp_doc_border = true, -- add a border to hover docs and signature help
-  },
-})
-
+local macro_reg = ""
+local macro_group = vim.api.nvim_create_augroup("MacroRecording", { clear = true })
 vim.api.nvim_create_autocmd("RecordingEnter", {
+  group = macro_group,
   callback = function()
-    local msg = string.format("Register:  %s", vim.fn.reg_recording())
-    _MACRO_RECORDING_STATUS = true
-    vim.notify(msg, vim.log.levels.INFO, {
+    macro_reg = vim.fn.reg_recording()
+    vim.notify(string.format("Recording to [%s]...", macro_reg), vim.log.levels.INFO, {
       title = "Macro Recording",
-      keep = function()
-        return _MACRO_RECORDING_STATUS
-      end,
+      id = "macro_recording",
+      timeout = false,
     })
   end,
-  group = vim.api.nvim_create_augroup("NoiceMacroNotfication", { clear = true }),
 })
 
 vim.api.nvim_create_autocmd("RecordingLeave", {
+  group = macro_group,
   callback = function()
-    _MACRO_RECORDING_STATUS = false
-    vim.notify(string.format("Register: %s", vim.fn.reg_recording()), vim.log.levels.INFO, {
+    vim.notify(string.format("Saved to [%s]", macro_reg), vim.log.levels.INFO, {
       title = "Macro Recording End",
+      id = "macro_recording",
       timeout = 2000,
     })
+    macro_reg = ""
   end,
-  group = vim.api.nvim_create_augroup("NoiceMacroNotficationDismiss", { clear = true }),
 })
 
 local auto_save_augroup_name = "UserAutoSaveOnEvents"

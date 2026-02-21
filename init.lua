@@ -75,12 +75,6 @@ later(function()
   add({ source = "monaqa/dial.nvim" })
   require("lua.univ_config")
   if vim.g.vscode == nil then
-    add({
-      source = "folke/noice.nvim",
-      depends = {
-        "MunifTanjim/nui.nvim",
-      },
-    })
     require("lua.utils_config")
   end
 end)
@@ -116,7 +110,12 @@ later(function()
     add({ source = "stevearc/conform.nvim" })
     add({ source = "echaya/neowiki.nvim", checkout = "dev" })
     -- add({ source = "NStefan002/screenkey.nvim" })
-    add({ source = "esmuellert/codediff.nvim" })
+    add({
+      source = "esmuellert/codediff.nvim",
+      depends = {
+        "MunifTanjim/nui.nvim",
+      },
+    })
     add({ source = "MeanderingProgrammer/render-markdown.nvim" })
     require("lua.code_config")
     require("lua.repl_config")

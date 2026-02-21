@@ -224,11 +224,19 @@ vim.keymap.set("n", "<leader>Z", function()
   Snacks.zen.zoom()
 end, { desc = "toggle zoom" })
 
+vim.opt.shortmess:append("WcC")
+vim.opt.wildmenu = true
+vim.opt.wildmode = "longest:full,full"
+vim.opt.wildoptions = "pum"
+vim.opt.cmdheight = 0
+vim.opt.showmode = false
+
 Snacks.setup({
   bigfile = { enabled = true },
   notifier = {
     enabled = true,
     timeout = 3000,
+    style = "compact", -- Options: "compact", "minimal", "fancy"
   },
   quickfile = { enabled = true },
   statuscolumn = { enabled = true },
