@@ -113,13 +113,6 @@ vim.keymap.set("n", "<leader>gw", function()
   Snacks.picker.grep_word()
 end, { desc = "grep_string" })
 
-vim.keymap.set("n", "|z", function()
-  Snacks.zen()
-end, { desc = "Toggle Zen Mode" })
-vim.keymap.set("n", "|Z", function()
-  Snacks.zen.zoom()
-end, { desc = "Toggle Zoom" })
-
 Snacks.toggle.option("spell", { name = "Spelling" }):map("|s")
 Snacks.toggle.option("wrap", { name = "Wrap" }):map("|w")
 Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("|r")
@@ -129,7 +122,6 @@ Snacks.toggle.option("ignorecase", { name = "Ignorecase" }):map("|i")
 Snacks.toggle.inlay_hints():map("|H")
 Snacks.toggle.animate():map("|a")
 Snacks.toggle.diagnostics():map("|d")
-
 Snacks.toggle({
   name = "TableMode",
   notify = false,
@@ -188,20 +180,6 @@ Snacks.toggle({
   end,
 }):map("|T")
 
-Snacks.toggle({
-  name = "blink.cmp",
-  get = function()
-    return vim.b.completion or false
-  end,
-  set = function(state)
-    if state then
-      vim.b.completion = false
-    else
-      vim.b.completion = true
-    end
-  end,
-}):map("|B")
-
 vim.keymap.set("n", "<leader>un", function()
   Snacks.notifier.hide()
 end, { desc = "Dismiss All Notifications" })
@@ -238,6 +216,13 @@ end, { desc = "Toggle Scratch Buffer" })
 vim.keymap.set({ "n" }, "<leader>f.", function()
   Snacks.scratch.select()
 end, { desc = "Find Scratch" })
+
+vim.keymap.set("n", "<leader>z", function()
+  Snacks.zen()
+end, { desc = "Toggle Zen Mode" })
+vim.keymap.set("n", "<leader>Z", function()
+  Snacks.zen.zoom()
+end, { desc = "Toggle Zoom" })
 
 Snacks.setup({
   bigfile = { enabled = true },

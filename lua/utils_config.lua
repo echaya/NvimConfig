@@ -297,6 +297,27 @@ local yank_scp_command = function()
   mini_files.close()
 end
 
+local yank_latest_scp = function()
+  clear_cache()
+  if STATE.sort_mode ~= "date" then
+    set_sort("date")
+  else
+    mini_files.refresh({ content = { sort = custom_sort } })
+  end
+
+  local n_lines = vim.api.nvim_buf_line_count(0)
+  for i = 1, n_lines do
+    local entry = mini_files.get_fs_entry(0, i)
+    if entry and entry.fs_type == "file" then
+      vim.api.nvim_win_set_cursor(0, { i, 0 })
+      yank_scp_command()
+      return
+    end
+  end
+
+  vim.notify("No files found.", vim.log.levels.WARN)
+end
+
 local map_split = function(buf_id, lhs, direction, close)
   local rhs = function()
     local cur_target = mini_files.get_explorer_state().target_window
@@ -388,6 +409,7 @@ vim.api.nvim_create_autocmd("User", {
     map("gt", open_totalcmd, "Open in TotalCmd")
     map("gx", open_file_externally, "Open Externally")
     map("gy", yank_scp_command, "Copy SCP command")
+    map("gY", yank_latest_scp, "Copy SCP command on latest file")
     map("g`", set_cwd, "Set CWD")
     map("<esc>", mini_files.close, "Close")
 

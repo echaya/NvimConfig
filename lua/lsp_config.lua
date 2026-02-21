@@ -169,17 +169,8 @@ for _, key in ipairs(keys_to_delete) do
   pcall(vim.keymap.del, "n", key)
 end
 
-local function get_python_sys_path()
-  local cmd = 'python -c "import sys, os; print(os.pathsep.join(sys.path))"'
-  local path_str = vim.trim(vim.fn.system(cmd))
-  return path_str
-end
-
 vim.lsp.config.ty = {
   cmd = { "ty", "server" },
-  cmd_env = {
-    PYTHONPATH = get_python_sys_path(),
-  },
   filetypes = { "python" },
   settings = {
     ty = {},
