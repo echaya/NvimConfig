@@ -47,11 +47,6 @@ if has('gui_running')
     noremap <C--> :call AdjustFontSize(-1)<CR>
 endif
 
-
-" reopen just closed buffer to edit
-nnoremap <silent> ZX :e #<CR>
-
-
 " buffers management
 set hidden
 tnoremap <C-h> <Cmd>wincmd h<CR>

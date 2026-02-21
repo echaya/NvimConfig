@@ -514,17 +514,16 @@ miniclue.setup({
     { mode = "n", keys = "|" },
   },
   clues = {
-    { mode = "n", keys = "<leader>g", desc = "+Git/Comment" },
-    { mode = "n", keys = "<leader>b", desc = "+Buffers" }, -- Snacks buffers/delete
-    { mode = "n", keys = "<leader>f", desc = "+Find/Pickers" }, -- Snacks pickers
-    { mode = "n", keys = "<leader>h", desc = "+Git/Diff" }, -- CodeDiff / mini.diff
-    { mode = "n", keys = "<leader>l", desc = "+LSP" }, -- LSP Start/Stop/Restart
-    { mode = "n", keys = "<leader>s", desc = "+Sessions" }, -- MiniSessions
-    { mode = "n", keys = "|", desc = "+Toggles" }, -- Snacks options toggles
-    { mode = "n", keys = "<localleader>p", desc = "+REPL Print" },
-    { mode = "n", keys = "<localleader>d", desc = "+REPL Debug" },
-    { mode = "n", keys = "<localleader>q", desc = "+REPL Exit" },
+    -- { mode = "n", keys = "<leader>g", desc = "+Comment" },
+    { mode = "n", keys = "<leader>b", desc = "+buffers" }, -- Snacks buffers/delete
+    { mode = "n", keys = "<leader>f", desc = "+find/pickers" }, -- Snacks pickers
+    { mode = "n", keys = "<leader>h", desc = "+git/diff" }, -- CodeDiff / mini.diff
+    { mode = "n", keys = "<leader>l", desc = "+lsp" }, -- lSP Start/Stop/Restart
+    { mode = "n", keys = "<leader>s", desc = "+sessions" }, -- MiniSessions
     { mode = "n", keys = "<leader>w", desc = "+neowkiki" },
+    { mode = "n", keys = "<localleader>p", desc = "+repl print" },
+    { mode = "n", keys = "<localleader>d", desc = "+repl debug" },
+    { mode = "n", keys = "<localleader>q", desc = "+repl exit" },
 
     miniclue.gen_clues.g(),
     miniclue.gen_clues.marks(),
@@ -549,22 +548,20 @@ miniclue.setup({
 
 miniclue.ensure_all_triggers()
 local set_desc = miniclue.set_mapping_desc
-set_desc("n", "ZX", "Reopen Closed Buffer")
-set_desc("n", "<localleader>[", "Previous Window")
-set_desc("n", "<leader>=", "Balance Windows")
-set_desc("n", "<leader>G", "Git Fugitive Tab")
-set_desc("n", "[Q", "First Quickfix")
-set_desc("n", "[q", "Previous Quickfix")
-set_desc("n", "]q", "Next Quickfix")
-set_desc("n", "]Q", "Last Quickfix")
-set_desc("n", "<leader>gc", "Comment & Copy Line")
-set_desc("x", "<leader>gc", "Comment & Copy Line")
-set_desc("n", "gj", "Join lines (J)")
-set_desc("n", "dm", "Delete Mark (prompt)")
-set_desc("n", "dM", "Delete All Marks!")
-set_desc("n", "xx", "Cut line")
-set_desc("n", "X", "Cut to end of line")
-set_desc("t", "<localleader>[", "Previous Window")
+set_desc("n", "<localleader>[", "previous window")
+set_desc("t", "<localleader>[", "previous Window")
+set_desc("n", "<leader>=", "balance windows")
+set_desc("n", "<leader>G", "git fugitive tab")
+set_desc("n", "[Q", "first quickfix")
+set_desc("n", "[q", "previous quickfix")
+set_desc("n", "]q", "next quickfix")
+set_desc("n", "]Q", "last quickfix")
+set_desc("n", "<leader>gc", "comment & copy line")
+set_desc("x", "<leader>gc", "comment & copy line")
+set_desc("n", "gj", "join lines (J)")
+set_desc("n", "dm", "delete mark (prompt)")
+set_desc("n", "dM", "delete all marks!")
+set_desc("n", "xx", "cut line")
 
 vim.api.nvim_create_autocmd("FileType", {
   pattern = {
