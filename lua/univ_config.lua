@@ -103,10 +103,10 @@ vim.keymap.set(
   "x",
   "z",
   [[:<C-u>lua MiniSurround.add('visual')<CR>]],
-  { silent = true, desc = "Add surrounding to selection" }
+  { silent = true, desc = "add surrounding to selection" }
 )
-vim.keymap.set("n", "yzz", "yz_", { remap = true, desc = "Add surround _" })
-vim.keymap.set("n", "yZ", "yz$", { remap = true, desc = "Add surround $" })
+vim.keymap.set("n", "yzz", "yz_", { remap = true, desc = "add surround _" })
+vim.keymap.set("n", "yZ", "yz$", { remap = true, desc = "add surround $" })
 
 require("mini.operators").setup({
   replace = {

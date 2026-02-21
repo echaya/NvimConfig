@@ -314,19 +314,19 @@ vim.api.nvim_create_autocmd("FileType", {
       "i",
       ";cb",
       ".to_clipboard()",
-      { buffer = true, desc = "Insert: .to_clipboard()" }
+      { buffer = true, desc = "insert: .to_clipboard()" }
     )
-    vim.keymap.set("i", ";ct", ".copy(True)", { buffer = true, desc = "Insert: .copy(True)" })
-    vim.keymap.set("i", ";f", "###<CR><Esc>", { buffer = true, desc = "Insert: New cell fence" })
-    vim.keymap.set("i", ";po", ".iloc[0].T", { buffer = true, desc = "Insert:.iloc[0].T" })
-    vim.keymap.set("i", ";it", "inplace=True", { buffer = true, desc = "Insert: inplace=True" })
-    vim.keymap.set("i", ";pl", ".iloc[-1].T", { buffer = true, desc = "Insert: .iloc[-1].T" })
+    vim.keymap.set("i", ";ct", ".copy(True)", { buffer = true, desc = "insert: .copy(True)" })
+    vim.keymap.set("i", ";f", "###<CR><Esc>", { buffer = true, desc = "insert: New cell fence" })
+    vim.keymap.set("i", ";po", ".iloc[0].T", { buffer = true, desc = "insert:.iloc[0].T" })
+    vim.keymap.set("i", ";it", "inplace=True", { buffer = true, desc = "insert: inplace=True" })
+    vim.keymap.set("i", ";pl", ".iloc[-1].T", { buffer = true, desc = "insert: .iloc[-1].T" })
     vim.keymap.set("n", "<localleader>db", function()
       repl.debug_cell()
-    end, { buffer = true, desc = "Create debug cell" })
+    end, { buffer = true, desc = "create debug cell" })
     vim.keymap.set("n", "<localleader>dd", function()
       repl.debug_delete()
-    end, { buffer = true, desc = "Delete debug cell and traces" })
+    end, { buffer = true, desc = "delete debug cell and traces" })
   end,
 })
 
@@ -354,9 +354,9 @@ vim.api.nvim_create_autocmd("FileType", {
 -- Global Keymaps
 vim.keymap.set("n", "<localleader>v", function()
   repl.select_visual()
-end, { desc = "Select visual" })
+end, { desc = "select visual" })
 
 -- Global Terminal mappings
-vim.keymap.set("t", ";cb", ".to_clipboard()", { desc = "Terminal: Insert .to_clipboard()" })
-vim.keymap.set("t", ";po", ".iloc[0].T", { desc = "Terminal: Insert .iloc[0].T" })
-vim.keymap.set("t", ";pl", ".iloc[-1].T", { desc = "Terminal: Insert .iloc[-1].T" })
+vim.keymap.set("t", ";cb", ".to_clipboard()", { desc = "terminal: insert .to_clipboard()" })
+vim.keymap.set("t", ";po", ".iloc[0].T", { desc = "terminal: insert .iloc[0].T" })
+vim.keymap.set("t", ";pl", ".iloc[-1].T", { desc = "terminal: insert .iloc[-1].T" })

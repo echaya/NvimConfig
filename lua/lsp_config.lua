@@ -127,40 +127,40 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
     vim.keymap.set("n", "gl", function()
       vim.lsp.buf.hover()
-    end, { silent = true, desc = "LSP Hover", buffer = bufnr })
+    end, { silent = true, desc = "lsp Hover", buffer = bufnr })
     vim.keymap.set("n", "gD", function()
       vim.lsp.buf.definition()
-    end, { silent = true, desc = "LSP Definition", buffer = bufnr })
+    end, { silent = true, desc = "lsp Definition", buffer = bufnr })
     vim.keymap.set(
       "n",
       "gd",
       Snacks.picker.lsp_definitions,
-      { silent = true, desc = "Snacks Definitions", buffer = bufnr }
+      { silent = true, desc = "snacks definitions", buffer = bufnr }
     )
     vim.keymap.set("n", "gR", function()
       vim.lsp.buf.references()
-    end, { silent = true, desc = "LSP References", buffer = bufnr })
+    end, { silent = true, desc = "lsp references", buffer = bufnr })
     vim.keymap.set(
       "n",
       "gr",
       Snacks.picker.lsp_references,
-      { silent = true, desc = "Snacks References", buffer = bufnr }
+      { silent = true, desc = "snacks references", buffer = bufnr }
     )
     vim.keymap.set("n", "<F2>", function()
       vim.lsp.buf.rename()
-    end, { silent = true, desc = "LSP Rename", buffer = bufnr })
+    end, { silent = true, desc = "lsp rename", buffer = bufnr })
     vim.keymap.set(
       { "n", "v" },
       "ga",
       vim.lsp.buf.code_action,
-      { silent = true, desc = "[G]oto Code [A]ction", buffer = bufnr }
+      { silent = true, desc = "goto code actions", buffer = bufnr }
     )
     vim.keymap.set("n", "]D", function()
       vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR, float = true })
-    end, { silent = true, desc = "Next Error", buffer = bufnr })
+    end, { silent = true, desc = "next error", buffer = bufnr })
     vim.keymap.set("n", "[D", function()
       vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.ERROR, float = true })
-    end, { silent = true, desc = "Previous Error", buffer = bufnr })
+    end, { silent = true, desc = "previous error", buffer = bufnr })
   end,
 })
 
@@ -372,19 +372,19 @@ end, {
 
 vim.keymap.set("n", "<leader>lr", function()
   vim.cmd("LspRestart")
-end, { silent = true, desc = "LSP Restart" })
+end, { silent = true, desc = "lsp restart" })
 
 vim.keymap.set("n", "<leader>ls", function()
   vim.cmd("LspStart")
-end, { silent = true, desc = "LSP Start" })
+end, { silent = true, desc = "lsp start" })
 
 vim.keymap.set("n", "<leader>lS", function()
   vim.cmd("LspStop")
-end, { silent = true, desc = "LSP Stop" })
+end, { silent = true, desc = "lsp stop" })
 
 Snacks.toggle({
   notify = false,
-  name = "Python LSP (Ty)",
+  name = "python lsp (ty)",
   get = function()
     local ty_active = #vim.lsp.get_clients({ bufnr = 0, name = "ty" }) > 0
     local pyrefly_active = #vim.lsp.get_clients({ bufnr = 0, name = "pyrefly" }) > 0

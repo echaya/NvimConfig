@@ -125,7 +125,7 @@ local function close_buffers_outside_context()
 end
 
 vim.keymap.set("n", "<leader>bD", close_buffers_outside_context, {
-  desc = "Close buffers not in current Git repo",
+  desc = "close buffers not in current Git repo",
   silent = true,
 })
 

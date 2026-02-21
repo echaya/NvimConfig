@@ -13,7 +13,7 @@ vim.keymap.set("n", "<leader>bb", function()
 end, { desc = "find buffers" })
 vim.keymap.set("n", "<leader>bd", function()
   Snacks.bufdelete()
-end, { desc = "Delete Buffer" })
+end, { desc = "delete buffer" })
 vim.keymap.set("n", "<leader>E", function()
   Snacks.picker.explorer()
   vim.defer_fn(function()
@@ -36,7 +36,7 @@ vim.keymap.set({ "n" }, "<leader>fs", function()
       },
     },
   })
-end, { desc = "Find Symbols" })
+end, { desc = "find symbols" })
 vim.keymap.set({ "n" }, "<leader>fS", function()
   Snacks.picker.lsp_symbols({
     filter = {
@@ -70,7 +70,7 @@ vim.keymap.set({ "n" }, "<leader>fS", function()
       },
     },
   })
-end, { desc = "Find More Symbols" })
+end, { desc = "find more symbols" })
 
 vim.keymap.set("n", "<leader>fh", function()
   Snacks.picker.help()
@@ -182,24 +182,24 @@ Snacks.toggle({
 
 vim.keymap.set("n", "<leader>un", function()
   Snacks.notifier.hide()
-end, { desc = "Dismiss All Notifications" })
+end, { desc = "dismiss all notifications" })
 vim.keymap.set("n", "<leader>n", function()
   Snacks.notifier.show_history()
 end, { desc = "notification history" })
 
 vim.keymap.set("n", "<leader>m", "<cmd>messages<cr>", { desc = "message history" })
 
-vim.keymap.set("n", "<leader>gb", function()
+vim.keymap.set("n", "<leader>hb", function()
   Snacks.gitbrowse()
-end, { desc = "Git Browse" })
+end, { desc = "git browse" })
 
 vim.keymap.set({ "n", "t" }, "<a-.>", function()
   Snacks.lazygit()
-end, { desc = "Lazygit" })
+end, { desc = "lazygit" })
 
 vim.keymap.set({ "n", "t" }, "<a-`>", function()
   Snacks.terminal()
-end, { desc = "Toggle terminal" })
+end, { desc = "toggle terminal" })
 
 vim.keymap.set({ "n" }, "<leader>y", function()
   Snacks.terminal("yazi;exit", {
@@ -211,18 +211,18 @@ end, { desc = "yazi" })
 
 vim.keymap.set({ "n" }, "<leader>.", function()
   Snacks.scratch()
-end, { desc = "Toggle Scratch Buffer" })
+end, { desc = "toggle scratch buffer" })
 
 vim.keymap.set({ "n" }, "<leader>f.", function()
   Snacks.scratch.select()
-end, { desc = "Find Scratch" })
+end, { desc = "find scratch" })
 
 vim.keymap.set("n", "<leader>z", function()
   Snacks.zen()
-end, { desc = "Toggle Zen Mode" })
+end, { desc = "toggle zen mode" })
 vim.keymap.set("n", "<leader>Z", function()
   Snacks.zen.zoom()
-end, { desc = "Toggle Zoom" })
+end, { desc = "toggle zoom" })
 
 Snacks.setup({
   bigfile = { enabled = true },

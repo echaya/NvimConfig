@@ -112,10 +112,10 @@ vim.keymap.set({ "n", "t" }, "<leader>hL", function()
 end, { desc = "git log (global)" })
 vim.keymap.set("n", "<leader>hs", function()
   git_pickaxe({ global = false })
-end, { desc = "Git Search (Buffer)" })
+end, { desc = "git search (file)" })
 vim.keymap.set("n", "<leader>hS", function()
   git_pickaxe({ global = true })
-end, { desc = "Git Search (Global)" })
+end, { desc = "git search (global)" })
 
 require("codediff").setup({
   keymaps = {
@@ -140,7 +140,7 @@ vim.keymap.set("n", "<leader>v", function()
 end, {
   noremap = true,
   silent = true,
-  desc = "CodeDiff [HEAD~(count-1)]",
+  desc = "codediff [HEAD~(count-1)]",
 })
 
 vim.keymap.set("n", "<leader>hv", function()
@@ -152,7 +152,7 @@ vim.keymap.set("n", "<leader>hv", function()
 end, {
   noremap = true,
   silent = true,
-  desc = "CodeDiff file history",
+  desc = "codediff file history",
 })
 
 vim.keymap.set("n", "<leader>hV", function()
@@ -164,7 +164,7 @@ vim.keymap.set("n", "<leader>hV", function()
 end, {
   noremap = true,
   silent = true,
-  desc = "CodeDiff repo history",
+  desc = "codediff repo history",
 })
 
 local function get_default_branch_name()
@@ -178,11 +178,11 @@ vim.keymap.set("n", "<leader>hm", function()
   local cmd = "CodeDiff " .. get_default_branch_name()
   vim.notify(cmd, vim.log.levels.INFO)
   vim.cmd(cmd)
-end, { desc = "Diff against local master" })
+end, { desc = "diff against local master" })
 
 vim.keymap.set("n", "<leader>hy", function()
   return require("mini.diff").operator("yank") .. "gh"
-end, { expr = true, remap = true, desc = "Yank hunk Reference" })
+end, { expr = true, remap = true, desc = "yank hunk reference" })
 
 vim.keymap.set(
   "n",

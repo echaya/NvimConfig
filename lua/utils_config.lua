@@ -331,7 +331,7 @@ local map_split = function(buf_id, lhs, direction, close)
       mini_files.close()
     end
   end
-  vim.keymap.set("n", lhs, rhs, { buffer = buf_id, desc = "Split " .. direction })
+  vim.keymap.set("n", lhs, rhs, { buffer = buf_id, desc = "split " .. direction })
 end
 
 mini_files.setup({
@@ -386,15 +386,15 @@ vim.api.nvim_create_autocmd("User", {
       vim.keymap.set("n", lhs, rhs, { buffer = b, desc = desc })
     end
 
-    map("l", go_in_reset, "Go in (Reset Sort)")
-    map("h", go_out_reset, "Go out (Reset Sort)")
-    map("<CR>", go_in_plus_reset, "Go in plus (Reset Sort)")
+    map("l", go_in_reset, "go in (reset sort)")
+    map("h", go_out_reset, "go out (reset sort)")
+    map("<CR>", go_in_plus_reset, "go in plus (reset sort)")
 
-    map("g.", toggle_dotfiles, "Toggle dot files")
-    map("<a-h>", toggle_dotfiles, "Toggle dot files")
-    map("gp", toggle_preview, "Toggle preview")
+    map("g.", toggle_dotfiles, "toggle dot files")
+    map("<a-h>", toggle_dotfiles, "toggle dot files")
+    map("gp", toggle_preview, "toggle preview")
 
-    map("g,", toggle_details, "Toggle file details")
+    map("g,", toggle_details, "toggle file details")
     map("gz", function()
       set_sort("size")
     end, "Sort by Size")
@@ -405,13 +405,13 @@ vim.api.nvim_create_autocmd("User", {
       set_sort("name")
     end, "Sort by Name")
 
-    map("=", safe_synchronize, "Synchronize & Clear Cache")
-    map("gt", open_totalcmd, "Open in TotalCmd")
-    map("gx", open_file_externally, "Open Externally")
-    map("gy", yank_scp_command, "Copy SCP command")
-    map("gY", yank_latest_scp, "Copy SCP command on latest file")
-    map("g`", set_cwd, "Set CWD")
-    map("<esc>", mini_files.close, "Close")
+    map("=", safe_synchronize, "synchronize & clear cache")
+    map("gt", open_totalcmd, "open in totalcmd")
+    map("gx", open_file_externally, "open externally")
+    map("gy", yank_scp_command, "copy scp command")
+    map("gY", yank_latest_scp, "copy scp command on latest file")
+    map("g`", set_cwd, "set cwd")
+    map("<esc>", mini_files.close, "close")
 
     map_split(b, "gs", "belowright horizontal", false)
     map_split(b, "gv", "belowright vertical", false)
@@ -425,7 +425,7 @@ vim.keymap.set("n", "<leader>e", function()
     STATE.sort_mode = "name"
     mini_files.open()
   end
-end, { desc = "Toggle Mini Files" })
+end, { desc = "mini files" })
 
 local map_combo = require("mini.keymap").map_combo
 map_combo({ "i", "t" }, "jk", "<BS><BS><Cmd>stopinsert<CR>", { delay = 150 })
