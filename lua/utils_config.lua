@@ -514,7 +514,7 @@ miniclue.setup({
     { mode = "n", keys = "|" },
   },
   clues = {
-    -- { mode = "n", keys = "<leader>g", desc = "+Comment" },
+    { mode = "n", keys = "<leader>g", desc = "+comment" },
     { mode = "n", keys = "<leader>b", desc = "+buffers" }, -- Snacks buffers/delete
     { mode = "n", keys = "<leader>f", desc = "+find/pickers" }, -- Snacks pickers
     { mode = "n", keys = "<leader>h", desc = "+git/diff" }, -- CodeDiff / mini.diff
@@ -524,6 +524,32 @@ miniclue.setup({
     { mode = "n", keys = "<localleader>p", desc = "+repl print" },
     { mode = "n", keys = "<localleader>d", desc = "+repl debug" },
     { mode = "n", keys = "<localleader>q", desc = "+repl exit" },
+    -- >> Table Mode Groups
+    { mode = "n", keys = "<leader>t", desc = "+table mode" },
+    { mode = "x", keys = "<leader>t", desc = "+table mode" },
+    { mode = "n", keys = "<leader>td", desc = "+delete" },
+    { mode = "n", keys = "<leader>ti", desc = "+insert" },
+    { mode = "n", keys = "<leader>tf", desc = "+formula" },
+    -- >> Table Mode Commands
+    { mode = "n", keys = "<leader>tm", desc = "toggle table mode" },
+    { mode = "n", keys = "<leader>tt", desc = "tableize" },
+    { mode = "x", keys = "<leader>tt", desc = "tableize selection" },
+    { mode = "n", keys = "<leader>tr", desc = "realign table" },
+    { mode = "n", keys = "<leader>ts", desc = "sort column" },
+    { mode = "n", keys = "<leader>t?", desc = "echo cell info" },
+    --  >> Manipulation
+    { mode = "n", keys = "<leader>tdd", desc = "delete row" },
+    { mode = "n", keys = "<leader>tdc", desc = "delete column" },
+    { mode = "n", keys = "<leader>tiC", desc = "insert column before" },
+    { mode = "n", keys = "<leader>tic", desc = "insert column after" },
+    -- >> Formulas
+    { mode = "n", keys = "<leader>tfa", desc = "add formula" },
+    { mode = "n", keys = "<leader>tfe", desc = "eval formula line" },
+    -- >> Cell Navigation Submodes
+    { mode = "n", keys = "[|", desc = "previous cell", postkeys = "[" },
+    { mode = "n", keys = "]|", desc = "next cell", postkeys = "]" },
+    { mode = "n", keys = "{|", desc = "cell above", postkeys = "{" },
+    { mode = "n", keys = "}|", desc = "cell below", postkeys = "}" },
 
     miniclue.gen_clues.g(),
     miniclue.gen_clues.marks(),
@@ -562,6 +588,9 @@ set_desc("n", "gj", "join lines (J)")
 set_desc("n", "dm", "delete mark (prompt)")
 set_desc("n", "dM", "delete all marks!")
 set_desc("n", "xx", "cut line")
+set_desc("n", "<leader>tm", "toggle table mode")
+set_desc("n", "<leader>tt", "tableize")
+set_desc("x", "<leader>tt", "tableize selection")
 
 vim.api.nvim_create_autocmd("FileType", {
   pattern = {
