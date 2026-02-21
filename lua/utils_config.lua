@@ -506,15 +506,25 @@ miniclue.setup({
     { mode = "n", keys = "<C-w>" },
     { mode = "n", keys = "z" },
     { mode = "x", keys = "z" },
-
     { mode = "n", keys = "[" },
     { mode = "n", keys = "]" },
-    { mode = "n", keys = "Z" }, -- For ZX
-    { mode = "n", keys = "d" }, -- For dm / dM
-    { mode = "i", keys = ";" }, -- For ;f
+    { mode = "n", keys = "Z" },
+    { mode = "n", keys = "d" },
+    { mode = "i", keys = ";" },
+    { mode = "n", keys = "|" },
   },
   clues = {
     { mode = "n", keys = "<leader>g", desc = "+Git/Comment" },
+    { mode = "n", keys = "<leader>b", desc = "+Buffers" }, -- Snacks buffers/delete
+    { mode = "n", keys = "<leader>f", desc = "+Find/Pickers" }, -- Snacks pickers
+    { mode = "n", keys = "<leader>h", desc = "+Git/Diff" }, -- CodeDiff / mini.diff
+    { mode = "n", keys = "<leader>l", desc = "+LSP" }, -- LSP Start/Stop/Restart
+    { mode = "n", keys = "<leader>s", desc = "+Sessions" }, -- MiniSessions
+    { mode = "n", keys = "|", desc = "+Toggles" }, -- Snacks options toggles
+    { mode = "n", keys = "<localleader>p", desc = "+REPL Print" },
+    { mode = "n", keys = "<localleader>d", desc = "+REPL Debug" },
+    { mode = "n", keys = "<localleader>q", desc = "+REPL Exit" },
+
     miniclue.gen_clues.g(),
     miniclue.gen_clues.marks(),
     miniclue.gen_clues.registers({ show_contents = true }),
