@@ -104,12 +104,12 @@ vim.keymap.set({ "n", "t" }, "<leader>hl", function()
   Snacks.picker.git_log_file({
     confirm = walk_in_codediff,
   })
-end, { desc = "find_git_log_file" })
+end, { desc = "git log (file)" })
 vim.keymap.set({ "n", "t" }, "<leader>hL", function()
   Snacks.picker.git_log({
     confirm = walk_in_codediff,
   })
-end, { desc = "find_git_log" })
+end, { desc = "git log (global)" })
 vim.keymap.set("n", "<leader>hs", function()
   git_pickaxe({ global = false })
 end, { desc = "Git Search (Buffer)" })
