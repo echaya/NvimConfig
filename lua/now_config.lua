@@ -228,7 +228,6 @@ vim.opt.shortmess:append("WcCS")
 vim.opt.wildmenu = true
 vim.opt.wildmode = "longest:full,full"
 vim.opt.wildoptions = "pum"
-vim.opt.cmdheight = 0
 vim.opt.showmode = false
 
 Snacks.setup({
@@ -236,7 +235,7 @@ Snacks.setup({
   notifier = {
     enabled = true,
     timeout = 3000,
-    style = "compact", -- Options: "compact", "minimal", "fancy"
+    style = "fancy", -- Options: "compact", "minimal", "fancy"
   },
   quickfile = { enabled = true },
   statuscolumn = { enabled = true },

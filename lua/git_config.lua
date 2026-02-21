@@ -224,14 +224,14 @@ local function silent_async_pp(git_root, command)
       if code == 0 then
         -- Success
         vim.notify(
-          "Git " .. command .. " Success" .. (msg ~= "" and (":\n" .. msg) or ""),
+          "git " .. command .. " success" .. (msg ~= "" and (":\n" .. msg) or ""),
           vim.log.levels.INFO
         )
         pcall(vim.cmd, "GFetch")
       else
         -- Failure
         vim.notify(
-          "Git " .. command .. " Failed:\n" .. (msg ~= "" and msg or "Exit Code " .. code),
+          "git " .. command .. " failed:\n" .. (msg ~= "" and msg or "Exit Code " .. code),
           vim.log.levels.ERROR
         )
       end
