@@ -524,6 +524,7 @@ miniclue.setup({
     { mode = "n", keys = "<localleader>p", desc = "+REPL Print" },
     { mode = "n", keys = "<localleader>d", desc = "+REPL Debug" },
     { mode = "n", keys = "<localleader>q", desc = "+REPL Exit" },
+    { mode = "n", keys = "<leader>w", desc = "+neowkiki" },
 
     miniclue.gen_clues.g(),
     miniclue.gen_clues.marks(),
