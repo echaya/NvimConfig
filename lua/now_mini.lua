@@ -388,9 +388,6 @@ local MiniStarter = require("mini.starter")
 MiniStarter.setup({
   evaluate_single = true,
   items = {
-    -- starter.sections.sessions(10, true),
-    -- starter.sections.recent_files(10, false),
-    -- starter.sections.builtin_actions(),
     {
       action = "lua MiniSessions.read(MiniSessions.get_latest())",
       name = "Latest",
@@ -415,8 +412,8 @@ MiniStarter.setup({
     },
     { action = "DepsUpdate", name = "Update", section = "Plugin" },
     { action = "DepsClean", name = "Purge", section = "Plugin" },
-    { action = "GithubSync", name = "GithubSync", section = "Plugin" },
-    { action = "CopySo", name = "CopySo", section = "Plugin" },
+    { action = "GithubSync", name = "Backup site", section = "Plugin" },
+    { action = "CopySo", name = "Copy so", section = "Plugin" },
     { action = "enew", name = "New buffer", section = "Builtin actions" },
     { action = "qall!", name = "Quit neovim", section = "Builtin actions" },
   },

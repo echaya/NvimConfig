@@ -235,7 +235,7 @@ Snacks.setup({
   notifier = {
     enabled = true,
     timeout = 3000,
-    style = "fancy", -- Options: "compact", "minimal", "fancy"
+    style = "compact", -- Options: "compact", "minimal", "fancy"
   },
   quickfile = { enabled = true },
   statuscolumn = { enabled = true },
