@@ -112,9 +112,6 @@ later(function()
     -- add({ source = "NStefan002/screenkey.nvim" })
     add({
       source = "esmuellert/codediff.nvim",
-      depends = {
-        "MunifTanjim/nui.nvim",
-      },
     })
     add({ source = "MeanderingProgrammer/render-markdown.nvim" })
     require("lua.code_config")
