@@ -566,16 +566,28 @@ miniclue.setup({
 
   window = {
     delay = 150,
-    config = {
-      width = "auto",
-    },
+    config = function(buf_id)
+      local MAX_WIDTH = 60 -- Set your maximum character width here
+      local lines = vim.api.nvim_buf_get_lines(buf_id, 0, -1, false)
+      local content_width = 0
+      for _, line in ipairs(lines) do
+        local line_width = vim.fn.strdisplaywidth(line)
+        if line_width > content_width then
+          content_width = line_width
+        end
+      end
+      local final_width = math.min(MAX_WIDTH, content_width)
+      final_width = math.max(1, final_width)
+      return {
+        width = final_width,
+      }
+    end,
   },
 })
 
 miniclue.ensure_all_triggers()
 local set_desc = miniclue.set_mapping_desc
-set_desc("n", "<localleader>[", "previous window")
-set_desc("t", "<localleader>[", "previous Window")
+set_desc("t", "<localleader>f", "focus previous window")
 set_desc("n", "<leader>=", "balance windows")
 set_desc("n", "<leader>G", "git fugitive tab")
 set_desc("n", "[Q", "first quickfix")

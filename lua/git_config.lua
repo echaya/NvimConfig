@@ -121,7 +121,10 @@ require("codediff").setup({
   keymaps = {
     view = {
       quit = false,
-      toggle_explorer = "<leader>e", -- Toggle explorer visibility (explorer mode only)
+      toggle_explorer = "<leader>e",
+      next_hunk = "]v",
+      prev_hunk = "[v",
+      hunk_textobject = "gh",
     },
   },
 })

@@ -144,7 +144,7 @@ vim.api.nvim_create_autocmd("FileType", {
       end
     end, { buffer = args.buf, desc = "yarepl source cell visual ipython" })
 
-    vim.keymap.set("n", "<localleader>", function()
+    vim.keymap.set("n", "<localleader><localleader>", function()
       local target_id = (vim.v.count == 0) and vim.fn.tabpagenr() or vim.v.count
       vim.cmd(string.format("%dREPLSendOperator ipython", target_id))
     end, {
@@ -152,10 +152,24 @@ vim.api.nvim_create_autocmd("FileType", {
       desc = "yarepl send operator",
     })
 
-    vim.keymap.set("n", "<localleader><localleader>", "<localleader>_", {
-      buffer = args.buf,
+    vim.keymap.set("n", "<localleader>]", function()
+      local count = (vim.v.count == 0) and "" or tostring(vim.v.count)
+      return count .. "<localleader><localleader>_"
+    end, {
+      expr = true,
       remap = true,
+      buffer = args.buf,
       desc = "yarepl send current line",
+    })
+
+    vim.keymap.set("n", "<localleader>[", function()
+      local count = (vim.v.count == 0) and "" or tostring(vim.v.count)
+      return count .. "<localleader><localleader>iw"
+    end, {
+      expr = true,
+      remap = true,
+      buffer = args.buf,
+      desc = "yarepl send current word",
     })
 
     local function create_repl_sender_yarepl(key, desc, command_format_string)
@@ -199,11 +213,12 @@ vim.api.nvim_create_autocmd("FileType", {
       { buffer = args.buf, desc = "Disable paragraph motion to favor custom p mappings" }
     )
 
-    create_repl_sender_yarepl("<localleader>pp", "yarepl print", "print(%s)")
     create_repl_sender_yarepl("<localleader>pL", "yarepl print length", "print(len(%s))")
     create_repl_sender_yarepl("<localleader>pl", "yarepl print last", "print(%s.iloc[-1].T)")
     create_repl_sender_yarepl("<localleader>po", "yarepl print first", "print(%s.iloc[0].T)")
     create_repl_sender_yarepl("<localleader>pi", "yarepl print info", "print(%s.info())")
+    create_repl_sender_yarepl("<localleader>pt", "yarepl print info", "print(type(%s))")
+    create_repl_sender_yarepl("<localleader>pd", "yarepl print", "print(%s.describe().T)")
 
     vim.keymap.set("n", "<localleader>y", function()
       local target_id = (vim.v.count == 0) and vim.fn.tabpagenr() or vim.v.count
@@ -258,7 +273,7 @@ vim.api.nvim_create_autocmd("FileType", {
       vim.cmd(string.format("%dREPLExec $ipython " .. vim.fn.nr2char(12), target_id))
     end, { buffer = args.buf, desc = "yarepl clear ipython" })
 
-    vim.keymap.set("n", "<localleader>]", function()
+    vim.keymap.set("n", "<localleader>f", function()
       local target_id = (vim.v.count == 0) and vim.fn.tabpagenr() or vim.v.count
       vim.cmd(string.format("%dREPLFocus ipython", target_id))
       vim.cmd("norm! i")
@@ -337,7 +352,7 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.b.CodeFence = "--#"
     vim.keymap.set(
       "n",
-      "<localleader><localleader>f",
+      "<localleader>f",
       "<cmd>source %<CR>",
       { buffer = args.buf, desc = "execute lua file" }
     )

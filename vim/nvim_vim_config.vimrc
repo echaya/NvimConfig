@@ -21,10 +21,17 @@ set enc=utf-8
 set number relativenumber
 set scrolloff=5
 set showcmd
-set showcmdloc=statusline
 set shellslash
 set showtabline=2
 set wrap
+" commandline related
+set wildmenu
+set wildmode=longest:full,full
+if has('nvim-0.8.0') || has('patch-9.0.0389')
+    set shortmess+=WcS
+    set wildoptions=pum
+endif
+set noshowmode
 
 if !has('unix')
     let &shell = 'pwsh -nologo -noexit'
@@ -53,8 +60,7 @@ tnoremap <C-h> <Cmd>wincmd h<CR>
 tnoremap <C-j> <Cmd>wincmd j<CR>
 tnoremap <C-k> <Cmd>wincmd k<CR>
 tnoremap <C-l> <Cmd>wincmd l<CR>
-tnoremap <localleader>[ <Cmd>wincmd p<CR>
-nnoremap <localleader>[ <Cmd>wincmd p<CR>
+tnoremap <localleader>f <Cmd>wincmd p<CR>
 nnoremap <leader>= <Cmd>wincmd =<CR>
 
 
@@ -136,28 +142,28 @@ let g:table_mode_syntax = 0
 
 
 if !exists('g:snacks_main_cursorline_enabled')
-  let g:snacks_main_cursorline_enabled = 1
+    let g:snacks_main_cursorline_enabled = 1
 endif
 if !exists('g:snacks_vertical_cursor_enabled')
-  let g:snacks_vertical_cursor_enabled = 0
+    let g:snacks_vertical_cursor_enabled = 0
 endif
 
 function! ApplyCursorLine() abort
-  if get(g:, 'snacks_main_cursorline_enabled', 1)
-    set cursorline
-  else
-    set nocursorline
-  endif
-  if get(g:, 'snacks_vertical_cursor_enabled', 0)
-    set cursorcolumn
-  else
-    set nocursorcolumn
-  endif
+    if get(g:, 'snacks_main_cursorline_enabled', 1)
+        set cursorline
+    else
+        set nocursorline
+    endif
+    if get(g:, 'snacks_vertical_cursor_enabled', 0)
+        set cursorcolumn
+    else
+        set nocursorcolumn
+    endif
 endfunction
 
 augroup CursorLineManagementIndependent au!
-  au InsertLeave,WinEnter *  call ApplyCursorLine()
-  au InsertEnter,WinLeave *  set nocursorline |  set nocursorcolumn
+    au InsertLeave,WinEnter *  call ApplyCursorLine()
+    au InsertEnter,WinLeave *  set nocursorline |  set nocursorcolumn
 augroup END
 
 " add comment string for bat, autohotkey files
@@ -242,13 +248,13 @@ function! s:SetupTabLineHighlights()
     " --- Define Highlights ---
     " Active close button: Error FG, TabLineSel BG
     execute 'hi TabLineCloseActive'
-    \   ' guifg=' . err_fg_gui . ' guibg=' . sel_bg_gui
-    \   ' ctermfg=' . err_fg_cterm . ' ctermbg=' . sel_bg_cterm
+                \   ' guifg=' . err_fg_gui . ' guibg=' . sel_bg_gui
+                \   ' ctermfg=' . err_fg_cterm . ' ctermbg=' . sel_bg_cterm
 
     " Inactive close button: Error FG, TabLine BG
     execute 'hi TabLineCloseInactive'
-    \   ' guifg=' . err_fg_gui . ' guibg=' . norm_bg_gui
-    \   ' ctermfg=' . err_fg_cterm . ' ctermbg=' . norm_bg_cterm
+                \   ' guifg=' . err_fg_gui . ' guibg=' . norm_bg_gui
+                \   ' ctermfg=' . err_fg_cterm . ' ctermbg=' . norm_bg_cterm
 endfunction
 
 function! MyTabLine()
@@ -322,8 +328,8 @@ command GPush execute "Git! push"
 nnoremap <leader>G <Cmd>tab G<cr>
 
 augroup FugitiveCustomMaps
-  autocmd!
-  " unbind J/K from autoload/fugitive
-  autocmd User FugitiveIndex,FugitiveObject,FugitiveCommit,FugitiveBlame silent! nunmap <buffer> J
-  autocmd User FugitiveIndex,FugitiveObject,FugitiveCommit,FugitiveBlame silent! nunmap <buffer> K
+    autocmd!
+    " unbind J/K from autoload/fugitive
+    autocmd User FugitiveIndex,FugitiveObject,FugitiveCommit,FugitiveBlame silent! nunmap <buffer> J
+    autocmd User FugitiveIndex,FugitiveObject,FugitiveCommit,FugitiveBlame silent! nunmap <buffer> K
 augroup END
