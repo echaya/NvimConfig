@@ -362,8 +362,11 @@ require("kanagawa-paper").setup({
   cache = true,
   colors = {
     theme = {
-      ink = { ui = { bg = palette.sumiInk2, bg_dim = palette.sumiInkn1 } },
+      ink = { ui = { bg = palette.sumiInk0, bg_dim = palette.sumiInkn1 } },
     },
+  },
+  color_balance = {
+    ink = { brightness = 0, saturation = 0.5 },
   },
   overrides = function(colors)
     return {
