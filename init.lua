@@ -107,7 +107,6 @@ end
 later(function()
   if vim.g.vscode == nil then
     add({ source = "milanglacier/yarepl.nvim" })
-    add({ source = "stevearc/conform.nvim" })
     add({ source = "echaya/neowiki.nvim", checkout = "dev" })
     -- add({ source = "NStefan002/screenkey.nvim" })
     add({ source = "esmuellert/codediff.nvim" })
