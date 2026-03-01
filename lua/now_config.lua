@@ -356,31 +356,27 @@ end, {
   nargs = 0,
 })
 
-require("tokyonight").setup({
-  -- available options: moon, storm, night
-  style = "night",
-  dim_inactive = true, -- dims inactive windows
-  styles = {
-    keywords = { italic = false },
+local palette = require("kanagawa-paper.colors").palette
+require("kanagawa-paper").setup({
+  dim_inactive = true,
+  cache = true,
+  colors = {
+    theme = {
+      ink = { ui = { bg = palette.sumiInk2, bg_dim = palette.sumiInkn1 } },
+    },
   },
-  on_colors = function(colors)
-    colors.git.add = colors.green
-    colors.git.change = colors.blue
-    colors.git.delete = colors.red
-  end,
-  on_highlights = function(hl, colors)
-    local commentColor = colors.comment
-    hl.LineNrAbove = {
-      fg = commentColor,
+  overrides = function(colors)
+    return {
+      NormalFloat = { bg = "none" },
+      FloatBorder = { bg = "none" },
+      FloatTitle = { bg = "none" },
+      LineNr = { fg = colors.palette.dragonGray3 },
+      MatchParen = { bg = colors.palette.sumiInk6, bold = true },
+      FlashLabel = { fg = colors.palette.carpYellow, bg = colors.palette.sumiInk5, bold = true },
+      TabLine = { fg = colors.palette.lotusViolet2 },
+      ["@diff.minus"] = { bg = colors.palette.winterRed },
+      ["@diff.plus"] = { bg = colors.palette.winterGreen },
+      ["@diff.delta"] = { bg = colors.palette.winterYellow },
     }
-    hl.LineNrBelow = {
-      fg = commentColor,
-    }
-    hl.MatchParen = { bg = "#505664", underline = true }
-    hl.LineNr = {
-      fg = commentColor,
-    }
-    hl.TabLine = { fg = commentColor }
-    hl.TabLineSel = { bg = colors.bg_visual }
   end,
 })

@@ -56,7 +56,7 @@ now(function()
     end
   end
   add({ source = "folke/snacks.nvim" })
-  add({ source = "folke/tokyonight.nvim" })
+  add({ source = "thesimonho/kanagawa-paper.nvim" })
   require("lua.now_mini")
   require("lua.now_config")
 end)
