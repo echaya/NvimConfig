@@ -356,56 +356,6 @@ end, {
   nargs = 0,
 })
 
-local colorscheme_A = "tokyonight-night"
-local colorscheme_B = "kanagawa"
-Snacks.toggle({
-  name = "Colorscheme",
-  notify = false,
-  get = function()
-    return vim.g.colors_name == colorscheme_A
-  end,
-  set = function(state)
-    local new_scheme = state and colorscheme_A or colorscheme_B
-    vim.cmd("colorscheme " .. new_scheme)
-  end,
-  wk_desc = {
-    enabled = "Switch to " .. colorscheme_B,
-    disabled = "Switch to " .. colorscheme_A,
-  },
-}):map("|b")
-
--- vim.highlight.priorities.semantic_tokens = 95 -- Or any number lower than 100, treesitter's priority level
-require("kanagawa").setup({
-  compile = true,
-  keywordStyle = { italic = false },
-  dimInactive = true,
-  colors = {
-    theme = {
-      all = { ui = { bg_gutter = "" } },
-    },
-  },
-  overrides = function(colors)
-    return {
-      -- Assign a static color to strings
-      BlinkCmpMenu = { bg = colors.palette.dragonBlack3 },
-      BlinkCmpLabelDetail = { bg = colors.palette.dragonBlack3 },
-      BlinkCmpMenuSelection = { bg = colors.palette.waveBlue1 },
-
-      NormalFloat = { bg = "none" },
-      FloatBorder = { bg = "none" },
-      FloatTitle = { bg = "none" },
-      LineNr = { fg = colors.palette.dragonGray3 },
-      MatchParen = { bg = colors.palette.sumiInk6, bold = true },
-      FlashLabel = { fg = colors.palette.carpYellow, bg = colors.palette.sumiInk5, bold = true },
-      TabLine = { fg = colors.palette.lotusViolet2 },
-      ["@variable.builtin"] = { italic = false },
-      ["@diff.minus"] = { bg = colors.palette.winterRed },
-      ["@diff.plus"] = { bg = colors.palette.winterGreen },
-      ["@diff.delta"] = { bg = colors.palette.winterYellow },
-    }
-  end,
-})
-
 require("tokyonight").setup({
   -- available options: moon, storm, night
   style = "night",
