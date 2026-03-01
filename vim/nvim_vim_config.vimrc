@@ -72,8 +72,8 @@ inoremap . .<c-g>u
 inoremap ; ;<c-g>u
 
 " remove highlight
-nnoremap <silent><C-c> <cmd>noh<CR><Esc>
-nnoremap <silent><esc> <cmd>noh<CR><Esc>
+nnoremap <silent><C-c> <cmd>noh<CR><cmd>echo ''<CR><Esc>
+nnoremap <silent><esc> <cmd>noh<CR><cmd>echo ''<CR><Esc>
 
 " SAFE PASTE SYSTEM
 let g:paste_threshold = 100000 " ~100KB
