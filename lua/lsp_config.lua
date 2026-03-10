@@ -1,35 +1,35 @@
 -- Setup treesitter
-require("nvim-treesitter.configs").setup({
-  ensure_installed = {
-    "bash",
-    "diff",
-    "gitcommit",
-    "lua",
-    "markdown",
-    "markdown_inline",
-    "powershell",
-    "python",
-    "query",
-    "regex",
-    "vim",
-    "vimdoc",
-    "toml",
-    "json",
-  },
-  sync_install = false,
-  auto_install = false,
-  ignore_install = { "javascript" },
-  highlight = {
-    enable = true,
-    disable = function(_, buf)
-      local max_filesize = 10 * 1024 * 1024
-      local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(buf))
-      if ok and stats and stats.size > max_filesize then
-        return true
-      end
-    end,
-    additional_vim_regex_highlighting = false,
-  },
+require("nvim-treesitter").setup({
+  install_dir = vim.fn.stdpath("data") .. "/site/pack/deps/opt/nvim-treesitter",
+})
+require("nvim-treesitter").install({
+  "bash",
+  "diff",
+  "gitcommit",
+  "gitignore",
+  "lua",
+  "markdown",
+  "markdown_inline",
+  "powershell",
+  "python",
+  "query",
+  "regex",
+  "vim",
+  "vimdoc",
+  "toml",
+  "json",
+})
+vim.api.nvim_create_autocmd("FileType", {
+  group = vim.api.nvim_create_augroup("TreesitterLargeFileCheck", { clear = true }),
+  callback = function(args)
+    local buf = args.buf
+    local max_filesize = 10 * 1024 * 1024 -- 10 MB
+    local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(buf))
+    if ok and stats and stats.size > max_filesize then
+      return
+    end
+    pcall(vim.treesitter.start, buf)
+  end,
 })
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"

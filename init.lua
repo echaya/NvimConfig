@@ -90,7 +90,7 @@ if vim.g.vscode == nil then
     })
     add({
       source = "nvim-treesitter/nvim-treesitter",
-      checkout = "master",
+      checkout = "main",
       hooks = {
         post_checkout = function()
           vim.cmd("TSUpdate")
