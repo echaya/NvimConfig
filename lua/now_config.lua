@@ -351,7 +351,7 @@ Snacks.setup({
 
 vim.api.nvim_create_user_command("GithubSync", function()
   if vim.fn.has("linux") == 1 then
-    vim.cmd('lua Snacks.terminal("~/.config/nvim/config/copy_so.sh; exit")')
+    vim.cmd('!source ~/.config/nvim/config/copy_so.sh')
   else
     vim.cmd('lua Snacks.terminal("cd d:/Workspace/SiteRepo/; ./UpdateSite.bat; exit")')
   end
