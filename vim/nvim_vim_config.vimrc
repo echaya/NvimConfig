@@ -133,8 +133,6 @@ nnoremap N Nzzzv
 nnoremap <C-u> <C-u>zz
 nnoremap <C-d> <C-d>zz
 
-" copy so to windows from WSL
-:command CopySo !source ~/.config/nvim/config/copy_so.sh
 
 
 "table-mode uses |t
