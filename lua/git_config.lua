@@ -124,7 +124,7 @@ require("codediff").setup({
       toggle_explorer = "<leader>e",
       next_hunk = "]v",
       prev_hunk = "[v",
-      hunk_textobject = "gh",
+      hunk_textobject = "gv",
     },
   },
 })
