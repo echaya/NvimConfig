@@ -301,6 +301,22 @@ vim.api.nvim_create_autocmd("FileType", {
 
     local function smart_close_window_with_repl_cleanup()
       local tab_id = vim.fn.tabpagenr()
+      local target_tab = vim.g.last_active_tab
+      local current_tab = vim.api.nvim_get_current_tabpage()
+
+      local function finalize_close()
+        vim.schedule(function()
+          pcall(vim.api.nvim_command, "tabc")
+          if
+            target_tab
+            and target_tab ~= current_tab
+            and vim.api.nvim_tabpage_is_valid(target_tab)
+          then
+            pcall(vim.api.nvim_set_current_tabpage, target_tab)
+          end
+        end)
+      end
+
       if is_ipython_repl_active_by_id(tab_id) then
         local choice = vim.fn.confirm(
           string.format("REPL #%d is active. Close it with the tab?", tab_id),
@@ -314,10 +330,12 @@ vim.api.nvim_create_autocmd("FileType", {
             if is_ipython_repl_active_by_id(tab_id) then
               vim.cmd(string.format("%dREPLClose ipython", tab_id))
             end
+            finalize_close()
           end, 100)
+          return
         end
       end
-      vim.cmd("tabc")
+      finalize_close()
     end
     vim.keymap.set(
       "n",

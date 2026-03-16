@@ -199,11 +199,13 @@ vim.keymap.set("n", "<Del>", function()
   local target_tab = vim.g.last_active_tab
   local current_tab = vim.api.nvim_get_current_tabpage()
 
-  pcall(vim.api.nvim_command, "tabc")
+  vim.schedule(function()
+    pcall(vim.api.nvim_command, "tabc")
 
-  if target_tab and target_tab ~= current_tab and vim.api.nvim_tabpage_is_valid(target_tab) then
-    pcall(vim.api.nvim_set_current_tabpage, target_tab)
-  end
+    if target_tab and target_tab ~= current_tab and vim.api.nvim_tabpage_is_valid(target_tab) then
+      pcall(vim.api.nvim_set_current_tabpage, target_tab)
+    end
+  end)
 end, { noremap = true, silent = true, desc = "Close and return to last used" })
 
 local Formatter = {}
