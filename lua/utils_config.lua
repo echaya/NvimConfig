@@ -722,3 +722,62 @@ vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost", "VimLeavePre" }, {
     end
   end,
 })
+
+vim.api.nvim_create_user_command(
+  "PunctZhToEn",
+  function(opts)
+    -- Dictionary of Chinese punctuation to English equivalents
+    local replacements = {
+      ["，"] = ",", -- Comma
+      ["。"] = ".", -- Period
+      ["："] = ":", -- Colon
+      ["；"] = ";", -- Semicolon
+      ["！"] = "!", -- Exclamation mark
+      ["？"] = "?", -- Question mark
+      ["“"] = '"', -- Left double quote
+      ["”"] = '"', -- Right double quote
+      ["‘"] = "'", -- Left single quote
+      ["’"] = "'", -- Right single quote
+      ["（"] = "(", -- Left parenthesis
+      ["）"] = ")", -- Right parenthesis
+      ["【"] = "[", -- Left bracket
+      ["】"] = "]", -- Right bracket
+      ["《"] = "<", -- Left angle bracket (often used for book titles)
+      ["》"] = ">", -- Right angle bracket
+      ["……"] = "-", -- Ellipsis
+      ["——"] = "-", -- Long dash / em-dash mapped to double hyphen
+      ["—"] = "-", -- Dash
+      ["、"] = ",", -- Enumeration comma
+    }
+
+    -- Save the current window view (cursor position, scrolling)
+    -- so the screen doesn't jump around during replacement.
+    local view = vim.fn.winsaveview()
+
+    -- Determine the range: '%' for entire buffer, or specific line numbers if highlighted
+    local range_prefix = "%"
+    if opts.range ~= 0 then
+      range_prefix = opts.line1 .. "," .. opts.line2
+    end
+
+    -- Iterate through our dictionary and execute the substitution
+    for zh, en in pairs(replacements) do
+      -- Escape backslashes and forward slashes in the English replacement
+      local escaped_en = vim.fn.escape(en, "/\\")
+
+      -- Construct the substitute command:
+      -- keepjumps: prevents adding to the jumplist
+      -- keeppatterns: prevents polluting your search history ('/' register)
+      -- silent!: suppresses errors if the punctuation isn't found
+      -- ge: global replacement, 'e' ignores "pattern not found" errors
+      local cmd =
+        string.format("keepjumps keeppatterns silent! %s s/%s/%s/ge", range_prefix, zh, escaped_en)
+      vim.cmd(cmd)
+    end
+
+    -- Restore the window view to its original state
+    vim.fn.winrestview(view)
+  end,
+  -- Enable visual mode range selection and provide a description for command line help
+  { range = true, desc = "Replace Chinese punctuation with English equivalents" }
+)
