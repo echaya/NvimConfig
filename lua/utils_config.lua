@@ -740,10 +740,10 @@ vim.api.nvim_create_user_command(
       ["’"] = "'", -- Right single quote
       ["（"] = "(", -- Left parenthesis
       ["）"] = ")", -- Right parenthesis
-      ["【"] = "[", -- Left bracket
-      ["】"] = "]", -- Right bracket
-      ["《"] = "<", -- Left angle bracket (often used for book titles)
-      ["》"] = ">", -- Right angle bracket
+      ["【"] = "(", -- Left bracket
+      ["】"] = ")", -- Right bracket
+      ["《"] = "(", -- Left angle bracket (often used for book titles)
+      ["》"] = ")", -- Right angle bracket
       ["……"] = "-", -- Ellipsis
       ["——"] = "-", -- Long dash / em-dash mapped to double hyphen
       ["—"] = "-", -- Dash
