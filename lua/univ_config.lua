@@ -1,6 +1,6 @@
 -- setup leap
 local leap = require("leap")
-leap.opts.case_sensitive = true
+leap.opts.vim_opts["go.ignorecase"] = false
 leap.opts.on_beacons = function(targets, _, _)
   for _, t in ipairs(targets) do
     if t.label and t.beacon then
