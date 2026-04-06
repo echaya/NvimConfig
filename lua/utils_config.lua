@@ -631,6 +631,37 @@ mini_misc.setup()
 mini_misc.setup_auto_root()
 mini_misc.setup_restore_cursor()
 
+vim.o.cmdheight = 0
+require("vim._core.ui2").enable({
+  enable = true,
+  msg = {
+    targets = {
+      [""] = "msg", -- Default target for general messages
+      empty = "cmd", -- Empty messages route to the command line to prevent blank popups
+      bufwrite = "msg", -- File save notifications (e.g., "written") appear briefly
+      confirm = "cmd", -- Interactive confirmations (e.g., y/n prompts) stay at the command line
+      emsg = "pager", -- Errors pop up in the pager so you have room to read stack traces
+      echo = "msg", -- Standard `print()` or `echo` output
+      echomsg = "msg", -- `:echomsg` output
+      echoerr = "pager", -- `:echoerr` output goes to pager so it isn't missed
+    },
+    cmd = {
+      -- Clamps the maximum height to 50% of the screen so massive outputs don't overtake the buffer
+      height = 0.5,
+    },
+    dialog = {
+      height = 0.5,
+    },
+    msg = {
+      height = 0.5,
+      timeout = 4000, -- Ephemeral messages automatically disappear after 4000ms (4 seconds)
+    },
+    pager = {
+      height = 0.5,
+    },
+  },
+})
+
 local macro_reg = ""
 local macro_group = vim.api.nvim_create_augroup("MacroRecording", { clear = true })
 vim.api.nvim_create_autocmd("RecordingEnter", {

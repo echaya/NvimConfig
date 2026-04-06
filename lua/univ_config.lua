@@ -149,14 +149,3 @@ vim.api.nvim_create_autocmd({ "VimLeavePre" }, {
   end,
   desc = "Delete empty temp ShaDa files",
 })
-
-local clear_cmdline_group = vim.api.nvim_create_augroup("ClearCmdLine", { clear = true })
-local clear_cmdline = function()
-  vim.api.nvim_echo({ { "", "Normal" } }, false, {})
-end
-vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter" }, {
-  group = clear_cmdline_group,
-  pattern = "*",
-  desc = "Clear command line when changing buffers or windows",
-  callback = clear_cmdline,
-})
