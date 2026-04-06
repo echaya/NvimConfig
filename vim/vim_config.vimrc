@@ -67,7 +67,7 @@ xnoremap <expr> k v:count == 0 ? 'gk' : 'k'
 nnoremap  <silent> go :<C-u>call append(line("."),   repeat([""], v:count1))<CR>
 nnoremap <silent> gO :<C-u>call append(line(".")-1, repeat([""], v:count1))<CR>
 
-"adding more character objectives
+ "adding more character objectives
 for s:char in [',','/', '*', '%', '_', '`', '!','.']
     execute 'xnoremap i' . s:char . ' :<C-u>normal! T' . s:char . 'vt' . s:char . '<CR>'
     execute 'onoremap i' . s:char . ' :normal vi' . s:char . '<CR>'
@@ -120,10 +120,10 @@ let g:rooter_patterns = ['.git']
 let g:sandwich_no_default_key_mappings = 1
 let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
 let g:sandwich#recipes += [
-            \   {'buns': ['{ ', ' }'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['{']},
-            \   {'buns': ['[ ', ' ]'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['[']},
-            \   {'buns': ['( ', ' )'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['(']},
-            \ ]
+      \   {'buns': ['{ ', ' }'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['{']},
+      \   {'buns': ['[ ', ' ]'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['[']},
+      \   {'buns': ['( ', ' )'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['(']},
+      \ ]
 
 nmap yz <Plug>(sandwich-add)
 nmap yzz <Plug>(sandwich-add)_
@@ -134,38 +134,7 @@ nmap cz <Plug>(sandwich-replace)
 
 runtime autoload/repeat.vim
 if hasmapto('<Plug>(RepeatDot)')
-    nmap . <Plug>(operator-sandwich-predot)<Plug>(RepeatDot)
+  nmap . <Plug>(operator-sandwich-predot)<Plug>(RepeatDot)
 else
-    nmap . <Plug>(operator-sandwich-dot)
+  nmap . <Plug>(operator-sandwich-dot)
 endif
-
-"15"
-"21"
-"15"
-"12"
-"13"
-"13"
-"14"
-"12"
-"12"
-"13"
-"13"
-"13"
-"12"
-"13"
-"12"
-"12"
-"12"
-"12"
-"16"
-"14"
-
-
-
-
-
-
-
-
-
-
