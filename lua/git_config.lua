@@ -242,8 +242,6 @@ local function silent_async_pp(git_root, command)
   })
 end
 
--- TODO to add when upgrade to nvim 0.12
--- vim.opt.diffopt:append("inline:char")
 vim.api.nvim_create_user_command("GHack", function()
   local ok, current_repo_root = pcall(vim.fn.FugitiveWorkTree)
   if not ok then

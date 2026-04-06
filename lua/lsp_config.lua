@@ -75,17 +75,41 @@ vim.diagnostic.config({
   },
 })
 
+local diag_group = vim.api.nvim_create_augroup("DiagnosticFloatGroup", { clear = true })
+local diag_float_win = nil -- Track the active diagnostic float window ID
+
 vim.api.nvim_create_autocmd("CursorHold", {
-  group = vim.api.nvim_create_augroup("DiagnosticFloatGroup", { clear = true }), -- Renamed group for clarity
+  group = diag_group,
   pattern = "*",
   callback = function()
+    if vim.b.suppress_diagnostics then
+      return
+    end
+
     vim.defer_fn(function()
-      vim.diagnostic.open_float({
+      if vim.b.suppress_diagnostics then
+        return
+      end
+
+      local _, win = vim.diagnostic.open_float({
         scope = "line",
         focusable = false,
         close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost", "WinLeave" },
       })
+
+      if win then
+        diag_float_win = win
+      end
     end, 250)
+  end,
+})
+
+-- 3. Reset the suppression flag whenever you move your cursor or start typing
+vim.api.nvim_create_autocmd({ "CursorMoved", "InsertEnter" }, {
+  group = diag_group,
+  pattern = "*",
+  callback = function()
+    vim.b.suppress_diagnostics = false
   end,
 })
 
@@ -120,14 +144,28 @@ vim.api.nvim_create_autocmd("LspAttach", {
       return
     end
 
+    -- HELPER FUNCTION: Suppresses diagnostic float and runs the LSP command
+    local function suppress_and_run(fn)
+      return function()
+        vim.b.suppress_diagnostics = true
+        if diag_float_win and vim.api.nvim_win_is_valid(diag_float_win) then
+          pcall(vim.api.nvim_win_close, diag_float_win, true)
+        end
+        fn()
+      end
+    end
+
     if client.name == "ruff" then -- Check both common names
       client.server_capabilities.documentFormattingProvider = true
       client.server_capabilities.hoverProvider = false
     end
 
-    vim.keymap.set("n", "gl", function()
-      vim.lsp.buf.hover()
-    end, { silent = true, desc = "lsp Hover", buffer = bufnr })
+    vim.keymap.set(
+      "n",
+      "gl",
+      suppress_and_run(vim.lsp.buf.hover),
+      { silent = true, desc = "lsp Hover", buffer = bufnr }
+    )
     vim.keymap.set("n", "gD", function()
       vim.lsp.buf.definition()
     end, { silent = true, desc = "lsp Definition", buffer = bufnr })
@@ -152,7 +190,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     vim.keymap.set(
       { "n", "v" },
       "ga",
-      vim.lsp.buf.code_action,
+      suppress_and_run(vim.lsp.buf.code_action),
       { silent = true, desc = "goto code actions", buffer = bufnr }
     )
     vim.keymap.set("n", "]D", function()
