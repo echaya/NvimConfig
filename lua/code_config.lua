@@ -212,6 +212,7 @@ local Formatter = {}
 local executable_cache = {}
 local timeout_ms = 2000
 local max_file_size = 10000
+
 Formatter.formatters_by_ft = {
   lua = function(bufnr)
     local filename = vim.api.nvim_buf_get_name(bufnr)
@@ -238,16 +239,20 @@ local function apply_text(bufnr, initial_tick, text)
   if not vim.api.nvim_buf_is_valid(bufnr) then
     return
   end
+
   if vim.b[bufnr].changedtick ~= initial_tick then
     vim.notify("Buffer modified. Formatting aborted.", vim.log.levels.WARN)
     return
   end
+
   local old_lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
   local old_text = table.concat(old_lines, "\n") .. "\n"
+
   if text == "" and old_text:match("%S") then
     vim.notify("Formatter returned empty text. Aborted to prevent data loss.", vim.log.levels.ERROR)
     return
   end
+
   text = text:gsub("\r\n", "\n")
   local new_lines = vim.split(text, "\n")
   if new_lines[#new_lines] == "" then
@@ -259,10 +264,10 @@ local function apply_text(bufnr, initial_tick, text)
     return
   end
 
-  local indices = vim.diff(old_text, new_text, { result_type = "indices" })
+  local indices = vim.text.diff(old_text, new_text, { result_type = "indices" })
+  local edits = {}
 
-  for i = #indices, 1, -1 do
-    local hunk = indices[i]
+  for _, hunk in ipairs(indices) do
     local start_a, count_a, start_b, count_b = hunk[1], hunk[2], hunk[3], hunk[4]
     local start_row = (count_a == 0) and start_a or (start_a - 1)
     local end_row = start_row + count_a
@@ -272,8 +277,21 @@ local function apply_text(bufnr, initial_tick, text)
       table.insert(replacement, new_lines[j])
     end
 
-    vim.api.nvim_buf_set_lines(bufnr, start_row, end_row, false, replacement)
+    local edit_text = table.concat(replacement, "\n")
+    if count_b > 0 then
+      edit_text = edit_text .. "\n"
+    end
+
+    table.insert(edits, {
+      range = {
+        start = { line = start_row, character = 0 },
+        ["end"] = { line = end_row, character = 0 },
+      },
+      newText = edit_text,
+    })
   end
+
+  vim.lsp.util.apply_text_edits(edits, bufnr, "utf-8")
 end
 
 local function is_executable(bin)
@@ -290,7 +308,7 @@ end
 local function are_executables_missing(cmds)
   for _, cmd in ipairs(cmds) do
     if not is_executable(cmd[1]) then
-      vim.notify("Formatter missing: " .. cmd[1] .. ". Falling back to LSP.", vim.log.levels.WARN)
+      vim.notify("Formatter missing: " .. cmd[1] .. ". Falling back to LSP.", vim.log.levels.INFO)
       return true
     end
   end
@@ -315,8 +333,10 @@ local function run_async_pipeline(cmds, input_text, file_dir, bufnr, initial_tic
       end)
       return
     end
+
     local cmd = cmds[idx]
     local opts = { text = true, stdin = text, cwd = file_dir }
+
     vim.system(cmd, opts, function(obj)
       if obj.code == 0 then
         next_step(idx + 1, obj.stdout)
@@ -339,6 +359,7 @@ local function run_sync_pipeline(cmds, input_text, file_dir, bufnr, initial_tick
     local ok, result = pcall(function()
       return sys_obj:wait(timeout_ms)
     end)
+
     if not ok or not result then
       sys_obj:kill(9)
       vim.notify(cmd[1] .. " timed out.", vim.log.levels.ERROR)
@@ -378,7 +399,11 @@ function Formatter.format(opts)
   local get_cmds = Formatter.formatters_by_ft[ft]
   local cmds = get_cmds and get_cmds(bufnr) or nil
 
-  if not cmds or are_executables_missing(cmds) then
+  if not cmds then
+    return
+  end
+
+  if are_executables_missing(cmds) then
     vim.lsp.buf.format({ async = opts.async, bufnr = bufnr, timeout_ms = timeout_ms })
     return
   end
@@ -386,6 +411,7 @@ function Formatter.format(opts)
   local initial_tick = vim.b[bufnr].changedtick
   local filename = vim.api.nvim_buf_get_name(bufnr)
   local file_dir = filename ~= "" and vim.fn.fnamemodify(filename, ":h") or nil
+
   if file_dir and vim.fn.isdirectory(file_dir) == 0 then
     file_dir = nil
   end
@@ -418,9 +444,6 @@ Snacks.toggle({
   end,
   set = function(state)
     vim.g.disable_autoformat = not state
-    if state then
-      Formatter.format({ async = true })
-    end
   end,
 }):map("|f")
 
