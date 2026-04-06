@@ -668,7 +668,7 @@ vim.api.nvim_create_autocmd("RecordingEnter", {
   group = macro_group,
   callback = function()
     macro_reg = vim.fn.reg_recording()
-    vim.notify(string.format("Recording to [%s]...", macro_reg), vim.log.levels.INFO, {
+    vim.notify(string.format("Recording to [%s]", macro_reg), vim.log.levels.INFO, {
       title = "Macro Recording",
       id = "macro_recording",
       timeout = false,

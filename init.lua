@@ -86,7 +86,7 @@ if vim.g.vscode == nil then
       depends = {
         "echaya/friendly-snippets",
       },
-      checkout = "v1.10.1",
+      checkout = "v1.10.2",
     })
     add({
       source = "nvim-treesitter/nvim-treesitter",
@@ -106,7 +106,7 @@ end
 later(function()
   if vim.g.vscode == nil then
     add({ source = "milanglacier/yarepl.nvim" })
-    add({ source = "echaya/neowiki.nvim", checkout = "dev" })
+    add({ source = "echaya/neowiki.nvim", checkout = "main" })
     -- add({ source = "NStefan002/screenkey.nvim" })
     add({ source = "esmuellert/codediff.nvim" })
     add({ source = "MeanderingProgrammer/render-markdown.nvim" })
