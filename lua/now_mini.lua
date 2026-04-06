@@ -413,6 +413,7 @@ MiniStarter.setup({
     { action = "DepsUpdate", name = "Update", section = "Plugin" },
     { action = "DepsClean", name = "Purge", section = "Plugin" },
     { action = "GithubSync", name = "Backup site", section = "Plugin" },
+    { action = "CopySo", name = "Copy so", section = "Plugin" },
     { action = "enew", name = "New buffer", section = "Builtin actions" },
     { action = "qall!", name = "Quit neovim", section = "Builtin actions" },
   },

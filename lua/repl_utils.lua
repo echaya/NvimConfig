@@ -53,7 +53,7 @@ end
 
 --- Builds a new code fence at the end of the file.
 function M.build_fence()
-  local lines = { "", get_code_fence() }
+  local lines = { get_code_fence() }
   vim.api.nvim_buf_set_lines(0, -1, -1, false, lines)
   local last_line = vim.api.nvim_buf_line_count(0)
   vim.api.nvim_win_set_cursor(0, { last_line, 0 })

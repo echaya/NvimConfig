@@ -57,41 +57,24 @@ vim.api.nvim_create_autocmd("FileType", {
         and vim.api.nvim_buf_is_loaded(repl_obj.bufnr)
     end
 
-    local start_ipython_repl_by_id = function(target_id)
+    local smart_toggle_ipython_repl = function(id)
+      -- Accept an explicit ID (e.g., from the restart function) or calculate it
+      local target_id = type(id) == "number" and id
+        or ((vim.v.count == 0) and vim.fn.tabpagenr() or vim.v.count)
+
       vim.notify(
-        string.format("YAREPL: Starting ipython REPL #%d...", target_id),
+        string.format("YAREPL: Toggling/Starting ipython REPL #%d...", target_id),
         vim.log.levels.INFO,
         { title = "REPL Control" }
       )
-      vim.cmd(string.format("%dREPLStart! ipython", target_id))
+
+      vim.cmd(string.format("%dYarepl start_or_focus_or_hide ipython", target_id))
       vim.cmd("wincmd p")
+
       vim.defer_fn(function()
         vim.cmd("wincmd =")
       end, 50)
     end
-
-    local toggle_ipython_repl_visibility_by_id = function(target_id)
-      vim.notify(
-        string.format("YAREPL: Toggling ipython REPL #%d visibility/focus...", target_id),
-        vim.log.levels.INFO,
-        { title = "REPL Control" }
-      )
-      vim.cmd(string.format("%dREPLHideOrFocus ipython", target_id))
-      vim.cmd("wincmd p")
-      vim.defer_fn(function()
-        vim.cmd("wincmd =")
-      end, 50)
-    end
-
-    local smart_toggle_ipython_repl_entrypoint = function()
-      local target_id = (vim.v.count == 0) and vim.fn.tabpagenr() or vim.v.count
-      if is_ipython_repl_active_by_id(target_id) then
-        toggle_ipython_repl_visibility_by_id(target_id)
-      else
-        start_ipython_repl_by_id(target_id)
-      end
-    end
-
     local restart_ipython_repl_entrypoint = function()
       local target_id = (vim.v.count == 0) and vim.fn.tabpagenr() or vim.v.count
       vim.notify(
@@ -100,17 +83,17 @@ vim.api.nvim_create_autocmd("FileType", {
         { title = "REPL Control" }
       )
 
-      vim.cmd(string.format("%dREPLExec $ipython exit()", target_id))
-      vim.cmd(string.format("%dREPLClose ipython", target_id))
+      vim.cmd(string.format("%dYarepl exec $ipython exit()", target_id))
+      vim.cmd(string.format("%dYarepl close ipython", target_id))
       vim.defer_fn(function()
-        start_ipython_repl_by_id(target_id)
+        smart_toggle_ipython_repl(target_id)
       end, 2500)
     end
 
     vim.keymap.set(
       "n",
       [[<a-\>]],
-      smart_toggle_ipython_repl_entrypoint,
+      smart_toggle_ipython_repl,
       { buffer = args.buf, desc = "yarepl start attach ipython" }
     )
     vim.keymap.set(
@@ -123,13 +106,13 @@ vim.api.nvim_create_autocmd("FileType", {
 
     vim.keymap.set("n", "<localleader><cr>", function()
       local target_id = (vim.v.count == 0) and vim.fn.tabpagenr() or vim.v.count
-      vim.cmd(string.format("%dREPLExec $ipython " .. vim.fn.nr2char(13), target_id))
-    end, { buffer = args.buf, desc = "yarepl cr ipython" })
+      vim.cmd(string.format("%dYarepl exec $ipython " .. vim.fn.nr2char(13), target_id))
+    end, { buffer = args.buf, desc = "yarepl <cr> ipython" })
 
     vim.keymap.set("n", "<C-CR>", function()
       local target_id = (vim.v.count == 0) and vim.fn.tabpagenr() or vim.v.count
       if repl.select_visual() then
-        vim.cmd(string.format("%dREPLSendVisual ipython", target_id))
+        vim.cmd(string.format("%dYarepl send_visual ipython", target_id))
         vim.api.nvim_input("<esc>")
         vim.cmd("norm! j")
       end
@@ -138,7 +121,7 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.keymap.set("n", "<S-CR>", function()
       local target_id = (vim.v.count == 0) and vim.fn.tabpagenr() or vim.v.count
       if repl.select_visual() then
-        vim.cmd(string.format("%dREPLSourceVisual ipython", target_id))
+        vim.cmd(string.format("%dYarepl source_visual ipython", target_id))
         vim.api.nvim_input("<esc>")
         vim.cmd("norm! j")
       end
@@ -146,7 +129,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
     vim.keymap.set("n", "<localleader><localleader>", function()
       local target_id = (vim.v.count == 0) and vim.fn.tabpagenr() or vim.v.count
-      vim.cmd(string.format("%dREPLSendOperator ipython", target_id))
+      vim.cmd(string.format("%dYarepl send_operator ipython", target_id))
     end, {
       buffer = args.buf,
       desc = "yarepl send operator",
@@ -164,45 +147,29 @@ vim.api.nvim_create_autocmd("FileType", {
 
     vim.keymap.set("n", "<localleader>[", function()
       local count = (vim.v.count == 0) and "" or tostring(vim.v.count)
-      return count .. "<localleader><localleader>iw"
+      return count .. "<localleader><localleader>R"
     end, {
       expr = true,
       remap = true,
       buffer = args.buf,
-      desc = "yarepl send current word",
+      desc = "yarepl send treesitter object",
     })
 
     local function create_repl_sender_yarepl(key, desc, command_format_string)
       vim.keymap.set("n", key, function()
         local target_id = (vim.v.count == 0) and vim.fn.tabpagenr() or vim.v.count
-        local original_cursor_pos = vim.api.nvim_win_get_cursor(0)
-        local current_line_1_indexed = original_cursor_pos[1]
         local var_name = vim.fn.expand("<cword>")
+
         if not var_name or var_name == "" then
           vim.notify("No word under cursor", vim.log.levels.WARN)
           return
         end
+
         local command_to_send = string.format(command_format_string, var_name)
-        vim.api.nvim_buf_set_lines(
-          args.buf,
-          current_line_1_indexed,
-          current_line_1_indexed,
-          false,
-          { command_to_send }
-        )
-        vim.api.nvim_win_set_cursor(0, { current_line_1_indexed + 1, 0 })
-        vim.cmd("normal! V")
-        vim.cmd(string.format("%dREPLSendVisual ipython", target_id))
-        vim.api.nvim_input("<esc>")
+
+        -- Use the native `Yarepl exec` command to send strings directly
+        vim.cmd(string.format("%dYarepl exec $ipython %s", target_id, command_to_send))
         vim.notify(string.format("Sent: %s", command_to_send), vim.log.levels.INFO)
-        vim.api.nvim_buf_set_lines(
-          args.buf,
-          current_line_1_indexed,
-          current_line_1_indexed + 1,
-          false,
-          {}
-        )
-        vim.api.nvim_win_set_cursor(0, original_cursor_pos)
       end, { buffer = args.buf, desc = desc .. "_ipython" })
     end
 
@@ -213,12 +180,13 @@ vim.api.nvim_create_autocmd("FileType", {
       { buffer = args.buf, desc = "Disable paragraph motion to favor custom p mappings" }
     )
 
-    create_repl_sender_yarepl("<localleader>pL", "yarepl print length", "print(len(%s))")
-    create_repl_sender_yarepl("<localleader>pl", "yarepl print last", "print(%s.iloc[-1].T)")
-    create_repl_sender_yarepl("<localleader>po", "yarepl print first", "print(%s.iloc[0].T)")
-    create_repl_sender_yarepl("<localleader>pi", "yarepl print info", "print(%s.info())")
-    create_repl_sender_yarepl("<localleader>pt", "yarepl print info", "print(type(%s))")
-    create_repl_sender_yarepl("<localleader>pd", "yarepl print", "print(%s.describe().T)")
+    create_repl_sender_yarepl("<localleader>pp", "yarepl word", "%s")
+    create_repl_sender_yarepl("<localleader>pf", "yarepl first", "%s.iloc[0].T")
+    create_repl_sender_yarepl("<localleader>pl", "yarepl last", "%s.iloc[-1].T")
+    create_repl_sender_yarepl("<localleader>pi", "yarepl info", "%s.info()")
+    create_repl_sender_yarepl("<localleader>pd", "yarepl describe", "%s.describe().T")
+    create_repl_sender_yarepl("<localleader>pL", "yarepl length", "len(%s)")
+    create_repl_sender_yarepl("<localleader>pt", "yarepl type", "type(%s)")
 
     vim.keymap.set("n", "<localleader>y", function()
       local target_id = (vim.v.count == 0) and vim.fn.tabpagenr() or vim.v.count
@@ -237,13 +205,13 @@ vim.api.nvim_create_autocmd("FileType", {
         command_to_send = string.format("%s.to_clipboard()", var_name)
       end
 
-      vim.cmd(string.format("%dREPLExec $ipython %s", target_id, command_to_send))
+      vim.cmd(string.format("%dYarepl exec $ipython %s", target_id, command_to_send))
       vim.notify("Sent to REPL: " .. command_to_send, vim.log.levels.INFO)
     end, { buffer = args.buf, desc = "yarepl df to clipboard os aware ipython" })
 
     vim.keymap.set("v", "<CR>", function()
       local target_id = (vim.v.count == 0) and vim.fn.tabpagenr() or vim.v.count
-      vim.cmd(string.format("%dREPLSendVisual ipython", target_id))
+      vim.cmd(string.format("%dYarepl send_visual ipython", target_id))
       vim.api.nvim_input("<esc>")
       vim.cmd("norm! j")
     end, { buffer = args.buf, desc = "yarepl v send ipython" })
@@ -252,30 +220,30 @@ vim.api.nvim_create_autocmd("FileType", {
       local target_id = (vim.v.count == 0) and vim.fn.tabpagenr() or vim.v.count
       local original_cursor_pos = vim.api.nvim_win_get_cursor(0)
       vim.cmd("normal! ggV" .. original_cursor_pos[1] .. "G")
-      vim.cmd(string.format("%dREPLSourceVisual ipython", target_id))
+      vim.cmd(string.format("%dYarepl source_visual ipython", target_id))
       vim.api.nvim_input("<esc>")
       vim.api.nvim_win_set_cursor(0, original_cursor_pos)
     end, { buffer = args.buf, desc = "yarepl send until cursor ipython" })
 
     vim.keymap.set({ "n", "v" }, "<localleader>qq", function()
       local target_id = (vim.v.count == 0) and vim.fn.tabpagenr() or vim.v.count
-      vim.cmd(string.format("%dREPLExec $ipython exit()", target_id))
-      vim.cmd(string.format("%dREPLClose ipython", target_id))
+      vim.cmd(string.format("%dYarepl exec $ipython exit()", target_id))
+      vim.cmd(string.format("%dYarepl close ipython", target_id))
     end, { buffer = args.buf, desc = "yarepl exit ipython" })
 
     vim.keymap.set({ "n", "v" }, "<localleader>c", function()
       local target_id = (vim.v.count == 0) and vim.fn.tabpagenr() or vim.v.count
-      vim.cmd(string.format("%dREPLExec $ipython " .. vim.fn.nr2char(3), target_id))
+      vim.cmd(string.format("%dYarepl exec $ipython " .. vim.fn.nr2char(3), target_id))
     end, { buffer = args.buf, desc = "yarepl interrupt ipython" })
 
     vim.keymap.set({ "n", "v" }, "<a-del>", function()
       local target_id = (vim.v.count == 0) and vim.fn.tabpagenr() or vim.v.count
-      vim.cmd(string.format("%dREPLExec $ipython " .. vim.fn.nr2char(12), target_id))
+      vim.cmd(string.format("%dYarepl exec $ipython " .. vim.fn.nr2char(12), target_id))
     end, { buffer = args.buf, desc = "yarepl clear ipython" })
 
     vim.keymap.set("n", "<localleader>f", function()
       local target_id = (vim.v.count == 0) and vim.fn.tabpagenr() or vim.v.count
-      vim.cmd(string.format("%dREPLFocus ipython", target_id))
+      vim.cmd(string.format("%dYarepl focus ipython", target_id))
       vim.cmd("norm! i")
     end, { buffer = args.buf, desc = "yarepl focus insert ipython" })
 
@@ -325,10 +293,10 @@ vim.api.nvim_create_autocmd("FileType", {
           "Question"
         )
         if choice == 1 then
-          vim.cmd(string.format("%dREPLExec $ipython exit()", tab_id))
+          vim.cmd(string.format("%dYarepl exec $ipython exit()", tab_id))
           vim.defer_fn(function()
             if is_ipython_repl_active_by_id(tab_id) then
-              vim.cmd(string.format("%dREPLClose ipython", tab_id))
+              vim.cmd(string.format("%dYarepl close ipython", tab_id))
             end
             finalize_close()
           end, 100)
@@ -350,7 +318,7 @@ vim.api.nvim_create_autocmd("FileType", {
       { buffer = true, desc = "insert: .to_clipboard()" }
     )
     vim.keymap.set("i", ";ct", ".copy(True)", { buffer = true, desc = "insert: .copy(True)" })
-    vim.keymap.set("i", ";f", "###<CR><Esc>", { buffer = true, desc = "insert: New cell fence" })
+    vim.keymap.set("i", ";f", "###<CR><Esc>", { buffer = true, desc = "insert: new cell fence" })
     vim.keymap.set("i", ";po", ".iloc[0].T", { buffer = true, desc = "insert:.iloc[0].T" })
     vim.keymap.set("i", ";it", "inplace=True", { buffer = true, desc = "insert: inplace=True" })
     vim.keymap.set("i", ";pl", ".iloc[-1].T", { buffer = true, desc = "insert: .iloc[-1].T" })
