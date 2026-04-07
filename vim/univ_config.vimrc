@@ -49,7 +49,7 @@ nnoremap <C-V> v
 " execute macro at visual range, does not stop when no match
 function! ExecuteMacroOverVisualRange()
     echo "@".getcmdline()
-    execute ":'<,'>normal @".nr2char(getchar())
+    execute ":'<,'>normal! @".nr2char(getchar())
 endfunction
 xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
 
