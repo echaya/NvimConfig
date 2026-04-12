@@ -59,6 +59,8 @@ now(function()
   add({ source = "thesimonho/kanagawa-paper.nvim" })
   require("lua.now_mini")
   require("lua.now_config")
+  add({ source = "esmuellert/codediff.nvim" })
+  require("lua.git_config")
 end)
 
 -- deps later: utilities
@@ -108,11 +110,9 @@ later(function()
     add({ source = "milanglacier/yarepl.nvim" })
     add({ source = "echaya/neowiki.nvim", checkout = "main" })
     -- add({ source = "NStefan002/screenkey.nvim" })
-    add({ source = "esmuellert/codediff.nvim" })
     add({ source = "MeanderingProgrammer/render-markdown.nvim" })
     require("lua.code_config")
     require("lua.repl_config")
-    require("lua.git_config")
   else
     require("lua.vscode_config")
   end
