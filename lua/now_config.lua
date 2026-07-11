@@ -198,7 +198,16 @@ vim.keymap.set({ "n", "t" }, "<a-.>", function()
 end, { desc = "lazygit" })
 
 vim.keymap.set({ "n", "t" }, "<a-`>", function()
-  Snacks.terminal()
+  local term_cmd = nil
+  if vim.fn.has("win32") == 1 then
+    term_cmd = "cmd.exe /K c:/tools/Scripts/cmd/cmd_init.bat"
+  end
+  Snacks.terminal(term_cmd, {
+    win = {
+      position = "bottom",
+      height = 0.3,
+    },
+  })
 end, { desc = "toggle terminal" })
 
 vim.keymap.set({ "n" }, "<leader>y", function()
@@ -351,7 +360,7 @@ Snacks.setup({
 
 vim.api.nvim_create_user_command("GithubSync", function()
   if vim.fn.has("linux") == 1 then
-    vim.cmd('!source ~/.config/nvim/config/copy_so.sh')
+    vim.cmd("!source ~/.config/nvim/config/copy_so.sh")
   else
     vim.cmd('lua Snacks.terminal("cd d:/Workspace/SiteRepo/; ./UpdateSite.bat; exit")')
   end
