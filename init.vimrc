@@ -103,6 +103,10 @@ function! s:ApplyCustomHighlights()
     highlight SpellLocal gui=undercurl guifg=#FFFEE2
     " Snacks
     highlight SnacksStatusColumnMark guibg=NONE guifg=#D27E99
+    " Lsp reference (for snacks words)
+    hi LspReferenceText guifg=NONE guibg=#2d3f61 gui=NONE
+    hi LspReferenceRead guifg=NONE guibg=#2d3f61 gui=NONE
+    hi LspReferenceWrite guifg=NONE guibg=#2d3f61 gui=bold
 endfunction
 
 augroup HighlightGroupRefresher
