@@ -178,6 +178,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
     vim.keymap.set("n", "gR", function()
       vim.lsp.buf.references()
     end, { silent = true, desc = "lsp references", buffer = bufnr })
+
+    -- delete gra and grx which are native lsp keymap
+    pcall(vim.keymap.del, "n", "gra")
+    pcall(vim.keymap.del, "n", "grx")
     vim.keymap.set(
       "n",
       "gr",
@@ -365,7 +369,7 @@ vim.api.nvim_create_user_command("LspRestart", function()
   end
   vim.notify("Restarting LSP clients for current buffer...", vim.log.levels.INFO)
   for _, client in ipairs(clients) do
-    vim.lsp.stop_client(client.id)
+    client:stop()
   end
   vim.defer_fn(function()
     vim.cmd.edit("%") -- Re-edit current file to trigger LSP attach
@@ -376,7 +380,7 @@ end, {
 })
 
 vim.api.nvim_create_user_command("LspLog", function()
-  local log_path = vim.lsp.get_log_path()
+  local log_path = vim.lsp.log.get_filename()
   if log_path then
     vim.cmd.vsplit(log_path)
   else
