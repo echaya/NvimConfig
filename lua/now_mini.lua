@@ -468,6 +468,11 @@ local clean_up_buffer = function()
   -- Remove all non-file and utility buffers because they cannot be saved.
   for _, buffer in ipairs(vim.api.nvim_list_bufs()) do
     if vim.api.nvim_buf_is_valid(buffer) and not is_restorable(buffer) then
+      local clients = vim.lsp.get_clients({ bufnr = buffer })
+      for _, client in ipairs(clients) do
+        vim.lsp.buf_detach_client(buffer, client.id)
+      end
+      vim.diagnostic.reset(nil, buffer)
       vim.api.nvim_buf_delete(buffer, { force = true })
     end
   end
@@ -477,11 +482,40 @@ local clean_up_buffer = function()
   end
 end
 
+local set_pane_title_to_session = function(session_data)
+  if session_data and session_data.name then
+    vim.opt.title = true
+
+    local display_name = session_data.name
+    local to_remove = ""
+
+    if vim.fn.has("win32") == 1 then
+      local username = vim.env.USERNAME or "unknown"
+      to_remove = "C_Users_" .. username .. "_"
+    else
+      to_remove = "_workarea_IndexRD_"
+    end
+
+    local lower_display_name = string.lower(display_name)
+    local lower_to_remove = string.lower(to_remove)
+
+    local start_idx, end_idx = string.find(lower_display_name, lower_to_remove, 1, true)
+
+    if start_idx then
+      display_name = string.sub(display_name, 1, start_idx - 1)
+        .. string.sub(display_name, end_idx + 1)
+    end
+
+    vim.opt.titlestring = "session: " .. display_name
+  end
+end
+
 mini_session.setup({
   file = "",
   hooks = {
     -- Clean buffers only when a write is actually triggered
     pre = { write = clean_up_buffer },
+    post = { read = set_pane_title_to_session },
   },
 })
 
