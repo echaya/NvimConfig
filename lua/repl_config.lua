@@ -199,8 +199,10 @@ vim.api.nvim_create_autocmd("FileType", {
 
       local command_to_send
       if vim.fn.has("unix") == 1 then
-        command_to_send =
-          string.format("import linutils.cb_helper; linutils.cb_helper.to_clipboard(%s)", var_name)
+        command_to_send = string.format(
+          "import linutils.cb_helper; linutils.cb_helper.to_clipboard(%s.reset_index())",
+          var_name
+        )
       else
         command_to_send = string.format("%s.to_clipboard()", var_name)
       end
