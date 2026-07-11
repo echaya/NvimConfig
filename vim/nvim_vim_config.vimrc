@@ -34,11 +34,11 @@ endif
 set noshowmode
 
 if !has('unix')
-    let &shell = 'pwsh -nologo -noexit'
-    let &shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
-    let &shellredir = '-RedirectStandardOutput %s -NoNewWindow -Wait'
-    let &shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
-    set shellquote= shellxquote=
+    let &shell = 'cmd.exe'
+    let &shellcmdflag = '/c'
+    let &shellredir = '>%s 2>&1'
+    let &shellpipe = '>%s 2>&1'
+    set shellquote= shellxquote=(
 endif
 
 if has('gui_running')
