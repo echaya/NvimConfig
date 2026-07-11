@@ -371,7 +371,7 @@ local go_in_plus_reset = function()
 end
 
 vim.api.nvim_create_autocmd("User", {
-  pattern = "MiniFilesWindowClose",
+  pattern = "MiniFilesExplorerClose",
   callback = function()
     clear_cache()
   end,
@@ -420,9 +420,17 @@ vim.api.nvim_create_autocmd("User", {
   end,
 })
 
+vim.api.nvim_create_autocmd("User", {
+  pattern = "MiniFilesBufferUpdate",
+  callback = function()
+    clear_cache()
+  end,
+})
+
 vim.keymap.set("n", "<leader>e", function()
   if not mini_files.close() then
     STATE.sort_mode = "name"
+    clear_cache()
     mini_files.open()
   end
 end, { desc = "mini files" })
@@ -812,3 +820,5 @@ vim.api.nvim_create_user_command(
   -- Enable visual mode range selection and provide a description for command line help
   { range = true, desc = "Replace Chinese punctuation with English equivalents" }
 )
+
+require("mini.input").setup()
