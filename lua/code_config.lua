@@ -108,7 +108,7 @@ local hipatterns = require("mini.hipatterns")
 hipatterns.setup({
   highlighters = {
     hack = hi_words({ "IMP", "Hack" }, "MiniHipatternsHack"),
-    fixme = hi_words({ "XXX", "FIXME" }, "MiniHipatternsFixme"),
+    fixme = hi_words({ "XXX", "SKIP" }, "MiniHipatternsFixme"),
     todo = hi_words({ "TODO", "Todo" }, "MiniHipatternsTodo"),
     note = hi_words({ "NOTE", "Note" }, "MiniHipatternsNote"),
     -- Highlight hex color strings (`#rrggbb`) using that color
@@ -155,7 +155,7 @@ vim.keymap.set("n", "<localleader>qf", toggle_qf, { desc = "Toggle quickfix" })
 require("neowiki").setup({
   wiki_dirs = {
     { name = "wiki", path = vim.g.MDir },
-    -- { name = "todo", path = "todo" }, --for neowiki development
+    { name = "todo", path = "todo" }, --for neowiki development
   },
   discover_nested_roots = true,
   keymaps = {
