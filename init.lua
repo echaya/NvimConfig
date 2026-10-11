@@ -100,6 +100,7 @@ if vim.g.vscode == nil then
       },
     })
     add({ source = "nvim-treesitter/nvim-treesitter-context" })
+    add({ source = "nvim-treesitter/nvim-treesitter-textobjects" })
     require("lua.lsp_config")
   end)
 end

@@ -2,13 +2,33 @@
 require("mini.diff").setup({
   view = { style = "sign" },
   mappings = {
-    goto_first = "[C",
-    goto_prev = "[c",
-    goto_next = "]c",
-    goto_last = "]C",
+    goto_first = "[V",
+    goto_last = "]V",
   },
   options = { algorithm = "patience" },
 })
+
+local function is_codediff_active()
+  local ft = vim.bo.filetype
+  local buf_name = vim.api.nvim_buf_get_name(0)
+
+  return ft == "codediff-explorer" or buf_name:find("^codediff://") ~= nil
+end
+
+vim.keymap.set("n", "]v", function()
+  if is_codediff_active() then
+    require("codediff").next_hunk()
+  else
+    require("mini.diff").goto_hunk("next")
+  end
+end, { desc = "Jump to next hunk (CodeDiff or mini.diff)" })
+vim.keymap.set("n", "[v", function()
+  if is_codediff_active() then
+    require("codediff").prev_hunk()
+  else
+    require("mini.diff").goto_hunk("prev")
+  end
+end, { desc = "Jump to previous hunk (CodeDiff or mini.diff)" })
 
 local function walk_in_codediff(picker, item)
   picker:close()
@@ -122,8 +142,8 @@ require("codediff").setup({
     view = {
       quit = false,
       toggle_explorer = "<leader>e",
-      next_hunk = "]v",
-      prev_hunk = "[v",
+      next_hunk = "",
+      prev_hunk = "",
       hunk_textobject = "gv",
     },
   },
