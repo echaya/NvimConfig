@@ -2,6 +2,7 @@
 require("nvim-treesitter").setup({
   install_dir = vim.fn.stdpath("data") .. "/site/pack/deps/opt/nvim-treesitter",
 })
+
 require("nvim-treesitter").install({
   "bash",
   "diff",
@@ -19,6 +20,111 @@ require("nvim-treesitter").install({
   "toml",
   "json",
 })
+
+local move = require("nvim-treesitter-textobjects.move")
+local move_mappings = {
+  {
+    mode = { "n", "x", "o" },
+    lhs = "]f",
+    fn = function()
+      move.goto_next_start("@function.outer", "textobjects")
+    end,
+    desc = "Next function start",
+  },
+  {
+    mode = { "n", "x", "o" },
+    lhs = "]c",
+    fn = function()
+      move.goto_next_start("@class.outer", "textobjects")
+    end,
+    desc = "Next class start",
+  },
+  {
+    mode = { "n", "x", "o" },
+    lhs = "]a",
+    fn = function()
+      move.goto_next_start("@parameter.inner", "textobjects")
+    end,
+    desc = "Next argument/parameter",
+  },
+  {
+    mode = { "n", "x", "o" },
+    lhs = "]s",
+    fn = function()
+      move.goto_next_start("@section.outer", "textobjects")
+    end,
+    desc = "Next section/heading",
+  },
+  {
+    mode = { "n", "x", "o" },
+    lhs = "]F",
+    fn = function()
+      move.goto_next_end("@function.outer", "textobjects")
+    end,
+    desc = "Next function end",
+  },
+  {
+    mode = { "n", "x", "o" },
+    lhs = "]C",
+    fn = function()
+      move.goto_next_end("@class.outer", "textobjects")
+    end,
+    desc = "Next class end",
+  },
+  {
+    mode = { "n", "x", "o" },
+    lhs = "[f",
+    fn = function()
+      move.goto_previous_start("@function.outer", "textobjects")
+    end,
+    desc = "Prev function start",
+  },
+  {
+    mode = { "n", "x", "o" },
+    lhs = "[c",
+    fn = function()
+      move.goto_previous_start("@class.outer", "textobjects")
+    end,
+    desc = "Prev class start",
+  },
+  {
+    mode = { "n", "x", "o" },
+    lhs = "[a",
+    fn = function()
+      move.goto_previous_start("@parameter.inner", "textobjects")
+    end,
+    desc = "Prev argument/parameter",
+  },
+  {
+    mode = { "n", "x", "o" },
+    lhs = "[s",
+    fn = function()
+      move.goto_previous_start("@section.outer", "textobjects")
+    end,
+    desc = "Prev section/heading",
+  },
+  {
+    mode = { "n", "x", "o" },
+    lhs = "[F",
+    fn = function()
+      move.goto_previous_end("@function.outer", "textobjects")
+    end,
+    desc = "Prev function end",
+  },
+  {
+    mode = { "n", "x", "o" },
+    lhs = "[C",
+    fn = function()
+      move.goto_previous_end("@class.outer", "textobjects")
+    end,
+    desc = "Prev class end",
+  },
+}
+
+for _, map in ipairs(move_mappings) do
+  vim.keymap.set(map.mode, map.lhs, map.fn, { desc = map.desc, silent = true })
+end
+
 vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("TreesitterLargeFileCheck", { clear = true }),
   callback = function(args)
@@ -31,6 +137,8 @@ vim.api.nvim_create_autocmd("FileType", {
     pcall(vim.treesitter.start, buf)
   end,
 })
+
+-- Folding
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt.foldlevelstart = 99
