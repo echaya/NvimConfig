@@ -25,8 +25,8 @@ cnoremap <expr> <c-n> wildmenumode() ? "\<c-n>" : "\<down>"
 cnoremap <expr> <c-p> wildmenumode() ? "\<c-p>" : "\<up>"
 
 " swap v and Ctrl-v
-nnoremap  v <C-V>
-nnoremap <C-V> v
+"nnoremap  v <C-V>
+"nnoremap <C-V> v
 
 " ex command remap
 :command! Wq wq
