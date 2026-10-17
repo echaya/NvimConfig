@@ -24,6 +24,7 @@ end, { desc = "leap forward" })
 vim.keymap.set({ "o" }, "S", function()
   leap.leap({ inclusive = true, offset = 0, backward = true })
 end, { desc = "leap backward" })
+vim.keymap.set({ "n", "x", "o" }, "gs", "<Plug>(leap-visit)")
 -- leap treesitter
 vim.keymap.set({ "n", "x", "o" }, "R", function()
   require("leap.treesitter").select({ opts = require("leap.user").with_traversal_keys("R", "r") })
